@@ -1,0 +1,11 @@
+[
+	{
+		"mnemonic" : "P0",
+		"unit" : ["branch"],
+		"issue" : "branch",
+		"latency" : 1,
+		"pipelined" : true,
+		"serialize" : false,
+		"rob_group" : ["end"]
+	}
+]

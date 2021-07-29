@@ -1,0 +1,93 @@
+[
+	{
+		"mnemonic" : "mul",
+		"form" : "R",
+		"stencil" : "0x2000033",
+		"type" : ["int", "mul"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "mulh",
+		"form" : "R",
+		"stencil" : "0x2001033",
+		"type" : ["int", "mul"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "mulhsu",
+		"form" : "R",
+		"stencil" : "0x2002033",
+		"type" : ["int", "mul"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "mulhu",
+		"form" : "R",
+		"stencil" : "0x2003033",
+		"type" : ["int", "mul"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "div",
+		"form" : "R",
+		"stencil" : "0x2004033",
+		"type" : ["int", "div"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "divu",
+		"form" : "R",
+		"stencil" : "0x2005033",
+		"type" : ["int", "div"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "rem",
+		"form" : "R",
+		"stencil" : "0x2006033",
+		"type" : ["int", "div"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "remu",
+		"form" : "R",
+		"stencil" : "0x2007033",
+		"type" : ["int", "div"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "mulw",
+		"form" : "R",
+		"stencil" : "0x200003b",
+		"type" : ["int", "mul"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "divw",
+		"form" : "R",
+		"stencil" : "0x200403b",
+		"type" : ["int", "div"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "divuw",
+		"form" : "R",
+		"stencil" : "0x200503b",
+		"type" : ["int", "div"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "remw",
+		"form" : "R",
+		"stencil" : "0x200603b",
+		"type" : ["int", "div"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "remuw",
+		"form" : "R",
+		"stencil" : "0x200703b",
+		"type" : ["int", "div"],
+		"l-oper" : "all"
+	}
+]

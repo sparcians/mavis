@@ -1,0 +1,180 @@
+[
+	{
+		"mnemonic" : "amoadd.w",
+		"form" : "AMO",
+		"stencil" : "0x202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amoxor.w",
+		"form" : "AMO",
+		"stencil" : "0x2000202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amoor.w",
+		"form" : "AMO",
+		"stencil" : "0x4000202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amoand.w",
+		"form" : "AMO",
+		"stencil" : "0x6000202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amomin.w",
+		"form" : "AMO",
+		"stencil" : "0x8000202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amomax.w",
+		"form" : "AMO",
+		"stencil" : "0xa000202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amominu.w",
+		"form" : "AMO",
+		"stencil" : "0xc000202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amomaxu.w",
+		"form" : "AMO",
+		"stencil" : "0xe000202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amoswap.w",
+		"form" : "AMO",
+		"stencil" : "0x800202f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "lr.w",
+		"form" : "AMO",
+		"fixed" : ["rs2"],
+		"stencil" : "0x1000202f",
+		"type" : ["int", "load", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "sc.w",
+		"form" : "AMO",
+		"stencil" : "0x1800202f",
+		"type" : ["int", "store", "atomic"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "amoadd.d",
+		"form" : "AMO",
+		"stencil" : "0x302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "amoxor.d",
+		"form" : "AMO",
+		"stencil" : "0x2000302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "amoor.d",
+		"form" : "AMO",
+		"stencil" : "0x4000302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "amoand.d",
+		"form" : "AMO",
+		"stencil" : "0x6000302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "amomin.d",
+		"form" : "AMO",
+		"stencil" : "0x8000302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "amomax.d",
+		"form" : "AMO",
+		"stencil" : "0xa000302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "amominu.d",
+		"form" : "AMO",
+		"stencil" : "0xc000302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "amomaxu.d",
+		"form" : "AMO",
+		"stencil" : "0xe000302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "amoswap.d",
+		"form" : "AMO",
+		"stencil" : "0x800302f",
+		"type" : ["int", "arith", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "lr.d",
+		"form" : "AMO",
+		"fixed" : ["rs2"],
+		"stencil" : "0x1000302f",
+		"type" : ["int", "load", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "sc.d",
+		"form" : "AMO",
+		"stencil" : "0x1800302f",
+		"type" : ["int", "store", "atomic"],
+		"l-oper" : "all",
+		"data" : 64
+	}
+]

@@ -1,0 +1,24 @@
+[
+	{
+		"pseudo" : "P0",
+		"type" : ["branch", "cond"],
+		"sources" : ["rs1", "rs2"],
+		"dests" : ["rd"],
+		"specials" : ["vm"],
+		"w-oper" : ["rs1", "rd"],
+		"d-oper" : ["rs2"]
+	},
+	{
+		"pseudo" : "P1",
+		"type" : ["branch", "cond"],
+		"sources" : ["rs1", "rs2"],
+		"dests" : ["rd"],
+		"specials" : ["vm"],
+		"l-oper" : "all"
+	},
+	{
+		"pseudo" : "blt",
+		"type" : ["branch", "cond"],
+		"l-oper" : "all"
+	}
+]
