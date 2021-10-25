@@ -6,6 +6,7 @@
 #include <memory>
 #include <array>
 #include <cinttypes>
+#include <regex>
 
 namespace mavis {
 
@@ -14,9 +15,10 @@ class InstMetaData
 private:
     using json = nlohmann::json;
     typedef typename std::vector<std::string> FieldNameListType;
+    typedef typename std::vector<std::string> ISAExtListType;
 
 public:
-    // TODO: flesh this out
+    // TODO: Deprecate this...
     enum class ISA : uint32_t
     {
         RV32I,
@@ -56,6 +58,37 @@ public:
         FENCE = 1ull << 61u,
         SYSTEM = 1ull << 62u,
         CSR = 1ull << 63u
+    };
+
+    enum class ISAExtensionIndex : uint64_t
+    {
+        A = 0,      // Atomic
+        B,          // Bitmanip
+        C,          // Compressed
+        D,          // Double precision
+        F,          // Float (single)
+        G,          // "General"
+        H,          // Hypervisor
+        I,          // Integer
+        M,          // Multiply
+        Q,          // Quad
+        V,          // Vector
+        __N         // LAST: number of enum values
+    };
+
+    enum class ISAExtension : uint64_t
+    {
+        A = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::A),
+        B = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::B),
+        C = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::C),
+        D = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::D),
+        F = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::F),
+        G = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::G),
+        H = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::H),
+        I = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::I),
+        M = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::M),
+        Q = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::Q),
+        V = 1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(ISAExtensionIndex::V)
     };
 
     enum class OperandTypes : uint32_t
@@ -124,6 +157,22 @@ private:
         {"csr",        InstructionTypes::CSR}
     };
 
+    static inline std::map<std::string, ISAExtensionIndex> isamap_ {
+        { "A",  ISAExtensionIndex::A},
+        { "B",  ISAExtensionIndex::B},
+        { "C",  ISAExtensionIndex::C},
+        { "D",  ISAExtensionIndex::D},
+        { "F",  ISAExtensionIndex::F},
+        { "G",  ISAExtensionIndex::G},
+        { "H",  ISAExtensionIndex::H},
+        { "I",  ISAExtensionIndex::I},
+        { "M",  ISAExtensionIndex::M},
+        { "Q",  ISAExtensionIndex::Q},
+        { "V",  ISAExtensionIndex::V}
+    };
+
+    static inline const std::regex isa_ext_pattern_ = std::regex("([1-9][0-9]*?)?([A-Z])", std::regex::optimize);
+
     static inline const std::map<std::string, OperandFieldID> ofimap_ {
         //{"rs",  OperandFieldID::RS},
         {"rs1", OperandFieldID::RS1},
@@ -175,6 +224,7 @@ public:
 
         parseOverrides(inst);
 
+        // Data size
         if (inst.find("data") != inst.end()) {
             data_size_ = inst["data"];
             // Check positive, power-of-2 or zero
@@ -182,6 +232,8 @@ public:
                 throw BuildErrorInvalidDataSize(inst["mnemonic"], data_size_);
             }
         }
+
+        // Word operand types
         if (inst.find("w-oper") != inst.end()) {
             if (inst["w-oper"] == "all") {
                 setAllOperandsType_(OperandTypes::WORD);
@@ -191,6 +243,8 @@ public:
                 setOperandsType_(flist, OperandTypes::WORD);
             }
         }
+
+        // Long operand types
         if (inst.find("l-oper") != inst.end()) {
             if (inst["l-oper"] == "all") {
                 setAllOperandsType_(OperandTypes::LONG);
@@ -200,6 +254,8 @@ public:
                 setOperandsType_(flist, OperandTypes::LONG);
             }
         }
+
+        // Single operand types
         if (inst.find("s-oper") != inst.end()) {
             if (inst["s-oper"] == "all") {
                 setAllOperandsType_(OperandTypes::SINGLE);
@@ -209,6 +265,8 @@ public:
                 setOperandsType_(flist, OperandTypes::SINGLE);
             }
         }
+
+        // Double operand types
         if (inst.find("d-oper") != inst.end()) {
             if (inst["d-oper"] == "all") {
                 setAllOperandsType_(OperandTypes::DOUBLE);
@@ -218,6 +276,8 @@ public:
                 setOperandsType_(flist, OperandTypes::DOUBLE);
             }
         }
+
+        // Quad operand types
         if (inst.find("q-oper") != inst.end()) {
             if (inst["q-oper"] == "all") {
                 setAllOperandsType_(OperandTypes::QUAD);
@@ -227,6 +287,8 @@ public:
                 setOperandsType_(flist, OperandTypes::QUAD);
             }
         }
+
+        // Vector operand types
         if (inst.find("v-oper") != inst.end()) {
             if (inst["v-oper"] == "all") {
                 setAllOperandsType_(OperandTypes::VECTOR);
@@ -234,6 +296,40 @@ public:
                 FieldNameListType flist;
                 flist = inst["v-oper"].get<FieldNameListType>();
                 setOperandsType_(flist, OperandTypes::VECTOR);
+            }
+        }
+
+        // Try to find ISA extensions of the form 'wX' where 'w' is a an optional
+        // "width" (e.g. 32, 64, etc.) and 'X' is an extension letter
+        if (inst.find("isa") != inst.end()) {
+            ISAExtListType ilist = inst["isa"].get<ISAExtListType>();
+            if (! ilist.empty()) {
+                std::smatch matches;
+                for (const auto& s : ilist) {
+                    // matches[0] is the entire string matched,
+                    // matches[1] is the capture group for the optional width (emtpy if not provided)
+                    // matches[2] is the capture group for the ISA extension letter
+                    if (std::regex_search(s, matches, isa_ext_pattern_)) {
+                        const auto itr = isamap_.find(matches[2].str());
+                        if (itr != isamap_.end()) {
+                            isa_ext_ |= (1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(itr->second));
+                        } else {
+                            // Invalid ISA extension letter
+                            throw BuildErrorInvalidISAExtension(inst["mnemonic"], s, matches[2].str());
+                        }
+                        if (matches[1].length() != 0) {
+                            const uint32_t n = std::strtoull(matches[1].str().c_str(), nullptr, 0);
+                            if ((n == 0) || ((n & (n - 1)) != 0)) {
+                                // Not a non-zero power of 2
+                                throw BuildErrorInvalidISAWidth(inst["mnemonic"], s, n);
+                            }
+                            setISAWidth(itr->second, n);
+                        }
+                    } else {
+                        // Malformed ISA extension string
+                        throw BuildErrorMalformedISAExtension(inst["mnemonic"], s);
+                    }
+                }
             }
         }
     }
@@ -253,7 +349,7 @@ public:
      * Construct according to ISA (for custom instruction factories)
      * @param iset
      */
-    // TODO: finish this
+    // TODO: Deprecate this
     InstMetaData(ISA iset)
     {
         oper_type_.fill(InstMetaData::OperandTypes::NONE);
@@ -360,6 +456,58 @@ public:
         return true;
     }
 
+    std::underlying_type_t<ISAExtension> getISA() const
+    {
+        return isa_ext_;
+    }
+
+    bool isISA(const ISAExtension isa) const
+    {
+        return (isa_ext_ & static_cast<std::underlying_type_t<ISAExtension>>(isa)) ==
+                static_cast<std::underlying_type_t<ISAExtension>>(isa);
+    }
+
+    template<typename ...ArgTypes>
+    bool isISAAnyOf(ArgTypes&& ... args) const
+    {
+        return (ISAtoBits_(std::forward<ArgTypes>(args)...) & isa_ext_) != 0;
+    }
+
+    template<typename ...ArgTypes>
+    bool isISAAllOf(ArgTypes&& ... args) const
+    {
+        const std::underlying_type_t<ISAExtension>  isa_bits = ISAtoBits_(std::forward<ArgTypes>(args)...);
+        return (isa_bits & isa_ext_) == isa_bits;
+    }
+
+    template<typename ...ArgTypes>
+    bool isISASameAs(std::underlying_type_t<ISAExtension> other_isa, ArgTypes&& ... args) const
+    {
+        const std::underlying_type_t<ISAExtension> check_bits = ISAtoBits_(std::forward<ArgTypes>(args)...);
+        if (check_bits == 0) {
+            return (isa_ext_ == other_isa);
+        }
+        return (isa_ext_ & other_isa & check_bits) == check_bits;
+    }
+
+
+    uint32_t getISAWidth(const ISAExtensionIndex isa) const
+    {
+        return isa_width_[static_cast<std::underlying_type_t<ISAExtensionIndex>>(isa)];
+    }
+
+    void setISAWidth(const ISAExtensionIndex isa, uint32_t width)
+    {
+        assert((width != 0) && ((width & (width - 1)) == 0));
+        isa_width_[static_cast<std::underlying_type_t<ISAExtensionIndex>>(isa)] |= width;
+    }
+
+    bool isISAWidth(const ISAExtensionIndex isa, uint32_t width) const
+    {
+        const ISAExtension isa_bit_enum = static_cast<ISAExtension>(1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(isa));
+        return isISA(isa_bit_enum) && ((width & getISAWidth(isa)) == width);
+    }
+
     bool isNoneOperandType(const OperandTypes kind) const
     {
         return field_set_[static_cast<std::underlying_type_t<OperandTypes>>(kind)] == 0;
@@ -440,6 +588,8 @@ public:
 private:
     bool compressed_ = false;
     std::underlying_type_t<InstructionTypes> inst_types_ = 0;
+    std::underlying_type_t<ISAExtension> isa_ext_ = 0;
+    std::array<uint32_t, static_cast<size_t>(ISAExtensionIndex::__N)> isa_width_ = {0} ; /// Width set (bits) for each of our ISA's
     std::array<uint32_t, static_cast<size_t>(OperandTypes::__N)> field_set_ {0};    /// Maps operand type to bit set of fields
     std::array<OperandTypes, static_cast<size_t>(OperandFieldID::__N)> oper_type_;  /// Maps field to operand type
     uint32_t data_size_ = 0;
@@ -475,6 +625,28 @@ private:
             oper_type_[fid] = ot;
         }
     }
+
+    // TODO: Refactor the InstType queries above to use this (similar to the ISA queries)
+    template<typename ...ArgTypes>
+    static inline std::underlying_type_t<InstructionTypes> InstTypesToBits_(ArgTypes&& ... args)
+    {
+        const std::vector<InstructionTypes> itype_list {args...};
+        std::underlying_type_t<InstructionTypes> itype_bits = 0;
+        std::for_each(itype_list.cbegin(), itype_list.cend(),
+                      [&](const auto& i) { itype_bits |= static_cast<std::underlying_type_t<InstructionTypes>>(i); });
+        return itype_bits;
+    }
+
+    template<typename ...ArgTypes>
+    static inline std::underlying_type_t<ISAExtension> ISAtoBits_(ArgTypes&& ... args)
+    {
+        const std::vector<ISAExtension> isa_list {args...};
+        std::underlying_type_t<ISAExtension> isa_bits = 0;
+        std::for_each(isa_list.cbegin(), isa_list.cend(),
+                      [&](const auto& i) { isa_bits |= static_cast<std::underlying_type_t<ISAExtension>>(i); });
+        return isa_bits;
+    }
+
 };
 
 } // namespace mavis

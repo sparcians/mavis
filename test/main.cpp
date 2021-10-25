@@ -47,7 +47,7 @@ struct ExampleTraceInfo
 
 using MavisType = Mavis<Instruction<uArchInfo>, uArchInfo>;
 
-void runTSet(MavisType& mavis_facade, const std::string& tfile) {
+void runTSet(MavisType& mavis_facade, const std::string& tfile, const std::vector<mavis::OpcodeInfo::ISAExtension> isa_list = {}) {
     // Run a test file
     ifstream    tin(tfile);
 
@@ -107,6 +107,20 @@ void runTSet(MavisType& mavis_facade, const std::string& tfile) {
                     cout << "INSTRUCTION ID WARNING: expected ID=" << std::dec << expected_id
                          << ", got ID=" << optr->opinfo->getInstructionUniqueID()
                          << endl;
+                }
+
+                // Check ISA list if present
+                if (! isa_list.empty()) {
+                    for (const auto& i : isa_list) {
+                        if (! (optr->opinfo->isISA(i) && optr->opinfo->isISAAnyOf(i) && optr->opinfo->isISAAllOf(i) &&
+                               optr->opinfo->isISASameAs(optr->opinfo->getISA(), i))) {
+                            cout << "INSTRUCTION '" << optr->opinfo->getMnemonic() << "' "
+                                 << "failed the expected ISA check against enum '"
+                                 << static_cast<std::underlying_type_t<mavis::OpcodeInfo::ISAExtension>>(i)
+                                 << "'"
+                                 << endl;
+                        }
+                    }
                 }
             }
 

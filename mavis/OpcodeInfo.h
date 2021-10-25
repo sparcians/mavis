@@ -18,6 +18,7 @@ public:
     typedef std::shared_ptr<OpcodeInfo> PtrType;
 
     using InstructionTypes = InstMetaData::InstructionTypes;
+    using ISAExtension = InstMetaData::ISAExtension;
     using OperandTypes = InstMetaData::OperandTypes;
     using ExtractedInstTypes = DecodedInstructionInfo::ExtractedInstTypes;
     using SpecialField = ExtractorIF::SpecialField;
@@ -307,6 +308,35 @@ public:
     {
         return info_->isExtInstType(itype);
     }
+
+    std::underlying_type_t<ISAExtension> getISA() const
+    {
+        return meta_->getISA();
+    }
+
+    bool isISA(ISAExtension isa) const
+    {
+        return meta_->isISA(isa);
+    }
+
+    template<typename ...ArgTypes>
+    bool isISAAnyOf(ArgTypes&& ... args) const
+    {
+        return meta_->isISAAnyOf(std::forward<ArgTypes>(args)...);
+    }
+
+    template<typename ...ArgTypes>
+    bool isISAAllOf(ArgTypes&& ... args) const
+    {
+        return meta_->isISAAllOf(std::forward<ArgTypes>(args)...);
+    }
+
+    template<typename ...ArgTypes>
+    bool isISASameAs(std::underlying_type_t<ISAExtension> other_isa, ArgTypes&& ... args) const
+    {
+        return meta_->isISASameAs(other_isa, std::forward<ArgTypes>(args)...);
+    }
+
 
     uint32_t getDataSize() const
     {

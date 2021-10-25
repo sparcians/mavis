@@ -212,6 +212,67 @@ public:
 };
 
 /**
+ * InstMetaData build error: the given ISA extension string does not match a valid pattern
+ *
+ * This can happen from a type-o in the ISA field of the JSON, or from a need to update the
+ * InstMetaData's list of supported ISA extension letters
+ */
+class BuildErrorMalformedISAExtension : public BaseException
+{
+public:
+    BuildErrorMalformedISAExtension(const std::string &mnemonic, const std::string &isa_string) :
+        BaseException()
+    {
+        std::stringstream ss;
+        ss << "Instruction '" << mnemonic << "': "
+           << "ISA extension '" << isa_string << "' "
+           << "is malformed. Needs to be an extension letter optionally preceded by a power-2 width";
+        why_ = ss.str();
+    }
+};
+
+/**
+ * InstMetaData build error: the given ISA extension string does not provide a valid extension letter
+ *
+ * This can happen from a type-o in the ISA field of the JSON, or from a need to update the
+ * InstMetaData's list of supported ISA extension letters
+ */
+class BuildErrorInvalidISAExtension : public BaseException
+{
+public:
+    BuildErrorInvalidISAExtension(const std::string &mnemonic, const std::string &isa_string, const std::string& letter) :
+        BaseException()
+    {
+        std::stringstream ss;
+        ss << "Instruction '" << mnemonic << "': "
+           << "ISA extension '" << isa_string << "' "
+           << "uses an unknown letter '" << letter << "'";
+        why_ = ss.str();
+    }
+};
+
+/**
+ * InstMetaData build error: the given ISA extension string does not provide a valid extension letter
+ *
+ * This can happen from a type-o in the ISA field of the JSON, or from a need to update the
+ * InstMetaData's list of supported ISA extension letters
+ */
+class BuildErrorInvalidISAWidth : public BaseException
+{
+public:
+    BuildErrorInvalidISAWidth(const std::string &mnemonic, const std::string &isa_string, const uint32_t width) :
+        BaseException()
+    {
+        std::stringstream ss;
+        ss << "Instruction '" << mnemonic << "': "
+           << "Width " << std::dec << width << " "
+           << "for ISA extension '" << isa_string << "' "
+           << "must be a non-zero power of 2";
+        why_ = ss.str();
+    }
+};
+
+/**
  * InstMetaData build error: the given data size for the instruction was invalid
  *
  * This can happen from a mis-spelling of the type in the JSON, or from a need to update the
