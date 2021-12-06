@@ -1,0 +1,30 @@
+/*!
+  /page json JSON instruction definition
+
+  Instructions are defined in JSON format, as a list of dictionaries.
+
+  For example:
+  /code
+  [
+	{
+		"mnemonic" : "addi",
+		"form" : "ISH",
+		"ignore" : ["func6"],
+		"xform" : "I",
+		"stencil" : "0x13",
+		"type" : ["int", "arith"],
+		"l-oper" : "all"
+	},
+    {
+        "mnemonic" : "nop",
+        "overlay" : {
+            "base" : "addi",
+            "match" : ["0xFFFFFF80", "0x00000000"]
+        },
+        "xform" : "I",
+        "type" : ["int", "arith"]
+    },
+  ]
+  /endcode
+
+*/

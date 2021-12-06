@@ -1,0 +1,16 @@
+
+/*!
+  \page building Building Mavis
+
+  Mavis is a header-only library.  To build a tester:
+  
+  \subsection Example
+
+  \code
+  cd test
+  cmake .
+  make
+  ./Mavis
+  \endcode
+  
+*/
