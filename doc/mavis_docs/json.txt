@@ -1,10 +1,12 @@
 /*!
-  /page json JSON instruction definition
+  \page json JSON instruction definition
+
+  \section intro Introduction
 
   Instructions are defined in JSON format, as a list of dictionaries.
 
   For example:
-  /code
+  \code
   [
 	{
 		"mnemonic" : "addi",
@@ -25,6 +27,38 @@
         "type" : ["int", "arith"]
     },
   ]
-  /endcode
+  \endcode
+
+  \section instr_def Instruction definition
+  Each instruction is defined by a number of required and optional fields in the JSON stanza.
+  These are parsed in DTable::parseInstInfo_
+
+  At the very least you need the following fields:
+  - `mnemonic`: instruction mnemonic
+  - `stencil`: hex value encoding the instruction stencil (opcode + function fields)
+  - `form`: instruction format as defined in RISC-V ISA spec, one of:
+     - `R`, `I`, `S`, `U`, `B`, `J`
+     - `AMO` for atomic instructions
+     - `H` for HINT \todo check!
+     - `CSR` for CSR instructions
+     - `Rfloat` for FP register instructions
+     - `VF_mem` for FP load/store instructions 
+  
+  The following fields are optional:
+  - `expand`: for compressed instructions. gives mnemonic of instruction to exapand to
+  - `xform`: extraction form override
+  - `overlay`: overlay instructions. Overlay instructions don't require form, but need to have `xform` instead. 
+
+  Metadata. The following fields are not used by Mavis to build the instructions themselves,
+  but they are added as metadata (mavis::InstMetaData stored in mavis::InstMetaDataRegistry):
+  - `data`: data size
+  - Operand size:
+    - `w-oper`: Word operand types
+    - `l-oper`: Long operand types
+    - `s-oper`: Single operand types
+    - `d-oper`: Double operand types
+    - `q-oper`: Quad operand types
+    - `v-oper`: Vector operand types
+  - `type`: Instruction type: list of possibly multiple keywords, eg ["int", "arith"]
 
 */
