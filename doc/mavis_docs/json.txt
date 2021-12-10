@@ -36,13 +36,12 @@
   At the very least you need the following fields:
   - `mnemonic`: instruction mnemonic
   - `stencil`: hex value encoding the instruction stencil (opcode + function fields)
-  - `form`: instruction format as defined in RISC-V ISA spec, one of:
+  - `form`: instruction format as defined in RISC-V ISA spec, these correspond to what
+  is defined in Form.h and the corresponding extraction logic in ExtractorForms.h. A few examples:
      - `R`, `I`, `S`, `U`, `B`, `J`
      - `AMO` for atomic instructions
-     - `H` for HINT \todo check!
      - `CSR` for CSR instructions
      - `Rfloat` for FP register instructions
-     - `VF_mem` for FP load/store instructions 
   
   The following fields are optional:
   - `expand`: for compressed instructions. gives mnemonic of instruction to exapand to
