@@ -440,9 +440,9 @@ int main() {
     assert(inst->getUID() == NOP_UID);
 
     // C.NOP (c.addi x0, x0, 0)
-    inst = mavis_facade.makeInst(0x1, 0);
+    inst = mavis_facade.makeInst(mavis::CANONICAL_CNOP, 0);
     assert(inst != nullptr);
-    cout << "line " << dec << __LINE__ << ": " << "DASM (C.NOP): = " << inst->dasmString() << endl;
+    cout << "line " << dec << __LINE__ << ": " << "DASM (C.NOP/CANONICAL_CNOP): = " << inst->dasmString() << endl;
     assert(inst->getUID() == NOP_UID);
 
     // Operand types for floating point compares

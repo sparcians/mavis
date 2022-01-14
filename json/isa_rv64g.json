@@ -797,20 +797,6 @@
 		"l-oper" : "all"
 	},
 	{
-		"mnemonic" : "hfence.vvma",
-		"form" : "R",
-		"fixed" : ["rd"],
-		"stencil" : "0x22000073",
-		"type" : ["fence", "system"]
-	},
-	{
-		"mnemonic" : "hfence.gvma",
-		"form" : "R",
-		"fixed" : ["rd"],
-		"stencil" : "0x62000073",
-		"type" : ["fence", "system"]
-	},
-	{
 		"mnemonic" : "cflush.d.l1",
 		"form" : "R",
 		"fixed" : ["rd", "rs2"],

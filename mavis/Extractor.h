@@ -291,6 +291,7 @@ protected:
         InstMetaData::OperandFieldID  mid;
     };
     typedef std::vector<RegType_> RegTypeList_;
+
     static inline std::string dasmFormatRegList_(const InstMetaData::PtrType& meta,
                                                  const Opcode icode,
                                                  uint64_t fixed_field_mask,
@@ -306,6 +307,26 @@ protected:
                     first = false;
                 }
                 ss << dasmFormatReg_(meta, r.mid, extract_(r.fid, icode));
+            }
+        }
+        return ss.str();
+    }
+
+    static inline std::string dasmFormatCompressedRegList_(const InstMetaData::PtrType& meta,
+                                                           const Opcode icode,
+                                                           uint64_t fixed_field_mask,
+                                                           const RegTypeList_& rtlist)
+    {
+        bool first = true;
+        std::stringstream ss;
+        for (const auto& r : rtlist) {
+            if (!isMaskedField_(r.fid, fixed_field_mask)) {
+                if (!first) {
+                    ss << ",";
+                } else {
+                    first = false;
+                }
+                ss << dasmFormatReg_(meta, r.mid, extractCompressedRegister_(r.fid, icode));
             }
         }
         return ss.str();

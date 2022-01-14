@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Extractor.h"
-#include "FormStub.h"
 #include "DecoderConsts.h"
 #include "ExtractorForms.h"
+#include "FormStub.h"
 
 namespace mavis {
 
@@ -112,6 +112,17 @@ public:
            << "\t" << extractCompressedRegister_(Form_C0::idType::RD, icode & ~fixed_field_mask_)
            << "," << extractCompressedRegister_(Form_C0::idType::RS1, icode & ~fixed_field_mask_)
            << ", +0x" << std::hex << getImmediate(icode);
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatCompressedRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_C0::idType::RD, InstMetaData::OperandFieldID::RD },
+                                   { Form_C0::idType::RS1, InstMetaData::OperandFieldID::RS1} })
+            << ", +0x" << std::hex << getImmediate(icode);
         return ss.str();
     }
 
@@ -281,6 +292,17 @@ public:
            << "\t" << extractCompressedRegister_(Form_C0::idType::RD, icode & ~fixed_field_mask_)
            << "," << extractCompressedRegister_(Form_C0::idType::RS1, icode & ~fixed_field_mask_)
            << ",0x" << std::hex << getImmediate(icode);
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatCompressedRegList_(meta, icode, fixed_field_mask_,
+                                           { { Form_C0::idType::RD, InstMetaData::OperandFieldID::RS2 },
+                                             { Form_C0::idType::RS1, InstMetaData::OperandFieldID::RS1} })
+           << ", +0x" << std::hex << getImmediate(icode);
         return ss.str();
     }
 
@@ -593,6 +615,16 @@ public:
         return ss.str();
     }
 
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatCompressedRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_CIW::idType::RD, InstMetaData::OperandFieldID::RD } })
+           << ", SP, IMM=0x" << std::hex << getImmediate(icode);
+        return ss.str();
+    }
+
 private:
     Extractor<Form_CIW_sp>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_CIW>(ffmask, fset)
@@ -728,6 +760,16 @@ public:
         return ss.str();
     }
 
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t x" << REGISTER_LINK
+           << ", " << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_CJR::idType::RS1, InstMetaData::OperandFieldID::RS1 } })
+           << ", IMM=0x" << std::hex << getImmediate(icode);
+        return ss.str();
+    }
+
 private:
     Extractor<Form_CJALR>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_CJR>(ffmask, fset)
@@ -803,6 +845,17 @@ public:
            << "\t" << extract_(Form_C2::idType::RD, icode & ~fixed_field_mask_)
            << "," << extract_(Form_C2::idType::RS1, icode & ~fixed_field_mask_)
            << "," << extract_(Form_C2::idType::RS2, icode & ~fixed_field_mask_);
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_C2::idType::RD, InstMetaData::OperandFieldID::RD },
+                                   { Form_C2::idType::RS1, InstMetaData::OperandFieldID::RS1},
+                                   { Form_C2::idType::RS2, InstMetaData::OperandFieldID::RS2 } });
         return ss.str();
     }
 
@@ -890,6 +943,18 @@ public:
         return ss.str();
     }
 
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_C2::idType::RD, InstMetaData::OperandFieldID::RD } })
+           << ", x0, "
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_C2::idType::RS2, InstMetaData::OperandFieldID::RS2 } });
+        return ss.str();
+    }
+
 private:
     Extractor<Form_C2_mv>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C2>(ffmask, fset)
@@ -972,6 +1037,17 @@ public:
         return ss.str();
     }
 
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_C2::idType::RD, InstMetaData::OperandFieldID::RD },
+                                   { Form_C2::idType::RS1, InstMetaData::OperandFieldID::RS1} })
+           << ", IMM=0x" << std::hex << getImmediate(icode);
+        return ss.str();
+    }
+
 private:
     Extractor<Form_C2_slli>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C2>(ffmask, fset)
@@ -1050,6 +1126,16 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\t" << extract_(Form_C2::idType::RD, icode)
+           << ", SP, IMM=0x" << std::hex << getImmediate(icode);
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_C2::idType::RD, InstMetaData::OperandFieldID::RD } })
            << ", SP, IMM=0x" << std::hex << getImmediate(icode);
         return ss.str();
     }
@@ -1394,6 +1480,16 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\t" << extract_(Form_CI_rD_only::idType::RD, icode & ~fixed_field_mask_)
+           << ", +0x" << std::hex << getSignedOffset(icode);
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_CI_rD_only::idType::RD, InstMetaData::OperandFieldID::RD } })
            << ", +0x" << std::hex << getSignedOffset(icode);
         return ss.str();
     }
@@ -1756,6 +1852,143 @@ private:
     Extractor<Form_V_op>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_V>(ffmask, fset)
     {}
+};
+
+/**
+ * HV Load-Form Extractor
+ */
+template<>
+class Extractor<Form_HV_load> : public Extractor<Form_R>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_HV_load>(ffmask, fset));
+    }
+
+    uint64_t getSourceAddressRegs(const Opcode icode) const override
+    {
+        return getSourceRegs(icode);
+    }
+
+    using ExtractorIF::dasmString; // tell the compiler all dasmString
+    // overloads are considered
+    std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic
+           << "\t" << extract_(Form_R::idType::RD, icode & ~fixed_field_mask_)
+           << "," << extract_(Form_R::idType::RS1, icode & ~fixed_field_mask_);
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_R::idType::RD, InstMetaData::OperandFieldID::RD },
+                                   { Form_R::idType::RS1, InstMetaData::OperandFieldID::RS1} });
+        return ss.str();
+    }
+
+protected:
+    Extractor<Form_HV_load>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_R>(ffmask, fset)
+    {}
+};
+
+/**
+ * HV Store-Form Extractor
+ */
+template<>
+class Extractor<Form_HV_store> : public ExtractorBase<Form_R>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_HV_store>(ffmask, fset));
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_R::idType::RS1, icode, fixed_field_mask_) |
+               extractUnmaskedIndexBit_(Form_R::idType::RS2, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceOperTypeRegs(const Opcode icode,
+                                   const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind)) {
+            return 0;
+        } else if (meta->isAllOperandType(kind)) {
+            return getSourceRegs(icode);
+        } else {
+            uint64_t result = 0;
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RS1, kind)) {
+                result |= extractUnmaskedIndexBit_(Form_R::idType::RS1, icode, fixed_field_mask_);
+            }
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RS2, kind)) {
+                result |= extractUnmaskedIndexBit_(Form_R::idType::RS2, icode, fixed_field_mask_);
+            }
+            return result;
+        }
+    }
+
+    uint64_t getSourceAddressRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_R::idType::RS1, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceDataRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_R::idType::RS2, icode, fixed_field_mask_);
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
+                                   fixed_field_mask_, Form_R::idType::RS1,
+                                   false, suppress_x0);
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS2,
+                                   fixed_field_mask_, Form_R::idType::RS2,
+                                   true, suppress_x0);
+        return olist;
+    }
+
+    using ExtractorIF::dasmString; // tell the compiler all dasmString
+    // overloads are considered
+    std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic
+           << "\t" << extract_(Form_R::idType::RS2, icode & ~fixed_field_mask_)  // source data
+           << "," << extract_(Form_R::idType::RS1, icode & ~fixed_field_mask_);   // source address
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_R::idType::RS2, InstMetaData::OperandFieldID::RS2 },
+                                   { Form_R::idType::RS1, InstMetaData::OperandFieldID::RS1} });
+        return ss.str();
+    }
+
+private:
+    Extractor<Form_HV_store>(const uint64_t ffmask, const uint64_t fset) :
+        fixed_field_mask_(ffmask)
+    {}
+
+    uint64_t fixed_field_mask_ = 0;
 };
 
 } // namespace mavis

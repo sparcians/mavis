@@ -48,6 +48,8 @@ private:
         {Form_CSR::getName(),               ExtractorIF::PtrType(new Extractor<Form_CSR>())},
         {Form_CSRI::getName(),              ExtractorIF::PtrType(new Extractor<Form_CSRI>())},
         {Form_FENCE::getName(),             ExtractorIF::PtrType(new Extractor<Form_FENCE>())},
+        {Form_HV_load::getName(),           ExtractorIF::PtrType(new Extractor<Form_HV_load>())},
+        {Form_HV_store::getName(),          ExtractorIF::PtrType(new Extractor<Form_HV_store>())},
         {Form_I::getName(),                 ExtractorIF::PtrType(new Extractor<Form_I>())},
         {Form_I_load::getName(),            ExtractorIF::PtrType(new Extractor<Form_I_load>())},
         {Form_I_mv::getName(),              ExtractorIF::PtrType(new Extractor<Form_I_mv>())},

@@ -401,14 +401,6 @@
 		"l-oper" : "all"
 	},
 	{
-		"mnemonic" : "fence.i",
-		"form" : "FENCE",
-		"xform" : "I",
-		"stencil" : "0x100f",
-		"type" : ["fence"],
-		"l-oper" : "all"
-	},
-    {
 		"mnemonic" : "ecall",
 		"form" : "R",
 		"fixed" : ["rs2", "rs1", "rd"],
@@ -425,66 +417,6 @@
 		"l-oper" : "all"
 	},
 	{
-		"mnemonic" : "csrrw",
-		"factory" : "csr",
-		"form" : "R",
-		"ignore" : ["func7"],
-		"stencil" : "0x1073",
-		"xform" : "CSR",
-		"type" : ["csr", "system"],
-		"l-oper" : "all"
-	},
-	{
-		"mnemonic" : "csrrs",
-		"factory" : "csr",
-		"form" : "R",
-		"ignore" : ["func7"],
-		"stencil" : "0x2073",
-		"xform" : "CSR",
-		"type" : ["csr", "system"],
-		"l-oper" : "all"
-	},
-	{
-		"mnemonic" : "csrrc",
-		"factory" : "csr",
-		"form" : "R",
-		"ignore" : ["func7"],
-		"stencil" : "0x3073",
-		"xform" : "CSR",
-		"type" : ["csr", "system"],
-		"l-oper" : "all"
-	},
-	{
-		"mnemonic" : "csrrwi",
-		"factory" : "csr",
-		"form" : "R",
-		"ignore" : ["func7"],
-		"stencil" : "0x5073",
-		"xform" : "CSRI",
-		"type" : ["csr", "system"],
-		"l-oper" : "all"
-	},
-	{
-		"mnemonic" : "csrrsi",
-		"factory" : "csr",
-		"form" : "R",
-		"ignore" : ["func7"],
-		"stencil" : "0x6073",
-		"xform" : "CSRI",
-		"type" : ["csr", "system"],
-		"l-oper" : "all"
-	},
-	{
-		"mnemonic" : "csrrci",
-		"factory" : "csr",
-		"form" : "R",
-		"ignore" : ["func7"],
-		"stencil" : "0x7073",
-		"xform" : "CSRI",
-		"type" : ["csr", "system"],
-		"l-oper" : "all"
-	},
-    {
 		"mnemonic" : "uret",
 		"form" : "R",
 		"fixed" : ["rs2", "rs1", "rd"],
@@ -526,20 +458,6 @@
 		"fixed" : ["rs2", "rs1", "rd"],
 		"stencil" : "0x10500073",
 		"type" : ["system"]
-	},
-	{
-		"mnemonic" : "hfence.vvma",
-		"form" : "R",
-		"fixed" : ["rd"],
-		"stencil" : "0x22000073",
-		"type" : ["fence", "system"]
-	},
-	{
-		"mnemonic" : "hfence.gvma",
-		"form" : "R",
-		"fixed" : ["rd"],
-		"stencil" : "0x62000073",
-		"type" : ["fence", "system"]
 	},
 	{
 		"mnemonic" : "cflush.d.l1",

@@ -454,4 +454,34 @@ public:
     }
 };
 
+/**
+ * Stub for HV_load extractor
+ */
+class Form_HV_load
+{
+private:
+    static inline const std::string name_ {"HV_load"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for HV_store extractor
+ */
+class Form_HV_store
+{
+private:
+    static inline const std::string name_ {"HV_store"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
 } // namespace mavis
