@@ -100,8 +100,6 @@ csrrc,0x3073
 csrrwi,0x5073
 csrrsi,0x6073
 csrrci,0x7073
-hfence.vvma,0x22000073
-hfence.gvma,0x62000073
 cflush.d.l1,0xfc000073
 cdiscard.d.l1,0xfc200073
 cflush.i.l1,0xfc100073
