@@ -46,6 +46,10 @@ private:
         OpcodeFieldValueType       value = 0;
         InstMetaData::OperandTypes type = InstMetaData::OperandTypes::NONE;
         bool                       sdata = false;
+
+        bool operator==(const Element& elm) const {
+            return valid && (value == elm.field_value) && (type == elm.operand_type) && (sdata == elm.is_store_data);
+        }
     };
 
     using OperandFieldIDUnderlyingType = std::underlying_type_t<InstMetaData::OperandFieldID>;
@@ -69,12 +73,19 @@ public:
     {
         const auto elem = elems_.emplace_back(std::forward<ElementArgs>(args)...);
         ++n_opers_;
+        bool duplicate_operand = false;
         if (elem.field_id != InstMetaData::OperandFieldID::NONE) {
-            assert(!hasFieldID(elem.field_id));
-            field_id_list_[static_cast<OperandFieldIDUnderlyingType>(elem.field_id)] =
-                {true, elem.field_value, elem.operand_type, elem.is_store_data};
+            // allow multiple copies of the same exact operand...
+            if (hasFieldID(elem.field_id)) {
+                const FieldIDInfo& finfo = field_id_list_[static_cast<OperandFieldIDUnderlyingType>(elem.field_id)];
+                duplicate_operand = (finfo == elem);
+                assert(duplicate_operand);
+            } else {
+                field_id_list_[static_cast<OperandFieldIDUnderlyingType>(elem.field_id)] =
+                    {true, elem.field_value, elem.operand_type, elem.is_store_data};
+            }
         }
-        if (elem.operand_type != InstMetaData::OperandTypes::NONE) {
+        if ((elem.operand_type != InstMetaData::OperandTypes::NONE) && (! duplicate_operand)) {
             ++n_types_[static_cast<OperandTypesUnderLyingType>(elem.operand_type)];
         }
     }

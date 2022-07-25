@@ -208,6 +208,18 @@ public:
         return mnemonic + " (from " + getName() + ")";
     }
 
+    // TODO: If we need annotations for disassembly for trace extractors, we
+    // can add it here. See the implementation in ExtractorDirectInfoBase as a
+    // reference
+    void dasmAnnotate(const std::string& txt) override
+    {
+        assert(false);
+    }
+    const std::string& getDasmAnnotation() const override
+    {
+        assert(false);
+    }
+
     void print(std::ostream &os) const override
     {
         // TODO: Need a print function

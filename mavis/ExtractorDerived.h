@@ -1624,7 +1624,7 @@ public:
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
     {
         std::stringstream ss;
-        ss << mnemonic << "\t"
+        ss << getVectorMemoryMnemonic(mnemonic, icode) << "\t"
            << "v" << extract_(Form_VF_mem::idType::RS3, icode & ~fixed_field_mask_)
            << ",x" << extract_(Form_VF_mem::idType::RS1, icode & ~fixed_field_mask_);
         if (!isMaskedField_(Form_VF_mem::idType::RS2, fixed_field_mask_)) {
@@ -1642,7 +1642,7 @@ public:
     std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
     {
         std::stringstream ss;
-        ss << mnemonic << "\t"
+        ss << getVectorMemoryMnemonic(mnemonic, icode) << "\t"
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_VF_mem::idType::RS3, InstMetaData::OperandFieldID::RS3 },
                                    { Form_VF_mem::idType::RS1, InstMetaData::OperandFieldID::RS1},

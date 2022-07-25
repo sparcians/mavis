@@ -156,6 +156,16 @@ public:
         return obj_->dasmString(mnemonic, icode, meta);
     }
 
+    void dasmAnnotate(const std::string& txt) override
+    {
+        obj_->dasmAnnotate(txt);
+    }
+
+    const std::string& getDasmAnnotation() const override
+    {
+        return obj_->getDasmAnnotation();
+    }
+
     void print(std::ostream &os) const override
     {
         obj_->print(os);

@@ -136,6 +136,9 @@ public:
         return dasmString(mnemonic, icode);
     }
 
+    virtual void dasmAnnotate(const std::string& txt) = 0;
+    virtual const std::string& getDasmAnnotation() const = 0;
+
     virtual void print(std::ostream &os) const = 0;
 
 protected:

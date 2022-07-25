@@ -81,6 +81,7 @@ private:
 
         Context() = default;
         Context(const Context&) = default;
+        Context& operator=(const Context&) = default;
 
         Context(AnnotationTypeAllocator& anno_allocator, const FileNameListType& isa_files, const FileNameListType& anno_files,
                 const InstUIDList& uid_list = {}, const AnnotationOverrides & anno_overrides = {})

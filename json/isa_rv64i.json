@@ -464,7 +464,8 @@
 		"form" : "R",
 		"fixed" : ["rd", "rs2"],
 		"stencil" : "0xfc000073",
-		"type" : ["cache", "system"]
+		"type" : ["cache", "system"],
+		"l-oper" : ["rs1"]
 	},
 	{
 		"mnemonic" : "cdiscard.d.l1",

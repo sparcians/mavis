@@ -28,11 +28,6 @@ public:
     {
         return false;
     }
-
-    bool hasImmediate() const override
-    {
-        return false;
-    }
 };
 
 /**
@@ -41,12 +36,20 @@ public:
 class ExtractorDirectBase : public ExtractorDirectInfoIF
 {
 public:
-    explicit ExtractorDirectBase(const std::string &mnemonic, uint64_t imm = 0) :
-        mnemonic_(mnemonic), uid_(INVALID_UID), immediate_(imm)
+    explicit ExtractorDirectBase(const std::string &mnemonic) :
+        mnemonic_(mnemonic), uid_(INVALID_UID), immediate_(0), has_immediate_(false)
     {}
 
-    explicit ExtractorDirectBase(const InstructionUniqueID uid, uint64_t imm = 0) :
-        mnemonic_("UNSET-in-ExtractorDirectBase"), uid_(uid), immediate_(imm)
+    explicit ExtractorDirectBase(const std::string &mnemonic, uint64_t imm) :
+        mnemonic_(mnemonic), uid_(INVALID_UID), immediate_(imm), has_immediate_(true)
+    {}
+
+    explicit ExtractorDirectBase(const InstructionUniqueID uid) :
+        mnemonic_("UNSET-in-ExtractorDirectBase"), uid_(uid), immediate_(0), has_immediate_(false)
+    {}
+
+    explicit ExtractorDirectBase(const InstructionUniqueID uid, uint64_t imm) :
+        mnemonic_("UNSET-in-ExtractorDirectBase"), uid_(uid), immediate_(imm), has_immediate_(true)
     {}
 
     ExtractorDirectBase(const ExtractorDirectBase &other) = default;
@@ -97,6 +100,11 @@ public:
         return {};
     }
 
+    bool hasImmediate() const override
+    {
+        return has_immediate_;
+    }
+
     uint64_t getImmediate(const uint64_t) const override
     {
         return immediate_;
@@ -132,6 +140,16 @@ public:
         throw InvalidExtractorSpecialFieldID(mnemonic_);
     }
 
+    void dasmAnnotate(const std::string& txt) override
+    {
+        annotation_ = txt;
+    }
+
+    const std::string& getDasmAnnotation() const override
+    {
+        return annotation_;
+    }
+
     void print(std::ostream &os) const override
     {
         // TODO: Need a print function
@@ -148,6 +166,7 @@ protected:
     const std::string mnemonic_;
     const InstructionUniqueID uid_ = INVALID_UID;
     const uint64_t immediate_;
+    const bool has_immediate_;
 
     /**
      * \brief Returns a vector of bit indices from combined (AND-ed) BitMasks
@@ -204,6 +223,14 @@ protected:
         }
         return rlist;
     }
+
+    const std::string& dasmGetAnnotation_() const
+    {
+        return annotation_;
+    }
+
+private:
+    std::string annotation_;
 };
 
 class ExtractorDirectInfo : public ExtractorDirectBase
@@ -212,21 +239,39 @@ private:
     static inline const std::string name_ {"ExtractorDirectInfo"};
 
 public:
-    ExtractorDirectInfo(const std::string &mnemonic, const RegListType &sources, const RegListType &dests, uint64_t imm = 0) :
+    ExtractorDirectInfo(const std::string &mnemonic, const RegListType &sources, const RegListType &dests) :
+        ExtractorDirectBase(mnemonic), sources_(sources), dests_(dests)
+    {}
+
+    ExtractorDirectInfo(const std::string &mnemonic, const RegListType &sources, const RegListType &dests, uint64_t imm) :
         ExtractorDirectBase(mnemonic, imm), sources_(sources), dests_(dests)
     {}
 
     ExtractorDirectInfo(const std::string &mnemonic, const RegListType &sources, const RegListType &dests,
-                        const ValueListType& specials, uint64_t imm = 0) :
+                        const ValueListType& specials) :
+        ExtractorDirectBase(mnemonic), sources_(sources), dests_(dests), specials_(specials)
+    {}
+
+    ExtractorDirectInfo(const std::string &mnemonic, const RegListType &sources, const RegListType &dests,
+                        const ValueListType& specials, uint64_t imm) :
         ExtractorDirectBase(mnemonic, imm), sources_(sources), dests_(dests), specials_(specials)
     {}
 
-    ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType &sources, const RegListType &dests, uint64_t imm = 0) :
+    ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType &sources, const RegListType &dests) :
+        ExtractorDirectBase(uid), sources_(sources), dests_(dests)
+    {}
+
+    ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType &sources, const RegListType &dests, uint64_t imm) :
         ExtractorDirectBase(uid, imm), sources_(sources), dests_(dests)
     {}
 
     ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType &sources, const RegListType &dests,
-                        const ValueListType& specials, uint64_t imm = 0) :
+                        const ValueListType& specials) :
+        ExtractorDirectBase(uid), sources_(sources), dests_(dests), specials_(specials)
+    {}
+
+    ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType &sources, const RegListType &dests,
+                        const ValueListType& specials, uint64_t imm) :
         ExtractorDirectBase(uid, imm), sources_(sources), dests_(dests), specials_(specials)
     {}
 
@@ -272,10 +317,22 @@ public:
                                      bool suppress_x0 = false) const override
     {
         OperandInfo olist;
-        uint32_t field_id = static_cast<uint32_t>(InstMetaData::OperandFieldID::RS1);
+        std::underlying_type_t<InstMetaData::OperandFieldID> field_id =
+            static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(InstMetaData::OperandFieldID::RS1);
+        constexpr std::underlying_type_t<InstMetaData::OperandFieldID> max_sources =
+            static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(InstMetaData::OperandFieldID::RS_MAX) -
+            static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(InstMetaData::OperandFieldID::RS1);
+        assert(sources_.size() <= max_sources);
         for (const auto& reg : sources_) {
+            while((field_id < max_sources) && meta->isOperandFixed(static_cast<InstMetaData::OperandFieldID>(field_id))) {
+                ++field_id;
+            }
+            assert(field_id < static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(InstMetaData::OperandFieldID::RS_MAX));
+
             const InstMetaData::OperandFieldID op_field_id = static_cast<InstMetaData::OperandFieldID>(field_id);
-            olist.addElement(op_field_id, meta->getOperandType(op_field_id), reg, false);
+            // FIXME: workaround for RS3 in vector unit-stride store
+            const bool is_rs3 = op_field_id == InstMetaData::OperandFieldID::RS3;
+            olist.addElement(op_field_id, meta->getOperandType(op_field_id), reg, is_rs3);
             ++field_id;
         }
         return olist;
@@ -285,9 +342,21 @@ public:
                                    bool suppress_x0 = false) const override
     {
         OperandInfo olist;
+        std::underlying_type_t<InstMetaData::OperandFieldID> field_id =
+            static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(InstMetaData::OperandFieldID::RD1);
+        constexpr std::underlying_type_t<InstMetaData::OperandFieldID> max_dests =
+            static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(InstMetaData::OperandFieldID::RD_MAX) -
+            static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(InstMetaData::OperandFieldID::RD1);
+        assert(dests_.size() <= max_dests);
         for (const auto& reg : dests_) {
-            olist.addElement(InstMetaData::OperandFieldID::RD, meta->getDefaultDestType(),
-                             reg, false);
+            while((field_id < max_dests) && meta->isOperandFixed(static_cast<InstMetaData::OperandFieldID>(field_id))) {
+                ++field_id;
+            }
+            assert(field_id < static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(InstMetaData::OperandFieldID::RD_MAX));
+
+            const InstMetaData::OperandFieldID op_field_id = static_cast<InstMetaData::OperandFieldID>(field_id);
+            olist.addElement(op_field_id, meta->getDefaultDestType(), reg, false);
+            ++field_id;
         }
         return olist;
     }
@@ -298,13 +367,26 @@ public:
     {
         std::stringstream ss;
         ss << mnemonic << "\t";
+        bool first = true;
         for (const auto reg : dests_) {
-            ss << static_cast<uint32_t>(reg) << ",";
+            if (first) {
+                first = false;
+            } else {
+                ss << ",";
+            }
+            ss << static_cast<uint32_t>(reg);
         }
         for (const auto reg : sources_) {
-            ss << static_cast<uint32_t>(reg) << ",";
+            if (first) {
+                first = false;
+            } else {
+                ss << ",";
+            }
+            ss << static_cast<uint32_t>(reg);
         }
-        ss << " 0x" << std::hex << immediate_;
+        if (has_immediate_) {
+            ss << ", 0x" << std::hex << immediate_;
+        }
         return ss.str();
     }
 
@@ -321,4 +403,137 @@ private:
     }
 };
 
+class ExtractorDirectOpInfoList : public ExtractorDirectBase
+{
+private:
+    static inline const std::string name_ {"ExtractorDirectOpInfoList"};
+
+public:
+    ExtractorDirectOpInfoList(const std::string &mnemonic, const OperandInfo &sources, const OperandInfo &dests) :
+        ExtractorDirectBase(mnemonic), sources_(sources), dests_(dests)
+    {}
+
+    ExtractorDirectOpInfoList(const std::string &mnemonic, const OperandInfo &sources, const OperandInfo &dests, uint64_t imm) :
+        ExtractorDirectBase(mnemonic, imm), sources_(sources), dests_(dests)
+    {}
+
+    ExtractorDirectOpInfoList(const std::string &mnemonic, const OperandInfo &sources, const OperandInfo &dests,
+                        const ValueListType& specials) :
+        ExtractorDirectBase(mnemonic), sources_(sources), dests_(dests), specials_(specials)
+    {}
+
+    ExtractorDirectOpInfoList(const std::string &mnemonic, const OperandInfo &sources, const OperandInfo &dests,
+                              const ValueListType& specials, uint64_t imm) :
+        ExtractorDirectBase(mnemonic, imm), sources_(sources), dests_(dests), specials_(specials)
+    {}
+
+    ExtractorDirectOpInfoList(const InstructionUniqueID uid, const OperandInfo &sources, const OperandInfo &dests) :
+        ExtractorDirectBase(uid), sources_(sources), dests_(dests)
+    {}
+
+    ExtractorDirectOpInfoList(const InstructionUniqueID uid, const OperandInfo &sources, const OperandInfo &dests, uint64_t imm) :
+        ExtractorDirectBase(uid, imm), sources_(sources), dests_(dests)
+    {}
+
+    ExtractorDirectOpInfoList(const InstructionUniqueID uid, const OperandInfo &sources, const OperandInfo &dests,
+                        const ValueListType& specials) :
+        ExtractorDirectBase(uid), sources_(sources), dests_(dests), specials_(specials)
+    {}
+
+    ExtractorDirectOpInfoList(const InstructionUniqueID uid, const OperandInfo &sources, const OperandInfo &dests,
+                              const ValueListType& specials, uint64_t imm) :
+        ExtractorDirectBase(uid, imm), sources_(sources), dests_(dests), specials_(specials)
+    {}
+
+    ExtractorDirectOpInfoList(const ExtractorDirectOpInfoList &other) = default;
+
+    ExtractorIF::PtrType clone() const override
+    {
+        return std::make_shared<ExtractorDirectOpInfoList>(*this);
+    }
+
+    const std::string &getName() const override
+    {
+        return name_;
+    }
+
+    uint64_t getSourceRegs(const uint64_t) const override
+    {
+        uint64_t src_bits = 0;
+        for (const auto& el  : sources_.getElements()) {
+            if (el.field_value > MAX_REG_NUM) {
+                throw InvalidRegisterNumber(mnemonic_, el.field_value);
+            } else {
+                src_bits |= (1ull << el.field_value);
+            }
+        }
+        return src_bits;
+    }
+
+    uint64_t getDestRegs(const uint64_t) const override
+    {
+        uint64_t dst_bits = 0;
+        for (const auto& el : dests_.getElements()) {
+            if (el.field_value > MAX_REG_NUM) {
+                throw InvalidRegisterNumber(mnemonic_, el.field_value);
+            } else {
+                dst_bits |= (1ull << el.field_value);
+            }
+        }
+        return dst_bits;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        return sources_;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        return dests_;
+    }
+
+    using ExtractorIF::dasmString; // tell the compiler all dasmString
+    // overloads are considered
+    std::string dasmString(const std::string &mnemonic, const uint64_t) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t";
+        bool first = true;
+        for (const auto& el : dests_.getElements()) {
+            if (first) {
+                first = false;
+            } else {
+                ss << ",";
+            }
+            ss << static_cast<uint32_t>(el.field_value);
+        }
+        for (const auto& el : sources_.getElements()) {
+            if (first) {
+                first = false;
+            } else {
+                ss << ",";
+            }
+            ss << static_cast<uint32_t>(el.field_value);
+        }
+        if (has_immediate_) {
+            ss << " 0x" << std::hex << immediate_;
+        }
+        return ss.str();
+    }
+
+private:
+    const OperandInfo sources_;
+    const OperandInfo dests_;
+    const ValueListType specials_;
+
+private:
+    uint64_t getSpecialFieldByIndex_(uint32_t index) const override
+    {
+        // We want bounds checking...
+        return specials_.at(index);
+    }
+};
 } // namespace mavis

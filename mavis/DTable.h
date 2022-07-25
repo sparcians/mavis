@@ -318,14 +318,14 @@ private:
                     const std::string &mnemonic, Opcode istencil, const FieldNameListType &flist,
                     const std::string &factory_name, const std::string &xpand_name,
                     ExtractorIF::PtrType override_extractor,
-                    const InstMetaData::PtrType &meta,
+                    InstMetaData::PtrType &meta,
                     const typename IFactoryIF<InstType, AnnotationType>::PtrType &shared_ifact);
 
     typename IFactoryIF<InstType, AnnotationType>::PtrType
     build_(const FormWrapperIF *form, const std::string &mnemonic, Opcode istencil,
                 const FieldNameListType &flist,
                 const FieldNameSetType &ignore_set, const std::string &factory_name, const std::string &xpand_name,
-                const ExtractorIF::PtrType &override_extractor, const InstMetaData::PtrType &einfo,
+                const ExtractorIF::PtrType &override_extractor, InstMetaData::PtrType &einfo,
                 typename IFactoryIF<InstType, AnnotationType>::PtrType shared_ifact = nullptr);
 
     template<typename FormType>

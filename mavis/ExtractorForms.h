@@ -8,6 +8,28 @@
 
 #include <cinttypes>
 
+namespace {
+    std::string dasmVsetImmediate(const uint64_t immediate)
+    {
+        constexpr uint64_t VTYPE_FIELD_VLMUL = 0x7;
+        constexpr uint64_t VTYPE_FIELD_VSEW  = 0x38;
+        constexpr uint64_t VTYPE_FIELD_VTA   = 0x40;
+        constexpr uint64_t VTYPE_FIELD_VMA   = 0x80;
+
+        std::stringstream ss;
+        ss << "e" << (1 << (3 + ((immediate & VTYPE_FIELD_VSEW) >> 3))) << ",";
+        if (const auto val = immediate & VTYPE_FIELD_VLMUL; val < 4) {
+            ss << "m" << (1 << val) << ",";
+        }
+        else {
+            ss << "mf" << (1 << (8 - val)) << ",";
+        }
+        ss << ((immediate & VTYPE_FIELD_VTA) ? "ta," : "tu,");
+        ss << ((immediate & VTYPE_FIELD_VMA) ? "ma"  : "mu");
+        return ss.str();
+    }
+}
+
 namespace mavis {
 
 /**
@@ -3098,12 +3120,37 @@ public:
         return 0;
     }
 
+    std::string getVectorMemoryMnemonic(const std::string &mnemonic, const Opcode icode) const
+    {
+        constexpr auto MEWOP_UNITSTRIDE = 0;
+        constexpr auto MEWOP_UNORDERED_INDEX = 1;
+        constexpr auto MEWOP_STRIDE = 2;
+        constexpr auto MEWOP_ORDERED_INDEX = 3;
+
+        if (!isMaskedField_(Form_VF_mem::idType::NF, fixed_field_mask_)) {
+            if (const auto nf = extract_(Form_VF_mem::idType::NF, icode); nf) {
+                switch(extract_(Form_VF_mem::idType::MEWOP, icode)) {
+                    case MEWOP_UNITSTRIDE:
+                        return mnemonic.substr(0, 2) + "seg" + std::to_string(nf + 1) + mnemonic.substr(2, std::string::npos);
+                    case MEWOP_UNORDERED_INDEX:
+                    case MEWOP_ORDERED_INDEX:
+                        return mnemonic.substr(0, 4) + "seg" + std::to_string(nf + 1) + mnemonic.substr(4, std::string::npos);
+                    case MEWOP_STRIDE:
+                        return mnemonic.substr(0, 3) + "seg" + std::to_string(nf + 1) + mnemonic.substr(3, std::string::npos);
+                    default:
+                        throw UnsupportedExtractorSpecialFieldID("MEWOP", icode);
+                }
+            }
+        }
+        return mnemonic;
+    }
+
     using ExtractorIF::dasmString; // tell the compiler all dasmString
                                    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
     {
         std::stringstream ss;
-        ss << mnemonic
+        ss << getVectorMemoryMnemonic(mnemonic, icode)
            << "\tv" << extract_(Form_VF_mem::idType::RD, icode & ~fixed_field_mask_)
            << ",v" << extract_(Form_VF_mem::idType::RS1, icode & ~fixed_field_mask_)
            << ",v" << extract_(Form_VF_mem::idType::RS2, icode & ~fixed_field_mask_);
@@ -3119,7 +3166,7 @@ public:
     std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
     {
         std::stringstream ss;
-        ss << mnemonic << "\t"
+        ss << getVectorMemoryMnemonic(mnemonic, icode) << "\t"
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_VF_mem::idType::RD, InstMetaData::OperandFieldID::RD },
                                    { Form_VF_mem::idType::RS1, InstMetaData::OperandFieldID::RS1 },
@@ -3250,7 +3297,7 @@ public:
         ss << mnemonic
            << "\tx" << extract_(Form_V_vsetvli::idType::RD, icode & ~fixed_field_mask_)
            << ",x" << extract_(Form_V_vsetvli::idType::RS1, icode & ~fixed_field_mask_)
-           << ",0x" << std::hex << getImmediate(icode);
+           << "," << dasmVsetImmediate(getImmediate(icode));
         return ss.str();
     }
 
@@ -3261,7 +3308,7 @@ public:
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_V_vsetvli::idType::RD, InstMetaData::OperandFieldID::RD },
                                    { Form_V_vsetvli::idType::RS1, InstMetaData::OperandFieldID::RS1 } })
-           << ",0x" << std::hex << getImmediate(icode);
+           << "," << dasmVsetImmediate(getImmediate(icode));
         return ss.str();
     }
 
@@ -3352,8 +3399,8 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\tx" << extract_(Form_V_vsetivli::idType::RD, icode & ~fixed_field_mask_)
-           << ", avl=" << std::dec << getSpecialField(SpecialField::AVL, icode)
-           << ", 0x" << std::hex << getImmediate(icode);
+           << ",avl=" << std::dec << getSpecialField(SpecialField::AVL, icode)
+           << "," << dasmVsetImmediate(getImmediate(icode));
         return ss.str();
     }
 

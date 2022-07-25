@@ -110,6 +110,7 @@ public:
     {
         if (map_.find(skey) == map_.end()) {
             const auto& [map_iter, success] = map_.insert({skey, obj});
+            (void) success; // Silence the compiler warning for un-used variable
             if (ukey >= vect_.size()) {
                 vect_.resize(ukey + up_size_);
             }

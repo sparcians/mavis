@@ -163,7 +163,7 @@ DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildLeaf_(const Form
                                                                       const FieldNameListType &flist,
                                                                       const std::string &factory_name, const std::string &xpand_name,
                                                                       ExtractorIF::PtrType override_extractor,
-                                                                      const InstMetaData::PtrType &meta,
+                                                                      InstMetaData::PtrType &meta,
                                                                       const typename IFactoryIF<InstType, AnnotationType>::PtrType &shared_ifact)
 {
     if (currNode == nullptr) {
@@ -195,6 +195,7 @@ DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildLeaf_(const Form
     }
     if (!flist.empty()) {
         parent->addSpecialCase(form, mnemonic, istencil, flist);
+        meta->addFixedFields(flist);
     }
 
     // Check for the presence of an aliased (shared) ifactory
@@ -240,7 +241,7 @@ DTable<InstType, AnnotationType, AnnotationTypeAllocator>::build_(const FormWrap
                                                                        const FieldNameSetType &ignore_set, const std::string &factory_name,
                                                                        const std::string &xpand_name,
                                                                        const ExtractorIF::PtrType &override_extractor,
-                                                                       const InstMetaData::PtrType &einfo,
+                                                                       InstMetaData::PtrType &einfo,
                                                                        const typename IFactoryIF<InstType, AnnotationType>::PtrType shared_ifact)
 {
     assert(form != nullptr);

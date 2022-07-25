@@ -53,6 +53,7 @@ public:
         FAULTFIRST = 1ull << 23u,
         WHOLE = 1ull << 24u,
         MASK = 1ull << 25u,
+        HYPERVISOR = 1ull << 26u,
         CACHE = 1ull << 59u,
         ATOMIC = 1ull << 60u,
         FENCE = 1ull << 61u,
@@ -111,9 +112,14 @@ public:
         RS1 = 0,
         RS2,
         RS3,
+        RS4,
+        RS_MAX,
         FUSED_SD_0,       // for fusion: store data operand 0
         FUSED_SD_1,       // for fusion: store data operand 1
         RD,
+        RD1 = RD,
+        RD2,
+        RD_MAX,
         FUSED_RD_0,       // for fusion: dest reg 0
         FUSED_RD_1,       // for fusion: dest reg 1
         NONE,
@@ -150,6 +156,7 @@ private:
         {"faultfirst", InstructionTypes::FAULTFIRST},
         {"whole",      InstructionTypes::WHOLE},
         {"mask",       InstructionTypes::MASK},
+        {"hypervisor", InstructionTypes::HYPERVISOR},
         {"cache",      InstructionTypes::CACHE},
         {"atomic",     InstructionTypes::ATOMIC},
         {"fence",      InstructionTypes::FENCE},
@@ -564,6 +571,25 @@ public:
         return OperandTypes::NONE;
     }
 
+    void addFixedFields(const std::vector<std::string>& flist)
+    {
+        for(const auto& field: flist) {
+            OperandFieldID fid = getFieldID(field);
+            if (fid != OperandFieldID::NONE) {
+                fixed_fields_[static_cast<std::underlying_type_t<OperandFieldID>>(getFieldID(field))] = true;
+            }
+        }
+    }
+
+    bool isOperandFixed(const OperandFieldID fid) const {
+        if (fid != OperandFieldID::NONE) {
+            return fixed_fields_[static_cast<std::underlying_type_t<OperandFieldID>>(fid)];
+        } else {
+            // By convention, the NONE (non-existent) field is considered a fixed field
+            return true;
+        }
+    }
+
     uint32_t getDataSize() const
     {
         return data_size_;
@@ -592,6 +618,7 @@ private:
     std::array<uint32_t, static_cast<size_t>(ISAExtensionIndex::__N)> isa_width_ = {0} ; /// Width set (bits) for each of our ISA's
     std::array<uint32_t, static_cast<size_t>(OperandTypes::__N)> field_set_ {0};    /// Maps operand type to bit set of fields
     std::array<OperandTypes, static_cast<size_t>(OperandFieldID::__N)> oper_type_;  /// Maps field to operand type
+    std::array<bool, static_cast<size_t>(OperandFieldID::__N)> fixed_fields_ {false};       /// Is operand part of the encoding (fixed field)
     uint32_t data_size_ = 0;
 
     static inline std::underlying_type_t<OperandFieldID> getFieldIndex_(const std::string& fname)
