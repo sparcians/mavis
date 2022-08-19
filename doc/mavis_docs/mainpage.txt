@@ -1,0 +1,13 @@
+
+/*!
+  \mainpage Mavis
+
+  Mavis is a framework that allows decoding of the RISC-V ISA into
+  custom instruction class types as well as custom extensions to those
+  class types.
+
+  <h3>Online Documentation</h3>
+  - \ref building
+  - \ref json
+
+*/

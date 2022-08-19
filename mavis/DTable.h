@@ -196,10 +196,13 @@ public:
     }
 
     /**
-     * makeInstFromTrace -- use information from trace to generate an instruction
+     * \brief makeInstFromTrace -- use information from trace to generate an instruction
+     * 
+     * TraceInfoType needs to implement getOpCode() and getMnemonic()
+     * 
      * @tparam TraceInfoType
      * @param tinfo
-     * @return
+     * @return mavis::InstType::PtrType
      */
     template<typename TraceInfoType, class InstTypeAllocator, typename ...ArgTypes>
     typename InstType::PtrType

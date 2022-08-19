@@ -118,18 +118,40 @@ public:
         return context_.hasContext(name);
     }
 
+    /**
+     * @brief makeInst -- create a instruction (InstType)
+     * @tparam ArgTypes
+     * @param icode Instruction opcode
+     * @param args InstType construction args
+     * @return Pointer to constructed InstType
+     */
     template<typename ...ArgTypes>
     typename InstType::PtrType makeInst(const mavis::Opcode icode, ArgTypes&& ... args)
     {
         return dtrie_->makeInst(icode, inst_allocator_, std::forward<ArgTypes>(args)...);
     }
 
+    /**
+     * @brief makeInstFromTrace -- create a instruction from trace (InstType)
+     * @tparam TraceInfoType trace info type for an instruction. Should implement getOpcode() and getMnemonic
+     * @tparam ArgTypes
+     * @param tinfo Trace info for the instruction
+     * @param args InstType construction args
+     * @return Pointer to constructed InstType
+     */
     template<typename TraceInfoType, typename ...ArgTypes>
     typename InstType::PtrType makeInstFromTrace(const TraceInfoType& tinfo, ArgTypes&& ... args)
     {
         return dtrie_->makeInstFromTrace(tinfo, inst_allocator_, std::forward<ArgTypes>(args)...);
     }
 
+    /**
+     * @brief makeInstDirectly -- create a instruction directly from Extractor info
+     * @tparam ArgTypes
+     * @param user_info Extractor info directly supplied
+     * @param args InstType construction args
+     * @return Pointer to constructed InstType
+     */
     template<typename ...ArgTypes>
     typename InstType::PtrType makeInstDirectly(const mavis::ExtractorDirectInfoIF& user_info, ArgTypes&& ... args)
     {
