@@ -9,6 +9,7 @@ include_directories(impl)
 include_directories(mavis)
 
 add_subdirectory(test)
+add_subdirectory(example)
 
 #
 # CppCheck
