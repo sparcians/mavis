@@ -218,6 +218,8 @@ public:
     const std::string& getDasmAnnotation() const override
     {
         assert(false);
+        static const std::string unknown_str("<UNKNOWN>");
+        return unknown_str;
     }
 
     void print(std::ostream &os) const override
