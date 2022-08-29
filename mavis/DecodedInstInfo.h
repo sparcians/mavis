@@ -375,7 +375,7 @@ public:
 #if 1
         // TODO: Move this into a sanity checking method
         {
-            const std::string&  form_name = extractor->getName();
+            //const std::string&  form_name = extractor->getName();
 
             //OperandArray    x_arr = extractor->getSourceList(icode);
             //assert(agree_(x_arr, sources, "sources", form_name));
