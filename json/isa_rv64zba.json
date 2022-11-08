@@ -1,0 +1,68 @@
+[
+	{
+		"mnemonic" : "add.uw",
+		"form" : "R",
+		"stencil" : "0x800003b",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "sh1add",
+		"form" : "R",
+		"stencil" : "0x20002033",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "sh1add.uw",
+		"form" : "R",
+		"stencil" : "0x2000203b",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "sh2add",
+		"form" : "R",
+		"stencil" : "0x20004033",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "sh2add.uw",
+		"form" : "R",
+		"stencil" : "0x2000403b",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "sh3add",
+		"form" : "R",
+		"stencil" : "0x20006033",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+    },
+	{
+		"mnemonic" : "sh3add.uw",
+		"form" : "R",
+		"stencil" : "0x2000603b",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "slli.uw",
+		"form" : "ISHW",
+		"xform" : "ISH",
+		"stencil" : "0x800101b",
+		"alias" : ["0xa00101b"],
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	}
+]

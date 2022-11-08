@@ -166,7 +166,9 @@ int main() {
                                     "../json/isa_rv64c.json",
                                     "../json/isa_rv64cf.json",
                                     "../json/isa_rv64cd.json",
-                                    "../json/isa_rv64q.json"
+                                    "../json/isa_rv64q.json",
+                                    "../json/isa_rv64h.json",
+                                    "../json/isa_rv64v.json"
                                     },
             {},
         uid_init,
@@ -186,6 +188,9 @@ int main() {
 
     runTSet(mavis_facade, "rv64.tset");
 
+    // Test HV decoding
+    runTSet(mavis_facade, "rv64h.tset");
+
     // Exercise the cache
     runTSet(mavis_facade, "rv64.tset");
     mavis_facade.flushCaches();
@@ -202,11 +207,17 @@ int main() {
                                      "../json/isa_rv64d.json",
                                      "../json/isa_rv64c.json",
                                      "../json/isa_rv64cf.json",
-                                     "../json/isa_rv64cd.json"
+                                     "../json/isa_rv64cd.json",
+                                     "../json/isa_rv64v.json",
+                                     "../json/isa_rv64zba.json",
+                                     "../json/isa_rv64zbb.json",
+                                     "../json/isa_rv64zbc.json",
+                                     "../json/isa_rv64zbs.json"
                                      }, {});
     mavis_facade.switchContext("NEW");
     cout << mavis_facade;
     runTSet(mavis_facade, "rv64.tset");
+    runTSet(mavis_facade, "rv64_bits.tset", {mavis::InstMetaData::ISAExtension::B});
 
     // Switch back to BASE context
     mavis_facade.switchContext("BASE");
@@ -490,6 +501,205 @@ int main() {
     inst = mavis_facade.makeInst(0x9696, 0);
     assert(inst != nullptr);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0x9696 = " << inst->dasmString() << endl;
+
+    //  0x5877857 vsetvli a6, a4, e64, m1, ta, mu
+    inst = mavis_facade.makeInst(0x5877857, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x5877857 = " << inst->dasmString() << endl;
+
+    // 0x803170D7 vsetvl, x1, x2, x3
+    inst = mavis_facade.makeInst(0x803170D7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x803170d7 = " << inst->dasmString() << endl;
+    assert(inst->getVectorSourceRegs() == 0ull);
+    assert(inst->getVectorDestRegs() == 0ull);
+    assert(inst->getIntSourceRegs() == 12ull);
+    assert(inst->getIntDestRegs() == 2ull);
+
+    // 0x2f007, vle64, v0, x5
+    inst = mavis_facade.makeInst(0x2f007, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2f007 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::VM) == 0ull);
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::NF) == 0ull);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::SEGMENT) == 1);
+
+    // 0x102f007, vle64ff, v0, x5
+    inst = mavis_facade.makeInst(0x102f007, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x102f007 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::VM) == 0ull);
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::NF) == 0ull);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::SEGMENT) == 1);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::FAULTFIRST) == 1);
+
+    // 0x202f007, vle64, v0, x5, v0.t
+    inst = mavis_facade.makeInst(0x202f007, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x202f007 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::VM) == 1ull);
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::NF) == 0ull);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::SEGMENT) == 1);
+
+    // 0x2206e007, vlseg2e32.v v0, x13
+    inst = mavis_facade.makeInst(0x2206e007, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2206e007 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::VM) == 1ull);
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::NF) == 1ull);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::SEGMENT) == 1);
+
+    // 0xa606e007, vluxseg6e32.v v0, x13
+    inst = mavis_facade.makeInst(0xa606e007, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xa606e007 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::VM) == 1ull);
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::NF) == 5ull);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::SEGMENT) == 1);
+
+    // 0xea06e007, vlsseg8e32.v v0, x13
+    inst = mavis_facade.makeInst(0xea06e007, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xea06e007 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::VM) == 1ull);
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::NF) == 7ull);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::SEGMENT) == 1);
+
+    // vloxei8.v,0xc000007
+    inst = mavis_facade.makeInst(0xc000007, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xc000007 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::NF) == 0ull);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::SEGMENT) == 1);
+
+    // vsuxei8.v,0x4000027
+    inst = mavis_facade.makeInst(0x4000027, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x4000027 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::NF) == 0ull);
+
+    // vadd.vi v31, v31, 0x1F (-1)
+    inst = mavis_facade.makeInst(0x03ffbfd7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x03ffbfd7 = " << inst->dasmString() << endl;
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::VM) == 1ull);
+    assert(inst->getSignedOffset() == -1);
+
+    // vadd.vv v1, v2, v3, 0x3100D7
+    inst = mavis_facade.makeInst(0x3100D7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x3100D7 = " << inst->dasmString() << endl;
+    assert(inst->getVectorSourceRegs() == 0b1100);
+    assert(inst->getVectorDestRegs() == 0b10);
+    assert(inst->getDestOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RD));
+    assert(inst->getDestOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RD) == 1);
+    assert(inst->getDestOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RD) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS1));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS1) == 2);
+    assert(inst->getSourceOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RS1) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS2));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS2) == 3);
+    assert(inst->getSourceOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RS2) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+    try {
+        inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS3);
+    } catch (const mavis::OperandInfoInvalidFieldID& ex) {
+        cout << "line " << dec << __LINE__ << ": " << ex.what() << endl;
+    }
+
+    // vadc.vvm v1, v2, v3, 0x403100D7
+    inst = mavis_facade.makeInst(0x403100D7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x403100D7 = " << inst->dasmString() << endl;
+    assert(inst->getVectorSourceRegs() == 0b1100);
+    assert(inst->getVectorDestRegs() == 0b10);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::MASK) == 0);
+
+    // vmv.v.v v2, v1, 0x5E008157
+    inst = mavis_facade.makeInst(0x5E008157, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x5E008157 = " << inst->dasmString() << endl;
+    assert(inst->getVectorSourceRegs() == 0b10);
+    assert(inst->getVectorDestRegs() == 0b100);
+
+    // vadd.vx v1, v3, x2, 0x3140D7
+    inst = mavis_facade.makeInst(0x3140D7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x3140D7 = " << inst->dasmString() << endl;
+    assert(inst->getIntSourceRegs() == 0b100);
+    assert(inst->getVectorSourceRegs() == 0b1000);
+    assert(inst->getVectorDestRegs() == 0b10);
+
+    // vadc.vxm v1, v3, x2, 0x403140D7
+    inst = mavis_facade.makeInst(0x403140D7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x403140D7 = " << inst->dasmString() << endl;
+    assert(inst->getIntSourceRegs() == 0b100);
+    assert(inst->getVectorSourceRegs() == 0b1000);
+    assert(inst->getVectorDestRegs() == 0b10);
+
+    // vmv.v.x v2, x1, 0x5E00C157
+    inst = mavis_facade.makeInst(0x5E00C157, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x5E00C157 = " << inst->dasmString() << endl;
+    assert(inst->getIntSourceRegs() == 0b10);
+    assert(inst->getVectorDestRegs() == 0b100);
+
+    // vmv1r.v v1, v2, 0x9E2030D7
+    inst = mavis_facade.makeInst(0x9E2030D7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 9E2030D7 = " << inst->dasmString() << endl;
+    assert(inst->getVectorSourceRegs() == 0b100);
+    assert(inst->getVectorDestRegs() == 0b10);
+
+    // vid.v v1, 0x5008A0D7
+    inst = mavis_facade.makeInst(0x5008A0D7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 5008A0D7 = " << inst->dasmString() << endl;
+    assert(inst->getVectorSourceRegs() == 0);
+    assert(inst->getVectorDestRegs() == 0b10);
+
+    // vse8.v v1, x2 0x100a7
+    inst = mavis_facade.makeInst(0x100a7, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 100a7 = " << inst->dasmString() << endl;
+    assert(inst->getIntSourceRegs() == 0b100);
+    assert(inst->getVectorSourceRegs() == 0b10);
+    assert(inst->isInstType(mavis::InstMetaData::InstructionTypes::SEGMENT) == 1);
+
+    // 0xc6880857, vwredsum.vs v16,v8,v16
+    inst = mavis_facade.makeInst(0xc6880857, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xc6880857 = " << inst->dasmString() << endl;
+
+    // Issue #87
+    //mavis::ExtractorDirectBase::RegListType dsts_ {8};
+    //mavis::ExtractorDirectBase::RegListType srcs_ {30};
+
+    mavis::ExtractorDirectInfo vector_info("vsext.vf2", {30}, {8});
+    inst = mavis_facade.makeInstDirectly(vector_info, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM(Direct): = " << inst->dasmString() << endl;
+    assert(inst->getDestOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RD));
+    assert(inst->getDestOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RD) == 8);
+    assert(inst->getDestOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RD) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+    assert(! inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS1));
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS2));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS2) == 30);
+    assert(inst->getSourceOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RS2) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+
+    mavis::ExtractorDirectOpInfoList vector_opinfo("vsext.vf2",
+                                                   {{{mavis::InstMetaData::OperandFieldID::RS2, mavis::InstMetaData::OperandTypes::VECTOR, 30, false}}},
+                                                   {{{mavis::InstMetaData::OperandFieldID::RD, mavis::InstMetaData::OperandTypes::VECTOR, 8}}});
+    inst = mavis_facade.makeInstDirectly(vector_opinfo, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM(DirectOpInfo): = " << inst->dasmString() << endl;
+    assert(inst->getDestOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RD));
+    assert(inst->getDestOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RD) == 8);
+    assert(inst->getDestOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RD) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+    assert(! inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS1));
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS2));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS2) == 30);
+    assert(inst->getSourceOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RS2) == mavis::OpcodeInfo::OperandTypes::VECTOR);
 
     // c.fld     f8,64(x10)
     inst = mavis_facade.makeInst(0x2120, 0);

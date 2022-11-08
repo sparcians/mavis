@@ -374,7 +374,8 @@ public:
     {
 #if 1
         // TODO: Move this into a sanity checking method
-        {
+        // FOR NOW: We bypass these checks if we're given an pseudo op (opcode = 0, e.g. from makeInstDirectly() et al)
+        if (icode != 0 ) {
             const std::string&  form_name = extractor->getName();
 
             //OperandArray    x_arr = extractor->getSourceList(icode);

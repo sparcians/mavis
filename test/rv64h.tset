@@ -1,0 +1,15 @@
+hfence.vvma,0x22000073
+hfence.gvma,0x62000073
+hlv.b,0x60004073
+hlv.bu,0x60104073
+hlv.h,0x64004073
+hlv.hu,0x64104073
+hlvx.hu,0x64304073
+hlv.w,0x68004073
+hlvx.wu,0x68304073
+hsv.b,0x62004073
+hsv.h,0x66004073
+hsv.w,0x6a004073
+hlv.wu,0x68104073
+hlv.d,0x6c004073
+hsv.d,0x6e004073

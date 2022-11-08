@@ -148,7 +148,7 @@ public:
             // We require that the factory named by the JSON "expand" clause already exists
             ifact = this->findIFact(xpand_name);
             if (ifact == nullptr) {
-                throw BuildErrorUnknownExpansion(mnemonic, factory_name);
+                throw BuildErrorUnknownExpansion(mnemonic, xpand_name);
             }
 
             // Here, we register the instruction with the expansion's UID

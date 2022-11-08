@@ -444,4 +444,104 @@ private:
     const uint64_t data_sources_;
 };
 
+/**
+ * Direct Extractor: provides programmatic interface. This derivative takes operand register bitmasks for STORES
+ * which include a destination register. These are not currently part of any ISA, but an artifact of fusing
+ * ALU ops with stores
+ */
+class ExtractorDirectInfoBitMask_DestStores : public ExtractorDirectBase
+{
+private:
+    const std::string name_ {"ExtractorDirectInfoBitMask_Stores"};
+
+public:
+    ExtractorDirectInfoBitMask_DestStores(const std::string &mnemonic, const uint64_t addr_sources,
+                                          const uint64_t data_sources, const uint64_t dests, uint64_t imm = 0) :
+        ExtractorDirectBase(mnemonic, imm), addr_sources_(addr_sources), data_sources_(data_sources), dests_(dests)
+    {}
+
+    ExtractorDirectInfoBitMask_DestStores(const InstructionUniqueID uid, const uint64_t addr_sources,
+                                          const uint64_t data_sources, const uint64_t dests, uint64_t imm = 0) :
+        ExtractorDirectBase(uid, imm), addr_sources_(addr_sources), data_sources_(data_sources), dests_(dests)
+    {}
+
+    ExtractorDirectInfoBitMask_DestStores(const ExtractorDirectInfoBitMask_DestStores &other) = default;
+
+    ExtractorIF::PtrType clone() const override
+    {
+        return std::make_shared<ExtractorDirectInfoBitMask_DestStores>(*this);
+    }
+
+    const std::string &getName() const override
+    {
+        return name_;
+    }
+
+    uint64_t getSourceAddressRegs(const uint64_t) const override
+    {
+        return addr_sources_;
+    }
+
+    uint64_t getSourceDataRegs(const uint64_t) const override
+    {
+        return data_sources_;
+    }
+
+    uint64_t getSourceRegs(const uint64_t) const override
+    {
+        return addr_sources_ | data_sources_;
+    }
+
+    uint64_t getDestRegs(const uint64_t) const override
+    {
+        return dests_;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        RegListType addr_list = bitmaskToRegList_(addr_sources_);
+        for (const auto& reg : addr_list) {
+            olist.addElement(InstMetaData::OperandFieldID::NONE, meta->getDefaultSourceType(),
+                             reg, false);
+        }
+        RegListType data_list = bitmaskToRegList_(data_sources_);
+        for (const auto& reg : data_list) {
+            olist.addElement(InstMetaData::OperandFieldID::NONE, meta->getDefaultSourceType(),
+                             reg, true);
+        }
+        return olist;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        RegListType dst_list = bitmaskToRegList_(dests_);
+        for (const auto& reg : dst_list) {
+            olist.addElement(InstMetaData::OperandFieldID::NONE, meta->getDefaultDestType(),
+                             reg, false);
+        }
+        return olist;
+    }
+
+    using ExtractorIF::dasmString; // tell the compiler all dasmString
+    // overloads are considered
+    std::string dasmString(const std::string &mnemonic, const uint64_t) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t " << bitmaskToStringVals_(dests_)
+           << ", D:" << bitmaskToStringVals_(data_sources_)
+           << ", A:" << bitmaskToStringVals_(addr_sources_)
+           << " 0x" << std::hex << immediate_;
+        return ss.str();
+    }
+
+private:
+    const uint64_t addr_sources_;
+    const uint64_t data_sources_;
+    const uint64_t dests_;
+};
+
 } // namespace mavis

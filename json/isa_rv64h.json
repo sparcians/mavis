@@ -1,0 +1,148 @@
+[
+	{
+		"mnemonic" : "hfence.vvma",
+		"form" : "R",
+		"fixed" : ["rd"],
+		"stencil" : "0x22000073",
+		"type" : ["fence", "system", "hypervisor"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "hfence.gvma",
+		"form" : "R",
+		"fixed" : ["rd"],
+		"stencil" : "0x62000073",
+		"type" : ["fence", "system", "hypervisor"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "hlv.b",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x60004073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 8
+	},
+	{
+		"mnemonic" : "hlv.bu",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x60104073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 8
+	},
+	{
+		"mnemonic" : "hlv.h",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x64004073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 16
+	},
+	{
+		"mnemonic" : "hlv.hu",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x64104073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 16
+	},
+	{
+		"mnemonic" : "hlvx.hu",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x64304073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 16
+	},
+	{
+		"mnemonic" : "hlv.w",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x68004073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "hlvx.wu",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x68304073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "hsv.b",
+		"form" : "R",
+		"xform" : "HV_store",
+		"fixed" : ["rd"],
+		"stencil" : "0x62004073",
+		"type" : ["store", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 8
+	},
+	{
+		"mnemonic" : "hsv.h",
+		"form" : "R",
+		"xform" : "HV_store",
+		"fixed" : ["rd"],
+		"stencil" : "0x66004073",
+		"type" : ["store", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 16
+	},
+	{
+		"mnemonic" : "hsv.w",
+		"form" : "R",
+		"xform" : "HV_store",
+		"fixed" : ["rd"],
+		"stencil" : "0x6a004073",
+		"type" : ["store", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "hlv.wu",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x68104073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 32
+	},
+	{
+		"mnemonic" : "hlv.d",
+		"form" : "R",
+		"xform" : "HV_load",
+		"fixed" : ["rs2"],
+		"stencil" : "0x6c004073",
+		"type" : ["load", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 64
+	},
+	{
+		"mnemonic" : "hsv.d",
+		"form" : "R",
+		"xform" : "HV_store",
+		"fixed" : ["rd"],
+		"stencil" : "0x6e004073",
+		"type" : ["store", "system", "hypervisor"],
+		"l-oper" : "all",
+		"data" : 64
+	}
+]

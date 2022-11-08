@@ -1,0 +1,66 @@
+[
+	{
+		"mnemonic" : "bclr",
+		"form" : "R",
+		"stencil" : "0x48001033",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "bclri",
+		"form" : "ISH",
+		"stencil" : "0x48001013",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "bext",
+		"form" : "R",
+		"stencil" : "0x48005033",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "bexti",
+		"form" : "ISH",
+		"stencil" : "0x48005013",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "binv",
+		"form" : "R",
+		"stencil" : "0x68001033",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "binvi",
+		"form" : "ISH",
+		"stencil" : "0x68001013",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "bset",
+		"form" : "R",
+		"stencil" : "0x28001033",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	},
+	{
+		"mnemonic" : "bseti",
+		"form" : "ISH",
+		"stencil" : "0x28001013",
+		"type" : ["int", "arith"],
+		"isa" : ["B"],
+		"l-oper" : "all"
+	}
+]

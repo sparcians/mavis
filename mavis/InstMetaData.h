@@ -53,7 +53,8 @@ public:
         FAULTFIRST = 1ull << 23u,
         WHOLE = 1ull << 24u,
         MASK = 1ull << 25u,
-        HYPERVISOR = 1ull << 26u,
+        WIDENING = 1ull << 26u,
+        HYPERVISOR = 1ull << 27u,
         CACHE = 1ull << 59u,
         ATOMIC = 1ull << 60u,
         FENCE = 1ull << 61u,
@@ -109,19 +110,26 @@ public:
     enum class OperandFieldID : uint32_t
     {
         //RS = 0,
-        RS1 = 0,
+        RS1 = 0,          // NOTE: RS1 thru RS_MAX need to stay contiguous for ExtractorDirectInfo
         RS2,
         RS3,
         RS4,
-        RS_MAX,
+        RS_MAX,           // Max "architectural" RS
+
         FUSED_SD_0,       // for fusion: store data operand 0
         FUSED_SD_1,       // for fusion: store data operand 1
-        RD,
+        TEMP_RS1,         // for temporal RS1 operand
+        TEMP_RS2,         // for temporal RS2 operand
+
+        RD,               // NOTE: RD/RD1 thru RD_MAX need to stay contiguous for ExtractorDirectInfo
         RD1 = RD,
         RD2,
-        RD_MAX,
+        RD_MAX,           // Max "architectural" RD
+
         FUSED_RD_0,       // for fusion: dest reg 0
         FUSED_RD_1,       // for fusion: dest reg 1
+        TEMP_RD,          // for temporal RD operand
+
         NONE,
         __N = NONE
     };
@@ -156,6 +164,7 @@ private:
         {"faultfirst", InstructionTypes::FAULTFIRST},
         {"whole",      InstructionTypes::WHOLE},
         {"mask",       InstructionTypes::MASK},
+        {"widening",   InstructionTypes::WIDENING},
         {"hypervisor", InstructionTypes::HYPERVISOR},
         {"cache",      InstructionTypes::CACHE},
         {"atomic",     InstructionTypes::ATOMIC},
