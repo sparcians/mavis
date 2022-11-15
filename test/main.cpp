@@ -168,7 +168,8 @@ int main() {
                                     "../json/isa_rv64cd.json",
                                     "../json/isa_rv64q.json",
                                     "../json/isa_rv64h.json",
-                                    "../json/isa_rv64v.json"
+                                    "../json/isa_rv64v.json",
+                                    "../json/isa_rv64vf.json"
                                     },
             {},
         uid_init,
@@ -209,6 +210,7 @@ int main() {
                                      "../json/isa_rv64cf.json",
                                      "../json/isa_rv64cd.json",
                                      "../json/isa_rv64v.json",
+                                     "../json/isa_rv64vf.json",
                                      "../json/isa_rv64zba.json",
                                      "../json/isa_rv64zbb.json",
                                      "../json/isa_rv64zbc.json",

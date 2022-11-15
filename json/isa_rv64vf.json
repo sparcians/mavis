@@ -1,0 +1,828 @@
+[
+	{
+		"mnemonic": "vfadd.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x5057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfsub.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x8005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmin.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x10005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmax.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x18005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfsgnj.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x20005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfsgnjn.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x24005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfsgnjx.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x28005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfslide1up.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x38005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfslide1down.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x3c005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmv.s.f",
+		"form": "V",
+		"stencil": "0x42005057",
+		"fixed": [ "vm", "rs2" ],
+		"type": [ "vector", "float" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rd" ]
+	},
+	{
+		"mnemonic": "vfmerge.vfm",
+		"form": "V",
+		"stencil": "0x5c005057",
+		"fixed": [ "vm" ],
+		"type": [ "vector", "float" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmv.v.f",
+		"form": "V",
+		"stencil": "0x5e005057",
+		"fixed": [ "vm", "rs2" ],
+		"type": [ "vector", "float" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rd" ]
+	},
+	{
+		"mnemonic": "vmfeq.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x60005057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vmfle.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x64005057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vmflt.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x6c005057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vmfne.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x70005057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vmfgt.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x74005057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vmfge.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x7c005057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfdiv.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x80005057",
+		"type": [ "vector", "float", "maskable", "div"],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfrdiv.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x84005057",
+		"type": [ "vector", "float", "maskable", "div"],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmul.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x90005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfrsub.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x9c005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmadd.vf",
+		"form": "V",
+		"stencil": "0xa0005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfnmadd.vf",
+		"form": "V",
+		"stencil": "0xa4005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmsub.vf",
+		"form": "V",
+		"stencil": "0xa8005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfnmsub.vf",
+		"form": "V",
+		"stencil": "0xac005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmacc.vf",
+		"form": "V",
+		"stencil": "0xb0005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfnmacc.vf",
+		"form": "V",
+		"stencil": "0xb4005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfmsac.vf",
+		"form": "V",
+		"stencil": "0xb8005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfnmsac.vf",
+		"form": "V",
+		"stencil": "0xbc005057",
+		"type": [ "vector", "float", "maskable" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwadd.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xc0005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwsub.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xc8005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwadd.wf",
+		"form": "V",
+		"stencil": "0xd0005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwsub.wf",
+		"form": "V",
+		"stencil": "0xd8005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwmul.vf",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xe0005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwmacc.vf",
+		"form": "V",
+		"stencil": "0xf0005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwnmacc.vf",
+		"form": "V",
+		"stencil": "0xf4005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwmsac.vf",
+		"form": "V",
+		"stencil": "0xf8005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwnmsac.vf",
+		"form": "V",
+		"stencil": "0xfc005057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"d-oper": [ "rs1" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfadd.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x1057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfredsum.vs",
+		"form": "V",
+		"stencil": "0x4001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfsub.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x8001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfredosum.vs",
+		"form": "V",
+		"stencil": "0xc001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfmin.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x10001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfredmin.vs",
+		"form": "V",
+		"stencil": "0x14001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfmax.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x18001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfredmax.vs",
+		"form": "V",
+		"stencil": "0x1c001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfsgnj.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x20001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfsgnjn.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x24001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfsgnjx.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x28001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfmv.f.s",
+		"form": "V",
+		"stencil": "0x42001057",
+		"fixed": [ "vm", "rs1" ],
+		"type": [ "vector", "float" ],
+		"d-oper": [ "rd" ],
+		"v-oper": [ "rs2" ]
+	},
+	{
+		"mnemonic": "vmfeq.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x60001057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vmfle.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x64001057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vmflt.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x6c001057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vmfne.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x70001057",
+		"type": [ "vector", "float", "mask", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfdiv.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x80001057",
+		"type": [ "vector", "float", "maskable", "div"],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfmul.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0x90001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfmadd.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xa0001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfnmadd.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xa4001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfmsub.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xa8001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfnmsub.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xac001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfmacc.vv",
+		"form": "V",
+		"stencil": "0xb0001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfnmacc.vv",
+		"form": "V",
+		"stencil": "0xb4001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfmsac.vv",
+		"form": "V",
+		"stencil": "0xb8001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfnmsac.vv",
+		"form": "V",
+		"stencil": "0xbc001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfcvt.xu.f.v",
+		"form": "V",
+		"stencil": "0x48001057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfcvt.x.f.v",
+		"form": "V",
+		"stencil": "0x48009057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfcvt.f.xu.v",
+		"form": "V",
+		"stencil": "0x48011057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfcvt.f.x.v",
+		"form": "V",
+		"stencil": "0x48019057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfcvt.rtz.xu.f.v",
+		"form": "V",
+		"stencil": "0x48031057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfcvt.rtz.x.f.v",
+		"form": "V",
+		"stencil": "0x48039057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwcvt.xu.f.v",
+		"form": "V",
+		"stencil": "0x48041057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwcvt.x.f.v",
+		"form": "V",
+		"stencil": "0x48049057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwcvt.f.xu.v",
+		"form": "V",
+		"stencil": "0x48051057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwcvt.f.x.v",
+		"form": "V",
+		"stencil": "0x48059057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwcvt.f.f.v",
+		"form": "V",
+		"stencil": "0x48061057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwcvt.rtz.xu.f.v",
+		"form": "V",
+		"stencil": "0x48071057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwcvt.rtz.x.f.v",
+		"form": "V",
+		"stencil": "0x48079057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfncvt.xu.f.w",
+		"form": "V",
+		"stencil": "0x48081057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfncvt.x.f.w",
+		"form": "V",
+		"stencil": "0x48089057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfncvt.f.xu.w",
+		"form": "V",
+		"stencil": "0x48091057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfncvt.f.x.w",
+		"form": "V",
+		"stencil": "0x48099057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfncvt.f.f.w",
+		"form": "V",
+		"stencil": "0x480a1057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfncvt.rod.f.f.w",
+		"form": "V",
+		"stencil": "0x480a9057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfncvt.rtz.xu.f.w",
+		"form": "V",
+		"stencil": "0x480b1057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfncvt.rtz.x.f.w",
+		"form": "V",
+		"stencil": "0x480b9057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfsqrt.v",
+		"form": "V",
+		"stencil": "0x4c001057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "sqrt"],
+		"v-oper": [ "rs2", "rd" ]
+	},
+    {
+		"mnemonic": "vfrsqrt7.v",
+		"form": "V",
+		"stencil": "0x4c021057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable", "sqrt"],
+		"v-oper": [ "rs2", "rd" ]
+	},
+    {
+		"mnemonic": "vfrec7.v",
+		"form": "V",
+		"stencil": "0x4c029057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfclass.v",
+		"form": "V",
+		"stencil": "0x4c081057",
+		"fixed": [ "rs1" ],
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": [ "rs2", "rd" ]
+	},
+	{
+		"mnemonic": "vfwadd.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xc0001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwredsum.vs",
+		"form": "V",
+		"stencil": "0xc4001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwsub.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xc8001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwredosum.vs",
+		"form": "V",
+		"stencil": "0xcc001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwadd.wv",
+		"form": "V",
+		"stencil": "0xd0001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwsub.wv",
+		"form": "V",
+		"stencil": "0xd8001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwmul.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xe0001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfdot.vv",
+		"form": "V",
+		"xform": "V_op",
+		"stencil": "0xe4001057",
+		"type": [ "vector", "float", "maskable" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwmacc.vv",
+		"form": "V",
+		"stencil": "0xf0001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwnmacc.vv",
+		"form": "V",
+		"stencil": "0xf4001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwmsac.vv",
+		"form": "V",
+		"stencil": "0xf8001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	},
+	{
+		"mnemonic": "vfwnmsac.vv",
+		"form": "V",
+		"stencil": "0xfc001057",
+		"type": [ "vector", "float", "maskable", "widening" ],
+		"v-oper": "all"
+	}
+]

@@ -1000,42 +1000,6 @@
 		"v-oper": [ "rs2", "rd" ]
 	},
 	{
-		"mnemonic": "vqmaccu.vx",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xf0004057",
-		"type": [ "vector", "maskable" ],
-		"l-oper": [ "rs1" ],
-		"v-oper": [ "rs2", "rd" ]
-	},
-	{
-		"mnemonic": "vqmacc.vx",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xf4004057",
-		"type": [ "vector", "maskable" ],
-		"l-oper": [ "rs1" ],
-		"v-oper": [ "rs2", "rd" ]
-	},
-	{
-		"mnemonic": "vqmaccus.vx",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xf8004057",
-		"type": [ "vector", "maskable" ],
-		"l-oper": [ "rs1" ],
-		"v-oper": [ "rs2", "rd" ]
-	},
-	{
-		"mnemonic": "vqmaccsu.vx",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xfc004057",
-		"type": [ "vector", "maskable" ],
-		"l-oper": [ "rs1" ],
-		"v-oper": [ "rs2", "rd" ]
-	},
-	{
 		"mnemonic": "vadd.vv",
 		"form": "V",
 		"xform": "V_op",
@@ -1342,46 +1306,7 @@
 		"v-oper": "all"
 	},
 	{
-		"mnemonic": "vdotu.vv",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xe0000057",
-		"type": [ "vector", "maskable" ],
-		"v-oper": "all"
-	},
-	{
-		"mnemonic": "vdot.vv",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xe4000057",
-		"type": [ "vector", "maskable" ],
-		"v-oper": "all"
-	},
-	{
-		"mnemonic": "vqmaccu.vv",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xf0000057",
-		"type": [ "vector", "maskable" ],
-		"v-oper": "all"
-	},
-	{
-		"mnemonic": "vqmacc.vv",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xf4000057",
-		"type": [ "vector", "maskable" ],
-		"v-oper": "all"
-	},
-	{
-		"mnemonic": "vqmaccsu.vv",
-		"form": "V",
-		"xform": "V_op",
-		"stencil": "0xfc000057",
-		"type": [ "vector", "maskable" ],
-		"v-oper": "all"
-	},
-	{
+
 		"mnemonic": "vadd.vi",
 		"form": "V",
 		"stencil": "0x3057",
