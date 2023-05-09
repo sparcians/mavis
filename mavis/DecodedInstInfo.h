@@ -377,6 +377,7 @@ public:
         // FOR NOW: We bypass these checks if we're given an pseudo op (opcode = 0, e.g. from makeInstDirectly() et al)
         if (icode != 0 ) {
             const std::string&  form_name = extractor->getName();
+            (void) form_name; // in case assert is compiled out
 
             //OperandArray    x_arr = extractor->getSourceList(icode);
             //assert(agree_(x_arr, sources, "sources", form_name));
