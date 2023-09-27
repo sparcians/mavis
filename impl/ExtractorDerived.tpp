@@ -2,7 +2,7 @@
 
 #include "Extractor.h"
 #include "DecoderConsts.h"
-#include "ExtractorForms.h"
+#include "ExtractorForms.tpp"
 #include "FormStub.h"
 
 namespace mavis {
@@ -23,14 +23,14 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_I_mv>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_I_mv::getName();
     }
 
-    bool hasImmediate() const override
+    ImmediateType getImmediateType() const override
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
 private:
@@ -56,7 +56,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_I_load>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_I_load::getName();
     }
@@ -93,7 +93,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C0_load>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C0_load::getName();
     }
@@ -133,6 +133,73 @@ protected:
 };
 
 /**
+ * Derivative of Form_C0 extractor for LOAD BYTE (part of ZCB extension)
+ */
+template<>
+class Extractor<Form_C0_load_byte> : public Extractor<Form_C0_load>
+{
+public:
+    Extractor<Form_C0_load_byte>() :
+            Extractor<Form_C0_load>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_load_byte>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_load_byte::getName();
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        const uint64_t imm = extract_(Form_C0::idType::IMM2, icode);
+        using R = Swizzler::Range;
+        // Bit ranges to extract from imm, starting with LSB
+        return Swizzler::extract(imm, R{1}, R{0});
+    }
+
+private:
+    Extractor<Form_C0_load_byte>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_C0_load>(ffmask, fset)
+    {}
+};
+
+/**
+ * Derivative of Form_C0 extractor for LOAD HALF (part of ZCB extension)
+ */
+template<>
+class Extractor<Form_C0_load_half> : public Extractor<Form_C0_load>
+{
+public:
+    Extractor<Form_C0_load_half>() :
+            Extractor<Form_C0_load>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_load_half>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_load_half::getName();
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        return (extract_(Form_C0::idType::IMM2, icode) & 0x1ull) << 1;
+    }
+
+private:
+    Extractor<Form_C0_load_half>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_C0_load>(ffmask, fset)
+    {}
+};
+
+/**
  * Derivative of Form_C0 extractor for LOAD WORDS
  */
 template<>
@@ -148,7 +215,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C0_load_word>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C0_load_word::getName();
     }
@@ -184,7 +251,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C0_load_double>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C0_load_double::getName();
     }
@@ -221,7 +288,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C0_store>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C0_store::getName();
     }
@@ -313,6 +380,75 @@ protected:
 };
 
 /**
+ * Derivative of Form_C0_store extractor for STORE BYTE (ZCB extension)
+ * NOTE: rs1 is the address base, rs2 is the source data
+ */
+template<>
+class Extractor<Form_C0_store_byte> : public Extractor<Form_C0_store>
+{
+public:
+    Extractor<Form_C0_store_byte>() :
+            Extractor<Form_C0_store>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_store_byte>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_store_byte::getName();
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        const uint64_t imm = extract_(Form_C0::idType::IMM2, icode);
+        using R = Swizzler::Range;
+        // Bit ranges to extract from imm, starting with LSB
+        return Swizzler::extract(imm, R{1}, R{0});
+    }
+
+private:
+    Extractor<Form_C0_store_byte>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_C0_store>(ffmask, fset)
+    {}
+};
+
+/**
+ * Derivative of Form_C0_store extractor for STORE HALF (ZCB extension)
+ * NOTE: rs1 is the address base, rs2 is the source data
+ */
+template<>
+class Extractor<Form_C0_store_half> : public Extractor<Form_C0_store>
+{
+public:
+    Extractor<Form_C0_store_half>() :
+            Extractor<Form_C0_store>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_store_half>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_store_half::getName();
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        return (extract_(Form_C0::idType::IMM2, icode) & 0x1ull) << 1;
+    }
+
+private:
+    Extractor<Form_C0_store_half>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_C0_store>(ffmask, fset)
+    {}
+};
+
+/**
  * Derivative of Form_C0_store extractor for STORE WORDS
  * NOTE: rs1 is the address base, rs2 is the source data
  */
@@ -329,7 +465,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C0_store_word>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C0_store_word::getName();
     }
@@ -366,7 +502,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C0_store_double>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C0_store_double::getName();
     }
@@ -383,6 +519,294 @@ public:
 private:
     Extractor<Form_C0_store_double>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C0_store>(ffmask, fset)
+    {}
+};
+
+/**
+ * C1_rsd-Form Extractor
+ */
+template<>
+class Extractor<Form_C1_rsd> : public ExtractorBase<Form_C1>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C1_rsd>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C1_rsd::getName();
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedCompressedIndexBit_(Form_C1::idType::RS1, icode, fixed_field_mask_);
+    }
+
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedCompressedIndexBit_(Form_C1::idType::RD, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceOperTypeRegs(const Opcode icode,
+                                   const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind)) {
+            return 0;
+        } else if (meta->isAllOperandType(kind)) {
+            return getSourceRegs(icode);
+        } else {
+            uint64_t result = 0;
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RS1, kind)) {
+                result |= extractUnmaskedCompressedIndexBit_(Form_C1::idType::RS1, icode, fixed_field_mask_);
+            }
+            return result;
+        }
+    }
+
+    uint64_t getDestOperTypeRegs(const Opcode icode,
+                                 const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind)) {
+            return 0;
+        } else if (meta->isAllOperandType(kind)) {
+            return getDestRegs(icode);
+        } else {
+            uint64_t result = 0;
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RD, kind)) {
+                result |= extractUnmaskedCompressedIndexBit_(Form_C1::idType::RD, icode, fixed_field_mask_);
+            }
+            return result;
+        }
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedCompressedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
+                                             fixed_field_mask_, Form_C1::idType::RS1, false);
+        return olist;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedCompressedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                             fixed_field_mask_, Form_C1::idType::RD, false);
+        return olist;
+    }
+
+    using ExtractorIF::dasmString; // tell the compiler all dasmString
+    // overloads are considered
+    std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic
+           << "\t" << extractCompressedRegister_(Form_C1::idType::RD, icode & ~fixed_field_mask_)
+           << "," << extractCompressedRegister_(Form_C1::idType::RS1, icode & ~fixed_field_mask_);
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatCompressedRegList_(meta, icode, fixed_field_mask_,
+                                           { { Form_C1::idType::RD, InstMetaData::OperandFieldID::RD },
+                                             { Form_C1::idType::RS1, InstMetaData::OperandFieldID::RS1 } });
+        return ss.str();
+    }
+
+protected:
+    Extractor<Form_C1_rsd>(const uint64_t ffmask, const uint64_t fset) :
+            fixed_field_mask_(ffmask), fixed_field_set_(fset)
+    {}
+
+    uint64_t fixed_field_mask_ = 0;
+    uint64_t fixed_field_set_ = 0;
+};
+
+/**
+ * Derivative of Form_C1_rsd extractor with implied 0 immediate
+ */
+template<>
+class Extractor<Form_C1_rsd_I0> : public Extractor<Form_C1_rsd>
+{
+public:
+    Extractor<Form_C1_rsd_I0>() :
+            Extractor<Form_C1_rsd>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C1_rsd_I0>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C1_rsd_I0::getName();
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::UNSIGNED;
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        return 0;
+    }
+
+private:
+    Extractor<Form_C1_rsd_I0>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_C1_rsd>(ffmask, fset)
+    {}
+};
+
+/**
+ * Derivative of Form_C1_rsd extractor with implied 0 immediate for ZEXT[.hw]
+ * RS2 is fixed for these encodings, and should be extracted as X0
+ */
+template<>
+class Extractor<Form_C1_rsd_zext_I0> : public Extractor<Form_C1_rsd>
+{
+public:
+    Extractor<Form_C1_rsd_zext_I0>() :
+            Extractor<Form_C1_rsd>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C1_rsd_zext_I0>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C1_rsd_zext_I0::getName();
+    }
+
+    uint64_t getSourceRegs(const uint64_t icode) const override
+    {
+        return Extractor<Form_C1_rsd>::getSourceRegs(icode) | (1ull << REGISTER_X0);
+    }
+
+    uint64_t getSourceOperTypeRegs(const uint64_t icode,
+                                   const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind)) {
+            return 0;
+        } else if (meta->isAllOperandType(kind)) {
+            return Extractor<Form_C1_rsd>::getSourceOperTypeRegs(icode, meta, kind) | (1ull << REGISTER_X0);
+        } else {
+            uint64_t result = Extractor<Form_C1_rsd>::getSourceOperTypeRegs(icode, meta, kind);
+            // Use RS's type as the type of the X0 source register
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RS1, kind)) {
+                result |= (1ull << REGISTER_X0);
+            }
+            return result;
+        }
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta, bool suppress_x0 = false) const override
+    {
+        OperandInfo olist = Extractor<Form_C1_rsd>::getSourceOperandInfo(icode, meta, suppress_x0);
+        olist.addElement(InstMetaData::OperandFieldID::RS2, meta->getOperandType(InstMetaData::OperandFieldID::RS1),
+                         REGISTER_X0, false);
+        return olist;
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::UNSIGNED;
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        return 0;
+    }
+
+private:
+    Extractor<Form_C1_rsd_zext_I0>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_C1_rsd>(ffmask, fset)
+    {}
+};
+
+/**
+ * Derivative of Form_C1_rsd extractor with implied -1 immediate
+ */
+template<>
+class Extractor<Form_C1_rsd_Ineg1> : public Extractor<Form_C1_rsd>
+{
+public:
+    Extractor<Form_C1_rsd_Ineg1>() :
+            Extractor<Form_C1_rsd>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C1_rsd_Ineg1>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C1_rsd_Ineg1::getName();
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        return -1ull;
+    }
+
+private:
+    Extractor<Form_C1_rsd_Ineg1>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_C1_rsd>(ffmask, fset)
+    {}
+};
+
+/**
+ * Derivative of Form_C1_rsd extractor with implied 0xFF immediate
+ */
+template<>
+class Extractor<Form_C1_rsd_I0xFF> : public Extractor<Form_C1_rsd>
+{
+public:
+    Extractor<Form_C1_rsd_I0xFF>() :
+            Extractor<Form_C1_rsd>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C1_rsd_I0xFF>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C1_rsd_I0xFF::getName();
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::UNSIGNED;
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        return 0xFF;
+    }
+
+private:
+    Extractor<Form_C1_rsd_I0xFF>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_C1_rsd>(ffmask, fset)
     {}
 };
 
@@ -407,7 +831,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_CI_addi>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_CI_addi::getName();
     }
@@ -439,7 +863,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_CI_addiw>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_CI_addiw::getName();
     }
@@ -475,9 +899,14 @@ public:
                 (extract_(Form_CI::idType::IMM5, icode) == 0));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_CI_sp::getName();
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -534,7 +963,7 @@ public:
         return extract_(Form_CIW::idType::IMM8, icode & ~fixed_field_mask_) == 0;
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_CIW_sp::getName();
     }
@@ -652,9 +1081,14 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_CIX_andi>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_CIX_andi::getName();
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
     }
 
     int64_t getSignedOffset(const Opcode icode) const override
@@ -685,7 +1119,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_CJALR>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_CJALR::getName();
     }
@@ -790,7 +1224,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_add>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_add::getName();
     }
@@ -885,7 +1319,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_mv>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_mv::getName();
     }
@@ -977,7 +1411,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_slli>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_slli::getName();
     }
@@ -1071,7 +1505,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_sp>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_sp::getName();
     }
@@ -1114,9 +1548,9 @@ public:
         return olist;
     }
 
-    bool hasImmediate() const override
+    ImmediateType getImmediateType() const override
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
@@ -1162,7 +1596,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_sp_load::getName();
     }
@@ -1191,9 +1625,9 @@ public:
         return olist;
     }
 
-    bool hasImmediate() const override
+    ImmediateType getImmediateType() const override
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
 protected:
@@ -1218,7 +1652,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_word>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_sp_load_word::getName();
     }
@@ -1254,7 +1688,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_double>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_sp_load_double::getName();
     }
@@ -1290,7 +1724,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_float_single>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_sp_load_float_single::getName();
     }
@@ -1322,7 +1756,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_float_double>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_sp_load_float_double::getName();
     }
@@ -1354,7 +1788,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_sp_store_word>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_sp_store_word::getName();
     }
@@ -1389,7 +1823,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_C2_sp_store_double>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_C2_sp_store_double::getName();
     }
@@ -1425,7 +1859,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_CI_rD_shifted>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_CI_rD_shifted::getName();
     }
@@ -1461,6 +1895,11 @@ public:
     OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType&, bool suppress_x0 = false) const override
     {
         return {};
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -1516,7 +1955,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_V_load>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_V_load::getName();
     }
@@ -1543,7 +1982,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_V_store>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_V_store::getName();
     }
@@ -1663,24 +2102,24 @@ private:
 };
 
 /**
- * Derivative of Form_V extractor for vector-immediate (signed) instructions
+ * Derivative of Form_V extractor for vector-immediate (unsigned) instructions
  */
 template<>
-class Extractor<Form_V_simm> : public Extractor<Form_V>
+class Extractor<Form_V_uimm> : public Extractor<Form_V>
 {
 public:
-    Extractor<Form_V_simm>() :
+    Extractor<Form_V_uimm>() :
         Extractor<Form_V>()
     {}
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
-        return ExtractorIF::PtrType(new Extractor<Form_V_simm>(ffmask, fset));
+        return ExtractorIF::PtrType(new Extractor<Form_V_uimm>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
-        return Form_V_simm::getName();
+        return Form_V_uimm::getName();
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override
@@ -1745,14 +2184,84 @@ public:
         return extract_(Form_V::idType::SIMM5, icode & ~fixed_field_mask_);
     }
 
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::UNSIGNED;
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic
+           << "\tv" << extract_(Form_V::idType::RD, icode & ~fixed_field_mask_)
+           << ",v" << extract_(Form_V::idType::RS2, icode & ~fixed_field_mask_)
+           << ",0x" << std::hex << getImmediate(icode);
+        // Show the vm operand if masking mode is on
+        if (!isMaskedField_(Form_V::idType::VM, fixed_field_mask_)) {
+            if (!extract_(Form_V::idType::VM, icode)) {
+                ss << ",v0.t";
+            }
+        }
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_V::idType::RD, InstMetaData::OperandFieldID::RD },
+                                   { Form_V::idType::RS2, InstMetaData::OperandFieldID::RS2 } })
+           << "," << std::dec << getImmediate(icode);
+        // Show the vm operand if masking mode is on
+        if (!isMaskedField_(Form_V::idType::VM, fixed_field_mask_)) {
+            if (!extract_(Form_V::idType::VM, icode)) {
+                ss << ",v0.t";
+            }
+        }
+        return ss.str();
+    }
+
+protected:
+    Extractor<Form_V_uimm>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_V>(ffmask, fset)
+    {}
+};
+
+/**
+ * Derivative of Form_V_uimm extractor for vector-immediate (signed) instructions
+ */
+template<>
+class Extractor<Form_V_simm> : public Extractor<Form_V_uimm>
+{
+public:
+    Extractor<Form_V_simm>() :
+        Extractor<Form_V_uimm>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_V_simm>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_V_simm::getName();
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_V::idType::RS2, icode, fixed_field_mask_);
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
+    }
+
     int64_t getSignedOffset(const Opcode icode) const override
     {
         return signExtend_(getImmediate(icode), 4);
-    }
-
-    bool hasImmediate() const override
-    {
-        return true;
     }
 
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
@@ -1788,9 +2297,9 @@ public:
         return ss.str();
     }
 
-private:
+protected:
     Extractor<Form_V_simm>(const uint64_t ffmask, const uint64_t fset) :
-        Extractor<Form_V>(ffmask, fset)
+        Extractor<Form_V_uimm>(ffmask, fset)
     {}
 };
 
@@ -1810,7 +2319,7 @@ public:
         return ExtractorIF::PtrType(new Extractor<Form_V_op>(ffmask, fset));
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return Form_V_op::getName();
     }
@@ -1848,7 +2357,7 @@ public:
         return ss.str();
     }
 
-private:
+protected:
     Extractor<Form_V_op>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_V>(ffmask, fset)
     {}
@@ -1990,5 +2499,317 @@ private:
 
     uint64_t fixed_field_mask_ = 0;
 };
+
+/**
+ * V_implied-Form Extractor
+ * This is an extraction-only form (xform) which adds the destination
+ * as an implied source
+ */
+template<>
+class Extractor<Form_V_implied> : public Extractor<Form_V>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_V_implied>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_V_implied::getName();
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return Extractor<Form_V>::getSourceRegs(icode) |
+               extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceOperTypeRegs(const Opcode icode,
+                                   const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        uint64_t result = Extractor<Form_V>::getSourceOperTypeRegs(icode, meta, kind);
+        if (! (meta->isNoneOperandType(kind) || meta->isAllOperandType(kind))) {
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RD, kind)) {
+                result |= extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+            }
+        }
+        return result;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist = Extractor<Form_V>::getSourceOperandInfo(icode, meta, suppress_x0);
+        appendUnmaskedImpliedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                   fixed_field_mask_, Form_V::idType::RD,
+                                   false, suppress_x0);
+        return olist;
+    }
+
+protected:
+    Extractor<Form_V_implied>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_V>(ffmask, fset)
+    {}
+};
+
+/**
+ * V_op_implied-Form Extractor
+ * This is an extraction-only form (xform) which adds the destination
+ * as an implied source
+ */
+template<>
+class Extractor<Form_V_op_implied> : public Extractor<Form_V_op>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_V_op_implied>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_V_op_implied::getName();
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return Extractor<Form_V_op>::getSourceRegs(icode) |
+               extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceOperTypeRegs(const Opcode icode,
+                                   const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        uint64_t result = Extractor<Form_V_op>::getSourceOperTypeRegs(icode, meta, kind);
+        if (! (meta->isNoneOperandType(kind) || meta->isAllOperandType(kind))) {
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RD, kind)) {
+                result |= extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+            }
+        }
+        return result;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist = Extractor<Form_V_op>::getSourceOperandInfo(icode, meta, suppress_x0);
+        appendUnmaskedImpliedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                          fixed_field_mask_, Form_V::idType::RD,
+                                          false, suppress_x0);
+        return olist;
+    }
+
+protected:
+    Extractor<Form_V_op_implied>(const uint64_t ffmask, const uint64_t fset) :
+            Extractor<Form_V_op>(ffmask, fset)
+    {}
+};
+
+/**
+ * V_uimm_implied-Form Extractor
+ * This is an extraction-only form (xform) which adds the destination
+ * as an implied source
+ */
+template<>
+class Extractor<Form_V_uimm_implied> : public Extractor<Form_V_uimm>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_V_uimm_implied>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_V_uimm_implied::getName();
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return Extractor<Form_V_uimm>::getSourceRegs(icode) |
+               extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceOperTypeRegs(const Opcode icode,
+                                   const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        uint64_t result = Extractor<Form_V_uimm>::getSourceOperTypeRegs(icode, meta, kind);
+        if (! (meta->isNoneOperandType(kind) || meta->isAllOperandType(kind))) {
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RD, kind)) {
+                result |= extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+            }
+        }
+        return result;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist = Extractor<Form_V_uimm>::getSourceOperandInfo(icode, meta, suppress_x0);
+        appendUnmaskedImpliedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                          fixed_field_mask_, Form_V::idType::RD,
+                                          false, suppress_x0);
+        return olist;
+    }
+
+protected:
+    Extractor<Form_V_uimm_implied>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_V_uimm>(ffmask, fset)
+    {}
+};
+
+/**
+ * NTL_hint-Form Extractor
+ */
+template<>
+class Extractor<Form_NTL_hint> : public ExtractorBase<Form_R>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_NTL_hint>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_NTL_hint::getName();
+    }
+
+    using ExtractorIF::dasmString; // tell the compiler all dasmString
+    // overloads are considered
+    std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
+    {
+        return mnemonic;
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        return mnemonic;
+    }
+
+protected:
+    Extractor<Form_NTL_hint>(const uint64_t ffmask, const uint64_t fset) :
+            fixed_field_mask_(ffmask)
+    {}
+
+    uint64_t fixed_field_mask_ = 0;
+};
+
+/**
+ * PF_hint-Form Extractor
+ */
+template<>
+class Extractor<Form_PF_hint> : public ExtractorBase<Form_I>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_PF_hint>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_PF_hint::getName();
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_I::idType::RS1, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceOperTypeRegs(const Opcode icode,
+                                   const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind)) {
+            return 0;
+        } else if (meta->isAllOperandType(kind)) {
+            return getSourceRegs(icode);
+        } else {
+            uint64_t result = 0;
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RS1, kind)) {
+                result |= extractUnmaskedIndexBit_(Form_I::idType::RS1, icode, fixed_field_mask_);
+            }
+            return result;
+        }
+    }
+
+    uint64_t getDestOperTypeRegs(const Opcode icode,
+                                 const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        return 0;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
+                                   fixed_field_mask_, Form_I::idType::RS1,
+                                   false, suppress_x0);
+        return olist;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        return {};
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        return extract_(Form_I::idType::IMM, icode) >> 5;
+    }
+
+    int64_t getSignedOffset(const Opcode icode) const override
+    {
+        return signExtend_(getImmediate(icode), 7);
+    }
+
+    using ExtractorIF::dasmString; // tell the compiler all dasmString
+    // overloads are considered
+    std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic
+           << "\t" <<  extract_(Form_I::idType::RS1, icode & ~fixed_field_mask_)   // base address
+           << ", +0x" << std::hex << getSignedOffset(icode);
+        return ss.str();
+
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_I::idType::RS1, InstMetaData::OperandFieldID::RS1 } })
+           << ", +0x" << std::hex << getSignedOffset(icode);
+        return ss.str();
+    }
+
+protected:
+    Extractor<Form_PF_hint>(const uint64_t ffmask, const uint64_t fset) :
+        fixed_field_mask_(ffmask)
+    {}
+
+    uint64_t fixed_field_mask_ = 0;
+};
+
 
 } // namespace mavis

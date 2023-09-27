@@ -50,6 +50,36 @@ public:
 };
 
 /**
+ * Stub for C0_load_byte extractor (ZCB extension)
+ */
+class Form_C0_load_byte
+{
+private:
+    static inline const std::string name_ {"C0_load_byte"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for C0_load_half extractor (ZCB extension)
+ */
+class Form_C0_load_half
+{
+private:
+    static inline const std::string name_ {"C0_load_half"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
  * Stub for C0_load_word extractor
  */
 class Form_C0_load_word
@@ -95,6 +125,36 @@ public:
 };
 
 /**
+ * Stub for C0_store_byte extractor (ZCB extension)
+ */
+class Form_C0_store_byte
+{
+private:
+    static inline const std::string name_ {"C0_store_byte"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for C0_store_half extractor (ZCB extension)
+ */
+class Form_C0_store_half
+{
+private:
+    static inline const std::string name_ {"C0_store_half"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
  * Stub for C0_store_word extractor
  */
 class Form_C0_store_word
@@ -116,6 +176,81 @@ class Form_C0_store_double
 {
 private:
     static inline const std::string name_ {"C0_store_double"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for C1_rsd extractor
+ */
+class Form_C1_rsd
+{
+private:
+    static inline const std::string name_ {"C1_rsd"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for C1_rsd_I0 extractor
+ */
+class Form_C1_rsd_I0
+{
+private:
+    static inline const std::string name_ {"C1_rsd_I0"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for C1_rsd_zext_I0 extractor
+ */
+class Form_C1_rsd_zext_I0
+{
+private:
+    static inline const std::string name_ {"C1_rsd_zext_I0"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for C1_rsd_Ineg1 extractor
+ */
+class Form_C1_rsd_Ineg1
+{
+private:
+    static inline const std::string name_ {"C1_rsd_Ineg1"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for C1_rsd_I0xFF extractor
+ */
+class Form_C1_rsd_I0xFF
+{
+private:
+    static inline const std::string name_ {"C1_rsd_I0xFF"};
 
 public:
     static inline const std::string& getName()
@@ -440,12 +575,72 @@ public:
 };
 
 /**
+ * Stub for V_uimm extractor
+ */
+class Form_V_uimm
+{
+private:
+    static inline const std::string name_ {"V_uimm"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
  * Stub for V_op extractor
  */
 class Form_V_op
 {
 private:
     static inline const std::string name_ {"V_op"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for V_implied extractor
+ */
+class Form_V_implied
+{
+private:
+    static inline const std::string name_ {"V_implied"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for V_op_implied extractor
+ */
+class Form_V_op_implied
+{
+private:
+    static inline const std::string name_ {"V_op_implied"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for V_uimm_implied extractor
+ */
+class Form_V_uimm_implied
+{
+private:
+    static inline const std::string name_ {"V_uimm_implied"};
 
 public:
     static inline const std::string& getName()
@@ -476,6 +671,36 @@ class Form_HV_store
 {
 private:
     static inline const std::string name_ {"HV_store"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for NTL_hint extractor
+ */
+class Form_NTL_hint
+{
+private:
+    static inline const std::string name_ {"NTL_hint"};
+
+public:
+    static inline const std::string& getName()
+    {
+        return name_;
+    }
+};
+
+/**
+ * Stub for PF_hint extractor
+ */
+class Form_PF_hint
+{
+private:
+    static inline const std::string name_ {"PF_hint"};
 
 public:
     static inline const std::string& getName()

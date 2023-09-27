@@ -19,5 +19,20 @@ if (CMAKE_BUILD_TYPE MATCHES "^[Dd]ebug")
   add_compile_options (-O0)
 endif()
 
-add_executable(Mavis main.cpp ../mavis/FormGeneric.hpp ../mavis/ExtractorWrap.hpp ../mavis/Disassembler.hpp ../mavis/DisassemblerIF.hpp)
-include_directories(../ ../mavis)
+add_executable(Mavis main.cpp)
+target_link_libraries (Mavis mavis)
+
+#
+# CppCheck.
+#
+# This conflicts with tools that include Mavis (and use cppcheck)
+#
+# Add a custom CMake Modules directory
+#set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
+## Setup for HTML report
+#set (CPPCHECK_XML_OUTPUT "${PROJECT_BINARY_DIR}/analysis/cppcheck/cppcheck_analysis.xml")
+#set (CPPCHECK_EXCLUDES
+#  ${CMAKE_BINARY_DIR}
+#  ${SIM_BASE}/test
+#  )
+#find_package (Cppcheck)

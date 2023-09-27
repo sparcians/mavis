@@ -1,8 +1,18 @@
 #pragma once
 
+#include <vector>
 #include "Field.h"
 
 namespace mavis {
+
+// Type of immediate declared as part of the encoding
+enum class ImmediateType : uint32_t
+{
+    NONE,           // No immediate present in encoding
+    UNSIGNED,       // UNSIGNED immediate (UIMM) in encoding
+    SIGNED          // SIGNED immediate (SIMM) in encoding
+};
+
 /**
  * FormWrapper interface
  */
@@ -11,7 +21,7 @@ class FormWrapperIF
 public:
     typedef const std::vector<Field> OpcodeFieldsType;
 
-    virtual const std::string& getName() const = 0;
+    virtual std::string getName() const = 0;
 
     virtual const Field& getField(const std::string& fname) const = 0;
 
@@ -40,7 +50,7 @@ template<typename FormType>
 class FormWrapper : public FormWrapperIF
 {
 public:
-    const std::string& getName() const override
+    std::string getName() const override
     {
         return FormType::getName();
     }

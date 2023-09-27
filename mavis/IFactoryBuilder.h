@@ -167,12 +167,17 @@ public:
      * @brief buildOverlay: populate an overlay object with builder information for IFactory convenience
      * @param olay
      */
-    void buildOverlay(typename Overlay<InstType, AnnotationType>::PtrType& olay)
+    void buildOverlay(typename Overlay<InstType, AnnotationType>::PtrType& olay, const std::string& jfile)
     {
         const std::string olay_mnemonic = olay->getMnemonic();
         const std::string olay_base_mnemonic = olay->getBaseMnemonic();
+        const InstMetaData::PtrType base_meta = this->findMetaData(olay->getBaseMnemonic());
 
-        olay->setBaseMetaData(this->findMetaData(olay->getBaseMnemonic()));
+        if (base_meta == nullptr) {
+            throw BuildErrorOverlayBaseNotFound(olay_mnemonic, olay_base_mnemonic, jfile);
+        }
+
+        olay->setBaseMetaData(base_meta);
         olay->setUID(this->registerInst(olay_mnemonic));
 
         // Attempt to find the annotation for the overlay.

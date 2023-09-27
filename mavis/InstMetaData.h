@@ -3,6 +3,8 @@
 #include "json.hpp"
 #include "DecoderExceptions.h"
 #include "FormIF.h"
+#include "Tag.hpp"
+#include "MatchSet.hpp"
 #include <memory>
 #include <array>
 #include <cinttypes>
@@ -47,14 +49,20 @@ public:
         CLASSIFY = 1ull << 17u,
         VECTOR = 1ull << 18u,
         MASKABLE = 1ull << 19u,
-        STRIDE  = 1ull << 20u,
-        INDEXED = 1ull << 21u,
-        SEGMENT = 1ull << 22u,
-        FAULTFIRST = 1ull << 23u,
-        WHOLE = 1ull << 24u,
-        MASK = 1ull << 25u,
-        WIDENING = 1ull << 26u,
-        HYPERVISOR = 1ull << 27u,
+        UNIT_STRIDE = 1ull << 20u,
+        STRIDE  = 1ull << 21u,
+        ORDERED_INDEXED = 1ull << 22u,
+        UNORDERED_INDEXED = 1ull << 23u,
+        SEGMENT = 1ull << 24u,
+        FAULTFIRST = 1ull << 25u,
+        WHOLE = 1ull << 26u,
+        MASK = 1ull << 27u,
+        WIDENING = 1ull << 28u,
+        HYPERVISOR = 1ull << 29u,
+        CRYPTO = 1ull << 30u,
+        PREFETCH = 1ull << 56u,
+        NTL = 1ull << 57u,
+        HINT = 1ull << 58u,
         CACHE = 1ull << 59u,
         ATOMIC = 1ull << 60u,
         FENCE = 1ull << 61u,
@@ -120,6 +128,7 @@ public:
         FUSED_SD_1,       // for fusion: store data operand 1
         TEMP_RS1,         // for temporal RS1 operand
         TEMP_RS2,         // for temporal RS2 operand
+        TEMP_RS3,         // for temporal RS3 operand
 
         RD,               // NOTE: RD/RD1 thru RD_MAX need to stay contiguous for ExtractorDirectInfo
         RD1 = RD,
@@ -129,6 +138,7 @@ public:
         FUSED_RD_0,       // for fusion: dest reg 0
         FUSED_RD_1,       // for fusion: dest reg 1
         TEMP_RD,          // for temporal RD operand
+        TEMP_RD2,         // for temporal RD2 operand
 
         NONE,
         __N = NONE
@@ -138,39 +148,45 @@ public:
 
 private:
     static inline std::map<std::string, InstructionTypes> tmap_ {
-        {"int",        InstructionTypes::INT},
-        {"float",      InstructionTypes::FLOAT},
-        {"arith",      InstructionTypes::ARITH},
-        {"mul",        InstructionTypes::MULTIPLY},
-        {"div",        InstructionTypes::DIVIDE},
-        {"branch",     InstructionTypes::BRANCH},
-        {"pc",         InstructionTypes::PC},
-        {"cond"  ,     InstructionTypes::CONDITIONAL},
-        {"jal",        InstructionTypes::JAL},
-        {"jalr",       InstructionTypes::JALR},
-        {"load",       InstructionTypes::LOAD},
-        {"store",      InstructionTypes::STORE},
-        {"mac",        InstructionTypes::MAC},
-        {"sqrt",       InstructionTypes::SQRT},
-        {"convert",    InstructionTypes::CONVERT},
-        {"compare",    InstructionTypes::COMPARE},
-        {"move",       InstructionTypes::MOVE},
-        {"classify",   InstructionTypes::CLASSIFY},
-        {"vector",     InstructionTypes::VECTOR},
-        {"maskable",   InstructionTypes::MASKABLE},
-        {"stride",     InstructionTypes::STRIDE},
-        {"indexed",    InstructionTypes::INDEXED},
-        {"segment",    InstructionTypes::SEGMENT},
-        {"faultfirst", InstructionTypes::FAULTFIRST},
-        {"whole",      InstructionTypes::WHOLE},
-        {"mask",       InstructionTypes::MASK},
-        {"widening",   InstructionTypes::WIDENING},
-        {"hypervisor", InstructionTypes::HYPERVISOR},
-        {"cache",      InstructionTypes::CACHE},
-        {"atomic",     InstructionTypes::ATOMIC},
-        {"fence",      InstructionTypes::FENCE},
-        {"system",     InstructionTypes::SYSTEM},
-        {"csr",        InstructionTypes::CSR}
+        {"int",                InstructionTypes::INT},
+        {"float",              InstructionTypes::FLOAT},
+        {"arith",              InstructionTypes::ARITH},
+        {"mul",                InstructionTypes::MULTIPLY},
+        {"div",                InstructionTypes::DIVIDE},
+        {"branch",             InstructionTypes::BRANCH},
+        {"pc",                 InstructionTypes::PC},
+        {"cond",               InstructionTypes::CONDITIONAL},
+        {"jal",                InstructionTypes::JAL},
+        {"jalr",               InstructionTypes::JALR},
+        {"load",               InstructionTypes::LOAD},
+        {"store",              InstructionTypes::STORE},
+        {"mac",                InstructionTypes::MAC},
+        {"sqrt",               InstructionTypes::SQRT},
+        {"convert",            InstructionTypes::CONVERT},
+        {"compare",            InstructionTypes::COMPARE},
+        {"move",               InstructionTypes::MOVE},
+        {"classify",           InstructionTypes::CLASSIFY},
+        {"vector",             InstructionTypes::VECTOR},
+        {"maskable",           InstructionTypes::MASKABLE},
+        {"unit_stride",        InstructionTypes::UNIT_STRIDE},
+        {"stride",             InstructionTypes::STRIDE},
+        {"ordered_indexed",    InstructionTypes::ORDERED_INDEXED},
+        {"unordered_indexed",  InstructionTypes::UNORDERED_INDEXED},
+        {"segment",            InstructionTypes::SEGMENT},
+        {"faultfirst",         InstructionTypes::FAULTFIRST},
+        {"whole",              InstructionTypes::WHOLE},
+        {"mask",               InstructionTypes::MASK},
+        {"widening",           InstructionTypes::WIDENING},
+        {"hypervisor",         InstructionTypes::HYPERVISOR},
+        {"crypto",             InstructionTypes::CRYPTO},
+        {"prefetch",           InstructionTypes::PREFETCH},
+        {"ntl",                InstructionTypes::NTL},
+        {"hint",               InstructionTypes::HINT},
+        {"cache",              InstructionTypes::CACHE},
+        {"atomic",             InstructionTypes::ATOMIC},
+        {"fence",              InstructionTypes::FENCE},
+        {"system",             InstructionTypes::SYSTEM},
+        {"csr",                InstructionTypes::CSR}
     };
 
     static inline std::map<std::string, ISAExtensionIndex> isamap_ {
@@ -233,12 +249,13 @@ public:
      * @param form
      */
     //InstMetaData(const json& inst, const FormWrapperIF* form, bool compressed = false) :
-    InstMetaData(const json& inst, bool compressed = false) :
-        compressed_(compressed)
+    InstMetaData(const json& inst, bool compressed = false, const MatchSet<Tag>& tags = MatchSet<Tag>()) :
+        compressed_(compressed), tags_(tags)
     {
         oper_type_.fill(InstMetaData::OperandTypes::NONE);
 
-        parseOverrides(inst);
+        // Type
+        parseTypeStanza_(inst);
 
         // Data size
         if (inst.find("data") != inst.end()) {
@@ -397,17 +414,16 @@ public:
         inst_types_ |= other->inst_types_;
     }
 
+    // This method is called Overlay::setBaseMetaData to handle JSON stanza items that
+    // need to be merged from the overlay into the base
     void parseOverrides(const json& inst)
     {
-        if (inst.find("type") != inst.end()) {
-            const FieldNameListType tlist = inst["type"].get<FieldNameListType>();
-            for (const auto& t : tlist) {
-                const auto itr = tmap_.find(t);
-                if (itr == tmap_.end()) {
-                    throw BuildErrorUnknownType(inst["mnemonic"], t);
-                }
-                inst_types_ |= static_cast<std::underlying_type_t<InstructionTypes>>(itr->second);
-            }
+        // Merge type information from the overlay instruction and the base
+        parseTypeStanza_(inst);
+
+        // Merge tags from the overlay instruction and the base
+        if (inst.find("tags") != inst.end()) {
+            tags_.merge(inst["tags"].get<std::vector<std::string>>());
         }
     }
 
@@ -604,6 +620,11 @@ public:
         return data_size_;
     }
 
+    const MatchSet<Tag> getTags() const
+    {
+        return tags_;
+    }
+
     static inline const std::string& getFieldIDName(OperandFieldID fid)
     {
         assert(fid != OperandFieldID::NONE);
@@ -629,6 +650,22 @@ private:
     std::array<OperandTypes, static_cast<size_t>(OperandFieldID::__N)> oper_type_;  /// Maps field to operand type
     std::array<bool, static_cast<size_t>(OperandFieldID::__N)> fixed_fields_ {false};       /// Is operand part of the encoding (fixed field)
     uint32_t data_size_ = 0;
+    MatchSet<Tag>   tags_;
+
+    void parseTypeStanza_(const json& inst)
+    {
+        // Merge type information from the overlay instruction and the base
+        if (inst.find("type") != inst.end()) {
+            const FieldNameListType tlist = inst["type"].get<FieldNameListType>();
+            for (const auto& t : tlist) {
+                const auto itr = tmap_.find(t);
+                if (itr == tmap_.end()) {
+                    throw BuildErrorUnknownType(inst["mnemonic"], t);
+                }
+                inst_types_ |= static_cast<std::underlying_type_t<InstructionTypes>>(itr->second);
+            }
+        }
+    }
 
     static inline std::underlying_type_t<OperandFieldID> getFieldIndex_(const std::string& fname)
     {

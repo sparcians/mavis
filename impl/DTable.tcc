@@ -16,7 +16,10 @@ namespace mavis {
  * @param mnemonic
  */
 template<typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
-void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_(const std::string& jfile, const nlohmann::json& inst, const std::string& mnemonic)
+void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_(const std::string& jfile,
+                                                                               const nlohmann::json& inst,
+                                                                               const std::string& mnemonic,
+                                                                               const MatchSet<Tag>& tags)
 {
     // Convert the instruction stencil to binary
     Opcode istencil = 0;
@@ -61,7 +64,7 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_(c
     if (inst.find("overlay") != inst.end()) {
         typename Overlay<InstType, AnnotationType>::PtrType olay =
             std::make_shared<Overlay<InstType, AnnotationType>>(mnemonic, inst["overlay"], inst, override_extractor);
-        builder_->buildOverlay(olay);
+        builder_->buildOverlay(olay, jfile);
         // std::cout << *olay << std::endl;
         typename IFactory<InstType, AnnotationType>::PtrType ifact = builder_->findIFact(
             olay->getBaseMnemonic());
@@ -75,9 +78,7 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_(c
             throw BuildErrorUnknownForm(jfile, mnemonic, inst["form"]);
         }
 
-        // InstMetaData::PtrType meta(new InstMetaData(inst, form_wrap, !xpand_name.empty()));
-        // InstMetaData::PtrType meta = meta_registry_.makeInstMetaData(mnemonic, inst, form_wrap, !xpand_name.empty());
-        InstMetaData::PtrType meta = builder_->makeInstMetaData(mnemonic, inst, !xpand_name.empty());
+        InstMetaData::PtrType meta = builder_->makeInstMetaData(mnemonic, inst, !xpand_name.empty(), tags);
         try {
             typename IFactoryIF<InstType, AnnotationType>::PtrType ifact = build_(form_wrap, mnemonic, istencil,
                    flist, ignore_set, factory_name, xpand_name, override_extractor, meta);
@@ -105,7 +106,9 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_(c
  * @param args
  */
 template<typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
-void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const FileNameListType &isa_files)
+void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const FileNameListType &isa_files,
+                                                                          const MatchSet<Pattern>& inclusions,
+                                                                          const MatchSet<Pattern>& exclusions)
 {
 
     // Now populate the default factories from the provided JSON files...
@@ -128,7 +131,25 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
             std::string mnemonic;
             if (inst.find("mnemonic") != inst.end()) {
                 mnemonic = inst["mnemonic"];
-                parseInstInfo_(jfile, inst, mnemonic);
+                // We have an instruction... Look for filtering tag
+                MatchSet<Tag>   tags;
+                if (inst.find("tags") != inst.end()) {
+                    tags = MatchSet<Tag>(inst["tags"].get<std::vector<std::string>>());
+                }
+
+                if ((inclusions.isEmpty() && exclusions.isEmpty()) || (inclusions.isEmpty() && tags.isEmpty())) {
+                    // Inclusions & exclusions are empty, or inclusions empty and tags empty, no filtering active
+                    parseInstInfo_(jfile, inst, mnemonic, tags);
+                } else if (!tags.isEmpty()) {
+                    bool included = inclusions.isEmpty() || tags.matchAnyAny(inclusions);
+                    if (included) {
+                        bool excluded = !exclusions.isEmpty() && tags.matchAnyAny(exclusions);
+                        if (!excluded) {
+                            parseInstInfo_(jfile, inst, mnemonic, tags);
+                        }
+                    }
+                }
+                // Otherwise, since tags.isEmpty(), we know inclusions are not empty and we reject the instruction
             } else if (inst.find("pseudo") != inst.end()) {
                 // Skip any pseudo instruction records, those are handled
                 // by the pseudo builder configuration

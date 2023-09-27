@@ -192,6 +192,28 @@ public:
             table_.push_back(
                 {mnemonic, mask, field_set, istencil & mask, static_cast<uint32_t>(flist.size()), nullptr});
         }
+
+        // Perform a little sanity check to be sure the istencil matches only one of the table
+        // entries under the same mask. If not, then the encoding is not unique (more encoding
+        // fields will be needed in the JSON spec to disambiguate)
+        if (table_.size() > 1) {
+            uint32_t alias_count = 0;
+            for (const auto &entry: table_) {
+                if (((istencil & entry.mask) == entry.value) && (mask == entry.mask) && (mnemonic != entry.mnemonic)) {
+                    ++alias_count;
+                }
+                if (alias_count > 0) {
+                    std::cerr << "IFactorySpecialCaseComposite::addSpecialCase() -- "
+                              << "Instruction '" << mnemonic << "' "
+                              << "(stencil 0x" << std::hex << istencil << ") "
+                              << "is aliased with '" << entry.mnemonic << "' "
+                              << "(mask 0x" << std::hex << entry.mask << ", "
+                              << "value 0x" << std::hex << entry.value << ") "
+                              << std::endl;
+                }
+            }
+            assert(alias_count == 0);
+        }
     }
 
     typename IFactoryIF<InstType, AnnotationType>::PtrType getNode(const Opcode istencil) override

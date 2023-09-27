@@ -78,10 +78,21 @@
 		"type" : ["int", "arith"],
 		"l-oper" : "all"
 	},
+        {
+                "mnemonic" : "li",
+                "tags" : ["i", "g"],
+                "form" : "ISH",
+                "ignore" : ["func6"],
+                "xform" : "I",
+                "stencil" : "0x13",
+                "fixed" : ["rs1"],
+                "type" : ["int", "arith"],
+                "l-oper" : "all"
+        },
 	{
 		"mnemonic" : "nop",
 		"overlay" : {
-			"base" : "addi",
+                "base" : "li",
 			"match" : ["0xFFFFFF80", "0x00000000"]
 		},
 		"xform" : "I",
@@ -822,7 +833,7 @@
 		"mnemonic" : "fadd.s",
 		"form" : "Rfloat",
 		"stencil" : "0x53",
-      	"s-oper" : "all",
+             	"s-oper" : "all",
 		"type" : ["float", "arith"]
 	},
 	{
@@ -849,7 +860,7 @@
 	{
 		"mnemonic" : "fsgnj.s",
 		"form" : "Rfloat",
-        "fixed" : [ "rm" ],
+                "fixed" : [ "rm" ],
 		"stencil" : "0x20000053",
 		"s-oper" : "all",
 		"type" : ["float", "arith"]

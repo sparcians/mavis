@@ -1,7 +1,7 @@
-#ifndef TCC_MAVIS_DTABLEBUILDSPECIAL
-#define TCC_MAVIS_DTABLEBUILDSPECIAL
+#pragma once
 
 #include "mavis/DTable.h" // Needed for CLION
+#include "mavis/FormCommon.h"
 
 namespace mavis {
 
@@ -124,5 +124,3 @@ DTableBranchBuilder<InstType, AnnotationType, Form_R>::populate(
 }
 
 } // namespace mavis
-
-#endif // TCC_MAVIS_DTABLEBUILDSPECIAL

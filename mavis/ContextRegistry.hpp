@@ -26,13 +26,15 @@ public:
     ContextRegistry& operator=(ContextRegistry&&) = default;
 
     void makeContext(const std::string& name, const FileNameListType& isa_files, const FileNameListType& anno_files,
-                     const InstUIDList& uid_list = {}, const AnnotationOverrides & anno_overrides = {})
+                     const InstUIDList& uid_list = {}, const AnnotationOverrides & anno_overrides = {},
+                     const MatchSet<Pattern>& inclusions = MatchSet<Pattern>(),
+                     const MatchSet<Pattern>& exclusions = MatchSet<Pattern>())
     {
         if (registry_.find(name) != registry_.end()) {
             throw ContextAlreadyExists(name);
         }
 
-        registry_[name] = {annotation_allocator_, isa_files, anno_files, uid_list, anno_overrides};
+        registry_[name] = {annotation_allocator_, isa_files, anno_files, uid_list, anno_overrides, inclusions, exclusions};
     }
 
     void switchContext(const std::string& name)
@@ -84,11 +86,13 @@ private:
         Context& operator=(const Context&) = default;
 
         Context(AnnotationTypeAllocator& anno_allocator, const FileNameListType& isa_files, const FileNameListType& anno_files,
-                const InstUIDList& uid_list = {}, const AnnotationOverrides & anno_overrides = {})
+                const InstUIDList& uid_list = {}, const AnnotationOverrides & anno_overrides = {},
+                const MatchSet<Pattern>& inclusions = MatchSet<Pattern>(),
+                const MatchSet<Pattern>& exclusions = MatchSet<Pattern>())
         {
             builder = std::make_shared<BuilderType>(anno_files, anno_allocator, uid_list, anno_overrides);
             dtrie   = std::make_shared<DTableType>(builder);
-            dtrie->configure(isa_files);
+            dtrie->configure(isa_files, inclusions, exclusions);
 
             pseudo_builder = std::make_shared<PseudoBuilderType>(anno_files, anno_allocator, uid_list);
             pseudo_builder->configure(isa_files);

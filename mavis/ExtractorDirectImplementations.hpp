@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <string>
+#include <cinttypes>
+
 #include "ExtractorDirectInfo.h"
 
 namespace mavis
@@ -40,7 +43,7 @@ public:
         return std::make_shared<ExtractorPseudoInfo>(*this);
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }
@@ -160,7 +163,7 @@ public:
         return std::make_shared<ExtractorDirectInfoBitMask>(*this);
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }
@@ -264,7 +267,7 @@ public:
         return std::make_shared<ExtractorDirectInfo_Stores>(*this);
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }
@@ -372,7 +375,7 @@ public:
         return std::make_shared<ExtractorDirectInfoBitMask_Stores>(*this);
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }
@@ -472,7 +475,7 @@ public:
         return std::make_shared<ExtractorDirectInfoBitMask_DestStores>(*this);
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }

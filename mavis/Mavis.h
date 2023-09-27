@@ -78,7 +78,9 @@ public:
     Mavis(const FileNameListType&        isa_files,
           const FileNameListType&        anno_files,
           const InstUIDList&             uid_list,
-          const AnnotationOverrides &    anno_overrides       = {},
+          const AnnotationOverrides &    anno_overrides,
+          const mavis::MatchSet<mavis::Pattern>& inclusions,
+          const mavis::MatchSet<mavis::Pattern>& exclusions,
           const InstTypeAllocator&       inst_allocator       = mavis::SharedPtrAllocator<InstType>(),
           const AnnotationTypeAllocator& annotation_allocator = mavis::SharedPtrAllocator<AnnotationType>()) :
         inst_allocator_(inst_allocator), annotation_allocator_(annotation_allocator),
@@ -88,21 +90,41 @@ public:
                       "You cannot use an InstTypeAllocator that returns a different pointer type than the InstType thinks it is");
         static_assert(std::is_same<typename AnnotationTypeAllocator::InstTypePtr, typename AnnotationType::PtrType>::value,
                       "You cannot use an AnnotationTypeAllocator that returns a different pointer type than the AnnotationTypeAllocator thinks it is");
-        makeContext("BASE", isa_files, anno_files, uid_list, anno_overrides);
+        makeContext("BASE", isa_files, anno_files, uid_list, anno_overrides, inclusions, exclusions);
         switchContext("BASE");
     }
+
+    Mavis(const FileNameListType&        isa_files,
+          const FileNameListType&        anno_files,
+          const InstUIDList&             uid_list,
+          const AnnotationOverrides &    anno_overrides       = {},
+          const InstTypeAllocator&       inst_allocator       = mavis::SharedPtrAllocator<InstType>(),
+          const AnnotationTypeAllocator& annotation_allocator = mavis::SharedPtrAllocator<AnnotationType>()) :
+        Mavis(isa_files, anno_files, uid_list, anno_overrides, {}, {}, inst_allocator, annotation_allocator)
+    {}
+
+    Mavis(const FileNameListType& isa_files,
+          const FileNameListType& anno_files,
+          const mavis::MatchSet<mavis::Pattern>& inclusions,
+          const mavis::MatchSet<mavis::Pattern>& exclusions,
+          const InstTypeAllocator&       inst_allocator       = mavis::SharedPtrAllocator<InstType>(),
+          const AnnotationTypeAllocator& annotation_allocator = mavis::SharedPtrAllocator<AnnotationType>()) :
+        Mavis(isa_files, anno_files, {}, {}, inclusions, exclusions, inst_allocator, annotation_allocator)
+    {}
 
     Mavis(const FileNameListType& isa_files,
           const FileNameListType& anno_files,
           const InstTypeAllocator&       inst_allocator       = mavis::SharedPtrAllocator<InstType>(),
           const AnnotationTypeAllocator& annotation_allocator = mavis::SharedPtrAllocator<AnnotationType>()) :
-        Mavis(isa_files, anno_files, {}, {}, inst_allocator, annotation_allocator)
+        Mavis(isa_files, anno_files, {}, {}, {}, {}, inst_allocator, annotation_allocator)
     {}
 
     void makeContext(const std::string& name, const FileNameListType& isa_files, const FileNameListType& anno_files,
-                     const InstUIDList& uid_list = {}, const AnnotationOverrides & anno_overrides = {})
+                     const InstUIDList& uid_list = {}, const AnnotationOverrides & anno_overrides = {},
+                     const mavis::MatchSet<mavis::Pattern>& inclusions = mavis::MatchSet<mavis::Pattern>(),
+                     const mavis::MatchSet<mavis::Pattern>& exclusions = mavis::MatchSet<mavis::Pattern>())
     {
-        context_.makeContext(name, isa_files, anno_files, uid_list, anno_overrides);
+        context_.makeContext(name, isa_files, anno_files, uid_list, anno_overrides, inclusions, exclusions);
     }
 
     void switchContext(const std::string& name)
@@ -118,40 +140,18 @@ public:
         return context_.hasContext(name);
     }
 
-    /**
-     * @brief makeInst -- create a instruction (InstType)
-     * @tparam ArgTypes
-     * @param icode Instruction opcode
-     * @param args InstType construction args
-     * @return Pointer to constructed InstType
-     */
     template<typename ...ArgTypes>
     typename InstType::PtrType makeInst(const mavis::Opcode icode, ArgTypes&& ... args)
     {
         return dtrie_->makeInst(icode, inst_allocator_, std::forward<ArgTypes>(args)...);
     }
 
-    /**
-     * @brief makeInstFromTrace -- create a instruction from trace (InstType)
-     * @tparam TraceInfoType trace info type for an instruction. Should implement getOpcode() and getMnemonic
-     * @tparam ArgTypes
-     * @param tinfo Trace info for the instruction
-     * @param args InstType construction args
-     * @return Pointer to constructed InstType
-     */
     template<typename TraceInfoType, typename ...ArgTypes>
     typename InstType::PtrType makeInstFromTrace(const TraceInfoType& tinfo, ArgTypes&& ... args)
     {
         return dtrie_->makeInstFromTrace(tinfo, inst_allocator_, std::forward<ArgTypes>(args)...);
     }
 
-    /**
-     * @brief makeInstDirectly -- create a instruction directly from Extractor info
-     * @tparam ArgTypes
-     * @param user_info Extractor info directly supplied
-     * @param args InstType construction args
-     * @return Pointer to constructed InstType
-     */
     template<typename ...ArgTypes>
     typename InstType::PtrType makeInstDirectly(const mavis::ExtractorDirectInfoIF& user_info, ArgTypes&& ... args)
     {

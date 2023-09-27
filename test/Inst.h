@@ -119,6 +119,15 @@ public:
         return dinfo_->hasImmediate();
     }
 
+    uint64_t getImmediate() const {
+        return dinfo_->getImmediate();
+    }
+
+    mavis::MatchSet<mavis::Tag> getTags() const
+    {
+        return dinfo_->getTags();
+    }
+
     const typename AnnotationType::PtrType &getuArchInfo() const { return uinfo_; }
 
 private:

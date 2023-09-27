@@ -77,7 +77,7 @@ public:
 
     virtual ExtractorIF::PtrType specialCaseClone(uint64_t ffmask, uint64_t fset) const = 0;
 
-    virtual const std::string &getName() const = 0;
+    virtual std::string getName() const = 0;
 
     virtual bool isIllop(Opcode icode) const = 0;
 
@@ -111,7 +111,12 @@ public:
     virtual OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
                                            bool suppress_x0 = false) const = 0;
 
-    virtual bool hasImmediate() const = 0;
+    virtual ImmediateType getImmediateType() const = 0;
+
+    bool hasImmediate() const
+    {
+        return getImmediateType() != ImmediateType::NONE;
+    }
 
     virtual uint64_t getImmediate(Opcode icode) const = 0;
 
@@ -121,6 +126,10 @@ public:
         return getImmediate(icode);
     }
 
+    // TODO: Consider a default implementation for this, by
+    // moving the ExtractorBase version here, and getting rid
+    // of the identical versions for ExtractorDirectInfo and
+    // ExtractorTraceInfo. Do we really need separate versions anymore?
     virtual int64_t getSignedOffset(Opcode icode) const = 0;
 
     virtual uint64_t getSpecialField(SpecialField sfid, Opcode icode) const = 0;

@@ -3,12 +3,13 @@
 #include "Field.h"
 #include "DecoderExceptions.h"
 #include "FormIF.h"
+#include "FormCommon.h"
 #include <ostream>
 #include <sstream>
 #include <string>
 #include <array>
-#include <vector>
 #include <map>
+#include <cinttypes>
 
 namespace mavis {
 
@@ -36,7 +37,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"AMO"};
+    static inline const char * name_ {"AMO"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func5", 27, 5),
@@ -87,7 +88,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -120,9 +121,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -160,7 +161,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"B"};
+    static inline const char * name_ {"B"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("imm7", 25, 7),
@@ -195,7 +196,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -228,9 +229,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -261,6 +262,7 @@ public:
         FUNC3 = 0,
         IMM3,
         RS1,
+        FUNC2A,
         IMM2,
         RD,
         OPCODE,
@@ -268,12 +270,13 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"C0"};
+    static inline const char * name_ {"C0"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
         Field("imm3", 10, 3),
         Field("rs1", 7, 3),
+        Field("func2A", 6, 1),
         Field("imm2", 5, 2),
         Field("rd", 2, 3),
         Field("opcode", 0, 2)
@@ -283,6 +286,7 @@ private:
         {"func3",  fields_[idType::FUNC3]},
         {"imm3",   fields_[idType::IMM3]},
         {"rs1",    fields_[idType::RS1]},
+        {"func2A", fields_[idType::FUNC2A]},
         {"imm2",   fields_[idType::IMM2]},
         {"rd",     fields_[idType::RD]},
         {"opcode", fields_[idType::OPCODE]}
@@ -292,6 +296,7 @@ private:
         {"func3",  idType::FUNC3},
         {"imm3",   idType::IMM3},
         {"rs1",    idType::RS1},
+        {"func2A", idType::FUNC2A},
         {"imm2",   idType::IMM2},
         {"rd",     idType::RD},
         {"opcode", idType::OPCODE}
@@ -299,11 +304,12 @@ private:
 
     static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
         fields_[idType::OPCODE],
-        fields_[idType::FUNC3]
+        fields_[idType::FUNC3],
+        fields_[idType::FUNC2A]
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -336,9 +342,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -378,7 +384,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"C1"};
+    static inline const char * name_ {"C1"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -422,7 +428,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -455,9 +461,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -498,7 +504,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"C2"};
+    static inline const char * name_ {"C2"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -543,7 +549,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -576,9 +582,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -614,7 +620,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"C2"};
+    static inline const char * name_ {"C2"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -643,7 +649,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -676,9 +682,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -716,7 +722,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CA"};
+    static inline const char * name_ {"CA"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func6", 10, 6),
@@ -752,7 +758,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -785,9 +791,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -824,7 +830,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CB"};
+    static inline const char * name_ {"CB"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -856,7 +862,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -889,9 +895,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -929,7 +935,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CI"};
+    static inline const char * name_ {"CI"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -964,7 +970,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -997,9 +1003,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -1036,7 +1042,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CI_rD_only"};
+    static inline const char * name_ {"CI_rD_only"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -1068,7 +1074,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -1101,9 +1107,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -1139,7 +1145,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CIW"};
+    static inline const char * name_ {"CIW"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -1168,7 +1174,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -1201,9 +1207,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -1242,7 +1248,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CIX"};
+    static inline const char * name_ {"CIX"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -1281,7 +1287,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -1314,9 +1320,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -1351,7 +1357,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CJ"};
+    static inline const char * name_ {"CJ"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func3", 13, 3),
@@ -1377,7 +1383,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -1410,9 +1416,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -1448,7 +1454,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CJR"};
+    static inline const char * name_ {"CJR"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func4", 12, 4),
@@ -1477,7 +1483,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -1510,9 +1516,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -1549,7 +1555,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CSR"};
+    static inline const char * name_ {"CSR"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("csr", 20, 12),
@@ -1581,7 +1587,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -1614,9 +1620,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -1654,7 +1660,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"CSRI"};
+    static inline const char * name_ {"CSRI"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("csr", 20, 12),
@@ -1686,7 +1692,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -1719,9 +1725,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -1761,7 +1767,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"FENCE"};
+    static inline const char * name_ {"FENCE"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("fm", 28, 4),
@@ -1799,7 +1805,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -1832,9 +1838,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -1856,111 +1862,6 @@ inline std::ostream &operator<<(std::ostream &os, const Form_FENCE &)
 }
 
 /**
- * I-Form
- */
-class Form_I
-{
-public:
-    enum idType : uint32_t
-    {
-        IMM = 0,
-        RS1,
-        FUNC3,
-        RD,
-        OPCODE,
-        __N
-    };
-
-private:
-    static inline const std::string name_ {"I"};
-
-    static inline const std::array<const Field, idType::__N> fields_ {
-        Field("imm", 20, 12),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap_ {
-        {"imm",    fields_[idType::IMM]},
-        {"rs1",    fields_[idType::RS1]},
-        {"func3",  fields_[idType::FUNC3]},
-        {"rd",     fields_[idType::RD]},
-        {"opcode", fields_[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap_ {
-        {"imm",    idType::IMM},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
-        fields_[idType::OPCODE],
-        fields_[idType::FUNC3]
-    };
-
-public:
-    static inline const std::string &getName()
-    {
-        return name_;
-    }
-
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
-
-    static inline bool hasImmediate()
-    {
-        return true;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_I:" << std::endl;
-        for (const auto &f : fields_) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
-};
-
-
-inline std::ostream &operator<<(std::ostream &os, const Form_I &)
-{
-    Form_I::print(os);
-    return os;
-}
-
-/**
  * ISH-Form
  */
 class Form_ISH
@@ -1978,7 +1879,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"ISH"};
+    static inline const char * name_ {"ISH"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func6", 26, 6),
@@ -2014,7 +1915,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -2047,9 +1948,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -2088,7 +1989,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"ISHW"};
+    static inline const char * name_ {"ISHW"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func7", 25, 7),
@@ -2124,7 +2025,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -2157,9 +2058,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -2195,7 +2096,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"J"};
+    static inline const char * name_ {"J"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("imm20", 12, 20),
@@ -2220,7 +2121,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -2253,9 +2154,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -2277,115 +2178,6 @@ inline std::ostream &operator<<(std::ostream &os, const Form_J &)
 }
 
 /**
- * R-Form
- */
-class Form_R
-{
-public:
-    enum idType : uint32_t
-    {
-        FUNC7 = 0,
-        RS2,
-        RS1,
-        FUNC3,
-        RD,
-        OPCODE,
-        __N
-    };
-
-private:
-    static inline const std::string name_ {"R"};
-
-    static inline const std::array<const Field, idType::__N> fields_ {
-        Field("func7", 25, 7),
-        Field("rs2", 20, 5),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap_ {
-        {"func7",  fields_[idType::FUNC7]},
-        {"rs2",    fields_[idType::RS2]},
-        {"rs1",    fields_[idType::RS1]},
-        {"func3",  fields_[idType::FUNC3]},
-        {"rd",     fields_[idType::RD]},
-        {"opcode", fields_[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap_ {
-        {"func7",  idType::FUNC7},
-        {"rs2",    idType::RS2},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
-        fields_[idType::OPCODE],
-        fields_[idType::FUNC3],
-        fields_[idType::FUNC7]
-    };
-
-public:
-    static inline const std::string &getName()
-    {
-        return name_;
-    }
-
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
-
-    static inline bool hasImmediate()
-    {
-        return false;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_R:" << std::endl;
-        for (const auto &f : fields_) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
-};
-
-inline std::ostream &operator<<(std::ostream &os, const Form_R &)
-{
-    Form_R::print(os);
-    return os;
-}
-
-/**
  * Floating point R-Form
  */
 class Form_Rfloat
@@ -2403,7 +2195,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"Rfloat"};
+    static inline const char * name_ {"Rfloat"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func7", 25, 7),
@@ -2438,7 +2230,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -2471,9 +2263,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -2512,7 +2304,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"R4"};
+    static inline const char * name_ {"R4"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("rs3", 27, 5),
@@ -2550,7 +2342,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -2583,9 +2375,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -2623,7 +2415,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"S"};
+    static inline const char * name_ {"S"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("imm7", 25, 7),
@@ -2658,7 +2450,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -2691,9 +2483,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::SIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -2728,7 +2520,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"U"};
+    static inline const char * name_ {"U"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("imm20", 12, 20),
@@ -2753,7 +2545,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -2786,9 +2578,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -2818,29 +2610,31 @@ public:
     {
         FUNC1A = 0,
         FUNC1B,
-        FUNC4,
+        FUNC3A,
+        FUNC1C,
         VM,
         RS2,
         RS1,
         SIMM5,      // Alias for RS1 in vector-immediate (signed) instructions
-        FUNC3,
+        FUNC3B,
         RD,
         OPCODE,
         __N
     };
 
 private:
-    static inline const std::string name_ {"V"};
+    static inline const char * name_ {"V"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func1a", 31, 1),
         Field("func1b", 30, 1),
-        Field("func4", 26, 4),
+        Field("func3a", 27, 3),
+        Field("func1c", 26, 1),
         Field("vm", 25, 1),
         Field("rs2", 20, 5),
         Field("rs1", 15, 5),
         Field("simm5", 15, 5),
-        Field("func3", 12, 3),
+        Field("func3b", 12, 3),
         Field("rd", 7, 5),
         Field("opcode", 0, 7)
     };
@@ -2848,12 +2642,13 @@ private:
     static inline const std::map<std::string, const Field &> fmap_ {
         {"func1a",  fields_[idType::FUNC1A]},
         {"func1b",  fields_[idType::FUNC1B]},
-        {"func4",   fields_[idType::FUNC4]},
+        {"func3a",  fields_[idType::FUNC3A]},
+        {"func1c",  fields_[idType::FUNC1C]},
         {"vm",      fields_[idType::VM]},
         {"rs2",     fields_[idType::RS2]},
         {"rs1",     fields_[idType::RS1]},
         {"simm5",   fields_[idType::SIMM5]},
-        {"func3",   fields_[idType::FUNC3]},
+        {"func3b",  fields_[idType::FUNC3B]},
         {"rd",      fields_[idType::RD]},
         {"opcode",  fields_[idType::OPCODE]}
     };
@@ -2861,26 +2656,28 @@ private:
     static inline const std::map<std::string, idType> imap_ {
         {"func1a",  idType::FUNC1A},
         {"func1b",  idType::FUNC1B},
-        {"func4",   idType::FUNC4},
+        {"func3a",  idType::FUNC3A},
+        {"func1c",  idType::FUNC1C},
         {"vm",      idType::VM},
         {"rs2",     idType::RS2},
         {"rs1",     idType::RS1},
         {"simm5",   idType::SIMM5},
-        {"func3",   idType::FUNC3},
+        {"func3b",  idType::FUNC3B},
         {"rd",      idType::RD},
         {"opcode",  idType::OPCODE}
     };
 
     static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
         fields_[idType::OPCODE],
-        fields_[idType::FUNC3],
+        fields_[idType::FUNC3A],
         fields_[idType::FUNC1A],
         fields_[idType::FUNC1B],
-        fields_[idType::FUNC4]
+        fields_[idType::FUNC1C],
+        fields_[idType::FUNC3B]
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -2913,9 +2710,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -2957,7 +2754,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"VF_mem"};
+    static inline const char * name_ {"VF_mem"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("nf", 29, 3),
@@ -3002,7 +2799,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -3035,9 +2832,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -3076,7 +2873,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"V_vsetvli"};
+    static inline const char * name_ {"V_vsetvli"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func1", 31, 1),
@@ -3112,7 +2909,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -3145,9 +2942,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -3186,7 +2983,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"V_vsetivli"};
+    static inline const char * name_ {"V_vsetivli"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func2", 30, 2),
@@ -3222,7 +3019,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -3255,9 +3052,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return true;
+        return ImmediateType::UNSIGNED;
     }
 
     static inline void print(std::ostream &os)
@@ -3296,7 +3093,7 @@ public:
     };
 
 private:
-    static inline const std::string name_ {"V_vsetvl"};
+    static inline const char * name_ {"V_vsetvl"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
         Field("func7", 25, 7),
@@ -3332,7 +3129,7 @@ private:
     };
 
 public:
-    static inline const std::string &getName()
+    static inline std::string getName()
     {
         return name_;
     }
@@ -3365,9 +3162,9 @@ public:
         return opcode_fields_;
     }
 
-    static inline bool hasImmediate()
+    static inline ImmediateType getImmediateType()
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     static inline void print(std::ostream &os)
@@ -3388,5 +3185,122 @@ inline std::ostream &operator<<(std::ostream &os, const Form_V_vsetvl &)
     return os;
 }
 
+/*
+ * Form_V_uimm6 (most vector insts, base opcode 0x57)
+ */
+class Form_V_uimm6
+{
+public:
+    enum idType : uint32_t
+    {
+        FUNC5 = 0,
+        I5,
+        VM,
+        RS2,
+        UIMM5,      // Alias for RS1 in vector-immediate (signed) instructions
+        FUNC3,
+        RD,
+        OPCODE,
+        __N
+    };
+
+private:
+    static inline const char * name_ {"V_uimm6"};
+
+    static inline const std::array<const Field, idType::__N> fields_ {
+        Field("func5", 27, 5),
+        Field("i5", 26, 1),
+        Field("vm", 25, 1),
+        Field("rs2", 20, 5),
+        Field("uimm5", 15, 5),
+        Field("func3", 12, 3),
+        Field("rd", 7, 5),
+        Field("opcode", 0, 7)
+    };
+
+    static inline const std::map<std::string, const Field &> fmap_ {
+        {"func5",   fields_[idType::FUNC5]},
+        {"i5",      fields_[idType::I5]},
+        {"vm",      fields_[idType::VM]},
+        {"rs2",     fields_[idType::RS2]},
+        {"uimm5",   fields_[idType::UIMM5]},
+        {"func3",   fields_[idType::FUNC3]},
+        {"rd",      fields_[idType::RD]},
+        {"opcode",  fields_[idType::OPCODE]}
+    };
+
+    static inline const std::map<std::string, idType> imap_ {
+        {"func5",   idType::FUNC5},
+        {"i5",      idType::I5},
+        {"vm",      idType::VM},
+        {"rs2",     idType::RS2},
+        {"uimm5",   idType::UIMM5},
+        {"func3",   idType::FUNC3},
+        {"rd",      idType::RD},
+        {"opcode",  idType::OPCODE}
+    };
+
+    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+        fields_[idType::OPCODE],
+        fields_[idType::FUNC3],
+        fields_[idType::FUNC5]
+    };
+
+public:
+    static inline std::string getName()
+    {
+        return name_;
+    }
+
+    static inline const Field &getField(const idType fid)
+    {
+        return fields_[fid];
+    }
+
+    static inline const Field &getField(const std::string &fname)
+    {
+        const auto itr = fmap_.find(fname);
+        if (itr == fmap_.end()) {
+            throw BuildErrorUnknownFormField(name_, fname);
+        }
+        return itr->second;
+    }
+
+    static inline uint32_t getFieldIndex(const std::string &fname)
+    {
+        const auto itr = imap_.find(fname);
+        if (itr == imap_.end()) {
+            throw BuildErrorUnknownFormField(name_, fname);
+        }
+        return itr->second;
+    }
+
+    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
+    {
+        return opcode_fields_;
+    }
+
+    static inline ImmediateType getImmediateType()
+    {
+        return ImmediateType::NONE;
+    }
+
+    static inline void print(std::ostream &os)
+    {
+        std::ios_base::fmtflags os_state(os.flags());
+        os << "Fields of Form_V_uimm6:" << std::endl;
+        for (const auto &f : fields_) {
+            os << "\t" << f << std::endl;
+        }
+        os.flags(os_state);
+    }
+};
+
+
+inline std::ostream &operator<<(std::ostream &os, const Form_V_uimm6 &)
+{
+    Form_V_uimm6::print(os);
+    return os;
+}
 
 } // namespace mavis

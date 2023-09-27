@@ -253,6 +253,7 @@ public:
     //const uint32_t data_n_sources;
 
     const bool is_hint;
+    const ImmediateType immediate_type;
     const bool has_immediate;
     const uint64_t immediate;
     const int64_t signed_offset;
@@ -366,6 +367,7 @@ public:
         //data_n_sources(data_source_vals.size()),
 
         is_hint(extractor->isHint(icode)),
+        immediate_type(extractor->getImmediateType()),
         has_immediate(extractor->hasImmediate()),
         immediate(extractor->getImmediate(icode)),
         signed_offset(extractor->getSignedOffset(icode)),
@@ -377,6 +379,7 @@ public:
         // FOR NOW: We bypass these checks if we're given an pseudo op (opcode = 0, e.g. from makeInstDirectly() et al)
         if (icode != 0 ) {
             const std::string&  form_name = extractor->getName();
+            (void) form_name;
 
             //OperandArray    x_arr = extractor->getSourceList(icode);
             //assert(agree_(x_arr, sources, "sources", form_name));

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "IFactory.h"
+#include "FormCommon.h"
+#include <string>
 
 namespace mavis {
 

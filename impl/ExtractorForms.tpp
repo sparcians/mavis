@@ -238,6 +238,11 @@ public:
         return olist;
     }
 
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
+    }
+
     uint64_t getImmediate(const Opcode icode) const override
     {
         const uint64_t imm7 = extract_(Form_B::idType::IMM7, icode & ~fixed_field_mask_);
@@ -761,6 +766,11 @@ public:
         return olist;
     }
 
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
+    }
+
     uint64_t getImmediate(const Opcode icode) const override
     {
         const uint64_t imm3 = extract_(Form_CB::idType::IMM3, icode);
@@ -880,6 +890,11 @@ public:
                                    fixed_field_mask_, Form_CI::idType::RD,
                                    false, suppress_x0);
         return olist;
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -1012,6 +1027,11 @@ public:
                                    fixed_field_mask_, Form_CI_rD_only::idType::RD,
                                    false, suppress_x0);
         return olist;
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -1290,6 +1310,11 @@ public:
                              REGISTER_X0, false);
         }
         return olist;
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -1883,6 +1908,11 @@ public:
         return olist;
     }
 
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
+    }
+
     uint64_t getImmediate(const Opcode icode) const override
     {
         return extract_(Form_I::idType::IMM, icode);
@@ -2203,6 +2233,11 @@ public:
                                    fixed_field_mask_, Form_J::idType::RD,
                                    false, suppress_x0);
         return olist;
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -2714,6 +2749,11 @@ public:
         return extractUnmaskedIndexBit_(Form_S::idType::RS2, icode, fixed_field_mask_);
     }
 
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
+    }
+
     uint64_t getImmediate(const Opcode icode) const override
     {
         return (extract_(Form_S::idType::IMM7, icode & ~fixed_field_mask_) << 5ull) |
@@ -2812,6 +2852,11 @@ public:
                                    fixed_field_mask_, Form_U::idType::RD,
                                    false, suppress_x0);
         return olist;
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::SIGNED;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -3543,6 +3588,163 @@ private:
     {}
 
     uint64_t fixed_field_mask_ = 0;
+};
+
+/**
+ * V_uimm6-Form Extractor
+ */
+template<>
+class Extractor<Form_V_uimm6> : public ExtractorBase<Form_V_uimm6>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_V_uimm6>(ffmask, fset));
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_V_uimm6::idType::RS2, icode, fixed_field_mask_);
+    }
+
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_V_uimm6::idType::RD, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceOperTypeRegs(const Opcode icode,
+                                   const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind)) {
+            return 0;
+        } else if (meta->isAllOperandType(kind)) {
+            return getSourceRegs(icode);
+        } else {
+            uint64_t result = 0;
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RS2, kind)) {
+                result |= extractUnmaskedIndexBit_(Form_V_uimm6::idType::RS2, icode, fixed_field_mask_);
+            }
+            return result;
+        }
+    }
+
+    uint64_t getDestOperTypeRegs(const Opcode icode,
+                                 const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind)) {
+            return 0;
+        } else if (meta->isAllOperandType(kind)) {
+            return getDestRegs(icode);
+        } else {
+            uint64_t result = 0;
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RD, kind)) {
+                result |= extractUnmaskedIndexBit_(Form_V_uimm6::idType::RD, icode, fixed_field_mask_);
+            }
+            return result;
+        }
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS2,
+                                   fixed_field_mask_, Form_V_uimm6::idType::RS2,
+                                   false, suppress_x0);
+        return olist;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                   fixed_field_mask_, Form_V_uimm6::idType::RD,
+                                   false, suppress_x0);
+        return olist;
+    }
+
+    // TODO: add VM special fields
+    uint64_t getSpecialField(SpecialField sfid, Opcode icode) const override
+    {
+        switch(sfid) {
+            // TODO: All forms should be using this pattern...
+            case SpecialField::VM:
+                if (isMaskedField_(Form_V_uimm6::idType::VM, fixed_field_mask_)) {
+                    throw UnsupportedExtractorSpecialFieldID("VM", icode);
+                } else {
+                    return extract_(Form_V_uimm6::idType::VM, icode);
+                }
+            case SpecialField::RM:
+            case SpecialField::AQ:
+            case SpecialField::AVL:
+            case SpecialField::CSR:
+            case SpecialField::FM:
+            case SpecialField::NF:
+            case SpecialField::PRED:
+            case SpecialField::RL:
+            case SpecialField::SUCC:
+            case SpecialField::WD:
+            case SpecialField::__N:
+                return ExtractorBase::getSpecialField(sfid, icode);
+        }
+        return 0;
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic
+           << "\tv" << extract_(Form_V_uimm6::idType::RD, icode & ~fixed_field_mask_)
+           << ",v" << extract_(Form_V_uimm6::idType::RS2, icode & ~fixed_field_mask_)
+           << ",0x" << std::hex << getImmediate(icode);
+        // Show the vm operand if masking mode is on
+        if (!isMaskedField_(Form_V_uimm6::idType::VM, fixed_field_mask_)) {
+            if (!extract_(Form_V_uimm6::idType::VM, icode)) {
+                ss << ",v0.t";
+            }
+        }
+        return ss.str();
+    }
+
+    std::string dasmString(const std::string &mnemonic, const Opcode icode, const InstMetaData::PtrType& meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 { { Form_V_uimm6::idType::RD, InstMetaData::OperandFieldID::RD },
+                                   { Form_V_uimm6::idType::RS2, InstMetaData::OperandFieldID::RS2 } })
+           << "," << std::dec << getImmediate(icode);
+        // Show the vm operand if masking mode is on
+        if (!isMaskedField_(Form_V_uimm6::idType::VM, fixed_field_mask_)) {
+            if (!extract_(Form_V_uimm6::idType::VM, icode)) {
+                ss << ",v0.t";
+            }
+        }
+        return ss.str();
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        return (extract_(Form_V_uimm6::idType::I5,    icode & ~fixed_field_mask_) << 5) |
+               (extract_(Form_V_uimm6::idType::UIMM5, icode & ~fixed_field_mask_));
+        return 0;
+    }
+
+    ImmediateType getImmediateType() const override
+    {
+        return ImmediateType::UNSIGNED;
+    }
+
+protected:
+    Extractor<Form_V_uimm6>(const uint64_t ffmask, const uint64_t fset) :
+        fixed_field_mask_(ffmask), fixed_field_set_(fset)
+    {}
+
+    uint64_t fixed_field_mask_ = 0;
+    uint64_t fixed_field_set_ = 0;
 };
 
 }

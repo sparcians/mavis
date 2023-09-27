@@ -8,8 +8,12 @@ include_directories(.)
 include_directories(impl)
 include_directories(mavis)
 
-add_subdirectory(test)
-add_subdirectory(example)
+add_library(mavis
+  impl/ExtractorRegistry.cpp
+  impl/FormRegistry.cpp
+)
+
+add_subdirectory(test EXCLUDE_FROM_ALL)
 
 #
 # CppCheck

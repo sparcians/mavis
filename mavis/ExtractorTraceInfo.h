@@ -47,7 +47,7 @@ public:
         tinfo_(tinfo)
     {}
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }
@@ -166,10 +166,9 @@ public:
         return olist;
     }
 
-    // TODO: This will need to change if TraceInfo extractors are used more extensively
-    bool hasImmediate() const override
+    ImmediateType getImmediateType() const override
     {
-        return false;
+        return ImmediateType::NONE;
     }
 
     uint64_t getImmediate(const Opcode) const override
@@ -177,9 +176,9 @@ public:
         return tinfo_.getImmediate();
     }
 
-    int64_t getSignedOffset(const Opcode) const override
+    int64_t getSignedOffset(const Opcode icode) const override
     {
-        return 0;
+        return getImmediate(icode);
     }
 
     // For hashing...
@@ -217,7 +216,9 @@ public:
     }
     const std::string& getDasmAnnotation() const override
     {
+        static const std::string empty;
         assert(false);
+        return empty;
     }
 
     void print(std::ostream &os) const override

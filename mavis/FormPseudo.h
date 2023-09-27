@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Form.h"
+#include <string>
 
 namespace mavis {
 
@@ -29,7 +29,7 @@ private:
     static inline const Field family_ = {"family", 0, 16};
 
 public:
-    static inline const std::string getName()
+    static inline std::string getName()
     {
         return "'*' PseudoForm";
     }
@@ -57,4 +57,3 @@ public:
 };
 
 } // namespace mavis
-

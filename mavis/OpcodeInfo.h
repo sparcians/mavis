@@ -55,6 +55,11 @@ public:
         return info_->is_hint;
     }
 
+    ImmediateType getImmediateType() const
+    {
+        return info_->immediate_type;
+    }
+
     bool hasImmediate() const
     {
         return info_->has_immediate;
@@ -341,6 +346,11 @@ public:
     uint32_t getDataSize() const
     {
         return meta_->getDataSize();
+    }
+
+    MatchSet<Tag> getTags() const
+    {
+        return meta_->getTags();
     }
 
     // NOTE: We don't cache the special fields in the decoded

@@ -8,8 +8,10 @@ jalr,0x67
 jal,0x6f
 lui,0x37
 auipc,0x17
-addi,0xf0000013
-mv,0x93
+addi,0xf0008013
+li,0xf0000013
+mv,0x8093
+li,0x93
 nop,0x13
 slli,0x1013
 slti,0x2013
@@ -335,7 +337,7 @@ vfwnmacc.vf,0xf4005057
 vfwmsac.vf,0xf8005057
 vfwnmsac.vf,0xfc005057
 vfadd.vv,0x1057
-vfredsum.vs,0x4001057
+vfredusum.vs,0x4001057
 vfsub.vv,0x8001057
 vfredosum.vs,0xc001057
 vfmin.vv,0x10001057
@@ -384,7 +386,7 @@ vfncvt.rtz.x.f.w,0x480b9057
 vfsqrt.v,0x4c001057
 vfclass.v,0x4c081057
 vfwadd.vv,0xc0001057
-vfwredsum.vs,0xc4001057
+vfwredusum.vs,0xc4001057
 vfwsub.vv,0xc8001057
 vfwredosum.vs,0xcc001057
 vfwadd.wv,0xd0001057

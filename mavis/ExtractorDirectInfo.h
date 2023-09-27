@@ -37,19 +37,19 @@ class ExtractorDirectBase : public ExtractorDirectInfoIF
 {
 public:
     explicit ExtractorDirectBase(const std::string &mnemonic) :
-        mnemonic_(mnemonic), uid_(INVALID_UID), immediate_(0), has_immediate_(false)
+        mnemonic_(mnemonic), uid_(INVALID_UID), immediate_(0), immediate_type_(ImmediateType::NONE)
     {}
 
-    explicit ExtractorDirectBase(const std::string &mnemonic, uint64_t imm) :
-        mnemonic_(mnemonic), uid_(INVALID_UID), immediate_(imm), has_immediate_(true)
+    explicit ExtractorDirectBase(const std::string &mnemonic, uint64_t imm, ImmediateType itype = ImmediateType::UNSIGNED) :
+            mnemonic_(mnemonic), uid_(INVALID_UID), immediate_(imm), immediate_type_(itype)
     {}
 
     explicit ExtractorDirectBase(const InstructionUniqueID uid) :
-        mnemonic_("UNSET-in-ExtractorDirectBase"), uid_(uid), immediate_(0), has_immediate_(false)
+        mnemonic_("UNSET-in-ExtractorDirectBase"), uid_(uid), immediate_(0), immediate_type_(ImmediateType::NONE)
     {}
 
-    explicit ExtractorDirectBase(const InstructionUniqueID uid, uint64_t imm) :
-        mnemonic_("UNSET-in-ExtractorDirectBase"), uid_(uid), immediate_(imm), has_immediate_(true)
+    explicit ExtractorDirectBase(const InstructionUniqueID uid, uint64_t imm, ImmediateType itype = ImmediateType::UNSIGNED) :
+            mnemonic_("UNSET-in-ExtractorDirectBase"), uid_(uid), immediate_(imm), immediate_type_(itype)
     {}
 
     ExtractorDirectBase(const ExtractorDirectBase &other) = default;
@@ -100,9 +100,9 @@ public:
         return {};
     }
 
-    bool hasImmediate() const override
+    ImmediateType getImmediateType() const override
     {
-        return has_immediate_;
+        return immediate_type_;
     }
 
     uint64_t getImmediate(const uint64_t) const override
@@ -166,7 +166,7 @@ protected:
     const std::string mnemonic_;
     const InstructionUniqueID uid_ = INVALID_UID;
     const uint64_t immediate_;
-    const bool has_immediate_;
+    const ImmediateType immediate_type_;
 
     /**
      * \brief Returns a vector of bit indices from combined (AND-ed) BitMasks
@@ -282,7 +282,7 @@ public:
         return std::make_shared<ExtractorDirectInfo>(*this);
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }
@@ -384,7 +384,7 @@ public:
             }
             ss << static_cast<uint32_t>(reg);
         }
-        if (has_immediate_) {
+        if (hasImmediate()) {
             ss << ", 0x" << std::hex << immediate_;
         }
         return ss.str();
@@ -452,7 +452,7 @@ public:
         return std::make_shared<ExtractorDirectOpInfoList>(*this);
     }
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }
@@ -518,7 +518,7 @@ public:
             }
             ss << static_cast<uint32_t>(el.field_value);
         }
-        if (has_immediate_) {
+        if (hasImmediate()) {
             ss << " 0x" << std::hex << immediate_;
         }
         return ss.str();

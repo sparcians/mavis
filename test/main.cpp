@@ -3,6 +3,10 @@
 #include "Inst.h"
 #include "uArchInfo.h"
 
+#include "MatchSet.hpp"
+#include "Tag.hpp"
+#include "Pattern.hpp"
+
 // For custom extraction
 #include "ExtractorDirectImplementations.hpp"
 

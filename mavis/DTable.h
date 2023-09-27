@@ -6,9 +6,8 @@
 #include <vector>
 #include <set>
 #include "json.hpp"
-#include "Form.h"
-#include "FormPseudo.h"
 #include "FormRegistry.h"
+#include "FormPseudo.h"
 #include "IFactory.h"
 #include "IFactoryBuilder.h"
 #include "InstMetaData.h"
@@ -19,6 +18,9 @@
 #include "ExtractorRegistry.h"
 #include "DecoderTypes.h"
 #include "DecoderExceptions.h"
+#include "Tag.hpp"
+#include "Pattern.hpp"
+#include "MatchSet.hpp"
 
 namespace mavis {
 // TODO: How to write decode stanzas in the JSON file
@@ -146,7 +148,9 @@ public:
 #endif
     }
 
-    void configure(const FileNameListType &isa_files);
+    void configure(const FileNameListType &isa_files,
+                   const MatchSet<Pattern>& inclusions = MatchSet<Pattern>(),
+                   const MatchSet<Pattern>& exclusions = MatchSet<Pattern>());
 
     typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType getInfo(const Opcode icode)
     {
@@ -196,13 +200,10 @@ public:
     }
 
     /**
-     * \brief makeInstFromTrace -- use information from trace to generate an instruction
-     * 
-     * TraceInfoType needs to implement getOpCode() and getMnemonic()
-     * 
+     * makeInstFromTrace -- use information from trace to generate an instruction
      * @tparam TraceInfoType
      * @param tinfo
-     * @return mavis::InstType::PtrType
+     * @return
      */
     template<typename TraceInfoType, class InstTypeAllocator, typename ...ArgTypes>
     typename InstType::PtrType
@@ -314,7 +315,8 @@ private:
     std::unique_ptr<InstCache> icache_;
     std::unique_ptr<IFactoryCache> ocache_;
 
-    void parseInstInfo_(const std::string& jfile, const nlohmann::json& inst, const std::string& mnemonic);
+    void parseInstInfo_(const std::string& jfile, const nlohmann::json& inst, const std::string& mnemonic,
+                        const MatchSet<Tag>& tags);
 
     typename IFactoryIF<InstType, AnnotationType>::PtrType
     buildLeaf_(const FormWrapperIF *form, const typename IFactoryIF<InstType, AnnotationType>::PtrType &currNode,

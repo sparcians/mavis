@@ -26,7 +26,7 @@ public:
 
     ExtractorWrap(const ExtractorWrap &other) = delete;
 
-    const std::string &getName() const override
+    std::string getName() const override
     {
         return name_;
     }
@@ -121,9 +121,9 @@ public:
         }
     }
 
-    bool hasImmediate() const override
+    ImmediateType getImmediateType() const override
     {
-        return obj_->hasImmediate();
+        return obj_->getImmediateType();
     }
 
     uint64_t getImmediate(Opcode icode) const override

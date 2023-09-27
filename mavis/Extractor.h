@@ -1,11 +1,13 @@
 #pragma once
 
 #include "ExtractorIF.h"
+#include "DecoderConsts.h"
 #include "Swizzler.hpp"
 #include <ostream>
 #include <sstream>
 #include <string>
 #include <memory>
+#include <cinttypes>
 
 namespace mavis {
 
@@ -21,7 +23,7 @@ template<typename FormType>
 class ExtractorBase : public ExtractorIF
 {
 public:
-    const std::string& getName() const override
+    std::string getName() const override
     {
         return FormType::getName();
     }
@@ -92,10 +94,9 @@ public:
         return 0;
     }
 
-    // Default implementation returns 0
     int64_t getSignedOffset(const Opcode icode) const override
     {
-        return 0;
+        return getImmediate(icode);
     }
 
     uint64_t getSpecialField(SpecialField sfid, Opcode icode) const override
@@ -129,22 +130,26 @@ public:
         return 0;
     }
 
-    bool hasImmediate() const override
+    ImmediateType getImmediateType() const override
     {
-        return FormType::hasImmediate();
+        return FormType::getImmediateType();
     }
 
     // TODO: If we need annotations for disassembly for normal extractors, we
     // can add it here. See the implementation in ExtractorDirectInfoBase as a
     // reference
-    void dasmAnnotate(const std::string& txt) override
+    void dasmAnnotate(const std::string&) override
     {
         assert(false);
     }
+
     const std::string& getDasmAnnotation() const override
     {
+        static const std::string empty_string;
         assert(false);
+        return empty_string;
     }
+
 
     void print(std::ostream& os) const override
     {
@@ -153,6 +158,7 @@ public:
     }
 
 protected:
+
     static inline uint64_t extract_(const typename FormType::idType fid, const Opcode icode)
     {
         return FormType::getField(fid).extract(icode);
@@ -239,6 +245,19 @@ protected:
             uint64_t reg = extract_(fid, icode);
             if (!suppress_x0 || (reg != REGISTER_X0)) {
                 olist.addElement(mid, meta->getOperandType(mid), reg, is_store_data);
+            }
+        }
+    }
+
+    static inline void appendUnmaskedImpliedOperandInfo_(OperandInfo& olist, Opcode icode,
+                                                  const InstMetaData::PtrType &meta, InstMetaData::OperandFieldID mid,
+                                                  const uint64_t mask, typename FormType::idType fid,
+                                                  bool is_store_data = false, bool suppress_x0 = false)
+    {
+        if (!isMaskedField_(fid, mask)) {
+            uint64_t reg = extract_(fid, icode);
+            if (!suppress_x0 || (reg != REGISTER_X0)) {
+                olist.addElement(mid, meta->getOperandType(mid), reg, is_store_data, true);
             }
         }
     }
