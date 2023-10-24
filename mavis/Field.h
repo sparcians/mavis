@@ -4,6 +4,7 @@
 #include <string>
 #include <array>
 #include <cassert>
+#include <cstdint>
 
 namespace mavis {
 
