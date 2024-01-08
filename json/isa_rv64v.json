@@ -26,7 +26,8 @@
     "xform": "V_load",
     "type": [ "vector", "mask", "unit_stride", "load" ],
     "l-oper": [ "rs1" ],
-    "v-oper": [ "rd" ]
+    "v-oper": [ "rd" ],
+    "data": 8
   },
   {
     "mnemonic": "vsetivli",
@@ -95,7 +96,8 @@
     "xform": "V_store",
     "type": [ "vector", "mask", "unit_stride", "store" ],
     "l-oper": [ "rs1" ],
-    "v-oper": [ "rs3" ]
+    "v-oper": [ "rs3" ],
+    "data": 8
   },
   {
     "mnemonic": "vse8.v",
