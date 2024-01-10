@@ -1931,7 +1931,7 @@
     "v-oper": "all"
   },
   {
-    "mnemonic": "vmandnot.mm",
+    "mnemonic": "vmandn.mm",
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x60002057",
@@ -1963,7 +1963,7 @@
     "v-oper": "all"
   },
   {
-    "mnemonic": "vmornot.mm",
+    "mnemonic": "vmorn.mm",
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x70002057",

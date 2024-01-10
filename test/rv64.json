@@ -2905,7 +2905,7 @@
 		"stencil" : "0x5e002057"
 	},
 	{
-		"mnemonic" : "vmandnot.mm",
+		"mnemonic" : "vmandn.mm",
 		"form" : "R",
 		"stencil" : "0x60002057"
 	},
@@ -2925,7 +2925,7 @@
 		"stencil" : "0x6c002057"
 	},
 	{
-		"mnemonic" : "vmornot.mm",
+		"mnemonic" : "vmorn.mm",
 		"form" : "R",
 		"stencil" : "0x70002057"
 	},
