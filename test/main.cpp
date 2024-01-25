@@ -225,6 +225,12 @@ int main() {
     runTSet(mavis_facade, "rv64.tset");
     runTSet(mavis_facade, "rv64_bits.tset", {mavis::InstMetaData::ISAExtension::B});
 
+    // sext.b
+    inst = mavis_facade.makeInst(0x60401013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x0x60401013 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "sext.b");
+
     // Switch back to BASE context
     mavis_facade.switchContext("BASE");
 

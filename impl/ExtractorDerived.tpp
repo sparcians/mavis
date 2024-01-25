@@ -1373,7 +1373,7 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\t" << extract_(Form_C2::idType::RD, icode)
-           << ", 0, " << extract_(Form_C2::idType::RS2, icode); // RS2 == RS
+           << ", " << extract_(Form_C2::idType::RS2, icode); // RS2 == RS
         return ss.str();
     }
 
@@ -1383,7 +1383,7 @@ public:
         ss << mnemonic << "\t"
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_C2::idType::RD, InstMetaData::OperandFieldID::RD } })
-           << ", x0, "
+           << ", "
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_C2::idType::RS2, InstMetaData::OperandFieldID::RS2 } });
         return ss.str();
