@@ -4,13 +4,23 @@ Mavis is a framework that allows decoding of the RISC-V ISA into
 custom instruction class types as well as custom extensions to those
 class types.
 
-## Building
+## Run regression
 
-Mavis is a header-only library.  To build a tester:
+Mavis is a header-only library. Regression needs to build a tester.
 
+* Build library for tester, output will be `libmavis.a`
+```
+cmake .
+make -j8
+```
+* Build tester, output will be `Mavis`
 ```
 cd test
 cmake .
 make
-./Mavis
+```
+* Execute the tester and compare golden `out`
+```
+./Mavis > test.out
+diff -s test.out golden.out
 ```
