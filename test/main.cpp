@@ -196,6 +196,9 @@ int main() {
     // Test HV decoding
     runTSet(mavis_facade, "rv64h.tset");
 
+    // Test BF16 extensions
+    runTSet(mavis_facade, "rv64_bf16.tset");
+
     // Exercise the cache
     runTSet(mavis_facade, "rv64.tset");
     mavis_facade.flushCaches();

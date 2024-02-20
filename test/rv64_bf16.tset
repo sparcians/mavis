@@ -1,0 +1,4 @@
+fcvt.bf16.s,448ff6d3
+fcvt.s.bf16,0x4061f153
+vfwmaccbf16.vv,0xec109157
+vfwmaccbf16.vf,0xec105157
