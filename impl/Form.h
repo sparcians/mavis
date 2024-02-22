@@ -88,11 +88,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -196,11 +191,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -309,11 +299,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -428,11 +413,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -549,11 +529,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -649,11 +624,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -758,11 +728,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -862,11 +827,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -970,11 +930,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1074,11 +1029,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1174,11 +1124,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1287,11 +1232,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1383,11 +1323,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1483,11 +1418,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1587,11 +1517,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1692,11 +1617,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1805,11 +1725,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -1915,11 +1830,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2025,11 +1935,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2121,11 +2026,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2230,11 +2130,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2342,11 +2237,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2450,11 +2340,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2545,11 +2430,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2677,11 +2557,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2799,11 +2674,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -2909,11 +2779,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -3019,11 +2884,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -3129,11 +2989,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];
@@ -3247,11 +3102,6 @@ private:
     };
 
 public:
-    static inline std::string getName()
-    {
-        return name_;
-    }
-
     static inline const Field &getField(const idType fid)
     {
         return fields_[fid];

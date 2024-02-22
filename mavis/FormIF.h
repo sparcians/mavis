@@ -50,9 +50,9 @@ template<typename FormType>
 class FormWrapper : public FormWrapperIF
 {
 public:
-    std::string getName() const override
+    static inline std::string getName()
     {
-        return FormType::getName();
+        return name_;
     }
 
     const Field& getField(const std::string& fname) const override
@@ -69,6 +69,9 @@ public:
     {
         return FormType::getOpcodeFields();
     }
+
+private:
+    static inline const char * name_ = "?";
 };
 
 } // namespace mavis
