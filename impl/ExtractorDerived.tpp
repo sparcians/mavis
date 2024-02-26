@@ -25,7 +25,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_I_mv>::getName();
+        return Form_I_mv::name;
     }
 
     ImmediateType getImmediateType() const override
@@ -58,7 +58,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_I_load>::getName();
+        return Form_I_load::name;
     }
 
     uint64_t getSourceAddressRegs(const Opcode icode) const override
@@ -95,7 +95,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_load>::getName();
+        return Form_C0_load::name;
     }
 
     uint64_t getSourceAddressRegs(const Opcode icode) const override
@@ -150,7 +150,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_load_byte>::getName();
+        return Form_C0_load_byte::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -185,7 +185,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_load_half>::getName();
+        return Form_C0_load_half::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -217,7 +217,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_load_word>::getName();
+        return Form_C0_load_word::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -253,7 +253,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_load_double>::getName();
+        return Form_C0_load_double::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -290,7 +290,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_store>::getName();
+        return Form_C0_store::name;
     }
 
     uint64_t getDestRegs(const uint64_t icode) const override
@@ -398,7 +398,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_store_byte>::getName();
+        return Form_C0_store_byte::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -434,7 +434,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_store_half>::getName();
+        return Form_C0_store_half::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -467,7 +467,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_store_word>::getName();
+        return Form_C0_store_word::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -504,7 +504,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C0_store_double>::getName();
+        return Form_C0_store_double::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -538,7 +538,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C1_rsd>::getName();
+        return Form_C1_rsd::name;
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override
@@ -649,7 +649,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C1_rsd_I0>::getName();
+        return Form_C1_rsd_I0::name;
     }
 
     ImmediateType getImmediateType() const override
@@ -687,7 +687,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C1_rsd_zext_I0>::getName();
+        return Form_C1_rsd_zext_I0::name;
     }
 
     uint64_t getSourceRegs(const uint64_t icode) const override
@@ -754,7 +754,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C1_rsd_Ineg1>::getName();
+        return Form_C1_rsd_Ineg1::name;
     }
 
     ImmediateType getImmediateType() const override
@@ -791,7 +791,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C1_rsd_I0xFF>::getName();
+        return Form_C1_rsd_I0xFF::name;
     }
 
     ImmediateType getImmediateType() const override
@@ -833,7 +833,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_CI_addi>::getName();
+        return Form_CI_addi::name;
     }
 
 private:
@@ -865,7 +865,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_CI_addiw>::getName();
+        return Form_CI_addiw::name;
     }
 
 private:
@@ -901,7 +901,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_CI_sp>::getName();
+        return Form_CI_sp::name;
     }
 
     ImmediateType getImmediateType() const override
@@ -965,7 +965,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_CIW_sp>::getName();
+        return Form_CIW_sp::name;
     }
 
     // TODO Form_CIW (base class) has no sources, so this is overkill...
@@ -1083,7 +1083,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_CIX_andi>::getName();
+        return Form_CIX_andi::name;
     }
 
     ImmediateType getImmediateType() const override
@@ -1121,7 +1121,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_CJALR>::getName();
+        return Form_CJALR::name;
     }
 
     uint64_t getDestRegs(const uint64_t) const override
@@ -1226,7 +1226,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_add>::getName();
+        return Form_C2_add::name;
     }
 
     bool isHint(Opcode icode) const override
@@ -1321,7 +1321,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_mv>::getName();
+        return Form_C2_mv::name;
     }
 
     bool isHint(Opcode icode) const override
@@ -1413,7 +1413,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_slli>::getName();
+        return Form_C2_slli::name;
     }
 
     bool isHint(Opcode icode) const override
@@ -1507,7 +1507,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_sp>::getName();
+        return Form_C2_sp::name;
     }
 
     uint64_t getSourceRegs(const uint64_t icode) const override
@@ -1598,7 +1598,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_sp_load>::getName();
+        return Form_C2_sp_load::name;
     }
 
     bool isIllop(Opcode icode) const override
@@ -1654,7 +1654,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_sp_load_word>::getName();
+        return Form_C2_sp_load_word::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -1690,7 +1690,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_sp_load_double>::getName();
+        return Form_C2_sp_load_double::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -1726,7 +1726,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_sp_load_float_single>::getName();
+        return Form_C2_sp_load_float_single::name;
     }
 
     bool isIllop(Opcode) const override
@@ -1758,7 +1758,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_sp_load_float_double>::getName();
+        return Form_C2_sp_load_float_double::name;
     }
 
     bool isIllop(Opcode) const override
@@ -1790,7 +1790,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_sp_store_word>::getName();
+        return Form_C2_sp_store_word::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -1825,7 +1825,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_C2_sp_store_double>::getName();
+        return Form_C2_sp_store_double::name;
     }
 
     uint64_t getImmediate(const Opcode icode) const override
@@ -1861,7 +1861,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_CI_rD_shifted>::getName();
+        return Form_CI_rD_shifted::name;
     }
 
     bool isIllop(Opcode icode) const override
@@ -1957,7 +1957,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_V_load>::getName();
+        return Form_V_load::name;
     }
 
 private:
@@ -1984,7 +1984,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_V_store>::getName();
+        return Form_V_store::name;
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override
@@ -2119,7 +2119,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_V_uimm>::getName();
+        return Form_V_uimm::name;
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override
@@ -2246,7 +2246,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_V_simm>::getName();
+        return Form_V_simm::name;
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override
@@ -2321,7 +2321,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_V_op>::getName();
+        return Form_V_op::name;
     }
 
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
@@ -2518,7 +2518,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_V_implied>::getName();
+        return Form_V_implied::name;
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override
@@ -2573,7 +2573,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_V_op_implied>::getName();
+        return Form_V_op_implied::name;
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override
@@ -2628,7 +2628,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_V_uimm_implied>::getName();
+        return Form_V_uimm_implied::name;
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override
@@ -2681,7 +2681,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_NTL_hint>::getName();
+        return Form_NTL_hint::name;
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
@@ -2720,7 +2720,7 @@ public:
 
     std::string getName() const override
     {
-        return Form<Form_PF_hint>::getName();
+        return Form_PF_hint::name;
     }
 
     uint64_t getSourceRegs(const Opcode icode) const override

@@ -28,40 +28,40 @@ public:
 
     static std::string getName()
     {
-        return FormType::name_;
+        return FormType::name;
     }
 
     static const Field &getField(const uint32_t fid)
     {
-        return FormType::fields_[fid];
+        return FormType::fields[fid];
     }
 
     static const Field &getField(const std::string &fname)
     {
-        const auto itr = FormType::fmap_.find(fname);
-        if (itr == FormType::fmap_.end()) {
-            throw BuildErrorUnknownFormField(FormType::name_, fname);
+        const auto itr = FormType::fmap.find(fname);
+        if (itr == FormType::fmap.end()) {
+            throw BuildErrorUnknownFormField(FormType::name, fname);
         }
         return itr->second;
     }
 
     static uint32_t getFieldIndex(const std::string &fname)
     {
-        const auto itr = FormType::imap_.find(fname);
-        if (itr == FormType::imap_.end()) {
-            throw BuildErrorUnknownFormField(FormType::name_, fname);
+        const auto itr = FormType::imap.find(fname);
+        if (itr == FormType::imap.end()) {
+            throw BuildErrorUnknownFormField(FormType::name, fname);
         }
         return itr->second;
     }
 
     static const FieldsType& getFields()
     {
-        return FormType::fields_;
+        return FormType::fields;
     }
 
     static const FieldsType& getOpcodeFields()
     {
-        return FormType::opcode_fields_;
+        return FormType::opcode_fields;
     }
 
     static ImmediateType getImmediateType()
