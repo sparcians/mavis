@@ -3,6 +3,8 @@
 // This file contains a few common Forms used in Mavis custom
 // factories, etc.
 
+#include "FormIF.h"
+
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -28,7 +30,6 @@ namespace mavis
                 __N
             };
 
-    private:
         static inline const char * name_ {"I"};
 
         static inline const std::array<const Field, idType::__N> fields_ {
@@ -55,44 +56,10 @@ namespace mavis
             {"opcode", idType::OPCODE}
         };
 
-        static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+        static inline FieldsType opcode_fields_ {
             fields_[idType::OPCODE],
             fields_[idType::FUNC3]
         };
-
-    public:
-        static inline const char *getName()
-        {
-            return name_;
-        }
-
-        static inline const Field &getField(const idType fid)
-        {
-            return fields_[fid];
-        }
-
-        static inline const Field &getField(const std::string &fname)
-        {
-            const auto itr = fmap_.find(fname);
-            if (itr == fmap_.end()) {
-                throw BuildErrorUnknownFormField(name_, fname);
-            }
-            return itr->second;
-        }
-
-        static inline uint32_t getFieldIndex(const std::string &fname)
-        {
-            const auto itr = imap_.find(fname);
-            if (itr == imap_.end()) {
-                throw BuildErrorUnknownFormField(name_, fname);
-            }
-            return itr->second;
-        }
-
-        static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-        {
-            return opcode_fields_;
-        }
 
         static inline ImmediateType getImmediateType()
         {
@@ -134,7 +101,6 @@ namespace mavis
                 __N
             };
 
-    private:
         static inline const char * name_ {"R"};
 
         static inline const std::array<const Field, idType::__N> fields_ {
@@ -164,45 +130,11 @@ namespace mavis
             {"opcode", idType::OPCODE}
         };
 
-        static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+        static inline FieldsType opcode_fields_ {
             fields_[idType::OPCODE],
             fields_[idType::FUNC3],
             fields_[idType::FUNC7]
         };
-
-    public:
-        static inline std::string getName()
-        {
-            return name_;
-        }
-
-        static inline const Field &getField(const idType fid)
-        {
-            return fields_[fid];
-        }
-
-        static inline const Field &getField(const std::string &fname)
-        {
-            const auto itr = fmap_.find(fname);
-            if (itr == fmap_.end()) {
-                throw BuildErrorUnknownFormField(name_, fname);
-            }
-            return itr->second;
-        }
-
-        static inline uint32_t getFieldIndex(const std::string &fname)
-        {
-            const auto itr = imap_.find(fname);
-            if (itr == imap_.end()) {
-                throw BuildErrorUnknownFormField(name_, fname);
-            }
-            return itr->second;
-        }
-
-        static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-        {
-            return opcode_fields_;
-        }
 
         static inline ImmediateType getImmediateType()
         {

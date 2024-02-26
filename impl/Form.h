@@ -36,7 +36,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"AMO"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -81,40 +80,11 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC5]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -155,7 +125,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"B"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -185,39 +154,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -259,7 +199,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"C0"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -292,40 +231,11 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC2A]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -368,7 +278,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"C1"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -404,42 +313,13 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC2],
         fields_[idType::FUNC2B],
         fields_[idType::FUNC1],
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -483,7 +363,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"C2"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -522,40 +401,11 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC1]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -594,7 +444,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"C2"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -618,39 +467,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -691,7 +511,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CA"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -721,40 +540,11 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC6],
         fields_[idType::FUNC2]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -794,7 +584,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CB"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -821,39 +610,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -894,7 +654,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CI"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -924,39 +683,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -996,7 +726,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CI_rD_only"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1023,39 +752,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1094,7 +794,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CIW"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1118,39 +817,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1192,7 +862,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CIX"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1225,40 +894,11 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC2]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1296,7 +936,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CJ"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1317,39 +956,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1388,7 +998,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CJR"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1412,39 +1021,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC4]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1484,7 +1064,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CSR"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1511,39 +1090,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1584,7 +1134,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"CSRI"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1611,39 +1160,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1686,7 +1206,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"FENCE"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1719,39 +1238,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1793,7 +1283,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"ISH"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1823,40 +1312,11 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC6]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -1898,7 +1358,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"ISHW"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -1928,40 +1387,11 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC7]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2000,7 +1430,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"J"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2021,38 +1450,9 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2094,7 +1494,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"Rfloat"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2124,39 +1523,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC7]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2198,7 +1568,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"R4"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2231,39 +1600,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC2]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2304,7 +1644,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"S"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2334,39 +1673,10 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2404,7 +1714,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"U"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2425,38 +1734,9 @@ private:
         {"opcode", idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2502,7 +1782,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"V"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2547,7 +1826,7 @@ private:
         {"opcode",  idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3A],
         fields_[idType::FUNC1A],
@@ -2555,35 +1834,6 @@ private:
         fields_[idType::FUNC1C],
         fields_[idType::FUNC3B]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2628,7 +1878,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"VF_mem"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2667,40 +1916,11 @@ private:
         {"opcode",  idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::WIDTH],
         fields_[idType::MEWOP]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2742,7 +1962,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"V_vsetvli"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2772,40 +1991,11 @@ private:
         {"opcode",  idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC1]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2847,7 +2037,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"V_vsetivli"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2877,40 +2066,11 @@ private:
         {"opcode",  idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC2]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -2952,7 +2112,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"V_vsetvl"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -2982,40 +2141,11 @@ private:
         {"opcode",  idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC7]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {
@@ -3059,7 +2189,6 @@ public:
         __N
     };
 
-private:
     static inline const char * name_ {"V_uimm6"};
 
     static inline const std::array<const Field, idType::__N> fields_ {
@@ -3095,40 +2224,11 @@ private:
         {"opcode",  idType::OPCODE}
     };
 
-    static inline FormWrapperIF::OpcodeFieldsType opcode_fields_ {
+    static inline FieldsType opcode_fields_ {
         fields_[idType::OPCODE],
         fields_[idType::FUNC3],
         fields_[idType::FUNC5]
     };
-
-public:
-    static inline const Field &getField(const idType fid)
-    {
-        return fields_[fid];
-    }
-
-    static inline const Field &getField(const std::string &fname)
-    {
-        const auto itr = fmap_.find(fname);
-        if (itr == fmap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline uint32_t getFieldIndex(const std::string &fname)
-    {
-        const auto itr = imap_.find(fname);
-        if (itr == imap_.end()) {
-            throw BuildErrorUnknownFormField(name_, fname);
-        }
-        return itr->second;
-    }
-
-    static inline FormWrapperIF::OpcodeFieldsType &getOpcodeFields()
-    {
-        return opcode_fields_;
-    }
 
     static inline ImmediateType getImmediateType()
     {

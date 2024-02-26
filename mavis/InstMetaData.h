@@ -248,7 +248,7 @@ public:
      * @param inst
      * @param form
      */
-    //InstMetaData(const json& inst, const FormWrapperIF* form, bool compressed = false) :
+    //InstMetaData(const json& inst, const FormBase* form, bool compressed = false) :
     InstMetaData(const json& inst, bool compressed = false, const MatchSet<Tag>& tags = MatchSet<Tag>()) :
         compressed_(compressed), tags_(tags)
     {

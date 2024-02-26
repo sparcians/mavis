@@ -50,7 +50,7 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildSpecial_(co
     IFactoryIF<InstType, AnnotationType> *currNode = DTableBranchBuilder<InstType, AnnotationType, FormType>::populate(
         root_, istencil, ignore_set);
     //buildLeaf_<FormType>(currNode, mnemonic, istencil, flist, factory_name, override_extractor);
-    const FormWrapperIF *form_wrap = forms_.getFormWrapper(FormType::getName());
+    const FormBase *form_wrap = forms_.getFormWrapper(FormType::getName());
     buildLeaf_(form_wrap, currNode, mnemonic, istencil, flist, factory_name, xpand_name, override_extractor, einfo);
 }
 
@@ -71,40 +71,40 @@ DTableBranchBuilder<InstType, AnnotationType, Form_R>::populate(
     // At ROOT node...
     if (currNode->getNode(istencil) == nullptr) {
         currNode->addIFactory(istencil, typename IFactoryIF<InstType, AnnotationType>::PtrType(
-            new IFactoryDenseComposite<InstType, AnnotationType>(Form_R::getField(Form_R::OPCODE))));
+            new IFactoryDenseComposite<InstType, AnnotationType>(Form<Form_R>::getField(Form_R::OPCODE))));
     }
     currNode = currNode->getNode(istencil); // Advance...
     assert(currNode->getField() != nullptr);
-    assert(currNode->getField()->isEquivalent(Form_R::getField(Form_R::OPCODE)));
+    assert(currNode->getField()->isEquivalent(Form<Form_R>::getField(Form_R::OPCODE)));
 
     // At OPCODE node...
     if (currNode->getNode(istencil) == nullptr) {
         currNode->addIFactory(istencil, typename IFactoryIF<InstType, AnnotationType>::PtrType(
-            new IFactoryDenseComposite<InstType, AnnotationType>(Form_R::getField(Form_R::FUNC3))));
+            new IFactoryDenseComposite<InstType, AnnotationType>(Form<Form_R>::getField(Form_R::FUNC3))));
     }
     currNode = currNode->getNode(istencil); // Advance...
     assert(currNode->getField() != nullptr);
-    assert(currNode->getField()->isEquivalent(Form_R::getField(Form_R::FUNC3)));
+    assert(currNode->getField()->isEquivalent(Form<Form_R>::getField(Form_R::FUNC3)));
 
     // At FUNC3 node...
-    if (ignore_set.find(Form_R::getField(Form_R::FUNC3).getName()) != ignore_set.end()) {
+    if (ignore_set.find(Form<Form_R>::getField(Form_R::FUNC3).getName()) != ignore_set.end()) {
         if (currNode->getDefault() == nullptr) {
             currNode->addDefaultIFactory(typename IFactoryIF<InstType, AnnotationType>::PtrType(
-                new IFactoryDenseComposite<InstType, AnnotationType>(Form_R::getField(Form_R::FUNC7))));
+                new IFactoryDenseComposite<InstType, AnnotationType>(Form<Form_R>::getField(Form_R::FUNC7))));
         }
         currNode = currNode->getDefault(); // Advance...
     } else {
         if (currNode->getNode(istencil) == nullptr) {
             currNode->addIFactory(istencil, typename IFactoryIF<InstType, AnnotationType>::PtrType(
-                new IFactoryDenseComposite<InstType, AnnotationType>(Form_R::getField(Form_R::FUNC7))));
+                new IFactoryDenseComposite<InstType, AnnotationType>(Form<Form_R>::getField(Form_R::FUNC7))));
         }
         currNode = currNode->getNode(istencil); // Advance...
     }
     assert(currNode->getField() != nullptr);
-    assert(currNode->getField()->isEquivalent(Form_R::getField(Form_R::FUNC7)));
+    assert(currNode->getField()->isEquivalent(Form<Form_R>::getField(Form_R::FUNC7)));
 
     // At FUNC7 node...
-    if (ignore_set.find(Form_R::getField(Form_R::FUNC7).getName()) != ignore_set.end()) {
+    if (ignore_set.find(Form<Form_R>::getField(Form_R::FUNC7).getName()) != ignore_set.end()) {
         if (currNode->getDefault() == nullptr) {
             currNode->addDefaultIFactory(
                 typename IFactoryIF<InstType, AnnotationType>::PtrType(

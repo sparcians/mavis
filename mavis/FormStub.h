@@ -9,7 +9,8 @@ namespace mavis {
  */
 class Form_I_mv
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"I_mv"};
 };
 
@@ -18,7 +19,8 @@ private:
  */
 class Form_I_load
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"I_load"};
 };
 
@@ -27,7 +29,8 @@ private:
  */
 class Form_C0_load
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_load"};
 };
 
@@ -36,7 +39,8 @@ private:
  */
 class Form_C0_load_byte
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_load_byte"};
 };
 
@@ -45,7 +49,8 @@ private:
  */
 class Form_C0_load_half
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_load_half"};
 };
 
@@ -54,7 +59,8 @@ private:
  */
 class Form_C0_load_word
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_load_word"};
 };
 
@@ -63,7 +69,8 @@ private:
  */
 class Form_C0_load_double
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_load_double"};
 };
 
@@ -72,7 +79,8 @@ private:
  */
 class Form_C0_store
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_store"};
 };
 
@@ -81,7 +89,8 @@ private:
  */
 class Form_C0_store_byte
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_store_byte"};
 };
 
@@ -90,7 +99,8 @@ private:
  */
 class Form_C0_store_half
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_store_half"};
 };
 
@@ -99,7 +109,8 @@ private:
  */
 class Form_C0_store_word
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_store_word"};
 };
 
@@ -108,7 +119,8 @@ private:
  */
 class Form_C0_store_double
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C0_store_double"};
 };
 
@@ -117,7 +129,8 @@ private:
  */
 class Form_C1_rsd
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C1_rsd"};
 };
 
@@ -126,7 +139,8 @@ private:
  */
 class Form_C1_rsd_I0
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C1_rsd_I0"};
 };
 
@@ -135,7 +149,8 @@ private:
  */
 class Form_C1_rsd_zext_I0
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C1_rsd_zext_I0"};
 };
 
@@ -144,7 +159,8 @@ private:
  */
 class Form_C1_rsd_Ineg1
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C1_rsd_Ineg1"};
 };
 
@@ -153,7 +169,8 @@ private:
  */
 class Form_C1_rsd_I0xFF
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C1_rsd_I0xFF"};
 };
 
@@ -162,7 +179,8 @@ private:
  */
 class Form_CI_sp
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"CI_sp"};
 };
 
@@ -171,7 +189,8 @@ private:
  */
 class Form_CIW_sp
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"CIW_sp"};
 };
 
@@ -180,7 +199,8 @@ private:
  */
 class Form_CJALR
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"CJALR"};
 };
 
@@ -189,7 +209,8 @@ private:
  */
 class Form_C2_add
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_add"};
 };
 
@@ -198,7 +219,8 @@ private:
  */
 class Form_C2_mv
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_mv"};
 };
 
@@ -207,7 +229,8 @@ private:
  */
 class Form_C2_slli
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_slli"};
 };
 
@@ -216,7 +239,8 @@ private:
  */
 class Form_C2_sp
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_sp"};
 };
 
@@ -225,7 +249,8 @@ private:
  */
 class Form_C2_sp_load
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_sp_load"};
 };
 
@@ -234,7 +259,8 @@ private:
  */
 class Form_C2_sp_load_word
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_sp_load_word"};
 };
 
@@ -243,7 +269,8 @@ private:
  */
 class Form_C2_sp_load_double
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_sp_load_double"};
 };
 
@@ -252,7 +279,8 @@ private:
  */
 class Form_C2_sp_load_float_single
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_sp_load_float_single"};
 };
 
@@ -261,7 +289,8 @@ private:
  */
 class Form_C2_sp_load_float_double
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_sp_load_float_double"};
 };
 
@@ -270,7 +299,8 @@ private:
  */
 class Form_C2_sp_store_word
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_sp_store_word"};
 };
 
@@ -279,7 +309,8 @@ private:
  */
 class Form_C2_sp_store_double
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"C2_sp_store_double"};
 };
 
@@ -288,7 +319,8 @@ private:
  */
 class Form_CI_addi
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"CI_addi"};
 };
 
@@ -297,7 +329,8 @@ private:
  */
 class Form_CI_addiw
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"CI_addiw"};
 };
 
@@ -306,7 +339,8 @@ private:
  */
 class Form_CI_rD_shifted
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"CI_rD_shifted"};
 };
 
@@ -315,7 +349,8 @@ private:
  */
 class Form_CIX_andi
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"CIX_andi"};
 };
 
@@ -324,7 +359,8 @@ private:
  */
 class Form_V_load
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"V_load"};
 };
 
@@ -333,7 +369,8 @@ private:
  */
 class Form_V_store
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"V_store"};
 };
 
@@ -342,7 +379,8 @@ private:
  */
 class Form_V_simm
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"V_simm"};
 };
 
@@ -351,7 +389,8 @@ private:
  */
 class Form_V_uimm
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"V_uimm"};
 };
 
@@ -360,7 +399,8 @@ private:
  */
 class Form_V_op
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"V_op"};
 };
 
@@ -369,7 +409,8 @@ private:
  */
 class Form_V_implied
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"V_implied"};
 };
 
@@ -378,7 +419,8 @@ private:
  */
 class Form_V_op_implied
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"V_op_implied"};
 };
 
@@ -387,7 +429,8 @@ private:
  */
 class Form_V_uimm_implied
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"V_uimm_implied"};
 };
 
@@ -396,7 +439,8 @@ private:
  */
 class Form_HV_load
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"HV_load"};
 };
 
@@ -405,7 +449,8 @@ private:
  */
 class Form_HV_store
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"HV_store"};
 };
 
@@ -414,7 +459,8 @@ private:
  */
 class Form_NTL_hint
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"NTL_hint"};
 };
 
@@ -423,7 +469,8 @@ private:
  */
 class Form_PF_hint
 {
-private:
+public:
+    using idType = uint32_t;
     static inline const std::string name_ {"PF_hint"};
 };
 
