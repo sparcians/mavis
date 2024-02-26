@@ -61,28 +61,8 @@ namespace mavis
             fields[idType::FUNC3]
         };
 
-        static inline ImmediateType getImmediateType()
-        {
-            return ImmediateType::SIGNED;
-        }
-
-        static inline void print(std::ostream &os)
-        {
-            std::ios_base::fmtflags os_state(os.flags());
-            os << "Fields of Form_I:" << std::endl;
-            for (const auto &f : fields) {
-                os << "\t" << f << std::endl;
-            }
-            os.flags(os_state);
-        }
+        static inline ImmediateType immediate_type = ImmediateType::SIGNED;
     };
-
-
-    inline std::ostream &operator<<(std::ostream &os, const Form_I &)
-    {
-        Form_I::print(os);
-        return os;
-    }
 
     /**
      * R-Form
@@ -136,25 +116,6 @@ namespace mavis
             fields[idType::FUNC7]
         };
 
-        static inline ImmediateType getImmediateType()
-        {
-            return ImmediateType::NONE;
-        }
-
-        static inline void print(std::ostream &os)
-        {
-            std::ios_base::fmtflags os_state(os.flags());
-            os << "Fields of Form_R:" << std::endl;
-            for (const auto &f : fields) {
-                os << "\t" << f << std::endl;
-            }
-            os.flags(os_state);
-        }
+        static inline ImmediateType immediate_type = ImmediateType::NONE;
     };
-
-    inline std::ostream &operator<<(std::ostream &os, const Form_R &)
-    {
-        Form_R::print(os);
-        return os;
-    }
-}
+} // namespace mavis

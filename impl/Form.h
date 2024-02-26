@@ -86,27 +86,8 @@ public:
         fields[idType::FUNC5]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_AMO:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_AMO &)
-{
-    Form_AMO::print(os);
-    return os;
-}
 
 /**
  * B-Form
@@ -159,27 +140,8 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_B:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_B &)
-{
-    Form_B::print(os);
-    return os;
-}
 
 /**
  * C0-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
@@ -237,27 +199,8 @@ public:
         fields[idType::FUNC2A]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::UNSIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_C0:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_C0 &)
-{
-    Form_C0::print(os);
-    return os;
-}
 
 /**
  * C1-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
@@ -321,27 +264,8 @@ public:
         fields[idType::FUNC1],
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_C1:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_C1 &)
-{
-    Form_C1::print(os);
-    return os;
-}
 
 /**
  * C2-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
@@ -407,27 +331,8 @@ public:
         fields[idType::FUNC1]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_C2:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_C2 &)
-{
-    Form_C2::print(os);
-    return os;
-}
 
 /**
  * C2_sp_store-Form: INTENDED FOR EXTRACTION USE ONLY
@@ -472,27 +377,8 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::UNSIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_C2:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_C2_sp_store &)
-{
-    Form_C2_sp_store::print(os);
-    return os;
-}
 
 /**
  * CA-Form
@@ -546,27 +432,8 @@ public:
         fields[idType::FUNC2]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CA:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CA &)
-{
-    Form_CA::print(os);
-    return os;
-}
 
 /**
  * CB-Form
@@ -615,27 +482,8 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CB:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CB &)
-{
-    Form_CB::print(os);
-    return os;
-}
 
 /**
  * CI-Form
@@ -688,27 +536,8 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::UNSIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CI:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CI &)
-{
-    Form_CI::print(os);
-    return os;
-}
 
 /**
  * CI_rD_only-Form (for c.li and c.lui)
@@ -757,27 +586,8 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CI_rD_only:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CI_rD_only &)
-{
-    Form_CI_rD_only::print(os);
-    return os;
-}
 
 /**
  * CIW-Form
@@ -822,27 +632,8 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CIW:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CIW &)
-{
-    Form_CIW::print(os);
-    return os;
-}
 
 /**
  * CIX-Form: Extension from spec for C.SRLI/C.SRAI/C.ANDI
@@ -900,27 +691,8 @@ public:
         fields[idType::FUNC2]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::UNSIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CIX:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CIX &)
-{
-    Form_CIX::print(os);
-    return os;
-}
 
 /**
  * CJ-Form
@@ -961,27 +733,8 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CJ:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CJ &)
-{
-    Form_CJ::print(os);
-    return os;
-}
 
 /**
  * CJR-Form (for extraction only)
@@ -1026,27 +779,8 @@ public:
         fields[idType::FUNC4]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CJR:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CJR &)
-{
-    Form_CJR::print(os);
-    return os;
-}
 
 /**
  * CSR-Form (extraction only)
@@ -1095,28 +829,9 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CSR:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CSR &)
-{
-    Form_CSR::print(os);
-    return os;
-}
 
 /**
  * CSRI-Form (extraction only)
@@ -1165,28 +880,9 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::UNSIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_CSRI:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_CSRI &)
-{
-    Form_CSRI::print(os);
-    return os;
-}
 
 /**
  * FENCE-Form
@@ -1243,28 +939,9 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_FENCE:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_FENCE &)
-{
-    Form_FENCE::print(os);
-    return os;
-}
 
 /**
  * ISH-Form
@@ -1318,28 +995,9 @@ public:
         fields[idType::FUNC6]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_ISH:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_ISH &)
-{
-    Form_ISH::print(os);
-    return os;
-}
 
 /**
  * ISHW-Form
@@ -1393,28 +1051,9 @@ public:
         fields[idType::FUNC7]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_ISHW:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_ISHW &)
-{
-    Form_ISHW::print(os);
-    return os;
-}
 
 /**
  * J-Form
@@ -1454,28 +1093,9 @@ public:
         fields[idType::OPCODE]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_J:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_J &)
-{
-    Form_J::print(os);
-    return os;
-}
 
 /**
  * Floating point R-Form
@@ -1528,27 +1148,8 @@ public:
         fields[idType::FUNC7]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_Rfloat:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_Rfloat &)
-{
-    Form_Rfloat::print(os);
-    return os;
-}
 
 /**
  * R4-Form
@@ -1605,27 +1206,8 @@ public:
         fields[idType::FUNC2]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_R4:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_R4 &)
-{
-    Form_R4::print(os);
-    return os;
-}
 
 /**
  * S-Form
@@ -1678,27 +1260,8 @@ public:
         fields[idType::FUNC3]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::SIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_S:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_S &)
-{
-    Form_S::print(os);
-    return os;
-}
 
 /**
  * U-Form
@@ -1738,27 +1301,8 @@ public:
         fields[idType::OPCODE]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::UNSIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_U:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
 };
-
-inline std::ostream &operator<<(std::ostream &os, const Form_U &)
-{
-    Form_U::print(os);
-    return os;
-}
 
 /*
  * Form_V (most vector insts, base opcode 0x57)
@@ -1835,28 +1379,9 @@ public:
         fields[idType::FUNC3B]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_V:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_V &)
-{
-    Form_V::print(os);
-    return os;
-}
 
 /*
  * Form_VF_mem (float and vector load form)
@@ -1922,28 +1447,9 @@ public:
         fields[idType::MEWOP]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_VF_mem:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_VF_mem &)
-{
-    Form_VF_mem::print(os);
-    return os;
-}
 
 /*
  * Form_V_vsetvli (for vsetvli instruction -- extraction only)
@@ -1997,28 +1503,9 @@ public:
         fields[idType::FUNC1]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::UNSIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_V_vsetvli:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_V_vsetvli &)
-{
-    Form_V_vsetvli::print(os);
-    return os;
-}
 
 /*
  * Form_V_vsetivli (for vsetivli instruction -- extraction only)
@@ -2072,28 +1559,9 @@ public:
         fields[idType::FUNC2]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::UNSIGNED;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_V_vsetivli:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_V_vsetivli &)
-{
-    Form_V_vsetivli::print(os);
-    return os;
-}
 
 /*
  * Form_V_vsetvl (for vsetvl instruction -- extraction only)
@@ -2147,28 +1615,9 @@ public:
         fields[idType::FUNC7]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_V_vsetvl:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
 
-
-inline std::ostream &operator<<(std::ostream &os, const Form_V_vsetvl &)
-{
-    Form_V_vsetvl::print(os);
-    return os;
-}
 
 /*
  * Form_V_uimm6 (most vector insts, base opcode 0x57)
@@ -2230,27 +1679,6 @@ public:
         fields[idType::FUNC5]
     };
 
-    static inline ImmediateType getImmediateType()
-    {
-        return ImmediateType::NONE;
-    }
-
-    static inline void print(std::ostream &os)
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of Form_V_uimm6:" << std::endl;
-        for (const auto &f : fields) {
-            os << "\t" << f << std::endl;
-        }
-        os.flags(os_state);
-    }
+    static inline ImmediateType immediate_type = ImmediateType::NONE;
 };
-
-
-inline std::ostream &operator<<(std::ostream &os, const Form_V_uimm6 &)
-{
-    Form_V_uimm6::print(os);
-    return os;
-}
-
 } // namespace mavis

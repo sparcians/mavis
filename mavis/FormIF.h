@@ -66,12 +66,17 @@ public:
 
     static ImmediateType getImmediateType()
     {
-        return FormType::getImmediateType();
+        return FormType::immediate_type;
     }
 
     static void print(std::ostream &os)
     {
-        FormType::print(os);
+        std::ios_base::fmtflags os_state(os.flags());
+        os << "Fields of " << FormType::name << ":" << std::endl;
+        for (const auto &f : FormType::fields) {
+            os << "\t" << f << std::endl;
+        }
+        os.flags(os_state);
     }
 
     // TODO: Deprecate all uses of fixed_field_set! It's DANGEROUS
