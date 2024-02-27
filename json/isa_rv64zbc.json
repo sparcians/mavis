@@ -1,26 +1,29 @@
 [
-	{
-		"mnemonic" : "clmul",
-		"form" : "R",
-		"stencil" : "0xa001033",
-		"type" : ["int", "arith"],
-		"isa" : ["B"],
-		"l-oper" : "all"
-	},
-	{
-		"mnemonic" : "clmulh",
-		"form" : "R",
-		"stencil" : "0xa003033",
-		"type" : ["int", "arith"],
-		"isa" : ["B"],
-		"l-oper" : "all"
-	},
-	{
-		"mnemonic" : "clmulr",
-		"form" : "R",
-		"stencil" : "0xa002033",
-		"type" : ["int", "arith"],
-		"isa" : ["B"],
-		"l-oper" : "all"
-	}
+  {
+    "mnemonic" : "clmul",
+    "tags" : ["zbc", "b"],
+    "form" : "R",
+    "stencil" : "0xa001033",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "clmulh",
+    "tags" : ["zbc", "b"],
+    "form" : "R",
+    "stencil" : "0xa003033",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "clmulr",
+    "tags" : ["zbc", "b"],
+    "form" : "R",
+    "stencil" : "0xa002033",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  }
 ]

@@ -1,0 +1,78 @@
+[
+  {
+    "mnemonic" : "ntl.p1",
+    "tags" : ["zihintntl"],
+    "form" : "R",
+    "xform" : "NTL_hint",
+    "stencil" : "0x00200033",
+    "fixed" : ["rd","rs1","rs2"],
+    "type" : ["ntl", "hint"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "ntl.pall",
+    "tags" : ["zihintntl"],
+    "form" : "R",
+    "xform" : "NTL_hint",
+    "stencil" : "0x00300033",
+    "fixed" : ["rd","rs1","rs2"],
+    "type" : ["ntl", "hint"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "ntl.s1",
+    "tags" : ["zihintntl"],
+    "form" : "R",
+    "xform" : "NTL_hint",
+    "stencil" : "0x00400033",
+    "fixed" : ["rd","rs1","rs2"],
+    "type" : ["ntl", "hint"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "ntl.all",
+    "tags" : ["zihintntl"],
+    "form" : "R",
+    "xform" : "NTL_hint",
+    "stencil" : "0x00500033",
+    "fixed" : ["rd","rs1","rs2"],
+    "type" : ["ntl", "hint"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "c.ntl.p1",
+    "tags" : ["zihintntl"],
+    "expand" : "ntl.p1",
+    "form" : "C2",
+    "xform" : "NTL_hint",
+    "stencil" : "0x900a",
+    "fixed" : [ "rs1", "rs2" ]
+  },
+  {
+    "mnemonic" : "c.ntl.pall",
+    "tags" : ["zihintntl"],
+    "expand" : "ntl.pall",
+    "form" : "C2",
+    "xform" : "NTL_hint",
+    "stencil" : "0x900e",
+    "fixed" : [ "rs1", "rs2" ]
+  },
+  {
+    "mnemonic" : "c.ntl.s1",
+    "tags" : ["zihintntl"],
+    "expand" : "ntl.s1",
+    "form" : "C2",
+    "xform" : "NTL_hint",
+    "stencil" : "0x9012",
+    "fixed" : [ "rs1", "rs2" ]
+  },
+  {
+    "mnemonic" : "c.ntl.all",
+    "tags" : ["zihintntl"],
+    "expand" : "ntl.all",
+    "form" : "C2",
+    "xform" : "NTL_hint",
+    "stencil" : "0x9016",
+    "fixed" : [ "rs1", "rs2" ]
+  }
+]

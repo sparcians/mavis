@@ -1,0 +1,22 @@
+[
+  {
+    "mnemonic" : "fcvt.h.d",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x44100053",
+    "d-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.d.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x42200053",
+    "d-oper" : ["rd"],
+    "s-oper" : ["rs1"],
+    "type" : ["float", "convert"]
+  }
+]
