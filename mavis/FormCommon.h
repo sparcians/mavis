@@ -32,7 +32,7 @@ namespace mavis
 
         static inline const char * name {"I"};
 
-        static inline const std::array<const Field, idType::__N> fields {
+        static inline FieldsType fields {
             Field("imm", 20, 12),
             Field("rs1", 15, 5),
             Field("func3", 12, 3),
@@ -83,7 +83,7 @@ namespace mavis
 
         static inline const char * name {"R"};
 
-        static inline const std::array<const Field, idType::__N> fields {
+        static inline FieldsType fields {
             Field("func7", 25, 7),
             Field("rs2", 20, 5),
             Field("rs1", 15, 5),

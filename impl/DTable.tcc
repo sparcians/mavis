@@ -269,7 +269,7 @@ DTable<InstType, AnnotationType, AnnotationTypeAllocator>::build_(const FormBase
 
     typename IFactoryIF<InstType, AnnotationType>::PtrType currNode = root_;
 
-    const FormBase::OpcodeFieldsType &fields = form->getOpcodeFields();
+    const FieldsType &fields = form->getOpcodeFields();
     const uint32_t n_fields = fields.size();
     assert(n_fields > 0);
 

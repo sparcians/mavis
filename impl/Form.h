@@ -38,7 +38,7 @@ public:
 
     static inline const char * name {"AMO"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func5", 27, 5),
         Field("aq", 26, 1),
         Field("wd", 26, 1),
@@ -108,7 +108,7 @@ public:
 
     static inline const char * name {"B"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("imm7", 25, 7),
         Field("rs2", 20, 5),
         Field("rs1", 15, 5),
@@ -163,7 +163,7 @@ public:
 
     static inline const char * name {"C0"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("imm3", 10, 3),
         Field("rs1", 7, 3),
@@ -223,7 +223,7 @@ public:
 
     static inline const char * name {"C1"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("func1", 12, 1),
         Field("func2", 10, 2),
@@ -289,7 +289,7 @@ public:
 
     static inline const char * name {"C2"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("func1", 12, 1),
         Field("shamt1", 12, 1), // Alias for FUNC1
@@ -351,7 +351,7 @@ public:
 
     static inline const char * name {"C2"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("imm", 7, 6),
         Field("rs2", 2, 5),
@@ -399,7 +399,7 @@ public:
 
     static inline const char * name {"CA"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func6", 10, 6),
         Field("rs1", 7, 3),
         Field("rd", 7, 3),
@@ -453,7 +453,7 @@ public:
 
     static inline const char * name {"CB"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("imm3", 10, 3),
         Field("rs1", 7, 3),
@@ -504,7 +504,7 @@ public:
 
     static inline const char * name {"CI"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("imm1", 12, 1),
         Field("rs1", 7, 5),
@@ -557,7 +557,7 @@ public:
 
     static inline const char * name {"CI_rD_only"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("imm1", 12, 1),
         Field("rd", 7, 5),
@@ -606,7 +606,7 @@ public:
 
     static inline const char * name {"CIW"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("imm8", 5, 8),
         Field("rd", 2, 3),
@@ -655,7 +655,7 @@ public:
 
     static inline const char * name {"CIX"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("shamt1", 12, 1),
         Field("func2", 10, 2),
@@ -710,7 +710,7 @@ public:
 
     static inline const char * name {"CJ"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func3", 13, 3),
         Field("imm11", 2, 11),
         Field("opcode", 0, 2)
@@ -753,7 +753,7 @@ public:
 
     static inline const char * name {"CJR"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func4", 12, 4),
         Field("rs1", 7, 5),
         Field("rs2", 2, 5),
@@ -800,7 +800,7 @@ public:
 
     static inline const char * name {"CSR"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("csr", 20, 12),
         Field("rs1", 15, 5),
         Field("func3", 12, 3),
@@ -851,7 +851,7 @@ public:
 
     static inline const char * name {"CSRI"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("csr", 20, 12),
         Field("uimm", 15, 5),
         Field("func3", 12, 3),
@@ -904,7 +904,7 @@ public:
 
     static inline const char * name {"FENCE"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("fm", 28, 4),
         Field("pred", 24, 4),
         Field("succ", 20, 4),
@@ -962,7 +962,7 @@ public:
 
     static inline const char * name {"ISH"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func6", 26, 6),
         Field("shamt", 20, 6),
         Field("rs1", 15, 5),
@@ -1018,7 +1018,7 @@ public:
 
     static inline const char * name {"ISHW"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func7", 25, 7),
         Field("shamtw", 20, 5),
         Field("rs1", 15, 5),
@@ -1071,7 +1071,7 @@ public:
 
     static inline const char * name {"J"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("imm20", 12, 20),
         Field("rd", 7, 5),
         Field("opcode", 0, 7)
@@ -1116,7 +1116,7 @@ public:
 
     static inline const char * name {"Rfloat"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func7", 25, 7),
         Field("rs2", 20, 5),
         Field("rs1", 15, 5),
@@ -1171,7 +1171,7 @@ public:
 
     static inline const char * name {"R4"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("rs3", 27, 5),
         Field("func2", 25, 2),
         Field("rs2", 20, 5),
@@ -1228,7 +1228,7 @@ public:
 
     static inline const char * name {"S"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("imm7", 25, 7),
         Field("rs2", 20, 5),
         Field("rs1", 15, 5),
@@ -1279,7 +1279,7 @@ public:
 
     static inline const char * name {"U"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("imm20", 12, 20),
         Field("rd", 7, 5),
         Field("opcode", 0, 7)
@@ -1328,7 +1328,7 @@ public:
 
     static inline const char * name {"V"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func1a", 31, 1),
         Field("func1b", 30, 1),
         Field("func3a", 27, 3),
@@ -1405,7 +1405,7 @@ public:
 
     static inline const char * name {"VF_mem"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("nf", 29, 3),
         Field("mewop", 26, 3),
         Field("vm", 25, 1),
@@ -1470,7 +1470,7 @@ public:
 
     static inline const char * name {"V_vsetvli"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func1", 31, 1),
         Field("imm11", 20, 11),
         Field("rs1", 15, 5),
@@ -1526,7 +1526,7 @@ public:
 
     static inline const char * name {"V_vsetivli"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func2", 30, 2),
         Field("imm10", 20, 10),
         Field("avl", 15, 5),
@@ -1582,7 +1582,7 @@ public:
 
     static inline const char * name {"V_vsetvl"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func7", 25, 7),
         Field("rs2", 20, 5),
         Field("rs1", 15, 5),
@@ -1640,7 +1640,7 @@ public:
 
     static inline const char * name {"V_uimm6"};
 
-    static inline const std::array<const Field, idType::__N> fields {
+    static inline FieldsType fields {
         Field("func5", 27, 5),
         Field("i5", 26, 1),
         Field("vm", 25, 1),

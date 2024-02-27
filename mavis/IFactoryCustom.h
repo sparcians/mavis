@@ -24,7 +24,7 @@ public:
         //FormType    f;
         std::stringstream ss;
         ss << "CUSTOM IFactory('" << IFactory<InstType, AnnotationType>::name_
-           << "'): type = " << Form<Form_I>::getName();
+           << "'): type = " << Form_I::name;
         return ss.str();
     }
 
@@ -57,7 +57,7 @@ public:
         //FormType    f;
         std::stringstream ss;
         ss << "CUSTOM IFactory('" << IFactory<InstType, AnnotationType>::name_
-           << "'): type = " << Form<Form_R>::getName();
+           << "'): type = " << Form_R::name;
         return ss.str();
     }
 

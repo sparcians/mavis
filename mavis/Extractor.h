@@ -25,7 +25,7 @@ class ExtractorBase : public ExtractorIF
 public:
     std::string getName() const override
     {
-        return FormType::getName();
+        return FormType::name;
     }
 
     bool isIllop(Opcode) const override
@@ -132,7 +132,7 @@ public:
 
     ImmediateType getImmediateType() const override
     {
-        return FormType::getImmediateType();
+        return FormType::immediate_type;
     }
 
     // TODO: If we need annotations for disassembly for normal extractors, we
@@ -161,7 +161,7 @@ protected:
 
     static inline uint64_t extract_(const typename FormType::idType fid, const Opcode icode)
     {
-        return FormType::getField(fid).extract(icode);
+        return FormType::fields[fid].extract(icode);
     }
 
     static inline bool isFixedField_(const typename FormType::idType fid, const uint64_t fset)
@@ -171,7 +171,7 @@ protected:
 
     static inline bool isMaskedField_(const typename FormType::idType fid, const uint64_t mask)
     {
-        return (FormType::getField(fid).getShiftedMask() & mask) != 0ull;
+        return (FormType::fields[fid].getShiftedMask() & mask) != 0ull;
     }
 
     // TODO: Deprecate all uses of fixed_field_set! It's DANGEROUS
@@ -198,7 +198,7 @@ protected:
 
     static inline uint64_t extractCompressedRegister_(const typename FormType::idType fid, const Opcode icode)
     {
-        return FormType::getField(fid).extract(icode) + 8; // Compressed registers are offset by 8
+        return FormType::fields[fid].extract(icode) + 8; // Compressed registers are offset by 8
     }
 
     static inline uint64_t
