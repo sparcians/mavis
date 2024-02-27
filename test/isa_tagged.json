@@ -1,88 +1,88 @@
 [
-	{
-		"mnemonic" : "ori",
-		"form" : "ISH",
-		"ignore" : ["func6"],
-		"xform" : "I",
-		"stencil" : "0x6013",
-		"type" : ["int", "arith"],
-		"l-oper" : "all"
-	},
-	{
-		"mnemonic" : "cbo.clean",
-		"form" : "R",
-		"fixed" : ["rd", "rs2"],
-		"stencil" : "0x10200f",
-		"type" : ["cache", "system"],
-		"l-oper" : ["rs1"],
-		"tags" : ["ccf", "zicbo"]
-	},
-	{
-		"mnemonic" : "cbo.flush",
-		"form" : "R",
-		"fixed" : ["rd", "rs2"],
-		"stencil" : "0x20200f",
-		"type" : ["cache", "system"],
-		"l-oper" : ["rs1"],
-		"tags" : ["ccf", "zicbo"]
-	},
-	{
-		"mnemonic" : "cbo.inval",
-		"form" : "R",
-		"fixed" : ["rd", "rs2"],
-		"stencil" : "0x200f",
-		"type" : ["cache", "system"],
-		"l-oper" : ["rs1"],
-		"tags" : ["ccf", "zicbo"]
-	},
-	{
-		"mnemonic" : "cbo.zero",
-		"form" : "R",
-		"fixed" : ["rd", "rs2"],
-		"stencil" : "0x40200f",
-		"type" : ["cache", "system"],
-		"l-oper" : ["rs1"],
-		"tags" : ["ccf", "zicbo"]
-	},
-	{
-		"mnemonic" : "prefetch.i",
-		"overlay" : {
-			"base" : "ori",
-			"match" : ["0x00F00F80", "0x00000000"]
-		},
-		"form" : "I",
-		"xform" : "PF_hint",
-		"fixed" : ["rd", "rs2"],
-		"type" : ["prefetch", "hint"],
-		"l-oper" : ["rs1"],
-		"tags" : ["pf", "zicbo"]
-	},
-	{
-		"mnemonic" : "prefetch.r",
-		"overlay" : {
-			"base" : "ori",
-			"match" : ["0x00F00F80", "0x00100000"]
-		},
-		"form" : "I",
-		"xform" : "PF_hint",
-		"fixed" : ["rd", "rs2"],
-		"stencil" : "0x106013",
-		"type" : ["prefetch", "hint"],
-		"l-oper" : ["rs1"],
-		"tags" : ["pf", "zicbo"]
-	},
-	{
-		"mnemonic" : "prefetch.w",
-		"overlay" : {
-			"base" : "ori",
-			"match" : ["0x00F00F80", "0x00300000"]
-		},
-		"form" : "I",
-		"xform" : "PF_hint",
-		"fixed" : ["rd", "rs2"],
-		"stencil" : "0x306013",
-		"type" : ["prefetch", "hint"],
-		"l-oper" : ["rs1"],
-		"tags" : ["pf", "zicbo"]
-	}
+  {
+    "mnemonic" : "ori",
+    "form" : "ISH",
+    "ignore" : ["func6"],
+    "xform" : "I",
+    "stencil" : "0x6013",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "cbo.clean",
+    "form" : "R",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x10200f",
+    "type" : ["cache", "system"],
+    "l-oper" : ["rs1"],
+    "tags" : ["ccf", "zicbo"]
+  },
+  {
+    "mnemonic" : "cbo.flush",
+    "form" : "R",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x20200f",
+    "type" : ["cache", "system"],
+    "l-oper" : ["rs1"],
+    "tags" : ["ccf", "zicbo"]
+  },
+  {
+    "mnemonic" : "cbo.inval",
+    "form" : "R",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x200f",
+    "type" : ["cache", "system"],
+    "l-oper" : ["rs1"],
+    "tags" : ["ccf", "zicbo"]
+  },
+  {
+    "mnemonic" : "cbo.zero",
+    "form" : "R",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x40200f",
+    "type" : ["cache", "system"],
+    "l-oper" : ["rs1"],
+    "tags" : ["ccf", "zicbo"]
+  },
+  {
+    "mnemonic" : "prefetch.i",
+    "overlay" : {
+      "base" : "ori",
+      "match" : ["0x00F00F80", "0x00000000"]
+    },
+    "form" : "I",
+    "xform" : "PF_hint",
+    "fixed" : ["rd", "rs2"],
+    "type" : ["prefetch", "hint"],
+    "l-oper" : ["rs1"],
+    "tags" : ["pf", "zicbo"]
+  },
+  {
+    "mnemonic" : "prefetch.r",
+    "overlay" : {
+      "base" : "ori",
+      "match" : ["0x00F00F80", "0x00100000"]
+    },
+    "form" : "I",
+    "xform" : "PF_hint",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x106013",
+    "type" : ["prefetch", "hint"],
+    "l-oper" : ["rs1"],
+    "tags" : ["pf", "zicbo"]
+  },
+  {
+    "mnemonic" : "prefetch.w",
+    "overlay" : {
+      "base" : "ori",
+      "match" : ["0x00F00F80", "0x00300000"]
+    },
+    "form" : "I",
+    "xform" : "PF_hint",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x306013",
+    "type" : ["prefetch", "hint"],
+    "l-oper" : ["rs1"],
+    "tags" : ["pf", "zicbo"]
+  }
 ]
