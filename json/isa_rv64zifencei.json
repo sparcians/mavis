@@ -1,0 +1,11 @@
+[
+  {
+    "mnemonic" : "fence.i",
+    "tags" : ["zifencei", "g"],
+    "form" : "FENCE",
+    "xform" : "I",
+    "stencil" : "0x100f",
+    "type" : ["fence"],
+    "l-oper" : "all"
+  }
+]

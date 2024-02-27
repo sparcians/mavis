@@ -258,13 +258,7 @@ public:
         parseTypeStanza_(inst);
 
         // Data size
-        if (inst.find("data") != inst.end()) {
-            data_size_ = inst["data"];
-            // Check positive, power-of-2 or zero
-            if ((data_size_ & (data_size_ - 1)) || (int32_t(data_size_) < 0)) {
-                throw BuildErrorInvalidDataSize(inst["mnemonic"], data_size_);
-            }
-        }
+        parseDataSizeStanza_(inst);
 
         // Word operand types
         if (inst.find("w-oper") != inst.end()) {
@@ -420,6 +414,9 @@ public:
     {
         // Merge type information from the overlay instruction and the base
         parseTypeStanza_(inst);
+
+        // Merge data size information as well
+        parseDataSizeStanza_(inst);
 
         // Merge tags from the overlay instruction and the base
         if (inst.find("tags") != inst.end()) {
@@ -663,6 +660,18 @@ private:
                     throw BuildErrorUnknownType(inst["mnemonic"], t);
                 }
                 inst_types_ |= static_cast<std::underlying_type_t<InstructionTypes>>(itr->second);
+            }
+        }
+    }
+
+    void parseDataSizeStanza_(const json& inst)
+    {
+        // Merge data size information from the overlay instruction and the base
+        if (inst.find("data") != inst.end()) {
+            data_size_ = inst["data"];
+            // Check positive, power-of-2 or zero
+            if ((data_size_ & (data_size_ - 1)) || (int32_t(data_size_) < 0)) {
+                throw BuildErrorInvalidDataSize(inst["mnemonic"], data_size_);
             }
         }
     }

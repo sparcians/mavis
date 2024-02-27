@@ -2048,8 +2048,10 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\t" << extract_(Form_ISH::idType::RD, icode & ~fixed_field_mask_)
-           << "," << extract_(Form_ISH::idType::RS1, icode & ~fixed_field_mask_)
-           << ", SHAMT=0x" << std::hex << getImmediate(icode);
+           << "," << extract_(Form_ISH::idType::RS1, icode & ~fixed_field_mask_);
+        if (!isMaskedField_(Form_ISH::idType::SHAMT, fixed_field_mask_)) {
+           ss << ", SHAMT=0x" << std::hex << getImmediate(icode);
+        }
         return ss.str();
     }
 
@@ -2059,8 +2061,10 @@ public:
         ss << mnemonic << "\t"
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_ISH::idType::RD, InstMetaData::OperandFieldID::RD },
-                                   { Form_ISH::idType::RS1, InstMetaData::OperandFieldID::RS1 } })
-            << ", SHAMT=0x" << std::hex << getImmediate(icode);
+                                   { Form_ISH::idType::RS1, InstMetaData::OperandFieldID::RS1 } });
+        if (!isMaskedField_(Form_ISH::idType::SHAMT, fixed_field_mask_)) {
+            ss << ", SHAMT=0x" << std::hex << getImmediate(icode);
+        }
         return ss.str();
     }
 

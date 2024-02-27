@@ -19,6 +19,8 @@ if (CMAKE_BUILD_TYPE MATCHES "^[Dd]ebug")
   add_compile_options (-O0)
 endif()
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../mavis ${CMAKE_CURRENT_SOURCE_DIR}/..)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 add_executable(Mavis main.cpp)
 target_link_libraries (Mavis mavis)
 

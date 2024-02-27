@@ -530,11 +530,11 @@ vsext.vf4,0x4802a057
 vzext.vf2,0x48032057
 vsext.vf2,0x4803a057
 vcompress.vm,0x5e002057
-vmandnot.mm,0x60002057
+vmandn.mm,0x60002057
 vmand.mm,0x64002057
 vmor.mm,0x68002057
 vmxor.mm,0x6c002057
-vmornot.mm,0x70002057
+vmorn.mm,0x70002057
 vmnand.mm,0x74002057
 vmnor.mm,0x78002057
 vmxnor.mm,0x7c002057

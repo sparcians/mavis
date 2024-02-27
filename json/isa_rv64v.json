@@ -26,7 +26,8 @@
     "xform": "V_load",
     "type": [ "vector", "mask", "unit_stride", "load" ],
     "l-oper": [ "rs1" ],
-    "v-oper": [ "rd" ]
+    "v-oper": [ "rd" ],
+    "data": 8
   },
   {
     "mnemonic": "vsetivli",
@@ -95,7 +96,8 @@
     "xform": "V_store",
     "type": [ "vector", "mask", "unit_stride", "store" ],
     "l-oper": [ "rs1" ],
-    "v-oper": [ "rs3" ]
+    "v-oper": [ "rs3" ],
+    "data": 8
   },
   {
     "mnemonic": "vse8.v",
@@ -881,7 +883,7 @@
     "form": "V",
     "stencil": "0x5e004057",
     "fixed": [ "vm", "rs2" ],
-    "type": [ "vector" ],
+      "type": [ "vector", "move" ],
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ]
   },
@@ -1249,7 +1251,7 @@
     "form": "V",
     "stencil": "0x5e000057",
     "fixed": [ "vm", "rs2" ],
-    "type": [ "vector" ],
+    "type": [ "vector", "move" ],
     "v-oper": [ "rs1", "rd" ]
   },
   {
@@ -1555,7 +1557,7 @@
     "stencil": "0x5e003057",
     "fixed": [ "vm", "rs2" ],
     "xform": "V_simm",
-    "type": [ "vector" ],
+    "type": [ "vector", "move" ],
     "v-oper": [ "rd" ]
   },
   {
@@ -1645,7 +1647,7 @@
     "form": "V",
     "stencil": "0x9e003057",
     "fixed": [ "vm", "rs1" ],
-    "type": [ "vector", "whole" ],
+      "type": [ "vector", "whole", "move" ],
     "v-oper": [ "rs2", "rd" ]
   },
   {
@@ -1654,7 +1656,7 @@
     "form": "V",
     "stencil": "0x9e00b057",
     "fixed": [ "vm", "rs1" ],
-    "type": [ "vector", "whole" ],
+    "type": [ "vector", "whole", "move" ],
     "v-oper": [ "rs2", "rd" ]
   },
   {
@@ -1663,7 +1665,7 @@
     "form": "V",
     "stencil": "0x9e01b057",
     "fixed": [ "vm", "rs1" ],
-    "type": [ "vector", "whole" ],
+    "type": [ "vector", "whole", "move" ],
     "v-oper": [ "rs2", "rd" ]
   },
   {
@@ -1672,7 +1674,7 @@
     "form": "V",
     "stencil": "0x9e03b057",
     "fixed": [ "vm", "rs1" ],
-    "type": [ "vector", "whole" ],
+    "type": [ "vector", "whole", "move" ],
     "v-oper": [ "rs2", "rd" ]
   },
   {
@@ -1861,7 +1863,7 @@
     "form": "V",
     "stencil": "0x42002057",
     "fixed": [ "vm", "rs1" ],
-    "type": [ "vector" ],
+    "type": [ "vector", "move" ],
     "l-oper": [ "rd" ],
     "v-oper": [ "rs2" ]
   },
@@ -1929,7 +1931,7 @@
     "v-oper": "all"
   },
   {
-    "mnemonic": "vmandnot.mm",
+    "mnemonic": "vmandn.mm",
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x60002057",
@@ -1961,7 +1963,7 @@
     "v-oper": "all"
   },
   {
-    "mnemonic": "vmornot.mm",
+    "mnemonic": "vmorn.mm",
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x70002057",
@@ -2337,7 +2339,7 @@
     "form": "V",
     "stencil": "0x42006057",
     "fixed": [ "vm", "rs2" ],
-    "type": [ "vector" ],
+    "type": [ "vector", "move" ],
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ]
   },

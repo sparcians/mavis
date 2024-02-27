@@ -166,18 +166,31 @@ int main() {
             std::make_pair("srai", "rob_group:[\"begin\"]"),
         };
 
-    MavisType mavis_facade({"../json/isa_rv64g.json",
-                                    "../json/isa_rv64c.json",
-                                    "../json/isa_rv64cf.json",
-                                    "../json/isa_rv64cd.json",
-                                    "../json/isa_rv64q.json",
-                                    "../json/isa_rv64h.json",
-                                    "../json/isa_rv64v.json",
-                                    "../json/isa_rv64vf.json"
-                                    },
-            {},
-        uid_init,
-        anno_overrides);
+    MavisType mavis_facade({"../json/isa_rv64i.json",        // included in "g" spec
+                            "../json/isa_rv64f.json",        // included in "g" spec
+                            "../json/isa_rv64m.json",        // included in "g" spec
+                            "../json/isa_rv64a.json",        // included in "g" spec
+                            "../json/isa_rv64d.json",        // included in "g" spec
+                            "../json/isa_rv64zicsr.json",    // included in "g" spec
+                            "../json/isa_rv64zifencei.json", // included in "g" spec
+                            "../json/isa_rv64c.json",
+                            "../json/isa_rv64cf.json",
+                            "../json/isa_rv64cd.json",
+                            "../json/isa_rv64q.json",
+                            "../json/isa_rv64h.json",
+                            "../json/isa_rv64v.json",
+                            "../json/isa_rv64vf.json",
+                            "../json/isa_rv64zvk.json",
+                            "../json/isa_rv64zfh.json",
+                            "../json/isa_rv64zfh_d.json",
+                            "../json/isa_rv64zicbo.json",
+                            "../json/isa_rv64zihintntl.json",
+                            "../json/isa_rv64zicond.json",
+                            "../json/isa_rv64zfbfmin.json",
+                            "../json/isa_rv64zvfbfwma.json"},
+                           {"mallard_uarch_rv64g.json"},
+                           uid_init,
+                           anno_overrides);
     cout << mavis_facade;
 
     Instruction<uArchInfo>::PtrType inst = nullptr;
@@ -196,6 +209,12 @@ int main() {
     // Test HV decoding
     runTSet(mavis_facade, "rv64h.tset");
 
+    // Test the Vector Crypto decoding
+    runTSet(mavis_facade, "rv64zvk.tset");
+
+    // Test BF16 extensions
+    runTSet(mavis_facade, "rv64_bf16.tset");
+
     // Exercise the cache
     runTSet(mavis_facade, "rv64.tset");
     mavis_facade.flushCaches();
@@ -213,17 +232,59 @@ int main() {
                                      "../json/isa_rv64c.json",
                                      "../json/isa_rv64cf.json",
                                      "../json/isa_rv64cd.json",
+                                     "../json/isa_rv64zicsr.json",
+                                     "../json/isa_rv64zifencei.json",
                                      "../json/isa_rv64v.json",
                                      "../json/isa_rv64vf.json",
+                                     "../json/isa_rv64zfh.json",
+                                     "../json/isa_rv64zfh_d.json",
                                      "../json/isa_rv64zba.json",
                                      "../json/isa_rv64zbb.json",
                                      "../json/isa_rv64zbc.json",
-                                     "../json/isa_rv64zbs.json"
+                                     "../json/isa_rv64zbs.json",
+                                     "../json/isa_rv64zicbo.json",
+                                     "../json/isa_rv64zcb.json",
+                                     "../json/isa_rv64zihintntl.json",
+                                     "../json/isa_rv64zicond.json"
                                      }, {});
     mavis_facade.switchContext("NEW");
     cout << mavis_facade;
     runTSet(mavis_facade, "rv64.tset");
     runTSet(mavis_facade, "rv64_bits.tset", {mavis::InstMetaData::ISAExtension::B});
+    runTSet(mavis_facade, "rv64_zcb.tset");
+    runTSet(mavis_facade, "rv64_zicond.tset");
+
+    // Check implied extraction fields for zcb c.zext.[bhw] instructions
+    // c.zext.b should have 0xFF implied immediate
+    inst = mavis_facade.makeInst(0x9c61, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x9c61 = " << inst->dasmString() << endl;
+    assert(inst->hasImmediate());
+    assert(inst->getImmediate() == 0xFF);
+
+    // c.zext.h should have RS2 implied source (X0) and implied immediate 0
+    inst = mavis_facade.makeInst(0x9c69, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x9c69 = " << inst->dasmString() << endl;
+    assert(inst->hasImmediate());
+    assert(inst->getImmediate() == 0);
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS2));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS2) == 0);
+
+    // c.zext.w should have RS2 implied source (X0) and implied immediate 0
+    inst = mavis_facade.makeInst(0x9c71, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x9c71 = " << inst->dasmString() << endl;
+    assert(inst->hasImmediate());
+    assert(inst->getImmediate() == 0);
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS2));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS2) == 0);
+
+    // sext.b
+    inst = mavis_facade.makeInst(0x60401013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x0x60401013 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "sext.b");
 
     // Switch back to BASE context
     mavis_facade.switchContext("BASE");
@@ -677,6 +738,39 @@ int main() {
     assert(inst != nullptr);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xc6880857 = " << inst->dasmString() << endl;
 
+    // 0x52a1b657, vror.vi v12,v10,3
+    inst = mavis_facade.makeInst(0x52a1b657, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x52a1b657 = " << inst->dasmString() << endl;
+    assert(inst->getImmediate() == 3);
+    assert(inst->hasImmediate() == true);
+
+    // 0x56b43757, vror.vi v12,v10,40
+    inst = mavis_facade.makeInst(0x56b43757, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x56b43757 = " << inst->dasmString() << endl;
+    assert(inst->getImmediate() == 40);
+    assert(inst->hasImmediate() == true);
+
+    // 0xb662a257, vmacc.vv	v4,v5,v6
+    inst = mavis_facade.makeInst(0xb662a257, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x56b43757 = " << inst->dasmString() << endl;
+    assert(inst->getDestOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RD));
+    assert(inst->getDestOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RD) == 4);
+    assert(inst->getDestOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RD) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+    assert(inst->getSourceOpInfo().hasImpliedOperand());
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS1));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS1) == 5);
+    assert(inst->getSourceOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RS1) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RS2));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RS2) == 6);
+    assert(inst->getSourceOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RS2) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+    assert(inst->getSourceOpInfo().hasFieldID(mavis::InstMetaData::OperandFieldID::RD));
+    assert(inst->getSourceOpInfo().isImplied(mavis::InstMetaData::OperandFieldID::RD));
+    assert(inst->getSourceOpInfo().getFieldValue(mavis::InstMetaData::OperandFieldID::RD) == 4);
+    assert(inst->getSourceOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RD) == mavis::OpcodeInfo::OperandTypes::VECTOR);
+
     // Issue #87
     //mavis::ExtractorDirectBase::RegListType dsts_ {8};
     //mavis::ExtractorDirectBase::RegListType srcs_ {30};
@@ -747,7 +841,7 @@ int main() {
 
     // Create a new context for testing pseudo instructions
     mavis_facade.makeContext("PSEUDO", {"../json/isa_rv64i.json", "isa_pseudo.json"},
-                             {});
+                             {"mallard_uarch_rv64g.json", "mallard_uarch_pseudo.json"});
     mavis_facade.switchContext("PSEUDO");
 
     mavis::ExtractorPseudoInfo pseudo_op
@@ -820,6 +914,146 @@ int main() {
     inst = mavis_facade.makeInst(0x01043823, 0);
     assert(inst != nullptr);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0x01043823 = " << inst->dasmString() << endl;
+
+    mavis::ExtractorDirectInfo ex_info_srai ("srai", {1,2}, {4});
+    inst = mavis_facade.makeInstDirectly(ex_info_srai, 0);
+    assert(inst->getuArchInfo()->isROBGrpStart() == true); // was false in the uarch files; overridden with annotations
+    assert(inst->getuArchInfo()->isROBGrpEnd() == false);
+
+    // LI x12, 0x0 (ADDI x12, x0, 0x0)
+    inst = mavis_facade.makeInst(0x613, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x613 = " << inst->dasmString() << endl;
+
+    // LI x12, 0x800 (ADDI, x12, x0, 0x800)
+    inst = mavis_facade.makeInst(0x80000613, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x80000613 = " << inst->dasmString() << endl;
+
+    // NOP (ADDI x0, x0, 0x0)
+    inst = mavis_facade.makeInst(0x13, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x13 = " << inst->dasmString() << endl;
+
+    // MV x12, x1 (ADDI x12, x1, 0x0)
+    inst = mavis_facade.makeInst(0x8613, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x8613 = " << inst->dasmString() << endl;
+
+    // ADDI x12, x1, 0x800
+    inst = mavis_facade.makeInst(0x80008613, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x80008613 = " << inst->dasmString() << endl;
+
+    // prefetch.i
+    inst = mavis_facade.makeInst(0x6013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x6013 = " << inst->dasmString() << endl;
+    assert(inst->getImmediate() == 0);
+    assert(inst->hasImmediate() == true);
+
+    // ori x0, x0, 0x2
+    inst = mavis_facade.makeInst(0x206013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x6013 = " << inst->dasmString() << endl;
+    assert(inst->getImmediate() == 2);
+    assert(inst->hasImmediate() == true);
+
+    // prefetch.r
+    inst = mavis_facade.makeInst(0x106013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x106013 = " << inst->dasmString() << endl;
+    assert(inst->getImmediate() == 0);
+    assert(inst->hasImmediate() == true);
+
+    // prefetch.w x0, 0x1
+    inst = mavis_facade.makeInst(0x2306013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x306013 = " << inst->dasmString() << endl;
+    assert(inst->getImmediate() == 1);
+    assert(inst->hasImmediate() == true);
+
+    // TAG testing
+    mavis::MatchSet<mavis::Pattern>  pset(std::vector<std::string>{"a", "a+", "[abc]"});
+    mavis::MatchSet<mavis::Tag>      tset(std::vector<std::string> {"aaa", "c"});
+    assert(tset.matchAnyAny(pset));
+    assert(! tset.matchAnyAll(pset));
+    assert(tset.matchAllAny(pset));
+    assert(! tset.matchAllAll(pset));
+
+    // T0: Create a new context for testing pseudo instructions
+    mavis_facade.makeContext("T0", {"./isa_tagged.json"},
+                             {}, {}, {},
+                             {}, mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"pf"}));
+    mavis_facade.switchContext("T0");
+    cout << "====== TAG 'pf' EXCLUDED =========" << endl;
+    // NOTE: prefetch instructions will NOT show in the trie dump (they are overlays of ORI)
+    cout << mavis_facade;
+
+    // prefetch.i should map to ori here (since pf tag excluded)
+    inst = mavis_facade.makeInst(0x6013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x6013 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "ori");
+    assert(inst->getImmediate() == 0);
+    assert(inst->hasImmediate() == true);
+    assert(!inst->getTags().isMember("pf"));
+
+    // T1: Create a new context for testing pseudo instructions
+    mavis_facade.makeContext("T1", {"./isa_tagged.json"},
+                             {}, {}, {},
+                             {}, mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"c.*"}));
+    mavis_facade.switchContext("T1");
+    cout << "====== TAG 'ccf' EXCLUDED =========" << endl;
+    // NOTE: prefetch instructions will NOT show in the trie dump (they are overlays of ORI)
+    cout << mavis_facade;
+
+    // prefetch.i should map to prefetch.i here (since pf tag NOT excluded)
+    inst = mavis_facade.makeInst(0x6013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x6013 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "prefetch.i");
+    assert(inst->getImmediate() == 0);
+    assert(inst->hasImmediate() == true);
+    assert(inst->getTags().isMember("pf"));
+
+    // T2: Create a new context for testing pseudo instructions
+    mavis_facade.makeContext("T2", {"./isa_tagged.json"},
+                             {}, {}, {},
+                             mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"c.*"}), {});
+    mavis_facade.switchContext("T2");
+    cout << "====== TAG 'ccf' INCLUDED (ONLY) =========" << endl;
+    // NOTE: prefetch instructions will NOT show in the trie dump (they are overlays of ORI)
+    cout << mavis_facade;
+
+    // prefetch.i should fail to decode (PREFETCH and ORI have been filtered out)
+    try {
+        inst = mavis_facade.makeInst(0x6013, 0);
+        assert(inst == nullptr);
+    } catch (const mavis::UnknownOpcode& ex) {
+        cout << "line " << dec << __LINE__ << ": " << "DASM: 0x6013 fails to decode. This is expected" << endl;
+    }
+
+    // T3: Create a new context for testing pseudo instructions
+    try {
+        mavis_facade.makeContext("T3", {"./isa_tagged.json"},
+                                 {}, {}, {},
+                                 mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"zic.*"}),
+                                 mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"c.*"}));
+        assert(false);
+    } catch (const mavis::BuildErrorOverlayBaseNotFound& ex) {
+        cout << "line " << dec << __LINE__ << ": " << "Missing ORI definition during build. This is expected" << endl;
+    }
+
+    mavis_facade.switchContext("BASE");
+
+    // prefetch.i should map to prefetch.i here (back to BASE context)
+    inst = mavis_facade.makeInst(0x6013, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x6013 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "prefetch.i");
+    assert(inst->getImmediate() == 0);
+    assert(inst->hasImmediate() == true);
 
     return 0;
 }
