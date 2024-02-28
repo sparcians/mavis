@@ -1,10 +1,11 @@
 #pragma once
 
-#include "ExtractorIF.h"
-#include "Extractor.h"
-#include "DecoderTypes.h"
-#include "DecoderConsts.h"
-#include "Form.h"
+#include "mavis/Extractor.h"
+#include "mavis/DecoderTypes.h"
+#include "mavis/DecoderConsts.h"
+#include "impl/forms/CommonForms.h"
+#include "impl/forms/CompressedForms.h"
+#include "impl/forms/VectorForms.h"
 
 #include <cinttypes>
 
@@ -40,8 +41,8 @@ class Extractor<Form_AMO> : public ExtractorBase<Form_AMO>
 {
 private:
     static inline ConcatField<2> func_fields_ = {
-        Form_AMO::getField(Form_AMO::idType::FUNC3),
-        Form_AMO::getField(Form_AMO::idType::FUNC5)
+        Form_AMO::fields[Form_AMO::idType::FUNC3],
+        Form_AMO::fields[Form_AMO::idType::FUNC5]
     };
 
 public:
@@ -401,8 +402,8 @@ class Extractor<Form_C2> : public ExtractorBase<Form_C2>
 {
 private:
     static inline ConcatField<2> func_fields_ = {
-        Form_C2::getField(Form_C2::idType::FUNC3),
-        Form_C2::getField(Form_C2::idType::FUNC1)
+        Form_C2::fields[Form_C2::idType::FUNC3],
+        Form_C2::fields[Form_C2::idType::FUNC1]
     };
 
 public:
@@ -609,8 +610,8 @@ class Extractor<Form_CA> : public ExtractorBase<Form_CA>
 {
 private:
     static inline ConcatField<2> func_fields_ = {
-        Form_CA::getField(Form_CA::idType::FUNC6),
-        Form_CA::getField(Form_CA::idType::FUNC2)
+        Form_CA::fields[Form_CA::idType::FUNC6],
+        Form_CA::fields[Form_CA::idType::FUNC2]
     };
 
 public:
@@ -1963,8 +1964,8 @@ class Extractor<Form_ISH> : public ExtractorBase<Form_ISH>
 {
 private:
     static inline ConcatField<2> func_fields_ = {
-        Form_ISH::getField(Form_ISH::idType::FUNC3),
-        Form_ISH::getField(Form_ISH::idType::FUNC6)
+        Form_ISH::fields[Form_ISH::idType::FUNC3],
+        Form_ISH::fields[Form_ISH::idType::FUNC6]
     };
 
 public:
@@ -2084,8 +2085,8 @@ class Extractor<Form_ISHW> : public ExtractorBase<Form_ISHW>
 {
 private:
     static inline ConcatField<2> func_fields_ = {
-        Form_ISHW::getField(Form_ISHW::idType::FUNC3),
-        Form_ISHW::getField(Form_ISHW::idType::FUNC7)
+        Form_ISHW::fields[Form_ISHW::idType::FUNC3],
+        Form_ISHW::fields[Form_ISHW::idType::FUNC7]
     };
 
 public:
@@ -2295,8 +2296,8 @@ class Extractor<Form_R> : public ExtractorBase<Form_R>
 {
 private:
     static inline ConcatField<2> func_fields_ = {
-        Form_R::getField(Form_R::idType::FUNC3),
-        Form_R::getField(Form_R::idType::FUNC7)
+        Form_R::fields[Form_R::idType::FUNC3],
+        Form_R::fields[Form_R::idType::FUNC7]
     };
 
 public:

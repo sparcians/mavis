@@ -163,7 +163,7 @@ public:
     // The problem with fixed_field_set is that it is generated from the DECODE form, using the
     // enum definition in that form's class. When we're extracting, we may use an "xform" which likely
     // has an incompatible field enum (where field id enum values are different between the form and xform)
-    void addSpecialCase(const FormWrapperIF* form, const std::string& mnemonic, const Opcode istencil,
+    void addSpecialCase(const FormBase* form, const std::string& mnemonic, const Opcode istencil,
                         const std::vector<std::string>& flist)
     {
         Opcode mask = 0;        // Mask of fixed fields

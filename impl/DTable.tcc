@@ -73,7 +73,7 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_(c
         }
         ifact->addOverlay(olay);
     } else {
-        const FormWrapperIF *form_wrap = forms_.findFormWrapper(static_cast<std::string>(inst["form"]));
+        const FormBase *form_wrap = forms_.findFormWrapper(static_cast<std::string>(inst["form"]));
         if (form_wrap == nullptr) {
             throw BuildErrorUnknownForm(jfile, mnemonic, inst["form"]);
         }
@@ -178,7 +178,7 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
  */
 template<typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
 typename IFactoryIF<InstType, AnnotationType>::PtrType
-DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildLeaf_(const FormWrapperIF *form,
+DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildLeaf_(const FormBase *form,
                                                                       const typename IFactoryIF<InstType, AnnotationType>::PtrType &currNode,
                                                                       const std::string &mnemonic, const Opcode istencil,
                                                                       const FieldNameListType &flist,
@@ -256,7 +256,7 @@ DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildLeaf_(const Form
  */
 template<typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
 typename IFactoryIF<InstType, AnnotationType>::PtrType
-DTable<InstType, AnnotationType, AnnotationTypeAllocator>::build_(const FormWrapperIF *form, const std::string &mnemonic,
+DTable<InstType, AnnotationType, AnnotationTypeAllocator>::build_(const FormBase *form, const std::string &mnemonic,
                                                                        const Opcode istencil,
                                                                        const FieldNameListType &flist,
                                                                        const FieldNameSetType &ignore_set, const std::string &factory_name,
@@ -269,7 +269,7 @@ DTable<InstType, AnnotationType, AnnotationTypeAllocator>::build_(const FormWrap
 
     typename IFactoryIF<InstType, AnnotationType>::PtrType currNode = root_;
 
-    const FormWrapperIF::OpcodeFieldsType &fields = form->getOpcodeFields();
+    const FieldsType &fields = form->getOpcodeFields();
     const uint32_t n_fields = fields.size();
     assert(n_fields > 0);
 

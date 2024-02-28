@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ExtractorIF.h"
+#include "Extractor.h"
 #include "FormGeneric.hpp"
 #include <sstream>
 
