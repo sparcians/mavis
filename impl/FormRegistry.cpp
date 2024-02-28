@@ -1,7 +1,8 @@
 
-#include "impl/Form.h"
-#include "FormCommon.h"
-#include "FormRegistry.h"
+#include "mavis/FormRegistry.h"
+#include "impl/forms/CommonForms.h"
+#include "impl/forms/CompressedForms.h"
+#include "impl/forms/VectorForms.h"
 #include <iostream>
 
 namespace mavis {

@@ -1,8 +1,8 @@
 
-#include "ExtractorIF.h"
-#include "ExtractorDerived.tpp"
-#include "ExtractorForms.tpp"
-#include "ExtractorRegistry.h"
+#include "mavis/Extractor.h"
+#include "mavis/ExtractorRegistry.h"
+#include "impl/ExtractorForms.tpp"
+#include "impl/ExtractorDerived.tpp"
 
 namespace mavis {
 

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "ExtractorIF.h"
+#include "Extractor.h"
 
 namespace mavis {
 /**

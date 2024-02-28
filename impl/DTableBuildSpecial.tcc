@@ -1,7 +1,6 @@
 #pragma once
 
 #include "mavis/DTable.h" // Needed for CLION
-#include "mavis/FormCommon.h"
 
 namespace mavis {
 

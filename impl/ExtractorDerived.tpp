@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Extractor.h"
-#include "DecoderConsts.h"
-#include "ExtractorForms.tpp"
-#include "FormStub.h"
+#include "mavis/Extractor.h"
+#include "mavis/DecoderConsts.h"
+#include "mavis/FormStub.h"
+#include "impl/ExtractorForms.tpp"
 
 namespace mavis {
 

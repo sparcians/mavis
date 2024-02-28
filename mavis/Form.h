@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Field.h"
+#include "mavis/DecoderExceptions.h"
 
 namespace mavis {
 

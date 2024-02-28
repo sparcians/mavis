@@ -1,10 +1,11 @@
 #pragma once
 
-#include "ExtractorIF.h"
-#include "Extractor.h"
-#include "DecoderTypes.h"
-#include "DecoderConsts.h"
-#include "Form.h"
+#include "mavis/Extractor.h"
+#include "mavis/DecoderTypes.h"
+#include "mavis/DecoderConsts.h"
+#include "impl/forms/CommonForms.h"
+#include "impl/forms/CompressedForms.h"
+#include "impl/forms/VectorForms.h"
 
 #include <cinttypes>
 
