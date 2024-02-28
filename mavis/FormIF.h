@@ -15,22 +15,9 @@ enum class ImmediateType : uint32_t
 
 typedef const std::vector<Field> FieldsType;
 
-/*
-class FormDefault
-{
-    enum idType : uint32_t
-    {
-        __N = 0
-    };
-    static inline const char * name {"?"};
-    static inline const std::array<const Field, idType::__N> fields {};
-    static inline const std::map<std::string, const Field &> fmap {};
-    static inline const std::map<std::string, idType> imap {};
-    static inline FieldsType opcode_fields {};
-    static inline ImmediateType immediate_type = ImmediateType::NONE;
-};
-*/
-
+/**
+ * Form Base to provide common interface for templated Form class
+ */
 class FormBase
 {
 public:
@@ -59,7 +46,7 @@ public:
 
 
 /**
- * Form Base to provide implementation of common methods
+ * Form class
  */
 template<class FormType>
 class Form : public FormBase
