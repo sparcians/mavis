@@ -29,57 +29,12 @@ public:
         __N
     };
 
-    static inline const char * name {"AMO"};
-
-    static inline FieldsType fields {
-        Field("func5", 27, 5),
-        Field("aq", 26, 1),
-        Field("wd", 26, 1),
-        Field("rl", 25, 1),
-        Field("vm", 25, 1),
-        Field("rs2", 20, 5),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("width", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"func5",  fields[idType::FUNC5]},
-        {"aq",     fields[idType::AQ]},
-        {"wd",     fields[idType::WD]},
-        {"rl",     fields[idType::RL]},
-        {"vm",     fields[idType::VM]},
-        {"rs2",    fields[idType::RS2]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"width",  fields[idType::WIDTH]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"func5",  idType::FUNC5},
-        {"aq",     idType::AQ},
-        {"wd",     idType::WD},
-        {"rl",     idType::RL},
-        {"vm",     idType::VM},
-        {"rs2",    idType::RS2},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"width",  idType::WIDTH},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3],
-        fields[idType::FUNC5]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::NONE;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -99,41 +54,12 @@ public:
         __N
     };
 
-    static inline const char * name {"B"};
-
-    static inline FieldsType fields {
-        Field("imm7", 25, 7),
-        Field("rs2", 20, 5),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("imm5", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"imm7",   fields[idType::IMM7]},
-        {"rs2",    fields[idType::RS2]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"imm5",   fields[idType::IMM5]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"imm7",   idType::IMM7},
-        {"rs2",    idType::RS2},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"imm5",   idType::IMM5},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -152,38 +78,12 @@ public:
         __N
     };
 
-    static inline const char * name {"CSR"};
-
-    static inline FieldsType fields {
-        Field("csr", 20, 12),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"csr",    fields[idType::CSR]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"csr",    idType::CSR},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::NONE;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 
@@ -203,38 +103,12 @@ public:
         __N
     };
 
-    static inline const char * name {"CSRI"};
-
-    static inline FieldsType fields {
-        Field("csr", 20, 12),
-        Field("uimm", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"csr",    fields[idType::CSR]},
-        {"uimm",   fields[idType::UIMM]},
-        {"func3",  fields[idType::FUNC3]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"csr",    idType::CSR},
-        {"uimm",   idType::UIMM},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 
@@ -256,44 +130,17 @@ public:
         __N
     };
 
-    static inline const char * name {"FENCE"};
+    static const char * name;
 
-    static inline FieldsType fields {
-        Field("fm", 28, 4),
-        Field("pred", 24, 4),
-        Field("succ", 20, 4),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
+    static const FieldsType fields;
 
-    static inline const std::map<std::string, const Field &> fmap {
-        {"fm",     fields[idType::FM]},
-        {"pred",   fields[idType::PRED]},
-        {"succ",   fields[idType::SUCC]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
+    static const std::map<std::string, const Field &> fmap;
 
-    static inline const std::map<std::string, idType> imap {
-        {"fm",     idType::FM},
-        {"pred",   idType::PRED},
-        {"succ",   idType::SUCC},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
+    static const std::map<std::string, idType> imap;
 
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3]
-    };
+    static const FieldsType opcode_fields;
 
-    static inline ImmediateType immediate_type = ImmediateType::NONE;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -312,38 +159,12 @@ public:
         __N
     };
 
-    static inline const char * name {"I"};
-
-    static inline FieldsType fields {
-        Field("imm", 20, 12),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"imm",    fields[idType::IMM]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"imm",    idType::IMM},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -363,42 +184,12 @@ public:
         __N
     };
 
-    static inline const char * name {"ISH"};
-
-    static inline FieldsType fields {
-        Field("func6", 26, 6),
-        Field("shamt", 20, 6),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"func6",  fields[idType::FUNC6]},
-        {"shamt",  fields[idType::SHAMT]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"func6",  idType::FUNC6},
-        {"shamt",  idType::SHAMT},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3],
-        fields[idType::FUNC6]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 
@@ -419,42 +210,12 @@ public:
         __N
     };
 
-    static inline const char * name {"ISHW"};
-
-    static inline FieldsType fields {
-        Field("func7", 25, 7),
-        Field("shamtw", 20, 5),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"func7",  fields[idType::FUNC7]},
-        {"shamtw", fields[idType::SHAMTW]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"func7",  idType::FUNC7},
-        {"shamtw", idType::SHAMTW},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3],
-        fields[idType::FUNC7]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 
@@ -472,31 +233,12 @@ public:
         __N
     };
 
-    static inline const char * name {"J"};
-
-    static inline FieldsType fields {
-        Field("imm20", 12, 20),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"imm20",  fields[idType::IMM20]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"imm20",  idType::IMM20},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -516,42 +258,12 @@ public:
         __N
     };
 
-    static inline const char * name {"R"};
-
-    static inline FieldsType fields {
-        Field("func7", 25, 7),
-        Field("rs2", 20, 5),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"func7",  fields[idType::FUNC7]},
-        {"rs2",    fields[idType::RS2]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"func7",  idType::FUNC7},
-        {"rs2",    idType::RS2},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3],
-        fields[idType::FUNC7]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::NONE;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -571,41 +283,12 @@ public:
         __N
     };
 
-    static inline const char * name {"Rfloat"};
-
-    static inline FieldsType fields {
-        Field("func7", 25, 7),
-        Field("rs2", 20, 5),
-        Field("rs1", 15, 5),
-        Field("rm", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"func7",  fields[idType::FUNC7]},
-        {"rs2",    fields[idType::RS2]},
-        {"rs1",    fields[idType::RS1]},
-        {"rm",     fields[idType::RM]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"func7",  idType::FUNC7},
-        {"rs2",    idType::RS2},
-        {"rs1",    idType::RS1},
-        {"rm",     idType::RM},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC7]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::NONE;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -626,44 +309,12 @@ public:
         __N
     };
 
-    static inline const char * name {"R4"};
-
-    static inline FieldsType fields {
-        Field("rs3", 27, 5),
-        Field("func2", 25, 2),
-        Field("rs2", 20, 5),
-        Field("rs1", 15, 5),
-        Field("rm", 12, 3),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"rs3",    fields[idType::RS3]},
-        {"func2",  fields[idType::FUNC2]},
-        {"rs2",    fields[idType::RS2]},
-        {"rs1",    fields[idType::RS1]},
-        {"rm",     fields[idType::RM]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"rs3",    idType::RS3},
-        {"func2",  idType::FUNC2},
-        {"rs2",    idType::RS2},
-        {"rs1",    idType::RS1},
-        {"rm",     idType::RM},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC2]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::NONE;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -683,41 +334,12 @@ public:
         __N
     };
 
-    static inline const char * name {"S"};
-
-    static inline FieldsType fields {
-        Field("imm7", 25, 7),
-        Field("rs2", 20, 5),
-        Field("rs1", 15, 5),
-        Field("func3", 12, 3),
-        Field("imm5", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"imm7",   fields[idType::IMM7]},
-        {"rs2",    fields[idType::RS2]},
-        {"rs1",    fields[idType::RS1]},
-        {"func3",  fields[idType::FUNC3]},
-        {"imm5",   fields[idType::IMM5]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"imm7",   idType::IMM7},
-        {"rs2",    idType::RS2},
-        {"rs1",    idType::RS1},
-        {"func3",  idType::FUNC3},
-        {"imm5",   idType::IMM5},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE],
-        fields[idType::FUNC3]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::SIGNED;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 
 /**
@@ -734,30 +356,11 @@ public:
         __N
     };
 
-    static inline const char * name {"U"};
-
-    static inline FieldsType fields {
-        Field("imm20", 12, 20),
-        Field("rd", 7, 5),
-        Field("opcode", 0, 7)
-    };
-
-    static inline const std::map<std::string, const Field &> fmap {
-        {"imm20",  fields[idType::IMM20]},
-        {"rd",     fields[idType::RD]},
-        {"opcode", fields[idType::OPCODE]}
-    };
-
-    static inline const std::map<std::string, idType> imap {
-        {"imm20",  idType::IMM20},
-        {"rd",     idType::RD},
-        {"opcode", idType::OPCODE}
-    };
-
-    static inline FieldsType opcode_fields {
-        fields[idType::OPCODE]
-    };
-
-    static inline ImmediateType immediate_type = ImmediateType::UNSIGNED;
+    static const char * name;
+    static const FieldsType fields;
+    static const std::map<std::string, const Field &> fmap;
+    static const std::map<std::string, idType> imap;
+    static const FieldsType opcode_fields;
+    static const ImmediateType immediate_type;
 };
 } // namespace mavis
