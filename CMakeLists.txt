@@ -9,6 +9,9 @@ include_directories(.)
 add_library(mavis
   impl/ExtractorRegistry.cpp
   impl/FormRegistry.cpp
+  impl/forms/CommonForms.cpp
+  impl/forms/CompressedForms.cpp
+  impl/forms/VectorForms.cpp
 )
 
 add_subdirectory(test EXCLUDE_FROM_ALL)

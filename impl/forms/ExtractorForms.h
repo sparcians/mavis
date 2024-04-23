@@ -39,12 +39,6 @@ namespace mavis {
 template<>
 class Extractor<Form_AMO> : public ExtractorBase<Form_AMO>
 {
-private:
-    static inline ConcatField<2> func_fields_ = {
-        Form_AMO::fields[Form_AMO::idType::FUNC3],
-        Form_AMO::fields[Form_AMO::idType::FUNC5]
-    };
-
 public:
     Extractor() = default;
 
@@ -400,12 +394,6 @@ protected:
 template<>
 class Extractor<Form_C2> : public ExtractorBase<Form_C2>
 {
-private:
-    static inline ConcatField<2> func_fields_ = {
-        Form_C2::fields[Form_C2::idType::FUNC3],
-        Form_C2::fields[Form_C2::idType::FUNC1]
-    };
-
 public:
     Extractor() = default;
 
@@ -608,12 +596,6 @@ protected:
 template<>
 class Extractor<Form_CA> : public ExtractorBase<Form_CA>
 {
-private:
-    static inline ConcatField<2> func_fields_ = {
-        Form_CA::fields[Form_CA::idType::FUNC6],
-        Form_CA::fields[Form_CA::idType::FUNC2]
-    };
-
 public:
     Extractor() = default;
 
@@ -1962,12 +1944,6 @@ protected:
 template<>
 class Extractor<Form_ISH> : public ExtractorBase<Form_ISH>
 {
-private:
-    static inline ConcatField<2> func_fields_ = {
-        Form_ISH::fields[Form_ISH::idType::FUNC3],
-        Form_ISH::fields[Form_ISH::idType::FUNC6]
-    };
-
 public:
     Extractor() = default;
 
@@ -2083,12 +2059,6 @@ private:
 template<>
 class Extractor<Form_ISHW> : public ExtractorBase<Form_ISHW>
 {
-private:
-    static inline ConcatField<2> func_fields_ = {
-        Form_ISHW::fields[Form_ISHW::idType::FUNC3],
-        Form_ISHW::fields[Form_ISHW::idType::FUNC7]
-    };
-
 public:
     Extractor() = default;
 
@@ -2294,12 +2264,6 @@ private:
 template<>
 class Extractor<Form_R> : public ExtractorBase<Form_R>
 {
-private:
-    static inline ConcatField<2> func_fields_ = {
-        Form_R::fields[Form_R::idType::FUNC3],
-        Form_R::fields[Form_R::idType::FUNC7]
-    };
-
 public:
     Extractor() = default;
 

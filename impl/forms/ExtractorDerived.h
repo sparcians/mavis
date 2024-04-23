@@ -3,7 +3,7 @@
 #include "mavis/Extractor.h"
 #include "mavis/DecoderConsts.h"
 #include "mavis/FormStub.h"
-#include "impl/ExtractorForms.tpp"
+#include "impl/forms/ExtractorForms.cpp"
 
 namespace mavis {
 
