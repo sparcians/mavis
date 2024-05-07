@@ -171,6 +171,13 @@ template<typename FormType>
 class ExtractorBase : public ExtractorIF
 {
 public:
+    ExtractorBase() = default;
+
+    ExtractorBase(const uint64_t ffmask, const uint64_t fset) :
+        fixed_field_mask_(ffmask),
+        fixed_field_set_(fset)
+    {}
+
     std::string getName() const override
     {
         return FormType::name;
@@ -510,6 +517,9 @@ protected:
         }
         return ss.str();
     }
+
+    uint64_t fixed_field_mask_ = 0;
+    uint64_t fixed_field_set_ = 0;
 };
 
 /**
