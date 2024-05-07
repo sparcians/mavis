@@ -2,7 +2,7 @@
 
 #include "json.hpp"
 #include "DecoderExceptions.h"
-#include "FormIF.h"
+#include "Form.h"
 #include "Tag.hpp"
 #include "MatchSet.hpp"
 #include <memory>
@@ -248,7 +248,6 @@ public:
      * @param inst
      * @param form
      */
-    //InstMetaData(const json& inst, const FormWrapperIF* form, bool compressed = false) :
     InstMetaData(const json& inst, bool compressed = false, const MatchSet<Tag>& tags = MatchSet<Tag>()) :
         compressed_(compressed), tags_(tags)
     {

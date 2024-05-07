@@ -5,12 +5,13 @@ set(CMAKE_CXX_STANDARD 17)
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include_directories(.)
-include_directories(impl)
-include_directories(mavis)
 
 add_library(mavis
   impl/ExtractorRegistry.cpp
   impl/FormRegistry.cpp
+  impl/forms/CommonForms.cpp
+  impl/forms/CompressedForms.cpp
+  impl/forms/VectorForms.cpp
 )
 
 add_subdirectory(test EXCLUDE_FROM_ALL)

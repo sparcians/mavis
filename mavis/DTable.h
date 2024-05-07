@@ -319,7 +319,7 @@ private:
                         const MatchSet<Tag>& tags);
 
     typename IFactoryIF<InstType, AnnotationType>::PtrType
-    buildLeaf_(const FormWrapperIF *form, const typename IFactoryIF<InstType, AnnotationType>::PtrType &currNode,
+    buildLeaf_(const FormBase *form, const typename IFactoryIF<InstType, AnnotationType>::PtrType &currNode,
                     const std::string &mnemonic, Opcode istencil, const FieldNameListType &flist,
                     const std::string &factory_name, const std::string &xpand_name,
                     ExtractorIF::PtrType override_extractor,
@@ -327,7 +327,7 @@ private:
                     const typename IFactoryIF<InstType, AnnotationType>::PtrType &shared_ifact);
 
     typename IFactoryIF<InstType, AnnotationType>::PtrType
-    build_(const FormWrapperIF *form, const std::string &mnemonic, Opcode istencil,
+    build_(const FormBase *form, const std::string &mnemonic, Opcode istencil,
                 const FieldNameListType &flist,
                 const FieldNameSetType &ignore_set, const std::string &factory_name, const std::string &xpand_name,
                 const ExtractorIF::PtrType &override_extractor, InstMetaData::PtrType &einfo,

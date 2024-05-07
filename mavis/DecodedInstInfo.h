@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "DecoderConsts.h"
-#include "ExtractorIF.h"
+#include "Extractor.h"
 
 namespace mavis {
 

@@ -4,7 +4,7 @@
 #include "DecoderExceptions.h"
 #include <vector>
 #include "InstMetaData.h"
-#include "ExtractorIF.h"
+#include "Extractor.h"
 
 // FormGeneric class (SPARTA-954)
 //

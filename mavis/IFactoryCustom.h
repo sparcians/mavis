@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IFactory.h"
-#include "FormCommon.h"
+#include "impl/forms/CommonForms.h"
 #include <string>
 
 namespace mavis {
@@ -24,7 +24,7 @@ public:
         //FormType    f;
         std::stringstream ss;
         ss << "CUSTOM IFactory('" << IFactory<InstType, AnnotationType>::name_
-           << "'): type = " << Form_I::getName();
+           << "'): type = " << Form_I::name;
         return ss.str();
     }
 
@@ -57,7 +57,7 @@ public:
         //FormType    f;
         std::stringstream ss;
         ss << "CUSTOM IFactory('" << IFactory<InstType, AnnotationType>::name_
-           << "'): type = " << Form_R::getName();
+           << "'): type = " << Form_R::name;
         return ss.str();
     }
 

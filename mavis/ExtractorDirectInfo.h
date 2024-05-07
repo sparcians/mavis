@@ -2,7 +2,7 @@
 
 #include "DecoderConsts.h"
 #include "DecoderExceptions.h"
-#include "ExtractorIF.h"
+#include "Extractor.h"
 #include <string>
 
 namespace mavis {
