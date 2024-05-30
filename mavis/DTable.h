@@ -40,18 +40,16 @@ namespace mavis {
 /**
  * DTable : decode table (per field TRIE of IFactory composites)
  *
- * The DTable is constructed by reading in the ISA JSON files.
+ * The DTable is constructed by reading in the ISA JSON files. Below is an example of an ISA JSON
+ * entry for a instruction from the rv64a extension:
  *
- * ISA rv64a JSON Entry
- * _______________________________________
- * | "mnemonic" : "amoxor.d",            |
- * | "tags" : ["a", "g"],                |
- * | "form" : "AMO",                     |
- * | "stencil" : "0x2000302f",           |
- * | "type" : ["int", "load", "atomic"], |
- * | "l-oper" : "all",                   |
- * | "data" : 64                         |
- * ---------------------------------------
+ *     "mnemonic" : "amoxor.d",
+ *     "tags" : ["a", "g"],
+ *     "form" : "AMO",
+ *     "stencil" : "0x2000302f",
+ *     "type" : ["int", "load", "atomic"],
+ *     "l-oper" : "all",
+ *     "data" : 64
  *
  * Each entry in the ISA JSON files defines a "Form" and a "Stencil". The Form defines the
  * instruction format defined by the RISC-V ISA; it defines the meaning of each bit in the
@@ -63,8 +61,9 @@ namespace mavis {
  *   - func3 (bits 12:14)
  *   - func5 (bits 27:31)
  *
- *    func5   |  |  |   rs2   |   rs1   | func3 |    rd   |   opcode
- * 31       27|26|25|24     20|19     15|14   12|11      7|6          0
+ * | 31|   |   |   | 27| 26| 25| 24|   |   |   | 20| 19|   |   |   | 15| 14|   | 12| 11|   |   |   |  7|  6|   |   |   |   |   |  0|
+ * |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+ * |**func5**||||| | |**rs2**|||||**rs1**|||||**func3**|||**rd**|||||**opcode**|||||||
  *
  * The Stencil provides the fixed values of the opcode fields. For an isntruction to be deocded as
  * an amoxor.d instruction, its opcode field values must match the values in the stencil exaclty.
@@ -74,8 +73,9 @@ namespace mavis {
  *   - func3: 0x3
  *   - func5: 0x04
  *
- *     0x4    |  |  |   rs2   |   rs1   |  0x3  |    rd   |    0x2F
- * 31       27|26|25|24     20|19     15|14   12|11      7|6          0
+ * | 31|   |   |   | 27| 26| 25| 24|   |   |   | 20| 19|   |   |   | 15| 14|   | 12| 11|   |   |   |  7|  6|   |   |   |   |   |  0|
+ * |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+ * |**0x4**||||| | |**rs2**|||||**rs1**|||||**0x3**|||**rd**|||||**0x2F**|||||||
  *
  * When constructing the DTable, a new node is created for every unique opcode field value. For the
  * rv64a extension, this results in a 3-level table (one level for each opcode field). There is one
@@ -90,10 +90,7 @@ namespace mavis {
  * The value of func3 will determine which func5 node to go to. Since func5 is the last opcode
  * field, the next node will be a leaf node with the instruction Extractor.
  *
- * \image html MavisDTableTraversalExample.png
- *
- * TODO: Extractor
- * TODO: Opcode field restrictions
+ * ![DTableTraversal](https://github.com/sparcians/mavis/mavis/MavisDTableTraversalExample.png)
  */
 template<typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
 class DTable
