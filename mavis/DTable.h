@@ -62,10 +62,9 @@ namespace mavis {
  *   - opcode (bits 0:6)
  *   - func3 (bits 12:14)
  *   - func5 (bits 27:31)
- * _____________________________________________________________________
- * |   func5   |  |  |   rs2   |   rs1   | func3 |    rd   |   opcode  |
- * ---------------------------------------------------------------------
- * 31        27 26 25 24     20 19     15 14   12 11      7 6          0
+ *
+ *    func5   |  |  |   rs2   |   rs1   | func3 |    rd   |   opcode
+ * 31       27|26|25|24     20|19     15|14   12|11      7|6          0
  *
  * The Stencil provides the fixed values of the opcode fields. For an isntruction to be deocded as
  * an amoxor.d instruction, its opcode field values must match the values in the stencil exaclty.
@@ -74,10 +73,9 @@ namespace mavis {
  *   - opcode: 0x2F
  *   - func3: 0x3
  *   - func5: 0x04
- * _____________________________________________________________________
- * |    0x4    |  |  |   rs2   |   rs1   |  0x3  |    rd   |    0x2F   |
- * ---------------------------------------------------------------------
- * 31        27 26 25 24     20 19     15 14   12 11      7 6          0
+ *
+ *     0x4    |  |  |   rs2   |   rs1   |  0x3  |    rd   |    0x2F
+ * 31       27|26|25|24     20|19     15|14   12|11      7|6          0
  *
  * When constructing the DTable, a new node is created for every unique opcode field value. For the
  * rv64a extension, this results in a 3-level table (one level for each opcode field). There is one
