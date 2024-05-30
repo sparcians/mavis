@@ -39,6 +39,63 @@ namespace mavis {
 
 /**
  * DTable : decode table (per field TRIE of IFactory composites)
+ *
+ * The DTable is constructed by reading in the ISA JSON files.
+ *
+ * ISA rv64a JSON Entry
+ * _______________________________________
+ * | "mnemonic" : "amoxor.d",            |
+ * | "tags" : ["a", "g"],                |
+ * | "form" : "AMO",                     |
+ * | "stencil" : "0x2000302f",           |
+ * | "type" : ["int", "load", "atomic"], |
+ * | "l-oper" : "all",                   |
+ * | "data" : 64                         |
+ * ---------------------------------------
+ *
+ * Each entry in the ISA JSON files defines a "Form" and a "Stencil". The Form defines the
+ * instruction format defined by the RISC-V ISA; it defines the meaning of each bit in the
+ * instruction as "fields". It also defines which fields are "opcode fields" which are used to
+ * uniquely identify the instruction.
+ *
+ * For this example, the form "AMO" defines the following opcode fields:
+ *   - opcode (bits 0:6)
+ *   - func3 (bits 12:14)
+ *   - func5 (bits 27:31)
+ * _____________________________________________________________________
+ * |   func5   |  |  |   rs2   |   rs1   | func3 |    rd   |   opcode  |
+ * ---------------------------------------------------------------------
+ * 31        27 26 25 24     20 19     15 14   12 11      7 6          0
+ *
+ * The Stencil provides the fixed values of the opcode fields. For an isntruction to be deocded as
+ * an amoxor.d instruction, its opcode field values must match the values in the stencil exaclty.
+ *
+ * For this example, these are the values of the opcode fields:
+ *   - opcode: 0x2F
+ *   - func3: 0x3
+ *   - func5: 0x04
+ * _____________________________________________________________________
+ * |    0x4    |  |  |   rs2   |   rs1   |  0x3  |    rd   |    0x2F   |
+ * ---------------------------------------------------------------------
+ * 31        27 26 25 24     20 19     15 14   12 11      7 6          0
+ *
+ * When constructing the DTable, a new node is created for every unique opcode field value. For the
+ * rv64a extension, this results in a 3-level table (one level for each opcode field). There is one
+ * unique value for the opcode field (0x2F) and two unique values for the func3 field (0x2 and 0x3).
+ * For each unique value of func3, there is a node for func5 with child nodes for each unique vaue
+ * of func5. This results in 22 leaf nodes in the DTable, one for each instruction in the rv64a
+ * extension.
+ *
+ * To decode an instruction, the DTable is traversed by getting the value of the field of the
+ * current node to determine which node to go to next. All of the instructions in the rv64a
+ * extension have the same opcode value, so the next step is to get the value of the func3 field.
+ * The value of func3 will determine which func5 node to go to. Since func5 is the last opcode
+ * field, the next node will be a leaf node with the instruction Extractor.
+ *
+ * \image html MavisDTableTraversalExample.png
+ *
+ * TODO: Extractor
+ * TODO: Opcode field restrictions
  */
 template<typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
 class DTable
