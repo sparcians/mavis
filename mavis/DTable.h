@@ -65,7 +65,7 @@ namespace mavis {
  * |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
  * |**func5**||||| | |**rs2**|||||**rs1**|||||**func3**|||**rd**|||||**opcode**|||||||
  *
- * The Stencil provides the fixed values of the opcode fields. For an isntruction to be deocded as
+ * The Stencil provides the fixed values of the opcode fields. For an instruction to be decoded as
  * an amoxor.d instruction, its opcode field values must match the values in the stencil exaclty.
  *
  * For this example, these are the values of the opcode fields:
