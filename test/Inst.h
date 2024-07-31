@@ -128,6 +128,10 @@ public:
         return dinfo_->getTags();
     }
 
+    uint32_t getDataSize() const {
+        return dinfo_->getDataSize();
+    }
+
     const typename AnnotationType::PtrType &getuArchInfo() const { return uinfo_; }
 
 private:

@@ -1,8 +1,0 @@
-[
-  {
-    "mnemonic" : "P0",
-    "unit" : ["branch"],
-    "issue" : "branch",
-    "latency" : 1
-  }
-]

@@ -51,7 +51,9 @@ struct ExampleTraceInfo
 
 using MavisType = Mavis<Instruction<uArchInfo>, uArchInfo>;
 
-void runTSet(MavisType& mavis_facade, const std::string& tfile, const std::vector<mavis::OpcodeInfo::ISAExtension> isa_list = {}) {
+void runTSet(MavisType& mavis_facade, const std::string& tfile,
+             const std::vector<mavis::OpcodeInfo::ISAExtension> isa_list = {})
+{
     // Run a test file
     ifstream    tin(tfile);
 
@@ -166,29 +168,29 @@ int main() {
             std::make_pair("srai", "rob_group:[\"begin\"]"),
         };
 
-    MavisType mavis_facade({"../json/isa_rv64i.json",        // included in "g" spec
-                            "../json/isa_rv64f.json",        // included in "g" spec
-                            "../json/isa_rv64m.json",        // included in "g" spec
-                            "../json/isa_rv64a.json",        // included in "g" spec
-                            "../json/isa_rv64d.json",        // included in "g" spec
-                            "../json/isa_rv64zicsr.json",    // included in "g" spec
-                            "../json/isa_rv64zifencei.json", // included in "g" spec
-                            "../json/isa_rv64c.json",
-                            "../json/isa_rv64cf.json",
-                            "../json/isa_rv64cd.json",
-                            "../json/isa_rv64q.json",
-                            "../json/isa_rv64h.json",
-                            "../json/isa_rv64v.json",
-                            "../json/isa_rv64vf.json",
-                            "../json/isa_rv64zvk.json",
-                            "../json/isa_rv64zfh.json",
-                            "../json/isa_rv64zfh_d.json",
-                            "../json/isa_rv64zicbo.json",
-                            "../json/isa_rv64zihintntl.json",
-                            "../json/isa_rv64zicond.json",
-                            "../json/isa_rv64zfbfmin.json",
-                            "../json/isa_rv64zvfbfwma.json"},
-                           {"mallard_uarch_rv64g.json"},
+    MavisType mavis_facade({"../../json/isa_rv64i.json",        // included in "g" spec
+                            "../../json/isa_rv64f.json",        // included in "g" spec
+                            "../../json/isa_rv64m.json",        // included in "g" spec
+                            "../../json/isa_rv64a.json",        // included in "g" spec
+                            "../../json/isa_rv64d.json",        // included in "g" spec
+                            "../../json/isa_rv64zicsr.json",    // included in "g" spec
+                            "../../json/isa_rv64zifencei.json", // included in "g" spec
+                            "../../json/isa_rv64c.json",
+                            "../../json/isa_rv64cf.json",
+                            "../../json/isa_rv64cd.json",
+                            "../../json/isa_rv64q.json",
+                            "../../json/isa_rv64h.json",
+                            "../../json/isa_rv64v.json",
+                            "../../json/isa_rv64vf.json",
+                            "../../json/isa_rv64zvk.json",
+                            "../../json/isa_rv64zfh.json",
+                            "../../json/isa_rv64zfh_d.json",
+                            "../../json/isa_rv64zicbo.json",
+                            "../../json/isa_rv64zihintntl.json",
+                            "../../json/isa_rv64zicond.json",
+                            "../../json/isa_rv64zfbfmin.json",
+                            "../../json/isa_rv64zvfbfwma.json"},
+                           {"../uarch_rv64g.json"},
                            uid_init,
                            anno_overrides);
     cout << mavis_facade;
@@ -224,28 +226,28 @@ int main() {
     assert(mavis_facade.hasContext("NEW") == false);
 
     // Try creating a new context
-    mavis_facade.makeContext("NEW", {"../json/isa_rv64i.json",
-                                     "../json/isa_rv64m.json",
-                                     "../json/isa_rv64a.json",
-                                     "../json/isa_rv64f.json",
-                                     "../json/isa_rv64d.json",
-                                     "../json/isa_rv64c.json",
-                                     "../json/isa_rv64cf.json",
-                                     "../json/isa_rv64cd.json",
-                                     "../json/isa_rv64zicsr.json",
-                                     "../json/isa_rv64zifencei.json",
-                                     "../json/isa_rv64v.json",
-                                     "../json/isa_rv64vf.json",
-                                     "../json/isa_rv64zfh.json",
-                                     "../json/isa_rv64zfh_d.json",
-                                     "../json/isa_rv64zba.json",
-                                     "../json/isa_rv64zbb.json",
-                                     "../json/isa_rv64zbc.json",
-                                     "../json/isa_rv64zbs.json",
-                                     "../json/isa_rv64zicbo.json",
-                                     "../json/isa_rv64zcb.json",
-                                     "../json/isa_rv64zihintntl.json",
-                                     "../json/isa_rv64zicond.json"
+    mavis_facade.makeContext("NEW", {"../../json/isa_rv64i.json",
+                                     "../../json/isa_rv64m.json",
+                                     "../../json/isa_rv64a.json",
+                                     "../../json/isa_rv64f.json",
+                                     "../../json/isa_rv64d.json",
+                                     "../../json/isa_rv64c.json",
+                                     "../../json/isa_rv64cf.json",
+                                     "../../json/isa_rv64cd.json",
+                                     "../../json/isa_rv64zicsr.json",
+                                     "../../json/isa_rv64zifencei.json",
+                                     "../../json/isa_rv64v.json",
+                                     "../../json/isa_rv64vf.json",
+                                     "../../json/isa_rv64zfh.json",
+                                     "../../json/isa_rv64zfh_d.json",
+                                     "../../json/isa_rv64zba.json",
+                                     "../../json/isa_rv64zbb.json",
+                                     "../../json/isa_rv64zbc.json",
+                                     "../../json/isa_rv64zbs.json",
+                                     "../../json/isa_rv64zicbo.json",
+                                     "../../json/isa_rv64zcb.json",
+                                     "../../json/isa_rv64zihintntl.json",
+                                     "../../json/isa_rv64zicond.json"
                                      }, {});
     mavis_facade.switchContext("NEW");
     cout << mavis_facade;
@@ -840,8 +842,8 @@ int main() {
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xa422 = " << inst->dasmString() << endl;
 
     // Create a new context for testing pseudo instructions
-    mavis_facade.makeContext("PSEUDO", {"../json/isa_rv64i.json", "isa_pseudo.json"},
-                             {"mallard_uarch_rv64g.json", "mallard_uarch_pseudo.json"});
+    mavis_facade.makeContext("PSEUDO", {"../../json/isa_rv64i.json", "../../test/isa_pseudo.json"},
+                             {"../../test/uarch_rv64g.json", "../../test/uarch_pseudo.json"});
     mavis_facade.switchContext("PSEUDO");
 
     mavis::ExtractorPseudoInfo pseudo_op
@@ -982,7 +984,7 @@ int main() {
     assert(! tset.matchAllAll(pset));
 
     // T0: Create a new context for testing pseudo instructions
-    mavis_facade.makeContext("T0", {"./isa_tagged.json"},
+    mavis_facade.makeContext("T0", {"../../test/isa_tagged.json"},
                              {}, {}, {},
                              {}, mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"pf"}));
     mavis_facade.switchContext("T0");
@@ -1000,7 +1002,7 @@ int main() {
     assert(!inst->getTags().isMember("pf"));
 
     // T1: Create a new context for testing pseudo instructions
-    mavis_facade.makeContext("T1", {"./isa_tagged.json"},
+    mavis_facade.makeContext("T1", {"../../test/isa_tagged.json"},
                              {}, {}, {},
                              {}, mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"c.*"}));
     mavis_facade.switchContext("T1");
@@ -1018,7 +1020,7 @@ int main() {
     assert(inst->getTags().isMember("pf"));
 
     // T2: Create a new context for testing pseudo instructions
-    mavis_facade.makeContext("T2", {"./isa_tagged.json"},
+    mavis_facade.makeContext("T2", {"../../test/isa_tagged.json"},
                              {}, {}, {},
                              mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"c.*"}), {});
     mavis_facade.switchContext("T2");
@@ -1036,7 +1038,7 @@ int main() {
 
     // T3: Create a new context for testing pseudo instructions
     try {
-        mavis_facade.makeContext("T3", {"./isa_tagged.json"},
+        mavis_facade.makeContext("T3", {"../../test/isa_tagged.json"},
                                  {}, {}, {},
                                  mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"zic.*"}),
                                  mavis::MatchSet<mavis::Pattern>(std::vector<std::string> {"c.*"}));
@@ -1054,6 +1056,47 @@ int main() {
     assert(inst->getMnemonic() == "prefetch.i");
     assert(inst->getImmediate() == 0);
     assert(inst->hasImmediate() == true);
+    assert(inst->getImmediate() == 0);
+    assert(inst->hasImmediate() == true);
+
+    // RV32
+    MavisType mavis_facade_rv32({"../../json/isa_rv32i.json",        // included in "g" spec
+                                 "../../json/isa_rv32f.json",        // included in "g" spec
+                                 "../../json/isa_rv32m.json",        // included in "g" spec
+                                 "../../json/isa_rv32a.json",        // included in "g" spec
+                                 "../../json/isa_rv32d.json",        // included in "g" spec
+                                 "../../json/isa_rv32zicsr.json",    // included in "g" spec
+                                 "../../json/isa_rv32zifencei.json", // included in "g" spec
+                                 "../../json/isa_rv32c.json",
+                                 "../../json/isa_rv32cf.json",
+                                 "../../json/isa_rv32cd.json"},
+                                {"../../test/uarch_rv32g.json"},
+                                uid_init,
+                                anno_overrides);
+    cout << mavis_facade_rv32;
+
+    // add x1, x2, x3 (same in RV32 as RV64)
+    inst = mavis_facade_rv32.makeInst(0x003100b3, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x003100b3 = " << inst->dasmString() << endl;
+
+    // ld is only available in RV64
+    try {
+        inst = mavis_facade_rv32.makeInst(0x0001b283, 0);
+        assert(inst == nullptr);
+    } catch (const mavis::UnknownOpcode& ex) {
+        cout << "line " << dec << __LINE__ << ": " << "DASM: 0x0001b283 fails to decode. This is expected" << endl;
+    }
+
+    // c.jal is only available in RV32
+    inst = mavis_facade_rv32.makeInst(0x2001, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2001 = " << inst->dasmString() << endl;
+
+    // srai x4, x3, 0x4 (RV64 shift amount is encoded in 6 bits, RV32 only uses 5)
+    inst = mavis_facade_rv32.makeInst(0x4041d213, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x4041d213 = " << inst->dasmString() << endl;
 
     return 0;
 }

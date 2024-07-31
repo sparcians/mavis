@@ -63,7 +63,7 @@ public:
             for (const auto &inst : jobj) {
                 std::string mnemonic;
                 if (inst.find("pseudo") != inst.end()) {
-                    mnemonic = inst["pseudo"];
+                    mnemonic = std::string(inst["pseudo"]);
                     InstMetaData::PtrType meta = this->makeInstMetaData(mnemonic, inst);
                     // TODO: Implement a "getDisassembler" method to retrieve the disassembler object
                     // associated with this pseudo-instruction... Maybe this is like makeInstMetaData()?

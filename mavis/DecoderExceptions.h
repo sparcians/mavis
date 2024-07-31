@@ -122,8 +122,8 @@ public:
     {
         std::stringstream ss;
         ss << "Instruction '" << mnemonic << "': "
-           << "field '" << building_field.getName() << "' is incompatible with "
-           << "field '" << existing_field.getName() << "' from a prior instruction";
+           << "field '" << building_field << "' is incompatible with "
+           << "field '" << existing_field << "' from a prior instruction";
         why_ = ss.str();
     }
 };
@@ -774,4 +774,3 @@ public:
 };
 
 } // namespace mavis
-

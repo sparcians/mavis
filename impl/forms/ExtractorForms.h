@@ -138,6 +138,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::SUCC:
             case SpecialField::__N:
                 return ExtractorBase::getSpecialField(sfid, icode);
@@ -567,7 +568,7 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\t" << extract_(Form_C2_sp_store::idType::RS2, icode & ~fixed_field_mask_)
-           << ", SP, IMM=0x" << std::hex << getImmediate(icode);
+           << ", SP, IMM=" << std::dec << getImmediate(icode);
         return ss.str();
     }
 
@@ -577,7 +578,7 @@ public:
         ss << mnemonic << "\t"
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_C2_sp_store::idType::RS2, InstMetaData::OperandFieldID::RS2 } })
-           << ", SP, IMM=0x" << std::hex << getImmediate(icode);
+           << ", SP, IMM=" << std::dec << getImmediate(icode);
         return ss.str();
     }
 
@@ -1109,7 +1110,7 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\t" << extractCompressedRegister_(Form_CIW::idType::RD, icode & ~fixed_field_mask_)
-           << ", IMM=0x" << std::hex << extract_(Form_CIW::idType::IMM8, icode & ~fixed_field_mask_);
+           << ", IMM=" << std::dec << extract_(Form_CIW::idType::IMM8, icode & ~fixed_field_mask_);
         return ss.str();
     }
 
@@ -1119,7 +1120,7 @@ public:
         ss << mnemonic << "\t"
            << dasmFormatCompressedRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_CIW::idType::RD, InstMetaData::OperandFieldID::RD } })
-           << ", IMM=0x" << std::hex << extract_(Form_CIW::idType::IMM8, icode & ~fixed_field_mask_);
+           << ", IMM=" << std::dec << extract_(Form_CIW::idType::IMM8, icode & ~fixed_field_mask_);
         return ss.str();
     }
 
@@ -1224,7 +1225,7 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\t" << extractCompressedRegister_(Form_CIX::idType::RD, icode & ~fixed_field_mask_)
-           << ", IMM=0x" << std::hex << getImmediate(icode);
+           << ", IMM=" << std::dec << getImmediate(icode);
         return ss.str();
     }
 
@@ -1234,7 +1235,7 @@ public:
         ss << mnemonic << "\t"
            << dasmFormatCompressedRegList_(meta, icode, fixed_field_mask_,
                                            { { Form_CIX::idType::RD, InstMetaData::OperandFieldID::RD } })
-            << ", IMM=0x" << std::hex << getImmediate(icode);
+            << ", IMM=" << std::dec << getImmediate(icode);
         return ss.str();
     }
 
@@ -1534,6 +1535,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::RM:
             case SpecialField::SUCC:
@@ -1637,6 +1639,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::RM:
             case SpecialField::SUCC:
@@ -1655,7 +1658,7 @@ public:
         std::stringstream ss;
         ss << mnemonic
            << "\t" << extract_(Form_CSRI::idType::RD, icode & ~fixed_field_mask_)
-           << ", IMM=0x" << getImmediate(icode)
+           << ", IMM=" << std::dec << getImmediate(icode)
            << ", CSR=0x" << std::hex << getSpecialField(SpecialField::CSR, icode & ~fixed_field_mask_);
         return ss.str();
     }
@@ -1666,7 +1669,7 @@ public:
         ss << mnemonic << "\t"
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_CSRI::idType::RD, InstMetaData::OperandFieldID::RD } })
-           << ", IMM=0x" << getImmediate(icode)
+           << ", IMM=" << std::dec << getImmediate(icode)
            << ", CSR=0x" << std::hex << getSpecialField(SpecialField::CSR, icode & ~fixed_field_mask_);
         return ss.str();
     }
@@ -1762,6 +1765,7 @@ public:
             case SpecialField::FM:
                 return extract_(Form_FENCE::idType::FM, icode);
             case SpecialField::PRED:
+            case SpecialField::HINT:
                 return extract_(Form_FENCE::idType::PRED, icode);
             case SpecialField::SUCC:
                 return extract_(Form_FENCE::idType::SUCC, icode);
@@ -2027,7 +2031,7 @@ public:
            << "\t" << extract_(Form_ISH::idType::RD, icode & ~fixed_field_mask_)
            << "," << extract_(Form_ISH::idType::RS1, icode & ~fixed_field_mask_);
         if (!isMaskedField_(Form_ISH::idType::SHAMT, fixed_field_mask_)) {
-           ss << ", SHAMT=0x" << std::hex << getImmediate(icode);
+           ss << ", SHAMT=" << std::dec << getImmediate(icode);
         }
         return ss.str();
     }
@@ -2040,7 +2044,7 @@ public:
                                  { { Form_ISH::idType::RD, InstMetaData::OperandFieldID::RD },
                                    { Form_ISH::idType::RS1, InstMetaData::OperandFieldID::RS1 } });
         if (!isMaskedField_(Form_ISH::idType::SHAMT, fixed_field_mask_)) {
-            ss << ", SHAMT=0x" << std::hex << getImmediate(icode);
+            ss << ", SHAMT=" << std::dec << getImmediate(icode);
         }
         return ss.str();
     }
@@ -2142,7 +2146,7 @@ public:
         ss << mnemonic
            << "\t" << extract_(Form_ISHW::idType::RD, icode & ~fixed_field_mask_)
            << "," << extract_(Form_ISHW::idType::RS1, icode & ~fixed_field_mask_)
-           << ", SHAMTW=0x" << std::hex << getImmediate(icode);
+           << ", SHAMTW=" << std::dec << getImmediate(icode);
         return ss.str();
     }
 
@@ -2153,7 +2157,7 @@ public:
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_ISHW::idType::RD, InstMetaData::OperandFieldID::RD },
                                    { Form_ISHW::idType::RS1, InstMetaData::OperandFieldID::RS1 } })
-           << ", SHAMTW=0x" << std::hex << getImmediate(icode);
+           << ", SHAMTW=" << std::dec << getImmediate(icode);
         return ss.str();
     }
 
@@ -2466,6 +2470,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::SUCC:
             case SpecialField::VM:
@@ -2616,6 +2621,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::SUCC:
             case SpecialField::VM:
@@ -2968,6 +2974,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::SUCC:
             case SpecialField::WD:
@@ -3125,6 +3132,7 @@ public:
             case SpecialField::CSR:
             case SpecialField::FM:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::SUCC:
             case SpecialField::WD:
@@ -3289,6 +3297,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::RM:
             case SpecialField::SUCC:
@@ -3311,7 +3320,7 @@ public:
         ss << mnemonic
            << "\tx" << extract_(Form_V_vsetvli::idType::RD, icode & ~fixed_field_mask_)
            << ",x" << extract_(Form_V_vsetvli::idType::RS1, icode & ~fixed_field_mask_)
-           << "," << dasmVsetImmediate(getImmediate(icode));
+           << ", " << dasmVsetImmediate(getImmediate(icode));
         return ss.str();
     }
 
@@ -3322,7 +3331,7 @@ public:
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_V_vsetvli::idType::RD, InstMetaData::OperandFieldID::RD },
                                    { Form_V_vsetvli::idType::RS1, InstMetaData::OperandFieldID::RS1 } })
-           << "," << dasmVsetImmediate(getImmediate(icode));
+           << ", " << dasmVsetImmediate(getImmediate(icode));
         return ss.str();
     }
 
@@ -3390,6 +3399,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::RM:
             case SpecialField::SUCC:
@@ -3414,7 +3424,7 @@ public:
         ss << mnemonic
            << "\tx" << extract_(Form_V_vsetivli::idType::RD, icode & ~fixed_field_mask_)
            << ",avl=" << std::dec << getSpecialField(SpecialField::AVL, icode)
-           << "," << dasmVsetImmediate(getImmediate(icode));
+           << ", " << dasmVsetImmediate(getImmediate(icode));
         return ss.str();
     }
 
@@ -3519,6 +3529,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::RM:
             case SpecialField::SUCC:
@@ -3653,6 +3664,7 @@ public:
             case SpecialField::FM:
             case SpecialField::NF:
             case SpecialField::PRED:
+            case SpecialField::HINT:
             case SpecialField::RL:
             case SpecialField::SUCC:
             case SpecialField::WD:
@@ -3668,7 +3680,7 @@ public:
         ss << mnemonic
            << "\tv" << extract_(Form_V_uimm6::idType::RD, icode & ~fixed_field_mask_)
            << ",v" << extract_(Form_V_uimm6::idType::RS2, icode & ~fixed_field_mask_)
-           << ",0x" << std::hex << getImmediate(icode);
+           << ", IMM=" << std::dec << getImmediate(icode);
         // Show the vm operand if masking mode is on
         if (!isMaskedField_(Form_V_uimm6::idType::VM, fixed_field_mask_)) {
             if (!extract_(Form_V_uimm6::idType::VM, icode)) {
@@ -3685,7 +3697,7 @@ public:
            << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                  { { Form_V_uimm6::idType::RD, InstMetaData::OperandFieldID::RD },
                                    { Form_V_uimm6::idType::RS2, InstMetaData::OperandFieldID::RS2 } })
-           << "," << std::dec << getImmediate(icode);
+           << ", IMM=" << std::dec << getImmediate(icode);
         // Show the vm operand if masking mode is on
         if (!isMaskedField_(Form_V_uimm6::idType::VM, fixed_field_mask_)) {
             if (!extract_(Form_V_uimm6::idType::VM, icode)) {
@@ -3715,5 +3727,4 @@ protected:
     uint64_t fixed_field_mask_ = 0;
     uint64_t fixed_field_set_ = 0;
 };
-
 }
