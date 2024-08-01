@@ -39,7 +39,7 @@ public:
     };
 
 public:
-    virtual ~IFactoryIF<InstType, AnnotationType>() = default;
+    virtual ~IFactoryIF() = default;
 
     // virtual typename InstType::PtrType makeInst(Opcode icode) = 0;
 

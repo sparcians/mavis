@@ -1,0 +1,66 @@
+[
+  {
+    "mnemonic" : "mul",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2000033",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "mulh",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2001033",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "mulhsu",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2002033",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "mulhu",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2003033",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "div",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2004033",
+    "type" : ["int", "div"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "divu",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2005033",
+    "type" : ["int", "div"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "rem",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2006033",
+    "type" : ["int", "div"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "remu",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2007033",
+    "type" : ["int", "div"],
+    "l-oper" : "all"
+  }
+]

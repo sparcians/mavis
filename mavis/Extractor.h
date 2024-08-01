@@ -36,6 +36,7 @@ public:
         SUCC,       // FENCE successor bits
         VM,         // VM bit in vector insts
         WD,         // WD in vector atomic insts
+        HINT,       // HINT in prefetch operations
         __N
     };
 
@@ -50,7 +51,8 @@ public:
         { "rm",    SpecialField::RM},
         { "succ",  SpecialField::SUCC},
         { "vm",    SpecialField::VM},
-        { "wd",    SpecialField::WD}
+        { "wd",    SpecialField::WD},
+        { "hint",  SpecialField::HINT}
     };
 
 private:
@@ -65,7 +67,8 @@ private:
         "rm",
         "succ",
         "vm",
-        "wd"
+        "wd",
+        "hint"
     };
 
 public:
@@ -272,6 +275,8 @@ public:
                 throw UnsupportedExtractorSpecialFieldID("VM", icode);
             case SpecialField::WD:
                 throw UnsupportedExtractorSpecialFieldID("WD", icode);
+            case SpecialField::HINT:
+                throw UnsupportedExtractorSpecialFieldID("HINT", icode);
             case SpecialField::__N:
                 throw InvalidExtractorSpecialFieldID("__N", icode);
         }

@@ -64,8 +64,9 @@ public:
 
     virtual void print(std::ostream &os) const
     {
-        os << name_ << ":"
-           << " 0x" << std::hex << mask_
+        os << name_ << ": pos: "
+           << rpos_ << " len: " << len_
+           << " mask: 0x" << std::hex << mask_
            << " >> " << std::dec << shift_;
     }
 

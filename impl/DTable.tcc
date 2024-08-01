@@ -51,13 +51,13 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_(c
     //std::string factory_name = inst["mnemonic"];
     std::string factory_name = mnemonic;
     if (inst.find("factory") != inst.end()) {
-        factory_name = inst["factory"];
+        factory_name = std::string(inst["factory"]);
     }
 
     // Parse the expansion factory, if present
     std::string xpand_name;
     if (inst.find("expand") != inst.end()) {
-        xpand_name = inst["expand"];
+        xpand_name = std::string(inst["expand"]);
     }
 
     // Is this an instruction overlay?
@@ -130,7 +130,7 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
         for (const auto &inst : jobj) {
             std::string mnemonic;
             if (inst.find("mnemonic") != inst.end()) {
-                mnemonic = inst["mnemonic"];
+                mnemonic = std::string(inst["mnemonic"]);
                 // We have an instruction... Look for filtering tag
                 MatchSet<Tag>   tags;
                 if (inst.find("tags") != inst.end()) {
@@ -306,6 +306,8 @@ DTable<InstType, AnnotationType, AnnotationTypeAllocator>::build_(const FormBase
         }
         assert(currNode->getField() != nullptr);
         if (!currNode->getField()->isEquivalent(fields[i + 1])) {
+            std::cerr << "ERROR with field collision on tree:" << std::endl;
+            currNode->print(std::cerr);
             throw BuildErrorFieldsIncompatible(mnemonic, *currNode->getField(), fields[i + 1]);
         }
     }

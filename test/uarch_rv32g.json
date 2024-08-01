@@ -1,0 +1,726 @@
+[
+  {
+    "mnemonic" : "amoadd.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "amoxor.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "amoor.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "amoand.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "amomin.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "amomax.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "amominu.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "amomaxu.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "amoswap.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "lr.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sc.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.fld",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.fsd",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.fldsp",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.fsdsp",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.flw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.fsw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.flwsp",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.fswsp",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.addi4spn",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.lw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.sw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.addi",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.nop",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.addi16sp",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.jr",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.jalr",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.li",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.lui",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.srli",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.srai",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.andi",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.sub",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.xor",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.or",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.and",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.j",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.jal",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.beqz",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.bnez",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.slli",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.lwsp",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.mv",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.ebreak",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.add",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.swsp",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fadd.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsub.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmul.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fdiv.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsgnj.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsgnjn.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsgnjx.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmin.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmax.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.s.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.d.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsqrt.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fle.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "flt.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "feq.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.w.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.wu.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fclass.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.d.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.d.wu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fld",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsd",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmadd.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmsub.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fnmsub.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fnmadd.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvtmod.w.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fleq.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fli.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fltq.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmaxm.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fminm.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fround.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "froundnx.d",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fadd.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsub.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmul.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fdiv.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsgnj.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsgnjn.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsgnjx.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmin.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmax.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsqrt.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fle.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "flt.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "feq.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.w.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.wu.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmv.x.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fclass.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.s.w",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fcvt.s.wu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmv.w.x",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "flw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fsw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmadd.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmsub.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fnmsub.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fnmadd.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fleq.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fli.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fltq.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fmaxm.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fminm.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fround.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "froundnx.s",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "beq",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "bne",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "blt",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "bge",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "bltu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "bgeu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "jalr",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "jal",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "lui",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "auipc",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "addi",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "li",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "nop",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "mv",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "slli",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "slti",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sltiu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "xori",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "srli",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "srai",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "ori",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "andi",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "add",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sub",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sll",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "slt",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sltu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "xor",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "srl",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sra",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "or",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "and",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "lb",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "lh",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "lw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "lbu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "lhu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "lwu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sb",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sh",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fence",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "ecall",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "ebreak",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "uret",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sret",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "mret",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "dret",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "sfence.vma",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "wfi",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "cflush.d.l1",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "cdiscard.d.l1",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "cflush.i.l1",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "mul",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "mulh",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "mulhsu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "mulhu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "div",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "divu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "rem",
+    "latency" : 1
+  },
+  {
+  "mnemonic" : "remu",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "csrrw",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "csrrs",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "csrrc",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "csrrwi",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "csrrsi",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "csrrci",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "fence.i",
+    "latency" : 1
+  }
+]

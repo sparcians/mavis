@@ -478,7 +478,7 @@
 		"mnemonic" : "amoadd.w",
 		"form" : "AMO",
 		"stencil" : "0x202f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
@@ -534,7 +534,7 @@
 		"mnemonic" : "amoswap.w",
 		"form" : "AMO",
 		"stencil" : "0x800202f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
@@ -558,63 +558,63 @@
 		"mnemonic" : "amoadd.d",
 		"form" : "AMO",
 		"stencil" : "0x302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
 		"mnemonic" : "amoxor.d",
 		"form" : "AMO",
 		"stencil" : "0x2000302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
 		"mnemonic" : "amoor.d",
 		"form" : "AMO",
 		"stencil" : "0x4000302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
 		"mnemonic" : "amoand.d",
 		"form" : "AMO",
 		"stencil" : "0x6000302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
 		"mnemonic" : "amomin.d",
 		"form" : "AMO",
 		"stencil" : "0x8000302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
 		"mnemonic" : "amomax.d",
 		"form" : "AMO",
 		"stencil" : "0xa000302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
 		"mnemonic" : "amominu.d",
 		"form" : "AMO",
 		"stencil" : "0xc000302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
 		"mnemonic" : "amomaxu.d",
 		"form" : "AMO",
 		"stencil" : "0xe000302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
 		"mnemonic" : "amoswap.d",
 		"form" : "AMO",
 		"stencil" : "0x800302f",
-		"type" : ["int", "arith", "atomic"],
+		"type" : ["int", "load", "atomic"],
 		"l-oper" : "all"
 	},
 	{
