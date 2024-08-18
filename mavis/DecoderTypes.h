@@ -5,6 +5,7 @@
 #include <vector>
 #include <tuple>
 #include <string>
+#include<cstdint>
 
 namespace mavis {
 
