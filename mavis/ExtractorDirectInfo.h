@@ -4,7 +4,7 @@
 #include "DecoderExceptions.h"
 #include "Extractor.h"
 #include <string>
-
+#include<map>
 namespace mavis {
 
 /**
@@ -407,8 +407,15 @@ class ExtractorDirectOpInfoList : public ExtractorDirectBase
 {
 private:
     static inline const std::string name_ {"ExtractorDirectOpInfoList"};
+    std::map<mavis::OpcodeInfo::SpecialField, uint64_t> special_fields_map_;
 
 public:
+    void setSpecialFields(const std::map<mavis::OpcodeInfo::SpecialField, uint64_t>& fields){
+        special_fields_map_=fields;
+    }
+    const std :: map<mavis :: OpcodeInfo::SpecialField, uint64_t>& getSpecialFields() const{
+        return special_fields_map_;
+    }
     ExtractorDirectOpInfoList(const std::string &mnemonic, const OperandInfo &sources, const OperandInfo &dests) :
         ExtractorDirectBase(mnemonic), sources_(sources), dests_(dests)
     {}

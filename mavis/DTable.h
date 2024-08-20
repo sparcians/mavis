@@ -240,13 +240,14 @@ public:
      * @return
      */
     template<class InstTypeAllocator, typename ...ArgTypes>
-    typename InstType::PtrType makeInstDirectly(const ExtractorDirectInfoIF &ex_info,
+    typename InstType::PtrType makeInstDirectly(const ExtractorDirectInfoIF &ex_info,const std :: map<mavis :: OpcodeInfo::SpecialField,uint64_t>& special_fields_map_,
                                                 InstTypeAllocator &allocator, ArgTypes &&... args)
     {
         typename InstType::PtrType inst = nullptr;
 
         std::string mnemonic = ex_info.getMnemonic();
         const InstructionUniqueID uid = ex_info.getUID();
+        auto special_fields_map_=ex_info.getSpecialFieldsMap();
 
         // Try to look up the factory by UID (if present)
         typename IFactory<InstType, AnnotationType>::PtrType ifact = nullptr;
@@ -265,6 +266,9 @@ public:
             const typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType &info =
                 ifact->getInfoBypassCache(mnemonic, ex_info.clone());
             inst = allocator(info->opinfo, info->uinfo, std::forward<ArgTypes>(args)...);
+        }
+        for(const auto& [field, value] :special_fields_map_){
+            inst->setSpecialField(field.first,field.second);
         }
 
         return inst;

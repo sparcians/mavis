@@ -153,10 +153,12 @@ public:
     }
 
     template<typename ...ArgTypes>
-    typename InstType::PtrType makeInstDirectly(const mavis::ExtractorDirectInfoIF& user_info, ArgTypes&& ... args)
-    {
-        return dtrie_->makeInstDirectly(user_info, inst_allocator_, std::forward<ArgTypes>(args)...);
+    typename InstType::PtrType makeInstDirectly(const mavis::ExtractorDirectInfoIF& user_info, const std::map<mavis::OpcodeInfo::SpecialField, uint64_t special_fields_map_, ArgTypes&& ... args)
+{ 
+    
+        return dtrie_->makeInstDirectly(user_info, special_fields_map_,inst_allocator_, std::forward<ArgTypes>(args)...);
     }
+    
 
     /**
      * @brief makePseudoInst -- create a pseudo instruction (InstType)
