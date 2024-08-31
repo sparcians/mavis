@@ -274,6 +274,10 @@ public:
                         const ValueListType& specials, uint64_t imm) :
         ExtractorDirectBase(uid, imm), sources_(sources), dests_(dests), specials_(specials)
     {}
+    ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType &sources, const RegListType &dests,
+                        const ValueListType& specials) :
+        ExtractorDirectBase(uid), sources_(sources), dests_(dests), specials_(specials)
+    {}
 
     ExtractorDirectInfo(const ExtractorDirectInfo &other) = default;
 

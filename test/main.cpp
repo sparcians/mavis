@@ -3,6 +3,12 @@
 #include "Inst.h"
 #include "uArchInfo.h"
 
+
+#include "ExtractorDirectInfo.h"
+
+#include <map>
+#include <cassert> 
+
 #include "MatchSet.hpp"
 #include "Tag.hpp"
 #include "Pattern.hpp"
@@ -12,6 +18,42 @@
 
 using namespace std;
 using json = nlohmann::json;
+#include <map> 
+#include <cstdint>
+namespace mavis {
+    namespace ExtractorIF {
+        enum class SpecialField {
+            OPCODE,
+            IMMEDIATE,
+            FIELD1,
+            FIELD2,
+            VM
+        };
+    }
+} 
+
+// Assuming mavis::OpcodeInfo::SpecialField is an enum or type in your codebase
+std::map<mavis::OpcodeInfo::SpecialField, uint64_t> special_fields_map_ = {
+    
+    {mavis::ExtractorIF::SpecialField::VM, 0}  
+    // Add more fields as needed
+};
+class Instruction {
+public:
+    using PtrType = std::shared_ptr<Instruction>;
+
+    void setSpecialField(mavis::ExtractorIF::SpecialField field, uint64_t value) {
+        special_fields_[field] = value;
+    }
+
+    std::string dasmString() const {
+        return "disassembled instruction string"; // Placeholder implementation
+    }
+
+private:
+    std::map<mavis::ExtractorIF::SpecialField, uint64_t> special_fields_;
+};
+
 
 struct ExampleTraceInfo
 {
@@ -50,6 +92,30 @@ struct ExampleTraceInfo
 };
 
 using MavisType = Mavis<Instruction<uArchInfo>, uArchInfo>;
+void test_vector_add_with_mask_vm(Mavis<Instruction, int>& mavis_facade) {
+    // Define the unique ID, source and destination registers, and special fields
+    InstructionUniqueID uid = 123; // Example ID
+    RegListType sources = {1, 2}; // Example sources
+    RegListType dests = {3}; // Example destinations
+
+    // Create a map of special fields and their values
+    std::map<mavis::ExtractorIF::SpecialField, uint64_t> special_fields = {
+        mavis::ExtractorIF::SpecialField::VM, 0 // Example value
+    };
+
+    // Create the ExtractorDirectInfo object using the constructor
+    ExtractorDirectInfo ex_info(uid, sources, dests, special_fields);
+
+    // Verify that the special fields are correctly set
+    auto specials = ex_info.getSpecialFields();
+    if (specials.find(mavis::ExtractorIF::SpecialField::VM) != specials.end() &&
+        specials.at(mavis::ExtractorIF::SpecialField::VM) == 0) {
+        std::cout << "Test Passed: Special field 'VM' correctly set to 0." << std::endl;
+    } else {
+        std::cout << "Test Failed: Special field 'VM' not set correctly." << std::endl;
+    }
+}
+
 
 void runTSet(MavisType& mavis_facade, const std::string& tfile,
              const std::vector<mavis::OpcodeInfo::ISAExtension> isa_list = {})
@@ -151,6 +217,7 @@ void runTSet(MavisType& mavis_facade, const std::string& tfile,
         }
     }
     tin.close();
+    test_vector_add_with_mask_vm(mavis_facade);
 }
 
 int main() {
@@ -334,11 +401,17 @@ int main() {
     // 0xf1402573 = csrrs	10,0, CSR=0xf14
     inst = mavis_facade.makeInst(0xf1402573, 0);
     assert(inst != nullptr);
+
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xf1402573 = " << inst->dasmString() << endl;
 
     mavis::ExtractorDirectInfo ex_info ("add", {1, 2}, {3});
     inst = mavis_facade.makeInstDirectly(ex_info, 0);
+    
     assert(inst != nullptr);
+    for (const auto& [field, value] : special_fields_map_) {
+    inst->setSpecialField(field, value);
+}
+
     cout << "line " << dec << __LINE__ << ": " << "DIRECT: 'add' = " << inst->dasmString() << endl;
 
     mavis::ExtractorDirectInfoBitMask exbm_info("add", 0x6, 0x8);
@@ -1097,6 +1170,9 @@ int main() {
     inst = mavis_facade_rv32.makeInst(0x4041d213, 0);
     assert(inst != nullptr);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0x4041d213 = " << inst->dasmString() << endl;
+    Mavis<Instruction, int> mavis_facade;
+    runTSet(mavis_facade, "testfile.txt");
+    test_vector_add_with_mask_vm(mavis_facade);
 
     return 0;
 }
