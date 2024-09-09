@@ -5950,7 +5950,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	|	|	[default]: 'c.jal', value=0x2001, extractor=Extractor 'CJ'
+|	|	|	|	|	|	|	[default]: 'c.jal', value=0x2001, extractor=Extractor 'CJAL'
 , factory=IFactory('jal'), stencil = 0x6f
 |	|	|	[2]: IFactoryDenseComposite::Field func2
 |	|	|	|	[default]: IFactoryDenseComposite::Field func2b
@@ -6503,5 +6503,5 @@ IFactoryMatchListComposite::Field family
 , factory=IFactory('csr'), stencil = 0x1073
 line 1081: DASM: 0x003100b3 = add	x1,x2,x3
 line 1088: DASM: 0x0001b283 fails to decode. This is expected
-line 1094: DASM: 0x2001 = c.jal	x0, +0x0
+line 1094: DASM: 0x2001 = c.jal	x1, +0x0
 line 1099: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
