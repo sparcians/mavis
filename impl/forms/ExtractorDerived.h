@@ -1103,6 +1103,73 @@ private:
 };
 
 /**
+ * Derivative of Form_CJ extractor with x1 (link) destination
+ */
+template<>
+class Extractor<Form_CJAL> : public Extractor<Form_CJ>
+{
+public:
+    Extractor<Form_CJAL>() :
+        Extractor<Form_CJ>()
+    {}
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_CJAL>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_CJAL::name;
+    }
+
+    uint64_t getDestRegs(const uint64_t) const override
+    {
+        return (1ull << REGISTER_LINK);
+    }
+
+    uint64_t getDestOperTypeRegs(const uint64_t icode,
+                                 const InstMetaData::PtrType &meta, InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind)) {
+            return 0;
+        } else if (meta->isAllOperandType(kind)) {
+            return getDestRegs(icode);
+        } else {
+            if ((kind == InstMetaData::OperandTypes::LONG) ||
+                (kind == InstMetaData::OperandTypes::WORD)) {
+                return (0x1ull << REGISTER_LINK);
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType& meta, bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        olist.addElement(InstMetaData::OperandFieldID::RD, meta->getOperandType(InstMetaData::OperandFieldID::RS1),
+                         REGISTER_LINK, false);
+        return olist;
+    }
+
+    using ExtractorIF::dasmString; // tell the compiler all dasmString
+                                   // overloads are considered
+    std::string dasmString(const std::string &mnemonic, const uint64_t icode) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic
+           << "\t" << "x1, +0x" << std::hex << getSignedOffset(icode);
+        return ss.str();
+    }
+
+private:
+    Extractor<Form_CJAL>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_CJ>(ffmask, fset)
+    {}
+};
+
+/**
  * Derivative of Form_CJR extractor with x1 (link) destination
  * IMPLICITLY encoded
  */
