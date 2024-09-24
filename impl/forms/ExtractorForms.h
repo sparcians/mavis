@@ -1329,7 +1329,7 @@ public:
         return ss.str();
     }
 
-private:
+protected:
     Extractor<Form_CJ>(const uint64_t ffmask, const uint64_t fset) :
         fixed_field_mask_(ffmask)
     {}
