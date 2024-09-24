@@ -8,26 +8,35 @@ class types.
 
 Mavis is a header-only library. Regression needs to build a tester.
 
-* Build library for tester, output will be `libmavis.a`
-```
-cmake .
-make -j8
-```
-* Build tester, output will be `Mavis`
-```
-cmake .
-make -j8
-```
-* Build tester, output will be `Mavis`
+* Build library, output will be `libmavis.a`
 ```
 mkdir build
 cd build
 cmake ..
-cd test
-make
+make -j8
 ```
-* Execute the tester and compare golden `out`
+* Build the basic tester; output program is `Mavis`
+```
+cd build/test/basic
+make -j8
+```
+* Execute the basic tester and compare golden `out`
 ```
 ./Mavis > test.out
 diff -s test.out golden.out
+```
+
+* Build and test with a directed program; output program is
+  `mavis_decode`.  This program allows a user to test the validity of
+  an opcode or a mnemonic.  This program requires boost program
+  options to be installed on the host machine.
+
+```
+cd build/test/directed
+make
+./mavis_decode --help
+./mavis_decode -a rv23 -o 0x0001b283
+./mavis_decode -a rv64 -o 0x0001b283
+./mavis_decode -a rv64 -m ld
+
 ```

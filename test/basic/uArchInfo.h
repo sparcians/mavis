@@ -215,7 +215,7 @@
                 }
             }
 
-            std::cout << "uArchInfo: " << jobj["mnemonic"] << std::endl;
+            //std::cout << "uArchInfo: " << jobj["mnemonic"] << std::endl;
         }
     };
 

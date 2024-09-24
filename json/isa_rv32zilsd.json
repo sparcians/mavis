@@ -1,0 +1,21 @@
+[
+    {
+        "mnemonic" : "ld",
+        "tags" : ["i", "g"],
+        "form" : "I",
+        "xform" : "I_load",
+        "stencil" : "0x3003",
+        "type" : ["int", "load"],
+        "l-oper" : "all",
+        "data" : 64
+    },
+    {
+        "mnemonic" : "sd",
+        "tags" : ["i", "g"],
+        "form" : "S",
+        "stencil" : "0x3023",
+        "type" : ["int", "store"],
+        "l-oper" : "all",
+        "data" : 64
+    }
+]
