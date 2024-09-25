@@ -41,7 +41,7 @@ private:
 
 /**
  * Derivative of Form_I extractor for LOADS
- * NOTE: rs1 is the address base, rs2 is the source data
+ * NOTE: rs1 is the address base, rd is the dest data
  */
 template<>
 class Extractor<Form_I_load> : public Extractor<Form_I>
@@ -66,14 +66,45 @@ public:
         return getSourceRegs(icode);
     }
 
-    //RegListType getSourceAddressList(const Opcode icode, bool suppress_x0 = false) const override
-    //{
-    //    return getSourceList(icode, suppress_x0);
-    //}
-
 private:
     Extractor<Form_I_load>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_I>(ffmask, fset)
+    {}
+    friend Extractor<Form_I_loadpair>;
+};
+
+/**
+ * Derivative of Form_I_load extractor for LOAD pairs in RV32 NOTE:
+ * rs1 is the address base, rd is the dest data starting register.
+ * The second register added will be rd+1.  Also, checks for alignment
+ */
+template<>
+class Extractor<Form_I_loadpair> : public Extractor<Form_I_load>
+{
+public:
+    Extractor<Form_I_loadpair>() :
+        Extractor<Form_I_load>()
+    {}
+
+    bool isIllop(Opcode icode) const override
+    {
+        return (getDestRegs(icode) & (1ull << REGISTER_X0)) != 0;
+    }
+
+    // Take the standard load and append a second destination to it.
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        uint64_t dest_mask =
+            extractUnmaskedIndexBit_(Form_I::idType::RD, icode, fixed_field_mask_);
+
+        uint32_t rd_val = 64 - __builtin_clzll(dest_mask);
+        dest_mask |= (0b1 << rd_val);
+        return dest_mask;
+    }
+
+private:
+    Extractor<Form_I_loadpair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_I_load>(ffmask, fset)
     {}
 };
 

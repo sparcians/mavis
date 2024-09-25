@@ -25,6 +25,16 @@ public:
 };
 
 /**
+ * Stub for I_loadpair extractor
+ */
+class Form_I_loadpair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"I_loadpair"};
+};
+
+/**
  * Stub for C0_load extractor
  */
 class Form_C0_load

@@ -3,7 +3,7 @@
         "mnemonic" : "ld",
         "tags" : ["i", "g"],
         "form" : "I",
-        "xform" : "I_load",
+        "xform" : "I_loadpair",
         "stencil" : "0x3003",
         "type" : ["int", "load"],
         "l-oper" : "all",

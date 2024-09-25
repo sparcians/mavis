@@ -59,6 +59,7 @@ namespace mavis {
             {Form_HV_store::name,                 std::make_shared<Extractor<Form_HV_store>>()},
             {Form_I::name,                        std::make_shared<Extractor<Form_I>>()},
             {Form_I_load::name,                   std::make_shared<Extractor<Form_I_load>>()},
+            {Form_I_loadpair::name,               std::make_shared<Extractor<Form_I_loadpair>>()},
             {Form_I_mv::name,                     std::make_shared<Extractor<Form_I_mv>>()},
             {Form_ISH::name,                      std::make_shared<Extractor<Form_ISH>>()},
             {Form_ISHW::name,                     std::make_shared<Extractor<Form_ISHW>>()},
