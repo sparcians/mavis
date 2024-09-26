@@ -21,7 +21,8 @@ public:
 public:
     //Instruction(const mavis::DecodedInstructionInfo::PtrType& dii, const uint64_t icode,
                 //const mavis::ExtractorIF::PtrType& extractor, const typename AnnotationType::PtrType& ui) :
-    Instruction(const mavis::OpcodeInfo::PtrType& dinfo, const typename AnnotationType::PtrType& ui, uint32_t dummy) :
+    Instruction(const mavis::OpcodeInfo::PtrType& dinfo,
+                const typename AnnotationType::PtrType& ui, uint32_t dummy) :
             dinfo_(dinfo), uinfo_(ui)
     {}
 
@@ -130,6 +131,16 @@ public:
 
     uint32_t getDataSize() const {
         return dinfo_->getDataSize();
+    }
+
+    auto getSourceOpInfoList() const
+    {
+        return dinfo_->getSourceOpInfoList();
+    }
+
+    auto getDestOpInfoList() const
+    {
+        return dinfo_->getDestOpInfoList();
     }
 
     const typename AnnotationType::PtrType &getuArchInfo() const { return uinfo_; }

@@ -90,18 +90,37 @@ public:
     {
         // The load pair instruction is illegal if the first operand
         // is odd
-        return (__builtin_clzll(getDestRegs(icode)) & 0b1) == true;
+        const uint32_t reg = extract_(Form_I::idType::RD, icode);
+        return (reg & 0b1) != 0;
     }
 
     // Take the standard load and append a second destination to it.
     uint64_t getDestRegs(const Opcode icode) const override
     {
-        uint64_t dest_mask =
-            extractUnmaskedIndexBit_(Form_I::idType::RD, icode, fixed_field_mask_);
+        uint64_t dest_mask = 0;
+        if(const uint32_t reg = extract_(Form_I::idType::RD, icode); reg != REGISTER_X0)
+        {
+            dest_mask =
+                extractUnmaskedIndexBit_(Form_I::idType::RD, icode, fixed_field_mask_);
 
-        uint32_t rd_val = 64 - __builtin_clzll(dest_mask);
-        dest_mask |= (0x1ull << rd_val);
+            uint32_t rd_val = 64 - __builtin_clzll(dest_mask);
+            dest_mask |= (0x1ull << rd_val);
+        }
         return dest_mask;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist = Extractor<Form_I_load>::getDestOperandInfo(icode, meta, suppress_x0);
+        auto rd2_elem = olist.getElements().at(0);
+        rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+        ++rd2_elem.field_value;
+
+        // Add the second RD
+        olist.addElement(rd2_elem);
+
+        return olist;
     }
 
 private:

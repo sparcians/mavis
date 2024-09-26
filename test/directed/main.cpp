@@ -71,8 +71,8 @@ int main(int argc, char **argv)
     desc.add_options()
         ("help,h", "Command line options")
         ("opc,o",  po::value<std::vector<std::string>>(), "32-bit or 16-bit hex opcode")
-        ("isa,a",  po::value<std::string>(), "rv32 or rv64 (all inclusive)")
-        ("mnemonic,m", po::value<std::vector<std::string>>(), "Mnemonic to look up");
+        ("isa,a",  po::value<std::string>(), "rv32 or rv64 (all inclusive)");
+    //("mnemonic,m", po::value<std::vector<std::string>>(), "Mnemonic to look up");
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -149,14 +149,38 @@ int main(int argc, char **argv)
             auto inst = mavis_facade->makeInst(std::stol(opcode, 0, 16), 0);
             if(nullptr != inst) {
                 std::cout << "Dasm (" << HEX8(opcode) << "): " << inst->dasmString() << std::endl;
-                std::cout << "  Addr-Sources : " << printBitSet(std::bitset<64>(inst->getSourceAddressRegs())) << std::endl;
-                std::cout << "  Data-Sources : " << printBitSet(std::bitset<64>(inst->getSourceDataRegs())) << std::endl;
-                std::cout << "  Int-Sources  : " << printBitSet(std::bitset<64>(inst->getIntSourceRegs())) << std::endl;
-                std::cout << "  Float-Sources: " << printBitSet(std::bitset<64>(inst->getFloatSourceRegs())) << std::endl;
-                std::cout << "  Int-Dests    : " << printBitSet(std::bitset<64>(inst->getIntDestRegs())) << std::endl;
-                std::cout << "  Float-Dests  : " << printBitSet(std::bitset<64>(inst->getFloatDestRegs())) << std::endl;
+                std::cout << "  Addr-Sources : "
+                          << printBitSet(std::bitset<64>(inst->getSourceAddressRegs())) << ": "
+                          << std::bitset<64>(inst->getSourceAddressRegs()) << std::endl;
+                std::cout << "  Data-Sources : "
+                          << printBitSet(std::bitset<64>(inst->getSourceDataRegs()))    << ": "
+                          << std::bitset<64>(inst->getSourceDataRegs())    << std::endl;
+                std::cout << "  Int-Sources  : "
+                          << printBitSet(std::bitset<64>(inst->getIntSourceRegs()))     << ": "
+                          << std::bitset<64>(inst->getIntSourceRegs())     << std::endl;
+                std::cout << "  Float-Sources: "
+                          << printBitSet(std::bitset<64>(inst->getFloatSourceRegs()))   << ": "
+                          << std::bitset<64>(inst->getFloatSourceRegs())   << std::endl;
+                std::cout << "  Int-Dests    : "
+                          << printBitSet(std::bitset<64>(inst->getIntDestRegs()))       << ": "
+                          << std::bitset<64>(inst->getIntDestRegs())       << std::endl;
+                std::cout << "  Float-Dests  : "
+                          << printBitSet(std::bitset<64>(inst->getFloatDestRegs()))     << ": "
+                          << std::bitset<64>(inst->getFloatDestRegs())     << std::endl;
                 if(inst->hasImmediate()) {
-                    std::cout << "  imm: " << HEX8(inst->getImmediate()) << std::endl;
+                    std::cout << "  immediate    : " << HEX8(inst->getImmediate()) << std::endl;
+                }
+                std::cout << "Src List: " << std::endl;
+                for(const auto & op : inst->getSourceOpInfoList())
+                {
+                    std::cout << "  Operand fid  : " << mavis::InstMetaData::getFieldIDName(op.field_id) << std::endl;
+                    std::cout << "  Operand val  : " << op.field_value << std::endl;
+                }
+                std::cout << "Dest List: " << std::endl;
+                for(const auto & op : inst->getDestOpInfoList())
+                {
+                    std::cout << "  Operand fid  : " << mavis::InstMetaData::getFieldIDName(op.field_id) << std::endl;
+                    std::cout << "  Operand val  : " << op.field_value << std::endl;
                 }
             }
             else {
@@ -165,21 +189,22 @@ int main(int argc, char **argv)
         }
     }
 
-    if(vm.count("mnemonic")) {
-        for(auto mnemonic : vm["mnemonic"].as<std::vector<std::string>>())
-        {
-            mavis::ExtractorDirectInfo ex_data(mnemonic,
-                                               MavisType::RegListType(),
-                                               MavisType::RegListType());
-            auto inst = mavis_facade->makeInstDirectly(ex_data, 0);
-            if(nullptr != inst) {
-                std::cout << inst->dasmString() << std::endl;
-            }
-            else {
-                std::cerr << "ERROR: " << mnemonic << " is not decodable" << std::endl;
-            }
-        }
-    }
+    // Not really handy...
+    // if(vm.count("mnemonic")) {
+    //     for(auto mnemonic : vm["mnemonic"].as<std::vector<std::string>>())
+    //     {
+    //         mavis::ExtractorDirectInfo ex_data(mnemonic,
+    //                                            MavisType::RegListType(),
+    //                                            MavisType::RegListType());
+    //         auto inst = mavis_facade->makeInstDirectly(ex_data, 0);
+    //         if(nullptr != inst) {
+    //             std::cout << inst->dasmString() << std::endl;
+    //         }
+    //         else {
+    //             std::cerr << "ERROR: " << mnemonic << " is not decodable" << std::endl;
+    //         }
+    //     }
+    // }
 
     return 0;
 }
