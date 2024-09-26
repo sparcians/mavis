@@ -88,7 +88,9 @@ public:
 
     bool isIllop(Opcode icode) const override
     {
-        return (getDestRegs(icode) & (1ull << REGISTER_X0)) != 0;
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        return (__builtin_clzll(getDestRegs(icode)) & 0b1) == true;
     }
 
     // Take the standard load and append a second destination to it.
@@ -98,7 +100,7 @@ public:
             extractUnmaskedIndexBit_(Form_I::idType::RD, icode, fixed_field_mask_);
 
         uint32_t rd_val = 64 - __builtin_clzll(dest_mask);
-        dest_mask |= (0b1 << rd_val);
+        dest_mask |= (0x1ull << rd_val);
         return dest_mask;
     }
 
