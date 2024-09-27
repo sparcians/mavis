@@ -113,14 +113,17 @@ public:
     OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
                                    bool suppress_x0 = false) const override
     {
-        OperandInfo olist = Extractor<Form_I_load>::getDestOperandInfo(icode, meta, suppress_x0);
-        auto rd2_elem = olist.getElements().at(0);
-        rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
-        ++rd2_elem.field_value;
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_I::idType::RD, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_I_load>::getDestOperandInfo(icode, meta, suppress_x0);
+            auto rd2_elem = olist.getElements().at(0);
+            rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+            ++rd2_elem.field_value;
 
-        // Add the second RD
-        olist.addElement(rd2_elem);
-
+            // Add the second RD
+            olist.addElement(rd2_elem);
+        }
         return olist;
     }
 
@@ -367,18 +370,20 @@ public:
     OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
                                      bool suppress_x0 = false) const override
     {
-        OperandInfo olist =
-            Extractor<Form_S>::getSourceOperandInfo(icode, meta, suppress_x0);
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_S::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_S>::getSourceOperandInfo(icode, meta, suppress_x0);
 
-        auto rs3_elem = olist.getElements().at(1);
-        assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+            auto rs3_elem = olist.getElements().at(1);
+            assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
 
-        rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
-        ++rs3_elem.field_value;
+            rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
+            ++rs3_elem.field_value;
 
-        // Add the second RS
-        olist.addElement(rs3_elem);
-
+            // Add the second RS
+            olist.addElement(rs3_elem);
+        }
         return olist;
     }
 };

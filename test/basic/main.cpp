@@ -1082,10 +1082,33 @@ int main() {
     assert(inst != nullptr);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0x003100b3 = " << inst->dasmString() << endl;
 
+    //
     // Test 32-bit ld (pair) zilsd extension
-    inst = mavis_facade_rv32.makeInst(0x0001b283, 0);
-    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x0001b283 = " << inst->dasmString() << endl;
-    assert(inst->getIntDestRegs() == 2);
+    //
+    inst = mavis_facade_rv32.makeInst(0x03103, 0);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x03103 = " << inst->dasmString() << endl;
+    assert(inst->getIntDestRegs() == 0xCull); // 2 dests
+
+    try {
+        // Illegal form of load pair -- rd starts odd
+        inst = mavis_facade_rv32.makeInst(0x03f83, 0);
+        assert(inst == nullptr);
+    }
+    catch(...) {}
+
+    //
+    // Test 32-bit st (pair) zilsd extension
+    //
+    inst = mavis_facade_rv32.makeInst(0x203023, 0);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x203023 = " << inst->dasmString() << endl;
+    assert(inst->getIntSourceRegs() == 0xDull); // 3 sources, addr + rs1/rs2
+
+    try {
+        // Illegal form of store pair -- rs2 starts odd
+        inst = mavis_facade_rv32.makeInst(0x503023, 0);
+        assert(inst == nullptr);
+    }
+    catch(...) {}
 
     // c.jal is only available in RV32
     inst = mavis_facade_rv32.makeInst(0x2001, 0);
