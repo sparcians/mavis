@@ -77,6 +77,7 @@ private:
  * Derivative of Form_I_load extractor for LOAD pairs in RV32 NOTE:
  * rs1 is the address base, rd is the dest data starting register.
  * The second register added will be rd+1.  Also, checks for alignment
+ * of those registers.
  */
 template<>
 class Extractor<Form_I_loadpair> : public Extractor<Form_I_load>
@@ -103,8 +104,8 @@ public:
             dest_mask =
                 extractUnmaskedIndexBit_(Form_I::idType::RD, icode, fixed_field_mask_);
 
-            uint32_t rd_val = 64 - __builtin_clzll(dest_mask);
-            dest_mask |= (0x1ull << rd_val);
+            const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
+            dest_mask |= (0x1ull << rd_val_pos);
         }
         return dest_mask;
     }
@@ -321,6 +322,65 @@ private:
     Extractor<Form_C0_load_double>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C0_load>(ffmask, fset)
     {}
+};
+
+/**
+ * Derivative of the Form_S extractor for Store Pair
+ */
+template<>
+class Extractor<Form_S_Pair> : public Extractor<Form_S>
+{
+public:
+    Extractor<Form_S_Pair>() :
+        Extractor<Form_S>()
+    {}
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        // The mask for all of the source regs (addr + data) is
+        // actually the original RS1/RS2 | RS3, but RS3 is not part of
+        // the icode
+        return Extractor<Form_S>::getSourceRegs(icode) | getSourceDataRegs(icode);
+    }
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_S::idType::RS2, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    uint64_t getSourceDataRegs(const Opcode icode) const override
+    {
+        // Add a second source to the pair
+        uint64_t src_mask = 0;
+        if(const uint32_t reg = extract_(Form_S::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            src_mask = extractUnmaskedIndexBit_(Form_S::idType::RS2, icode, fixed_field_mask_);
+            const uint32_t rs2_val_pos = 64 - __builtin_clzll(src_mask);
+            src_mask |= (0x1ull << rs2_val_pos);
+        }
+        return src_mask;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist =
+            Extractor<Form_S>::getSourceOperandInfo(icode, meta, suppress_x0);
+
+        auto rs3_elem = olist.getElements().at(1);
+        assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+
+        rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
+        ++rs3_elem.field_value;
+
+        // Add the second RS
+        olist.addElement(rs3_elem);
+
+        return olist;
+    }
 };
 
 /**
@@ -976,16 +1036,21 @@ public:
     }
 
 private:
-    Extractor<Form_CI_sp>(const uint64_t ffmask, const uint64_t fset) :
-        Extractor<Form_CI>(ffmask, fset)
-    {
+
+    static uint64_t generateFFMask(uint64_t ffmask) {
         // Re-enable the fixed fields for RS1 and RD in the parent's mask
         // This will keep the parent from ignoring SP (encoded in RS1/RD)
         // for getSourceRegs(), getDestRegs(), getOperTypeRegs(), and dasmString()
-        fixed_field_mask_ &= ~(Form_CI::fields[Form_CI::idType::RS1].getShiftedMask() |
-                               Form_CI::fields[Form_CI::idType::RD].getShiftedMask());
-        fixed_field_set_ &= ~((1ull << static_cast<uint32_t>(Form_CI::idType::RS1)) |
-                              (1ull << static_cast<uint32_t>(Form_CI::idType::RD)));
+        ffmask &= ~(Form_CI::fields[Form_CI::idType::RS1].getShiftedMask() |
+                    Form_CI::fields[Form_CI::idType::RD].getShiftedMask());
+        ffmask &= ~((1ull << static_cast<uint32_t>(Form_CI::idType::RS1)) |
+                    (1ull << static_cast<uint32_t>(Form_CI::idType::RD)));
+        return ffmask;
+    }
+
+    Extractor<Form_CI_sp>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_CI>(generateFFMask(ffmask), fset)
+    {
     }
 };
 

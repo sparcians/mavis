@@ -85,6 +85,16 @@ public:
 };
 
 /**
+ * Stub for Form_S_Pair extractor
+ */
+class Form_S_Pair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"S_pair"};
+};
+
+/**
  * Stub for C0_store extractor
  */
 class Form_C0_store
