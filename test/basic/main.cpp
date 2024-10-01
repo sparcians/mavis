@@ -1071,7 +1071,8 @@ int main() {
                                  "json/isa_rv32c.json",
                                  "json/isa_rv32cf.json",
                                  "json/isa_rv32cd.json",
-                                 "json/isa_rv32zilsd.json"},
+                                 "json/isa_rv32zilsd.json",
+                                 "json/isa_rv32zclsd.json"},
                                 {"uarch/uarch_rv32g.json"},
                                 uid_init,
                                 anno_overrides);

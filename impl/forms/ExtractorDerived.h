@@ -256,7 +256,7 @@ private:
 };
 
 /**
- * Derivative of Form_C0 extractor for LOAD WORDS
+ * Derivative of Form_C0_load extractor for LOAD WORDS
  */
 template<>
 class Extractor<Form_C0_load_word> : public Extractor<Form_C0_load>
@@ -288,6 +288,41 @@ public:
 private:
     Extractor<Form_C0_load_word>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C0_load>(ffmask, fset)
+    {}
+    friend class Extractor<Form_C0_load_word_pair>;
+};
+
+/**
+ * Derivative of Form_C0_load_word extractor for LOAD WORD PAIRS (RV32)
+ */
+template<>
+class Extractor<Form_C0_load_word_pair> : public Extractor<Form_C0_load_word>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_load_word_pair>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_load_word_pair::name;
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        const uint64_t imm = (extract_(Form_C0::idType::IMM3, icode) << 2ull) |
+                             extract_(Form_C0::idType::IMM2, icode);
+        using R = Swizzler::Range;
+        // Bit ranges to extract from imm, starting with LSB
+        return Swizzler::extract(imm, R{6}, R{2}, R{3, 5});
+    }
+
+private:
+    Extractor<Form_C0_load_word_pair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_C0_load_word>(ffmask, fset)
     {}
 };
 
@@ -328,7 +363,7 @@ private:
 };
 
 /**
- * Derivative of the Form_S extractor for Store Pair
+ * Derivative of the Form_S extractor for Store Pair, RV32
  */
 template<>
 class Extractor<Form_S_Pair> : public Extractor<Form_S>
@@ -599,6 +634,43 @@ public:
 private:
     Extractor<Form_C0_store_word>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C0_store>(ffmask, fset)
+    {}
+
+    friend Extractor<Form_C0_store_word_pair>;
+};
+
+/**
+ * Derivative of Form_C0_store_word> extractor for STORE WORD PAIR RV32
+ * NOTE: rs1 is the address base, rs2 and rs2+1 are the source data
+ */
+template<>
+class Extractor<Form_C0_store_word_pair> : public Extractor<Form_C0_store_word>
+{
+public:
+    Extractor<Form_C0_store_word_pair>() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_store_word_pair>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_store_word_pair::name;
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        const uint64_t imm = (extract_(Form_C0::idType::IMM3, icode) << 2ull) |
+            extract_(Form_C0::idType::IMM2, icode);
+        using R = Swizzler::Range;
+        // Bit ranges to extract from imm, starting with LSB
+        return Swizzler::extract(imm, R{6}, R{2}, R{3, 5});
+    }
+
+private:
+    Extractor<Form_C0_store_word_pair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_C0_store_word>(ffmask, fset)
     {}
 };
 

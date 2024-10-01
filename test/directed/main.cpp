@@ -108,7 +108,8 @@ int main(int argc, char **argv)
                     "json/isa_rv32c.json",
                     "json/isa_rv32cf.json",
                     "json/isa_rv32cd.json",
-                    "json/isa_rv32zilsd.json"},
+                    "json/isa_rv32zilsd.json",
+                    "json/isa_rv32zclsd.json"},
                 {"uarch/uarch_rv64g.json"}));
     }
     else if(rv_isa == "rv64") {
