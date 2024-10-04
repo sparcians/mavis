@@ -18,12 +18,21 @@
         "stencil" : "0x6002"
     },
     {
+        "mnemonic" : "c.sd",
+        "tags" : ["c"],
+        "expand" : "sd",
+        "form" : "C0",
+        "ignore" : ["func2A"],
+        "xform" : "C0_store_word",
+        "stencil" : "0xe000"
+    },
+    {
         "mnemonic" : "c.sdsp",
         "tags" : ["c"],
         "expand" : "sd",
         "form" : "C2",
         "ignore" : ["func1"],
-        "xform" : "C2_sp_store_word_pair",
+        "xform" : "C2_sp_store_word",
         "stencil" : "0xe002"
     }
 ]
