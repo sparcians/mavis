@@ -19,7 +19,7 @@ namespace mavis {
             //{Form_C0_store::name,               std::make_shared<Extractor<Form_C0_store>>()},
             {Form_C0_store_double::name,          std::make_shared<Extractor<Form_C0_store_double>>()},
             {Form_C0_store_word::name,            std::make_shared<Extractor<Form_C0_store_word>>()},
-            {Form_C0_store_word_pair::name,       std::make_shared<Extractor<Form_C0_store_word_pair>>()},
+            //{Form_C0_store_word_pair::name,       std::make_shared<Extractor<Form_C0_store_word_pair>>()},
             {Form_C0_store_byte::name,            std::make_shared<Extractor<Form_C0_store_byte>>()},
             {Form_C0_store_half::name,            std::make_shared<Extractor<Form_C0_store_half>>()},
             {Form_C1_rsd::name,                   std::make_shared<Extractor<Form_C1_rsd>>()},

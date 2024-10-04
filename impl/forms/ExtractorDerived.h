@@ -287,7 +287,6 @@ class Extractor<Form_C0_load_word_pair> : public Extractor<Form_C0_load_word>
 public:
     Extractor() = default;
 
-
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
         return ExtractorIF::PtrType(new Extractor<Form_C0_load_word_pair>(ffmask, fset));
@@ -298,13 +297,44 @@ public:
         return Form_C0_load_word_pair::name;
     }
 
-    uint64_t getImmediate(const Opcode icode) const override
+    bool isIllop(Opcode icode) const override
     {
-        const uint64_t imm = (extract_(Form_C0::idType::IMM3, icode) << 2ull) |
-            extract_(Form_C0::idType::IMM2, icode);
-        using R = Swizzler::Range;
-        // Bit ranges to extract from imm, starting with LSB
-        return Swizzler::extract(imm, R{6}, R{2}, R{3, 5});
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_C0::idType::RD, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    // Take the standard load and append a second destination to it.
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        uint64_t dest_mask = 0;
+        if(const uint32_t reg = extract_(Form_C0::idType::RD, icode); reg != REGISTER_X0)
+        {
+            dest_mask =
+                extractUnmaskedIndexBit_(Form_C0::idType::RD, icode, fixed_field_mask_);
+
+            const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
+            dest_mask |= (0x1ull << rd_val_pos);
+        }
+        return dest_mask;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_C0::idType::RD, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_C0_load_word>::getDestOperandInfo(icode, meta, suppress_x0);
+            auto rd2_elem = olist.getElements().at(0);
+            rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+            ++rd2_elem.field_value;
+
+            // Add the second RD
+            olist.addElement(rd2_elem);
+        }
+        return olist;
     }
 
 private:
@@ -389,10 +419,14 @@ public:
                                      bool suppress_x0 = false) const override
     {
         OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
+                                   fixed_field_mask_, Form_S::idType::RS1,
+                                   false, suppress_x0);
         if(const uint32_t reg = extract_(Form_S::idType::RS2, icode); reg != REGISTER_X0)
         {
-            olist = Extractor<Form_S>::getSourceOperandInfo(icode, meta, suppress_x0);
-
+            appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS2,
+                                       fixed_field_mask_, Form_S::idType::RS2,
+                                       false, suppress_x0);
             auto rs3_elem = olist.getElements().at(1);
             assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
 
@@ -618,37 +652,77 @@ private:
  * Derivative of Form_C0_store_word> extractor for STORE WORD PAIR RV32
  * NOTE: rs1 is the address base, rs2 and rs2+1 are the source data
  */
-template<>
-class Extractor<Form_C0_store_word_pair> : public Extractor<Form_C0_store_word>
-{
-public:
-    Extractor<Form_C0_store_word_pair>() = default;
-
-    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
-    {
-        return ExtractorIF::PtrType(new Extractor<Form_C0_store_word_pair>(ffmask, fset));
-    }
-
-    std::string getName() const override
-    {
-        return Form_C0_store_word_pair::name;
-    }
-
-    uint64_t getImmediate(const Opcode icode) const override
-    {
-        const uint64_t imm = (extract_(Form_C0::idType::IMM3, icode) << 2ull) |
-            extract_(Form_C0::idType::IMM2, icode);
-        using R = Swizzler::Range;
-        // Bit ranges to extract from imm, starting with LSB
-        return Swizzler::extract(imm, R{6}, R{2}, R{3, 5});
-    }
-
-private:
-    Extractor<Form_C0_store_word_pair>(const uint64_t ffmask, const uint64_t fset) :
-        Extractor<Form_C0_store_word>(ffmask, fset)
-    {}
-};
-
+//template<>
+//class Extractor<Form_C0_store_word_pair> : public Extractor<Form_C0_store_word>
+//{
+//public:
+//    Extractor<Form_C0_store_word_pair>() = default;
+//
+//    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+//    {
+//        return ExtractorIF::PtrType(new Extractor<Form_C0_store_word_pair>(ffmask, fset));
+//    }
+//
+//    std::string getName() const override
+//    {
+//        return Form_C0_store_word_pair::name;
+//    }
+//
+//    uint64_t getSourceRegs(const Opcode icode) const override
+//    {
+//        // The mask for all of the source regs (addr + data) is
+//        // actually the original RS1/RS2 | RS3, but RS3 is not part of
+//        // the icode
+//        return Extractor<Form_C0_store>::getSourceRegs(icode) | getSourceDataRegs(icode);
+//    }
+//
+//    bool isIllop(Opcode icode) const override
+//    {
+//        // The load pair instruction is illegal if the first operand
+//        // is odd
+//        const uint32_t reg = extract_(Form_C2::idType::RS2, icode);
+//        return (reg & 0b1) != 0;
+//    }
+//
+//    uint64_t getSourceDataRegs(const Opcode icode) const override
+//    {
+//        // Add a second source to the pair
+//        uint64_t src_mask = 0;
+//        if(const uint32_t reg = extract_(Form_C2::idType::RS2, icode); reg != REGISTER_X0)
+//        {
+//            src_mask = extractUnmaskedIndexBit_(Form_C2::idType::RS2, icode, fixed_field_mask_);
+//            const uint32_t rs2_val_pos = 64 - __builtin_clzll(src_mask);
+//            src_mask |= (0x1ull << rs2_val_pos);
+//        }
+//        return src_mask;
+//    }
+//
+//    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+//                                     bool suppress_x0 = false) const override
+//    {
+//        OperandInfo olist;
+//        if(const uint32_t reg = extract_(Form_S::idType::RS2, icode); reg != REGISTER_X0)
+//        {
+//            olist = Extractor<Form_C0_store_word>::getSourceOperandInfo(icode, meta, suppress_x0);
+//
+//            auto rs3_elem = olist.getElements().at(1);
+//            assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+//
+//            rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
+//            ++rs3_elem.field_value;
+//
+//            // Add the second RS
+//            olist.addElement(rs3_elem);
+//        }
+//        return olist;
+//    }
+//
+//private:
+//    Extractor<Form_C0_store_word_pair>(const uint64_t ffmask, const uint64_t fset) :
+//        Extractor<Form_C0_store_word>(ffmask, fset)
+//    {}
+//};
+//
 /**
  * Derivative of Form_C0_store> extractor for STORE DOUBLES
  * NOTE: rs1 is the address base, rs2 is the source data
@@ -1901,13 +1975,44 @@ public:
         return Form_C2_sp_load_word::name;
     }
 
-    uint64_t getImmediate(const Opcode icode) const override
+    bool isIllop(Opcode icode) const override
     {
-        const uint64_t imm = (extract_(Form_C2::idType::SHAMT1, icode) << 5ull) |
-            extract_(Form_C2::idType::SHAMT5, icode);
-        using R = Swizzler::Range;
-        // Bit ranges to extract from imm, starting with LSB
-        return Swizzler::extract(imm, R{6, 7}, R{2,4}, R{5});
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_C2::idType::RD, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    // Take the standard load and append a second destination to it.
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        uint64_t dest_mask = 0;
+        if(const uint32_t reg = extract_(Form_C2::idType::RD, icode); reg != REGISTER_X0)
+        {
+            dest_mask =
+                extractUnmaskedIndexBit_(Form_C2::idType::RD, icode, fixed_field_mask_);
+
+            const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
+            dest_mask |= (0x1ull << rd_val_pos);
+        }
+        return dest_mask;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_C2::idType::RD, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_C2_sp_load>::getDestOperandInfo(icode, meta, suppress_x0);
+            auto rd2_elem = olist.getElements().at(0);
+            rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+            ++rd2_elem.field_value;
+
+            // Add the second RD
+            olist.addElement(rd2_elem);
+        }
+        return olist;
     }
 
 protected:
@@ -2064,12 +2169,53 @@ public:
         return Form_C2_sp_store_word::name;
     }
 
-    uint64_t getImmediate(const Opcode icode) const override
+    uint64_t getSourceRegs(const Opcode icode) const override
     {
-        const uint64_t imm = extract_(Form_C2_sp_store::idType::IMM, icode);
-        using R = Swizzler::Range;
-        // Bit ranges to extract from imm, starting with LSB
-        return Swizzler::extract(imm, R{6, 7}, R{2,5});
+        // The mask for all of the source regs (addr + data) is
+        // actually the original RS1/RS2 | RS3, but RS3 is not part of
+        // the icode
+        return Extractor<Form_C2_sp_store_word>::getSourceRegs(icode) | getSourceDataRegs(icode);
+    }
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_C2_sp_store::idType::RS2, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    uint64_t getSourceDataRegs(const Opcode icode) const override
+    {
+        // Add a second source to the pair
+        uint64_t src_mask = 0;
+        if(const uint32_t reg = extract_(Form_C2_sp_store::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            src_mask = extractUnmaskedIndexBit_(Form_C2_sp_store::idType::RS2, icode, fixed_field_mask_);
+            const uint32_t rs2_val_pos = 64 - __builtin_clzll(src_mask);
+            src_mask |= (0x1ull << rs2_val_pos);
+        }
+        return src_mask;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_C2_sp_store::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_C2_sp_store_word>::getSourceOperandInfo(icode, meta, suppress_x0);
+
+            auto rs3_elem = olist.getElements().at(1);
+            assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+
+            rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
+            ++rs3_elem.field_value;
+
+            // Add the second RS
+            olist.addElement(rs3_elem);
+        }
+        return olist;
     }
 
 private:
