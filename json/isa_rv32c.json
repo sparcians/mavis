@@ -165,7 +165,7 @@
     "expand" : "jal",
     "form" : "C1",
     "ignore" : ["func2", "func1", "func2b"],
-    "xform" : "CJ",
+    "xform" : "CJAL",
     "stencil" : "0x2001"
   },
   {

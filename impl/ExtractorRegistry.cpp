@@ -49,6 +49,7 @@ namespace mavis {
             {Form_CIX::name,                      std::make_shared<Extractor<Form_CIX>>()},
             {Form_CIX_andi::name,                 std::make_shared<Extractor<Form_CIX_andi>>()},
             {Form_CJ::name,                       std::make_shared<Extractor<Form_CJ>>()},
+            {Form_CJAL::name,                     std::make_shared<Extractor<Form_CJAL>>()},
             {Form_CJR::name,                      std::make_shared<Extractor<Form_CJR>>()},
             {Form_CJALR::name,                    std::make_shared<Extractor<Form_CJALR>>()},
             {Form_CSR::name,                      std::make_shared<Extractor<Form_CSR>>()},

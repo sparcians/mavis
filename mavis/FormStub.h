@@ -195,6 +195,16 @@ public:
 };
 
 /**
+ * Stub for CJAL extractor
+ */
+class Form_CJAL
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"CJAL"};
+};
+
+/**
  * Stub for CJALR extractor
  */
 class Form_CJALR
