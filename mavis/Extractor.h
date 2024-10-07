@@ -230,17 +230,19 @@ public:
     // Default implementation returns empty list
     OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType&, bool suppress_x0 = false) const override
     {
+	(void)suppress_x0;
         return {};
     }
 
     // Default implementation returns empty list
     OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType&, bool suppress_x0 = false) const override
     {
+	(void)suppress_x0;
         return {};
     }
 
     // Default implementation returns 0
-    uint64_t getImmediate(const Opcode icode) const override
+    uint64_t getImmediate(const Opcode) const override
     {
         return 0;
     }
