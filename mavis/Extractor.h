@@ -306,8 +306,7 @@ public:
 
     void print(std::ostream& os) const override
     {
-        os << "Extractor '" << getName() << "'"
-           << std::endl;
+        os << "Extractor '" << getName() << "'";
     }
 
 protected:

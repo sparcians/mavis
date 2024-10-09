@@ -69,9 +69,10 @@ int main(int argc, char **argv)
     namespace po = boost::program_options;
     po::options_description desc("mavis_decode -- a program that details how mavis sees a given instruction");
     desc.add_options()
-        ("help,h", "Command line options")
-        ("opc,o",  po::value<std::vector<std::string>>(), "32-bit or 16-bit hex opcode")
-        ("isa,a",  po::value<std::string>(), "rv32 or rv64 (all inclusive)");
+        ("help,h",  "Command line options")
+        ("opc,o",   po::value<std::vector<std::string>>(), "32-bit or 16-bit hex opcode")
+        ("isa,a",   po::value<std::string>(), "rv32 or rv64 (all inclusive)")
+        ("zclsd,z", "use rv32_zclsd extension or not (default is not)");
     //("mnemonic,m", po::value<std::vector<std::string>>(), "Mnemonic to look up");
 
     po::variables_map vm;
@@ -97,7 +98,7 @@ int main(int argc, char **argv)
     std::unique_ptr<MavisType> mavis_facade;
     if(rv_isa == "rv32")
     {
-        mavis_facade.reset(new MavisType({
+        mavis::FileNameListType isa_files = {
                     "json/isa_rv32i.json",        // included in "g" spec
                     "json/isa_rv32f.json",        // included in "g" spec
                     "json/isa_rv32m.json",        // included in "g" spec
@@ -106,11 +107,17 @@ int main(int argc, char **argv)
                     "json/isa_rv32zicsr.json",    // included in "g" spec
                     "json/isa_rv32zifencei.json", // included in "g" spec
                     "json/isa_rv32c.json",
-                    "json/isa_rv32cf.json",
                     "json/isa_rv32cd.json",
-                    "json/isa_rv32zilsd.json",
-                    "json/isa_rv32zclsd.json"},
-                {"uarch/uarch_rv64g.json"}));
+                    "json/isa_rv32zilsd.json"};
+
+        // Zclsd has overlapping encodings with Zcf, so only one can be used at a time
+        if (vm.count("zclsd")) {
+            isa_files.emplace_back("json/isa_rv32zclsd.json");
+        }
+        else {
+            isa_files.emplace_back("json/isa_rv32cf.json");
+        }
+        mavis_facade.reset(new MavisType(isa_files, {"uarch/uarch_rv64g.json"}));
     }
     else if(rv_isa == "rv64") {
         mavis_facade.reset(new MavisType({

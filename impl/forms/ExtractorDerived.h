@@ -275,72 +275,6 @@ private:
     Extractor<Form_C0_load_word>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C0_load>(ffmask, fset)
     {}
-    friend class Extractor<Form_C0_load_word_pair>;
-};
-
-/**
- * Derivative of Form_C0_load_word extractor for LOAD WORD PAIRS (RV32)
- */
-template<>
-class Extractor<Form_C0_load_word_pair> : public Extractor<Form_C0_load_word>
-{
-public:
-    Extractor() = default;
-
-    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
-    {
-        return ExtractorIF::PtrType(new Extractor<Form_C0_load_word_pair>(ffmask, fset));
-    }
-
-    std::string getName() const override
-    {
-        return Form_C0_load_word_pair::name;
-    }
-
-    bool isIllop(Opcode icode) const override
-    {
-        // The load pair instruction is illegal if the first operand
-        // is odd
-        const uint32_t reg = extract_(Form_C0::idType::RD, icode);
-        return (reg & 0b1) != 0;
-    }
-
-    // Take the standard load and append a second destination to it.
-    uint64_t getDestRegs(const Opcode icode) const override
-    {
-        uint64_t dest_mask = 0;
-        if(const uint32_t reg = extract_(Form_C0::idType::RD, icode); reg != REGISTER_X0)
-        {
-            dest_mask =
-                extractUnmaskedIndexBit_(Form_C0::idType::RD, icode, fixed_field_mask_);
-
-            const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
-            dest_mask |= (0x1ull << rd_val_pos);
-        }
-        return dest_mask;
-    }
-
-    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
-                                   bool suppress_x0 = false) const override
-    {
-        OperandInfo olist;
-        if(const uint32_t reg = extract_(Form_C0::idType::RD, icode); reg != REGISTER_X0)
-        {
-            olist = Extractor<Form_C0_load_word>::getDestOperandInfo(icode, meta, suppress_x0);
-            auto rd2_elem = olist.getElements().at(0);
-            rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
-            ++rd2_elem.field_value;
-
-            // Add the second RD
-            olist.addElement(rd2_elem);
-        }
-        return olist;
-    }
-
-private:
-    Extractor<Form_C0_load_word_pair>(const uint64_t ffmask, const uint64_t fset) :
-        Extractor<Form_C0_load_word>(ffmask, fset)
-    {}
 };
 
 /**
@@ -374,6 +308,66 @@ public:
 private:
     Extractor<Form_C0_load_double>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C0_load>(ffmask, fset)
+    {}
+    friend class Extractor<Form_C0_load_word_pair>;
+};
+
+/**
+ * Derivative of Form_C0_load_double extractor for LOAD WORD PAIRS (RV32)
+ */
+template<>
+class Extractor<Form_C0_load_word_pair> : public Extractor<Form_C0_load_double>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_load_word_pair>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_load_word_pair::name;
+    }
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_C0::idType::RD, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    // Take the standard load and append a second destination to it.
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        uint64_t dest_mask =
+            extractUnmaskedCompressedIndexBit_(Form_C0::idType::RD, icode, fixed_field_mask_);
+
+        const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
+        dest_mask |= (0x1ull << rd_val_pos);
+        return dest_mask;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedCompressedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                             fixed_field_mask_, Form_C0::idType::RD, false);
+        auto rd2_elem = olist.getElements().at(0);
+        rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+        ++rd2_elem.field_value;
+
+        // Add the second RD
+        olist.addElement(rd2_elem);
+        return olist;
+    }
+
+private:
+    Extractor<Form_C0_load_word_pair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_C0_load_double>(ffmask, fset)
     {}
 };
 
@@ -1952,27 +1946,61 @@ protected:
     Extractor<Form_C2_sp_load_word>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C2_sp_load>(ffmask, fset)
     {}
-
-    friend class Extractor<Form_C2_sp_load_word_pair>;
 };
 
 /**
- * Derivative of Form_C2_sp_load extractor for LOAD WORD PAIR (32-bit)
+ * Derivative of Form_C2_sp_load extractor for LOAD DOUBLE
  */
 template<>
-class Extractor<Form_C2_sp_load_word_pair> : public Extractor<Form_C2_sp_load_word>
+class Extractor<Form_C2_sp_load_double> : public Extractor<Form_C2_sp_load>
 {
 public:
     Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
-        return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_word_pair>(ffmask, fset));
+        return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_double>(ffmask, fset));
     }
 
     std::string getName() const override
     {
-        return Form_C2_sp_load_word::name;
+        return Form_C2_sp_load_double::name;
+    }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        const uint64_t imm = (extract_(Form_C2::idType::SHAMT1, icode) << 5ull) |
+            extract_(Form_C2::idType::SHAMT5, icode);
+        using R = Swizzler::Range;
+        // Bit ranges to extract from imm, starting with LSB
+        return Swizzler::extract(imm, R{6, 8}, R{3,4}, R{5});
+    }
+
+protected:
+    Extractor<Form_C2_sp_load_double>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_C2_sp_load>(ffmask, fset)
+    {}
+
+    friend class Extractor<Form_C2_sp_load_word_pair>;
+};
+
+/**
+ * Derivative of Form_C2_sp_load_double extractor for LOAD WORD PAIR (32-bit)
+ */
+template<>
+class Extractor<Form_C2_sp_load_word_pair> : public Extractor<Form_C2_sp_load_double>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_double>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C2_sp_load_word_pair::name;
     }
 
     bool isIllop(Opcode icode) const override
@@ -2017,41 +2045,7 @@ public:
 
 protected:
     Extractor<Form_C2_sp_load_word_pair>(const uint64_t ffmask, const uint64_t fset) :
-        Extractor<Form_C2_sp_load_word>(ffmask, fset)
-    {}
-};
-
-/**
- * Derivative of Form_C2_sp_load extractor for LOAD DOUBLE
- */
-template<>
-class Extractor<Form_C2_sp_load_double> : public Extractor<Form_C2_sp_load>
-{
-public:
-    Extractor() = default;
-
-    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
-    {
-        return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_double>(ffmask, fset));
-    }
-
-    std::string getName() const override
-    {
-        return Form_C2_sp_load_double::name;
-    }
-
-    uint64_t getImmediate(const Opcode icode) const override
-    {
-        const uint64_t imm = (extract_(Form_C2::idType::SHAMT1, icode) << 5ull) |
-            extract_(Form_C2::idType::SHAMT5, icode);
-        using R = Swizzler::Range;
-        // Bit ranges to extract from imm, starting with LSB
-        return Swizzler::extract(imm, R{6, 8}, R{3,4}, R{5});
-    }
-
-protected:
-    Extractor<Form_C2_sp_load_double>(const uint64_t ffmask, const uint64_t fset) :
-        Extractor<Form_C2_sp_load>(ffmask, fset)
+        Extractor<Form_C2_sp_load_double>(ffmask, fset)
     {}
 };
 
