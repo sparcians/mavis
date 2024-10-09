@@ -1128,6 +1128,12 @@ int main() {
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0x6008 = " << inst->dasmString() << endl;
     assert(inst->getMnemonic() == "c.flw");
 
+    // When using zcf, 0xe008 should map to c.fsw f10,x8, IMM=0
+    inst = mavis_facade_rv32.makeInst(0xe008, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xe008 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "c.fsw");
+
     // "ZCLSD" context should exist yet
     assert(mavis_facade_rv32.hasContext("ZCLSD") == false);
 
@@ -1160,6 +1166,20 @@ int main() {
     try {
         // Illegal form of load pair -- rd starts odd
         inst = mavis_facade_rv32.makeInst(0x6082, 0);
+        assert(inst == nullptr);
+    }
+    catch(...) {}
+
+    // When using zclsd, 0xe008 should map to c.sd x10,x8, IMM=0
+    inst = mavis_facade_rv32.makeInst(0xe008, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xe008 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "c.sd");
+    assert(inst->getIntSourceRegs() == 0xD00ull); // 3 sources
+
+    try {
+        // Illegal form of store pair -- rs2 starts odd
+        inst = mavis_facade_rv32.makeInst(0xe004, 0);
         assert(inst == nullptr);
     }
     catch(...) {}

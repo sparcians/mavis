@@ -23,7 +23,7 @@
         "expand" : "sd",
         "form" : "C0",
         "ignore" : ["func2A"],
-        "xform" : "C0_store_word",
+        "xform" : "C0_store_word_pair",
         "stencil" : "0xe000"
     },
     {
@@ -32,7 +32,7 @@
         "expand" : "sd",
         "form" : "C2",
         "ignore" : ["func1"],
-        "xform" : "C2_sp_store_word",
+        "xform" : "C2_sp_store_word_pair",
         "stencil" : "0xe002"
     }
 ]
