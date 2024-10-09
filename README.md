@@ -35,8 +35,8 @@ diff -s test.out golden.out
 cd build/test/directed
 make
 ./mavis_decode --help
-./mavis_decode -a rv23 -o 0x0001b283
+./mavis_decode -a rv32 -o 0x0001a283
 ./mavis_decode -a rv64 -o 0x0001b283
-./mavis_decode -a rv64 -m ld
+./mavis_decode -a rv32 -z -o 0x6008
 
 ```
