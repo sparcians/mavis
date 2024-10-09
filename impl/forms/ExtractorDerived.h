@@ -66,7 +66,7 @@ private:
     Extractor<Form_I_load>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_I>(ffmask, fset)
     {}
-    friend Extractor<Form_I_loadpair>;
+    friend Extractor<Form_I_load_pair>;
 };
 
 /**
@@ -76,7 +76,7 @@ private:
  * of those registers.
  */
 template<>
-class Extractor<Form_I_loadpair> : public Extractor<Form_I_load>
+class Extractor<Form_I_load_pair> : public Extractor<Form_I_load>
 {
 public:
     Extractor() = default;
@@ -122,7 +122,7 @@ public:
     }
 
 private:
-    Extractor<Form_I_loadpair>(const uint64_t ffmask, const uint64_t fset) :
+    Extractor<Form_I_load_pair>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_I_load>(ffmask, fset)
     {}
 };
