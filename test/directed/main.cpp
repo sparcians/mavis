@@ -79,19 +79,22 @@ int main(int argc, char **argv)
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
 
-    if(vm.count("help")) {
+    if(vm.count("help"))
+    {
         std::cout << desc << "\n";
         return 0;
     }
 
-    if(vm.count("opc") == 0 && vm.count("mnemonic") == 0) {
+    if(vm.count("opc") == 0 && vm.count("mnemonic") == 0)
+    {
         std::cerr << "ERROR: Nothing given to decode!" << std::endl;
         std::cout << desc << "\n";
         return 255;
     }
 
     std::string rv_isa = "rv64";
-    if(vm.count("isa")) {
+    if(vm.count("isa"))
+    {
         rv_isa = vm["isa"].as<std::string>();
     }
 
@@ -111,15 +114,18 @@ int main(int argc, char **argv)
                     "json/isa_rv32zilsd.json"};
 
         // Zclsd has overlapping encodings with Zcf, so only one can be used at a time
-        if (vm.count("zclsd")) {
+        if (vm.count("zclsd"))
+        {
             isa_files.emplace_back("json/isa_rv32zclsd.json");
         }
-        else {
+        else
+        {
             isa_files.emplace_back("json/isa_rv32cf.json");
         }
         mavis_facade.reset(new MavisType(isa_files, {"uarch/uarch_rv64g.json"}));
     }
-    else if(rv_isa == "rv64") {
+    else if(rv_isa == "rv64")
+    {
         mavis_facade.reset(new MavisType({
                     "json/isa_rv64i.json",        // included in "g" spec
                     "json/isa_rv64f.json",        // included in "g" spec
@@ -145,17 +151,21 @@ int main(int argc, char **argv)
                     "json/isa_rv64zvfbfwma.json"},
                 {"uarch/uarch_rv64g.json"}));
     }
-    else {
+    else
+    {
         std::cerr << "ERROR: rv_isa expected to be either rv32 or rv64" << std::endl;
         std::cerr << desc << std::endl;
         return 255;
     }
     assert(nullptr != mavis_facade);
 
-    if(vm.count("opc")) {
-        for(auto opcode : vm["opc"].as<std::vector<std::string>>()) {
+    if(vm.count("opc"))
+    {
+        for(auto opcode : vm["opc"].as<std::vector<std::string>>())
+        {
             auto inst = mavis_facade->makeInst(std::stol(opcode, 0, 16), 0);
-            if(nullptr != inst) {
+            if(nullptr != inst)
+            {
                 std::cout << "Dasm (" << HEX8(opcode) << "): " << inst->dasmString() << std::endl;
                 std::cout << "  Addr-Sources : "
                           << printBitSet(std::bitset<64>(inst->getSourceAddressRegs())) << ": "
@@ -175,7 +185,8 @@ int main(int argc, char **argv)
                 std::cout << "  Float-Dests  : "
                           << printBitSet(std::bitset<64>(inst->getFloatDestRegs()))     << ": "
                           << std::bitset<64>(inst->getFloatDestRegs())     << std::endl;
-                if(inst->hasImmediate()) {
+                if(inst->hasImmediate())
+                {
                     std::cout << "  immediate    : " << HEX8(inst->getImmediate()) << std::endl;
                 }
                 std::cout << "Src List: " << std::endl;
@@ -191,7 +202,8 @@ int main(int argc, char **argv)
                     std::cout << "  Operand val  : " << op.field_value << std::endl;
                 }
             }
-            else {
+            else
+            {
                 std::cerr << "ERROR: " << HEX8(opcode) << " is not decodable" << std::endl;
             }
         }
