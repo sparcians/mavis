@@ -1,40 +1,13 @@
-PROJECT(MAVIS_TESTS)
 
-cmake_minimum_required (VERSION 3.15)
+add_subdirectory(basic)
 
-set (CMAKE_CXX_STANDARD 17)
-set (CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_compile_options (-g -Werror -fPIC
-  -Wall -Wextra -Winline -Winit-self -Wno-unused-function
-  -Wuninitialized -Wno-sequence-point -Wno-inline -Wno-unknown-pragmas
-  -Wno-unused-parameter -Wno-missing-field-initializers -pipe
-  -Winvalid-pch)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Woverloaded-virtual")
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  add_compile_options(-Wpedantic -Wno-gnu-zero-variadic-macro-arguments)
-endif ()
-
-if (CMAKE_BUILD_TYPE MATCHES "^[Dd]ebug")
-  add_compile_options (-O0)
+# Look for boost po.  If not found, no directed test
+set (_BOOST_COMPONENTS program_options)
+find_package (Boost 1.74.0 REQUIRED COMPONENTS ${_BOOST_COMPONENTS})
+if (Boost_FOUND)
+  include_directories (SYSTEM ${Boost_INCLUDE_DIRS})
+  message (STATUS "Using BOOST ${Boost_VERSION_STRING}")
+  add_subdirectory(directed)
+else()
+  message (WARNING "Directed mavis test skipped due to no Boost Program Options")
 endif()
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../mavis ${CMAKE_CURRENT_SOURCE_DIR}/..)
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
-add_executable(Mavis main.cpp)
-target_link_libraries (Mavis mavis)
-
-#
-# CppCheck.
-#
-# This conflicts with tools that include Mavis (and use cppcheck)
-#
-# Add a custom CMake Modules directory
-#set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
-## Setup for HTML report
-#set (CPPCHECK_XML_OUTPUT "${PROJECT_BINARY_DIR}/analysis/cppcheck/cppcheck_analysis.xml")
-#set (CPPCHECK_EXCLUDES
-#  ${CMAKE_BINARY_DIR}
-#  ${SIM_BASE}/test
-#  )
-#find_package (Cppcheck)

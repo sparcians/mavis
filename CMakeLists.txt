@@ -13,18 +13,7 @@ add_library(mavis
   impl/forms/CompressedForms.cpp
   impl/forms/VectorForms.cpp
 )
-
 add_subdirectory(test EXCLUDE_FROM_ALL)
 
-#
-# CppCheck
-#
-# Add a custom CMake Modules directory
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
-# Setup for HTML report
-set (CPPCHECK_XML_OUTPUT "${PROJECT_BINARY_DIR}/analysis/cppcheck/cppcheck_analysis.xml")
-set (CPPCHECK_EXCLUDES
-  ${CMAKE_BINARY_DIR}
-  ${SIM_BASE}/test
-)
-find_package (Cppcheck)
+set(CMAKE_CXX_FLAGS_DEBUG "-U_FORTIFY_SOURCE -O0 -g")
+set(CMAKE_CXX_FLAGS_FASTDEBUG "-O3 -g")

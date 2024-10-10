@@ -25,6 +25,16 @@ public:
 };
 
 /**
+ * Stub for I_load_pair extractor
+ */
+class Form_I_load_pair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"I_load_pair"};
+};
+
+/**
  * Stub for C0_load extractor
  */
 class Form_C0_load
@@ -65,6 +75,16 @@ public:
 };
 
 /**
+ * Stub for C0_load_word_pair extractor
+ */
+class Form_C0_load_word_pair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"C0_load_word_pair"};
+};
+
+/**
  * Stub for C0_load_double extractor
  */
 class Form_C0_load_double
@@ -72,6 +92,16 @@ class Form_C0_load_double
 public:
     using idType = uint32_t;
     static inline const std::string name {"C0_load_double"};
+};
+
+/**
+ * Stub for Form_S_Pair extractor
+ */
+class Form_S_Pair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"S_pair"};
 };
 
 /**
@@ -112,6 +142,16 @@ class Form_C0_store_word
 public:
     using idType = uint32_t;
     static inline const std::string name {"C0_store_word"};
+};
+
+/**
+ * Stub for C0_store_word_pair extractor
+ */
+class Form_C0_store_word_pair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"C0_store_word_pair"};
 };
 
 /**
@@ -275,6 +315,16 @@ public:
 };
 
 /**
+ * Stub for C2_sp_load_word_pair extractor
+ */
+class Form_C2_sp_load_word_pair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"C2_sp_load_word_pair"};
+};
+
+/**
  * Stub for C2_sp_load_double extractor
  */
 class Form_C2_sp_load_double
@@ -312,6 +362,16 @@ class Form_C2_sp_store_word
 public:
     using idType = uint32_t;
     static inline const std::string name {"C2_sp_store_word"};
+};
+
+/**
+ * Stub for C2_sp_store_word_pair extractor
+ */
+class Form_C2_sp_store_word_pair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"C2_sp_store_word_pair"};
 };
 
 /**
