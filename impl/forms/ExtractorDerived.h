@@ -14,9 +14,7 @@ template<>
 class Extractor<Form_I_mv> : public Extractor<Form_I>
 {
 public:
-    Extractor<Form_I_mv>() :
-        Extractor<Form_I>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -41,15 +39,13 @@ private:
 
 /**
  * Derivative of Form_I extractor for LOADS
- * NOTE: rs1 is the address base, rs2 is the source data
+ * NOTE: rs1 is the address base, rd is the dest data
  */
 template<>
 class Extractor<Form_I_load> : public Extractor<Form_I>
 {
 public:
-    Extractor<Form_I_load>() :
-        Extractor<Form_I>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -66,14 +62,68 @@ public:
         return getSourceRegs(icode);
     }
 
-    //RegListType getSourceAddressList(const Opcode icode, bool suppress_x0 = false) const override
-    //{
-    //    return getSourceList(icode, suppress_x0);
-    //}
-
 private:
     Extractor<Form_I_load>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_I>(ffmask, fset)
+    {}
+    friend Extractor<Form_I_load_pair>;
+};
+
+/**
+ * Derivative of Form_I_load extractor for LOAD pairs in RV32 NOTE:
+ * rs1 is the address base, rd is the dest data starting register.
+ * The second register added will be rd+1.  Also, checks for alignment
+ * of those registers.
+ */
+template<>
+class Extractor<Form_I_load_pair> : public Extractor<Form_I_load>
+{
+public:
+    Extractor() = default;
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_I::idType::RD, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    // Take the standard load and append a second destination to it.
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        uint64_t dest_mask = 0;
+        if(const uint32_t reg = extract_(Form_I::idType::RD, icode); reg != REGISTER_X0)
+        {
+            dest_mask =
+                extractUnmaskedIndexBit_(Form_I::idType::RD, icode, fixed_field_mask_);
+
+            const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
+            dest_mask |= (0x1ull << rd_val_pos);
+        }
+        return dest_mask;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_I::idType::RD, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_I_load>::getDestOperandInfo(icode, meta, suppress_x0);
+            auto rd2_elem = olist.getElements().at(0);
+            rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+            ++rd2_elem.field_value;
+
+            // Add the second RD
+            olist.addElement(rd2_elem);
+        }
+        return olist;
+    }
+
+private:
+    Extractor<Form_I_load_pair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_I_load>(ffmask, fset)
     {}
 };
 
@@ -84,9 +134,7 @@ template<>
 class Extractor<Form_C0_load> : public Extractor<Form_C0>
 {
 public:
-    Extractor<Form_C0_load>() :
-        Extractor<Form_C0>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -104,7 +152,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
     {
         std::stringstream ss;
@@ -120,9 +168,9 @@ public:
         std::stringstream ss;
         ss << mnemonic << "\t"
            << dasmFormatCompressedRegList_(meta, icode, fixed_field_mask_,
-                                 { { Form_C0::idType::RD, InstMetaData::OperandFieldID::RD },
-                                   { Form_C0::idType::RS1, InstMetaData::OperandFieldID::RS1} })
-            << ", IMM=" << std::dec << getImmediate(icode);
+                                           { { Form_C0::idType::RD, InstMetaData::OperandFieldID::RD },
+                                             { Form_C0::idType::RS1, InstMetaData::OperandFieldID::RS1} })
+           << ", IMM=" << std::dec << getImmediate(icode);
         return ss.str();
     }
 
@@ -139,9 +187,7 @@ template<>
 class Extractor<Form_C0_load_byte> : public Extractor<Form_C0_load>
 {
 public:
-    Extractor<Form_C0_load_byte>() :
-            Extractor<Form_C0_load>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -163,7 +209,7 @@ public:
 
 private:
     Extractor<Form_C0_load_byte>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C0_load>(ffmask, fset)
+        Extractor<Form_C0_load>(ffmask, fset)
     {}
 };
 
@@ -174,9 +220,7 @@ template<>
 class Extractor<Form_C0_load_half> : public Extractor<Form_C0_load>
 {
 public:
-    Extractor<Form_C0_load_half>() :
-            Extractor<Form_C0_load>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -195,20 +239,18 @@ public:
 
 private:
     Extractor<Form_C0_load_half>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C0_load>(ffmask, fset)
+        Extractor<Form_C0_load>(ffmask, fset)
     {}
 };
 
 /**
- * Derivative of Form_C0 extractor for LOAD WORDS
+ * Derivative of Form_C0_load extractor for LOAD WORDS
  */
 template<>
 class Extractor<Form_C0_load_word> : public Extractor<Form_C0_load>
 {
 public:
-    Extractor<Form_C0_load_word>() :
-        Extractor<Form_C0_load>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -223,7 +265,7 @@ public:
     uint64_t getImmediate(const Opcode icode) const override
     {
         const uint64_t imm = (extract_(Form_C0::idType::IMM3, icode) << 2ull) |
-                             extract_(Form_C0::idType::IMM2, icode);
+            extract_(Form_C0::idType::IMM2, icode);
         using R = Swizzler::Range;
         // Bit ranges to extract from imm, starting with LSB
         return Swizzler::extract(imm, R{6}, R{2}, R{3, 5});
@@ -242,9 +284,7 @@ template<>
 class Extractor<Form_C0_load_double> : public Extractor<Form_C0_load>
 {
 public:
-    Extractor<Form_C0_load_double>() :
-        Extractor<Form_C0_load>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -259,7 +299,7 @@ public:
     uint64_t getImmediate(const Opcode icode) const override
     {
         const uint64_t imm = (extract_(Form_C0::idType::IMM3, icode) << 2ull) |
-                              extract_(Form_C0::idType::IMM2, icode);
+            extract_(Form_C0::idType::IMM2, icode);
         using R = Swizzler::Range;
         // Bit ranges to extract from imm, starting with LSB
         return Swizzler::extract(imm, R{6, 7}, R{3, 5});
@@ -269,6 +309,129 @@ private:
     Extractor<Form_C0_load_double>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C0_load>(ffmask, fset)
     {}
+    friend class Extractor<Form_C0_load_word_pair>;
+};
+
+/**
+ * Derivative of Form_C0_load_double extractor for LOAD WORD PAIRS (RV32)
+ */
+template<>
+class Extractor<Form_C0_load_word_pair> : public Extractor<Form_C0_load_double>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_load_word_pair>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_load_word_pair::name;
+    }
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_C0::idType::RD, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    // Take the standard load and append a second destination to it.
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        uint64_t dest_mask =
+            extractUnmaskedCompressedIndexBit_(Form_C0::idType::RD, icode, fixed_field_mask_);
+
+        const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
+        dest_mask |= (0x1ull << rd_val_pos);
+        return dest_mask;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedCompressedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                             fixed_field_mask_, Form_C0::idType::RD, false);
+        auto rd2_elem = olist.getElements().at(0);
+        rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+        ++rd2_elem.field_value;
+
+        // Add the second RD
+        olist.addElement(rd2_elem);
+        return olist;
+    }
+
+private:
+    Extractor<Form_C0_load_word_pair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_C0_load_double>(ffmask, fset)
+    {}
+};
+
+/**
+ * Derivative of the Form_S extractor for Store Pair, RV32
+ */
+template<>
+class Extractor<Form_S_Pair> : public Extractor<Form_S>
+{
+public:
+    Extractor() = default;
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        // The mask for all of the source regs (addr + data) is
+        // actually the original RS1/RS2 | RS3, but RS3 is not part of
+        // the icode
+        return Extractor<Form_S>::getSourceRegs(icode) | getSourceDataRegs(icode);
+    }
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_S::idType::RS2, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    uint64_t getSourceDataRegs(const Opcode icode) const override
+    {
+        // Add a second source to the pair
+        uint64_t src_mask = 0;
+        if(const uint32_t reg = extract_(Form_S::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            src_mask = extractUnmaskedIndexBit_(Form_S::idType::RS2, icode, fixed_field_mask_);
+            const uint32_t rs2_val_pos = 64 - __builtin_clzll(src_mask);
+            src_mask |= (0x1ull << rs2_val_pos);
+        }
+        return src_mask;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
+                                   fixed_field_mask_, Form_S::idType::RS1,
+                                   false, suppress_x0);
+        if(const uint32_t reg = extract_(Form_S::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS2,
+                                       fixed_field_mask_, Form_S::idType::RS2,
+                                       false, suppress_x0);
+            auto rs3_elem = olist.getElements().at(1);
+            assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+
+            rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
+            ++rs3_elem.field_value;
+
+            // Add the second RS
+            olist.addElement(rs3_elem);
+        }
+        return olist;
+    }
 };
 
 /**
@@ -279,9 +442,7 @@ template<>
 class Extractor<Form_C0_store> : public Extractor<Form_C0>
 {
 public:
-    Extractor<Form_C0_store>() :
-        Extractor<Form_C0>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -301,7 +462,7 @@ public:
     uint64_t getSourceRegs(const Opcode icode) const override
     {
         return extractUnmaskedCompressedIndexBit_(Form_C0::idType::RS1, icode, fixed_field_mask_) |
-               extractUnmaskedCompressedIndexBit_(Form_C0::idType::RD, icode, fixed_field_mask_);
+            extractUnmaskedCompressedIndexBit_(Form_C0::idType::RD, icode, fixed_field_mask_);
     }
 
     uint64_t getSourceOperTypeRegs(const Opcode icode,
@@ -335,13 +496,13 @@ public:
     }
 
     OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
-                                         bool suppress_x0 = false) const override
+                                     bool suppress_x0 = false) const override
     {
         OperandInfo olist;
         appendUnmaskedCompressedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
-                                              fixed_field_mask_, Form_C0::idType::RS1, false);
+                                             fixed_field_mask_, Form_C0::idType::RS1, false);
         appendUnmaskedCompressedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS2,
-                                              fixed_field_mask_, Form_C0::idType::RD, true);
+                                             fixed_field_mask_, Form_C0::idType::RD, true);
         return olist;
     }
 
@@ -351,7 +512,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const uint64_t icode) const override
     {
         std::stringstream ss;
@@ -387,9 +548,7 @@ template<>
 class Extractor<Form_C0_store_byte> : public Extractor<Form_C0_store>
 {
 public:
-    Extractor<Form_C0_store_byte>() :
-            Extractor<Form_C0_store>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -411,21 +570,19 @@ public:
 
 private:
     Extractor<Form_C0_store_byte>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C0_store>(ffmask, fset)
+        Extractor<Form_C0_store>(ffmask, fset)
     {}
 };
 
 /**
- * Derivative of Form_C0_store> extractor for STORE HALF (ZCB extension)
+ * Derivative of Form_C0_store extractor for STORE HALF (ZCB extension)
  * NOTE: rs1 is the address base, rs2 is the source data
  */
 template<>
 class Extractor<Form_C0_store_half> : public Extractor<Form_C0_store>
 {
 public:
-    Extractor<Form_C0_store_half>() :
-            Extractor<Form_C0_store>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -444,21 +601,19 @@ public:
 
 private:
     Extractor<Form_C0_store_half>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C0_store>(ffmask, fset)
+        Extractor<Form_C0_store>(ffmask, fset)
     {}
 };
 
 /**
- * Derivative of Form_C0_store> extractor for STORE WORDS
+ * Derivative of Form_C0_store extractor for STORE WORDS
  * NOTE: rs1 is the address base, rs2 is the source data
  */
 template<>
 class Extractor<Form_C0_store_word> : public Extractor<Form_C0_store>
 {
 public:
-    Extractor<Form_C0_store_word>() :
-        Extractor<Form_C0_store>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -493,9 +648,7 @@ template<>
 class Extractor<Form_C0_store_double> : public Extractor<Form_C0_store>
 {
 public:
-    Extractor<Form_C0_store_double>() :
-        Extractor<Form_C0_store>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -519,6 +672,80 @@ public:
 private:
     Extractor<Form_C0_store_double>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C0_store>(ffmask, fset)
+    {}
+
+    friend Extractor<Form_C0_store_word_pair>;
+};
+
+/**
+ * Derivative of Form_C0_store_double extractor for STORE WORD PAIR RV32
+ * NOTE: rs1 is the address base, rs2 and rs2+1 are the source data
+ */
+template<>
+class Extractor<Form_C0_store_word_pair> : public Extractor<Form_C0_store_double>
+{
+public:
+    Extractor<Form_C0_store_word_pair>() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C0_store_word_pair>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C0_store_word_pair::name;
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        // The mask for all of the source regs (addr + data) is
+        // actually the original RS1/RS2 | RS3, but RS3 is not part of
+        // the icode
+        return Extractor<Form_C0_store>::getSourceRegs(icode) | getSourceDataRegs(icode);
+    }
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The store pair instruction is illegal if the rs2 operand
+        // is odd
+        // RS2 is in Form_C0's RD slot
+        const uint32_t reg = extract_(Form_C0::idType::RD, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    uint64_t getSourceDataRegs(const Opcode icode) const override
+    {
+        // Add a second source to the pair
+        // RS2 is in Form_C0's RD slot
+        uint64_t src_mask =
+            extractUnmaskedCompressedIndexBit_(Form_C0::idType::RD, icode, fixed_field_mask_);
+        const uint32_t rs2_val_pos = 64 - __builtin_clzll(src_mask);
+        src_mask |= (0x1ull << rs2_val_pos);
+        return src_mask;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist =
+            Extractor<Form_C0_store>::getSourceOperandInfo(icode, meta, suppress_x0);
+
+        auto rs3_elem = olist.getElements().at(1);
+        // RS2 is in Form_C0's RD slot
+        assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+
+        rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
+        ++rs3_elem.field_value;
+
+        // Add the second RS
+        olist.addElement(rs3_elem);
+        return olist;
+    }
+
+private:
+    Extractor<Form_C0_store_word_pair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_C0_store_double>(ffmask, fset)
     {}
 };
 
@@ -624,7 +851,7 @@ public:
 
 protected:
     Extractor<Form_C1_rsd>(const uint64_t ffmask, const uint64_t fset) :
-            fixed_field_mask_(ffmask), fixed_field_set_(fset)
+        fixed_field_mask_(ffmask), fixed_field_set_(fset)
     {}
 
     uint64_t fixed_field_mask_ = 0;
@@ -638,9 +865,7 @@ template<>
 class Extractor<Form_C1_rsd_I0> : public Extractor<Form_C1_rsd>
 {
 public:
-    Extractor<Form_C1_rsd_I0>() :
-            Extractor<Form_C1_rsd>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -664,7 +889,7 @@ public:
 
 private:
     Extractor<Form_C1_rsd_I0>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C1_rsd>(ffmask, fset)
+        Extractor<Form_C1_rsd>(ffmask, fset)
     {}
 };
 
@@ -676,9 +901,7 @@ template<>
 class Extractor<Form_C1_rsd_zext_I0> : public Extractor<Form_C1_rsd>
 {
 public:
-    Extractor<Form_C1_rsd_zext_I0>() :
-            Extractor<Form_C1_rsd>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -732,7 +955,7 @@ public:
 
 private:
     Extractor<Form_C1_rsd_zext_I0>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C1_rsd>(ffmask, fset)
+        Extractor<Form_C1_rsd>(ffmask, fset)
     {}
 };
 
@@ -743,9 +966,7 @@ template<>
 class Extractor<Form_C1_rsd_Ineg1> : public Extractor<Form_C1_rsd>
 {
 public:
-    Extractor<Form_C1_rsd_Ineg1>() :
-            Extractor<Form_C1_rsd>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -769,7 +990,7 @@ public:
 
 private:
     Extractor<Form_C1_rsd_Ineg1>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C1_rsd>(ffmask, fset)
+        Extractor<Form_C1_rsd>(ffmask, fset)
     {}
 };
 
@@ -780,9 +1001,7 @@ template<>
 class Extractor<Form_C1_rsd_I0xFF> : public Extractor<Form_C1_rsd>
 {
 public:
-    Extractor<Form_C1_rsd_I0xFF>() :
-            Extractor<Form_C1_rsd>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -806,7 +1025,7 @@ public:
 
 private:
     Extractor<Form_C1_rsd_I0xFF>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C1_rsd>(ffmask, fset)
+        Extractor<Form_C1_rsd>(ffmask, fset)
     {}
 };
 
@@ -817,9 +1036,7 @@ template<>
 class Extractor<Form_CI_addi> : public Extractor<Form_CI>
 {
 public:
-    Extractor<Form_CI_addi>() :
-        Extractor<Form_CI>()
-    {}
+    Extractor() = default;
 
     bool isHint(Opcode icode) const override
     {
@@ -849,9 +1066,7 @@ template<>
 class Extractor<Form_CI_addiw> : public Extractor<Form_CI>
 {
 public:
-    Extractor<Form_CI_addiw>() :
-        Extractor<Form_CI>()
-    {}
+    Extractor() = default;
 
     bool isIllop(Opcode icode) const override
     {
@@ -882,9 +1097,7 @@ template<>
 class Extractor<Form_CI_sp> : public Extractor<Form_CI>
 {
 public:
-    Extractor<Form_CI_sp>() :
-        Extractor<Form_CI>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -924,16 +1137,21 @@ public:
     }
 
 private:
-    Extractor<Form_CI_sp>(const uint64_t ffmask, const uint64_t fset) :
-        Extractor<Form_CI>(ffmask, fset)
-    {
+
+    static uint64_t generateFFMask(uint64_t ffmask) {
         // Re-enable the fixed fields for RS1 and RD in the parent's mask
         // This will keep the parent from ignoring SP (encoded in RS1/RD)
         // for getSourceRegs(), getDestRegs(), getOperTypeRegs(), and dasmString()
-        fixed_field_mask_ &= ~(Form_CI::fields[Form_CI::idType::RS1].getShiftedMask() |
-                               Form_CI::fields[Form_CI::idType::RD].getShiftedMask());
-        fixed_field_set_ &= ~((1ull << static_cast<uint32_t>(Form_CI::idType::RS1)) |
-                              (1ull << static_cast<uint32_t>(Form_CI::idType::RD)));
+        ffmask &= ~(Form_CI::fields[Form_CI::idType::RS1].getShiftedMask() |
+                    Form_CI::fields[Form_CI::idType::RD].getShiftedMask());
+        ffmask &= ~((1ull << static_cast<uint32_t>(Form_CI::idType::RS1)) |
+                    (1ull << static_cast<uint32_t>(Form_CI::idType::RD)));
+        return ffmask;
+    }
+
+    Extractor<Form_CI_sp>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_CI>(generateFFMask(ffmask), fset)
+    {
     }
 };
 
@@ -947,9 +1165,7 @@ template<>
 class Extractor<Form_CIW_sp> : public Extractor<Form_CIW>
 {
 public:
-    Extractor<Form_CIW_sp>() :
-        Extractor<Form_CIW>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1034,7 +1250,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const uint64_t icode) const override
     {
         std::stringstream ss;
@@ -1049,7 +1265,7 @@ public:
         std::stringstream ss;
         ss << mnemonic << "\t"
            << dasmFormatCompressedRegList_(meta, icode, fixed_field_mask_,
-                                 { { Form_CIW::idType::RD, InstMetaData::OperandFieldID::RD } })
+                                           { { Form_CIW::idType::RD, InstMetaData::OperandFieldID::RD } })
            << ", SP, IMM=" << std::dec << getImmediate(icode);
         return ss.str();
     }
@@ -1067,9 +1283,7 @@ template<>
 class Extractor<Form_CIX_andi> : public Extractor<Form_CIX>
 {
 public:
-    Extractor<Form_CIX_andi>() :
-        Extractor<Form_CIX>()
-    {}
+    Extractor() = default;
 
     bool isHint(Opcode icode) const override
     {
@@ -1109,9 +1323,7 @@ template<>
 class Extractor<Form_CJAL> : public Extractor<Form_CJ>
 {
 public:
-    Extractor<Form_CJAL>() :
-        Extractor<Form_CJ>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1154,7 +1366,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const uint64_t icode) const override
     {
         std::stringstream ss;
@@ -1177,9 +1389,7 @@ template<>
 class Extractor<Form_CJALR> : public Extractor<Form_CJR>
 {
 public:
-    Extractor<Form_CJALR>() :
-        Extractor<Form_CJR>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1250,7 +1460,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const uint64_t icode) const override
     {
         std::stringstream ss;
@@ -1266,7 +1476,7 @@ public:
         std::stringstream ss;
         ss << mnemonic << "\t x" << REGISTER_LINK
            << ", " << dasmFormatRegList_(meta, icode, fixed_field_mask_,
-                                 { { Form_CJR::idType::RS1, InstMetaData::OperandFieldID::RS1 } })
+                                         { { Form_CJR::idType::RS1, InstMetaData::OperandFieldID::RS1 } })
            << ", IMM=" << std::dec << getImmediate(icode);
         return ss.str();
     }
@@ -1338,7 +1548,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
     {
         std::stringstream ss;
@@ -1434,7 +1644,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const uint64_t icode) const override
     {
         std::stringstream ss;
@@ -1527,7 +1737,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
     {
         std::stringstream ss;
@@ -1621,7 +1831,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const uint64_t icode) const override
     {
         std::stringstream ss;
@@ -1654,9 +1864,7 @@ template<>
 class Extractor<Form_C2_sp_load> : public Extractor<Form_C2_sp>
 {
 public:
-    Extractor<Form_C2_sp_load>() :
-        Extractor<Form_C2_sp>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1710,9 +1918,7 @@ template<>
 class Extractor<Form_C2_sp_load_word> : public Extractor<Form_C2_sp_load>
 {
 public:
-    Extractor<Form_C2_sp_load_word>() :
-        Extractor<Form_C2_sp_load>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1746,9 +1952,7 @@ template<>
 class Extractor<Form_C2_sp_load_double> : public Extractor<Form_C2_sp_load>
 {
 public:
-    Extractor<Form_C2_sp_load_double>() :
-        Extractor<Form_C2_sp_load>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1773,6 +1977,73 @@ protected:
     Extractor<Form_C2_sp_load_double>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C2_sp_load>(ffmask, fset)
     {}
+
+    friend class Extractor<Form_C2_sp_load_word_pair>;
+};
+
+/**
+ * Derivative of Form_C2_sp_load_double extractor for LOAD WORD PAIR (32-bit)
+ */
+template<>
+class Extractor<Form_C2_sp_load_word_pair> : public Extractor<Form_C2_sp_load_double>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C2_sp_load_double>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C2_sp_load_word_pair::name;
+    }
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_C2::idType::RD, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    // Take the standard load and append a second destination to it.
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        uint64_t dest_mask = 0;
+        if(const uint32_t reg = extract_(Form_C2::idType::RD, icode); reg != REGISTER_X0)
+        {
+            dest_mask =
+                extractUnmaskedIndexBit_(Form_C2::idType::RD, icode, fixed_field_mask_);
+
+            const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
+            dest_mask |= (0x1ull << rd_val_pos);
+        }
+        return dest_mask;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_C2::idType::RD, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_C2_sp_load>::getDestOperandInfo(icode, meta, suppress_x0);
+            auto rd2_elem = olist.getElements().at(0);
+            rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+            ++rd2_elem.field_value;
+
+            // Add the second RD
+            olist.addElement(rd2_elem);
+        }
+        return olist;
+    }
+
+protected:
+    Extractor<Form_C2_sp_load_word_pair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_C2_sp_load_double>(ffmask, fset)
+    {}
 };
 
 /**
@@ -1782,9 +2053,7 @@ template<>
 class Extractor<Form_C2_sp_load_float_single> : public Extractor<Form_C2_sp_load_word>
 {
 public:
-    Extractor<Form_C2_sp_load_float_single>() :
-        Extractor<Form_C2_sp_load_word>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1814,9 +2083,7 @@ template<>
 class Extractor<Form_C2_sp_load_float_double> : public Extractor<Form_C2_sp_load_double>
 {
 public:
-    Extractor<Form_C2_sp_load_float_double>() :
-        Extractor<Form_C2_sp_load_double>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1846,9 +2113,7 @@ template<>
 class Extractor<Form_C2_sp_store_word> : public Extractor<Form_C2_sp_store>
 {
 public:
-    Extractor<Form_C2_sp_store_word>() :
-        Extractor<Form_C2_sp_store>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1881,9 +2146,7 @@ template<>
 class Extractor<Form_C2_sp_store_double> : public Extractor<Form_C2_sp_store>
 {
 public:
-    Extractor<Form_C2_sp_store_double>() :
-        Extractor<Form_C2_sp_store>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1907,6 +2170,82 @@ private:
     Extractor<Form_C2_sp_store_double>(const uint64_t ffmask, const uint64_t fset) :
         Extractor<Form_C2_sp_store>(ffmask, fset)
     {}
+
+    friend class Extractor<Form_C2_sp_store_word_pair>;
+};
+
+/**
+ * Derivative of Form_C2_sp_store_double extractor for STORE WORD PAIR (RV32)
+ */
+template<>
+class Extractor<Form_C2_sp_store_word_pair> : public Extractor<Form_C2_sp_store_double>
+{
+public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_C2_sp_store_double>(ffmask, fset));
+    }
+
+    std::string getName() const override
+    {
+        return Form_C2_sp_store_word_pair::name;
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        // The mask for all of the source regs (addr + data) is
+        // actually the original RS1/RS2 | RS3, but RS3 is not part of
+        // the icode
+        return Extractor<Form_C2_sp_store_double>::getSourceRegs(icode) | getSourceDataRegs(icode);
+    }
+
+    bool isIllop(Opcode icode) const override
+    {
+        // The load pair instruction is illegal if the first operand
+        // is odd
+        const uint32_t reg = extract_(Form_C2_sp_store::idType::RS2, icode);
+        return (reg & 0b1) != 0;
+    }
+
+    uint64_t getSourceDataRegs(const Opcode icode) const override
+    {
+        // Add a second source to the pair
+        uint64_t src_mask = 0;
+        if(const uint32_t reg = extract_(Form_C2_sp_store::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            src_mask = extractUnmaskedIndexBit_(Form_C2_sp_store::idType::RS2, icode, fixed_field_mask_);
+            const uint32_t rs2_val_pos = 64 - __builtin_clzll(src_mask);
+            src_mask |= (0x1ull << rs2_val_pos);
+        }
+        return src_mask;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_C2_sp_store::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_C2_sp_store_double>::getSourceOperandInfo(icode, meta, suppress_x0);
+
+            auto rs3_elem = olist.getElements().at(1);
+            assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+
+            rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
+            ++rs3_elem.field_value;
+
+            // Add the second RS
+            olist.addElement(rs3_elem);
+        }
+        return olist;
+    }
+
+private:
+    Extractor<Form_C2_sp_store_word_pair>(const uint64_t ffmask, const uint64_t fset) :
+        Extractor<Form_C2_sp_store_double>(ffmask, fset)
+    {}
 };
 
 /**
@@ -1917,9 +2256,7 @@ template<>
 class Extractor<Form_CI_rD_shifted> : public Extractor<Form_CI_rD_only>
 {
 public:
-    Extractor<Form_CI_rD_shifted>() :
-        Extractor<Form_CI_rD_only>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -1980,7 +2317,7 @@ public:
     }
 
     using ExtractorIF::dasmString; // tell the compiler all dasmString
-                                   // overloads are considered
+    // overloads are considered
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
     {
         std::stringstream ss;
@@ -2013,9 +2350,7 @@ template<>
 class Extractor<Form_V_load> : public Extractor<Form_VF_mem>
 {
 public:
-    Extractor<Form_V_load>() :
-        Extractor<Form_VF_mem>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -2040,9 +2375,7 @@ template<>
 class Extractor<Form_V_store> : public Extractor<Form_VF_mem>
 {
 public:
-    Extractor<Form_V_store>() :
-        Extractor<Form_VF_mem>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -2175,9 +2508,7 @@ template<>
 class Extractor<Form_V_uimm> : public Extractor<Form_V>
 {
 public:
-    Extractor<Form_V_uimm>() :
-        Extractor<Form_V>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -2303,9 +2634,7 @@ template<>
 class Extractor<Form_V_simm> : public Extractor<Form_V_uimm>
 {
 public:
-    Extractor<Form_V_simm>() :
-        Extractor<Form_V_uimm>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -2378,9 +2707,7 @@ template<>
 class Extractor<Form_V_op> : public Extractor<Form_V>
 {
 public:
-    Extractor<Form_V_op>() :
-        Extractor<Form_V>()
-    {}
+    Extractor() = default;
 
     ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask, const uint64_t fset) const override
     {
@@ -2494,7 +2821,7 @@ public:
     uint64_t getSourceRegs(const Opcode icode) const override
     {
         return extractUnmaskedIndexBit_(Form_R::idType::RS1, icode, fixed_field_mask_) |
-               extractUnmaskedIndexBit_(Form_R::idType::RS2, icode, fixed_field_mask_);
+            extractUnmaskedIndexBit_(Form_R::idType::RS2, icode, fixed_field_mask_);
     }
 
     uint64_t getSourceOperTypeRegs(const Opcode icode,
@@ -2592,7 +2919,7 @@ public:
     uint64_t getSourceRegs(const Opcode icode) const override
     {
         return Extractor<Form_V>::getSourceRegs(icode) |
-               extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+            extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
     }
 
     uint64_t getSourceOperTypeRegs(const Opcode icode,
@@ -2612,14 +2939,14 @@ public:
     {
         OperandInfo olist = Extractor<Form_V>::getSourceOperandInfo(icode, meta, suppress_x0);
         appendUnmaskedImpliedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
-                                   fixed_field_mask_, Form_V::idType::RD,
-                                   false, suppress_x0);
+                                          fixed_field_mask_, Form_V::idType::RD,
+                                          false, suppress_x0);
         return olist;
     }
 
 protected:
     Extractor<Form_V_implied>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_V>(ffmask, fset)
+        Extractor<Form_V>(ffmask, fset)
     {}
 };
 
@@ -2647,7 +2974,7 @@ public:
     uint64_t getSourceRegs(const Opcode icode) const override
     {
         return Extractor<Form_V_op>::getSourceRegs(icode) |
-               extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+            extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
     }
 
     uint64_t getSourceOperTypeRegs(const Opcode icode,
@@ -2674,7 +3001,7 @@ public:
 
 protected:
     Extractor<Form_V_op_implied>(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_V_op>(ffmask, fset)
+        Extractor<Form_V_op>(ffmask, fset)
     {}
 };
 
@@ -2702,7 +3029,7 @@ public:
     uint64_t getSourceRegs(const Opcode icode) const override
     {
         return Extractor<Form_V_uimm>::getSourceRegs(icode) |
-               extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
+            extractUnmaskedIndexBit_(Form_V::idType::RD, icode, fixed_field_mask_);
     }
 
     uint64_t getSourceOperTypeRegs(const Opcode icode,
@@ -2766,7 +3093,7 @@ public:
 
 protected:
     Extractor<Form_NTL_hint>(const uint64_t ffmask, const uint64_t fset) :
-            fixed_field_mask_(ffmask)
+        fixed_field_mask_(ffmask)
     {}
 
     uint64_t fixed_field_mask_ = 0;

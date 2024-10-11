@@ -210,11 +210,18 @@ private:
         {"rs1", OperandFieldID::RS1},
         {"rs2", OperandFieldID::RS2},
         {"rs3", OperandFieldID::RS3},
+        {"rs4", OperandFieldID::RS4},
         {"fused_sd_0", OperandFieldID::FUSED_SD_0},
         {"fused_sd_1", OperandFieldID::FUSED_SD_1},
+        {"temp_rs1",  OperandFieldID::TEMP_RS1},
+        {"temp_rs2",  OperandFieldID::TEMP_RS2},
+        {"temp_rs3",  OperandFieldID::TEMP_RS3},
         {"rd",  OperandFieldID::RD},
+        {"rd2",  OperandFieldID::RD2},
         {"fused_rd_0",  OperandFieldID::FUSED_RD_0},
-        {"fused_rd_1",  OperandFieldID::FUSED_RD_1}
+        {"fused_rd_1",  OperandFieldID::FUSED_RD_1},
+        {"temp_rd",  OperandFieldID::TEMP_RD},
+        {"temp_rd2",  OperandFieldID::TEMP_RD2}
     };
 
     static inline const std::array<std::string, static_cast<std::underlying_type_t<OperandFieldID>>(OperandFieldID::__N)> ofinames_ {
@@ -222,11 +229,20 @@ private:
         "rs1",
         "rs2",
         "rs3",
+        "rd4",
+        "rs_max",
         "fused_sd_0",
         "fused_sd_1",
+        "temp_rs1",
+        "temp_rs2",
+        "temp_rs3",
         "rd",
+        "rd2",
+        "rd_max",
         "fused_rd_0",
-        "fused_rd_1"
+        "fused_rd_1",
+        "temp_rd",
+        "temp_rd2"
     };
 
     static constexpr std::underlying_type_t<OperandFieldID> source_fields_ =
