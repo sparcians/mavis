@@ -274,10 +274,7 @@ public:
                         const ValueListType& specials, uint64_t imm) :
         ExtractorDirectBase(uid, imm), sources_(sources), dests_(dests), specials_(specials)
     {}
-    ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType &sources, const RegListType &dests,
-                        const ValueListType& specials) :
-        ExtractorDirectBase(uid), sources_(sources), dests_(dests), specials_(specials)
-    {}
+    
 
     ExtractorDirectInfo(const ExtractorDirectInfo &other) = default;
 
@@ -410,14 +407,17 @@ private:
 class ExtractorDirectOpInfoList : public ExtractorDirectBase
 {
 private:
-    static inline const std::string name_ {"ExtractorDirectOpInfoList"};
+    static inline const std::string name_ 
+    {"ExtractorDirectOpInfoList"};
     std::map<mavis::OpcodeInfo::SpecialField, uint64_t> special_fields_map_;
 
 public:
-    void setSpecialFields(const std::map<mavis::OpcodeInfo::SpecialField, uint64_t>& fields){
+    void setSpecialFields(const std::map<mavis::OpcodeInfo::SpecialField, uint64_t>& fields)
+    {
         special_fields_map_=fields;
     }
-    const std :: map<mavis :: OpcodeInfo::SpecialField, uint64_t>& getSpecialFields() const{
+    const std :: map<mavis :: OpcodeInfo::SpecialField, uint64_t>& getSpecialFields() const
+    {
         return special_fields_map_;
     }
     ExtractorDirectOpInfoList(const std::string &mnemonic, const OperandInfo &sources, const OperandInfo &dests) :

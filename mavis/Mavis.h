@@ -150,14 +150,11 @@ public:
     typename InstType::PtrType makeInstFromTrace(const TraceInfoType& tinfo, ArgTypes&& ... args)
     {
         return dtrie_->makeInstFromTrace(tinfo, inst_allocator_, std::forward<ArgTypes>(args)...);
-        
     }
 
     template<typename ...ArgTypes>
     typename InstType::PtrType makeInstDirectly(const mavis::ExtractorDirectInfoIF& user_info, ArgTypes&& ... args)
-{ 
-    
-        return dtrie_->makeInstDirectly(user_info,inst_allocator_, std::forward<ArgTypes>(args)...);
+   { return dtrie_->makeInstDirectly(user_info, inst_allocator_, std::forward<ArgTypes>(args)...);
         }
 
     

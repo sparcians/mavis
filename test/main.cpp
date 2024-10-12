@@ -2,18 +2,12 @@
 #include "Mavis.h"
 #include "Inst.h"
 #include "uArchInfo.h"
-
-
 #include "ExtractorDirectInfo.h"
-
 #include <map>
 #include <cassert> 
-
 #include "MatchSet.hpp"
 #include "Tag.hpp"
 #include "Pattern.hpp"
-
-// For custom extraction
 #include "ExtractorDirectImplementations.hpp"
 
 using namespace std;
@@ -38,7 +32,8 @@ std::map<mavis::OpcodeInfo::SpecialField, uint64_t> special_fields_map_ = {
     {mavis::ExtractorIF::SpecialField::VM, 0}  
     // Add more fields as needed
 };
-class Instruction {
+class Instruction 
+{
 public:
     using PtrType = std::shared_ptr<Instruction>;
 
@@ -92,7 +87,8 @@ struct ExampleTraceInfo
 };
 
 using MavisType = Mavis<Instruction<uArchInfo>, uArchInfo>;
-void test_vector_add_with_mask_vm(Mavis<Instruction, int>& mavis_facade) {
+void test_vector_add_with_mask_vm(Mavis<Instruction, int>& mavis_facade) 
+{
     // Define the unique ID, source and destination registers, and special fields
     InstructionUniqueID uid = 123; // Example ID
     RegListType sources = {1, 2}; // Example sources
@@ -109,7 +105,8 @@ void test_vector_add_with_mask_vm(Mavis<Instruction, int>& mavis_facade) {
     // Verify that the special fields are correctly set
     auto specials = ex_info.getSpecialFields();
     if (specials.find(mavis::ExtractorIF::SpecialField::VM) != specials.end() &&
-        specials.at(mavis::ExtractorIF::SpecialField::VM) == 0) {
+        specials.at(mavis::ExtractorIF::SpecialField::VM) == 0)
+        {
         std::cout << "Test Passed: Special field 'VM' correctly set to 0." << std::endl;
     } else {
         std::cout << "Test Failed: Special field 'VM' not set correctly." << std::endl;
@@ -175,14 +172,16 @@ void runTSet(MavisType& mavis_facade, const std::string& tfile,
                 // Check UID...
                 const mavis::InstructionUniqueID expected_id =
                     mavis_facade.lookupInstructionUniqueID(iptr->getMnemonic());
-                if (optr->opinfo->getInstructionUniqueID() != expected_id) {
+                if (optr->opinfo->getInstructionUniqueID() != expected_id) 
+                {
                     cout << "INSTRUCTION ID WARNING: expected ID=" << std::dec << expected_id
                          << ", got ID=" << optr->opinfo->getInstructionUniqueID()
                          << endl;
                 }
 
                 // Check ISA list if present
-                if (! isa_list.empty()) {
+                if (! isa_list.empty()) 
+                {
                     for (const auto& i : isa_list) {
                         if (! (optr->opinfo->isISA(i) && optr->opinfo->isISAAnyOf(i) && optr->opinfo->isISAAllOf(i) &&
                                optr->opinfo->isISASameAs(optr->opinfo->getISA(), i))) {
@@ -408,7 +407,8 @@ int main() {
     inst = mavis_facade.makeInstDirectly(ex_info, 0);
     
     assert(inst != nullptr);
-    for (const auto& [field, value] : special_fields_map_) {
+    for (const auto& [field, value] : special_fields_map_) 
+    {
     inst->setSpecialField(field, value);
 }
 
