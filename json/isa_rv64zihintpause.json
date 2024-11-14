@@ -9,7 +9,6 @@
     "form" : "FENCE",
     "fixed" : ["rs1", "rd"],
     "stencil" : "0x0100000f",
-    "type" : ["fence"],
-    "l-oper" : "all"
+    "type" : ["fence"]
   }
 ]
