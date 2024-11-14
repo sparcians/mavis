@@ -188,6 +188,7 @@ int main() {
                             "json/isa_rv64zfh_d.json",
                             "json/isa_rv64zicbo.json",
                             "json/isa_rv64zihintntl.json",
+                            "json/isa_rv64zihintpause.json",
                             "json/isa_rv64zicond.json",
                             "json/isa_rv64zfbfmin.json",
                             "json/isa_rv64zvfbfwma.json"},
@@ -248,6 +249,7 @@ int main() {
                                      "json/isa_rv64zicbo.json",
                                      "json/isa_rv64zcb.json",
                                      "json/isa_rv64zihintntl.json",
+                                     "json/isa_rv64zihintpause.json",
                                      "json/isa_rv64zicond.json"
                                      }, {});
     mavis_facade.switchContext("NEW");
@@ -976,6 +978,12 @@ int main() {
     assert(inst->getImmediate() == 1);
     assert(inst->hasImmediate() == true);
 
+    // pause
+    inst = mavis_facade.makeInst(0x0100000f, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x0100000f = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "pause");
+
     // TAG testing
     mavis::MatchSet<mavis::Pattern>  pset(std::vector<std::string>{"a", "a+", "[abc]"});
     mavis::MatchSet<mavis::Tag>      tset(std::vector<std::string> {"aaa", "c"});
@@ -1073,6 +1081,7 @@ int main() {
                                  "json/isa_rv32c.json",
                                  "json/isa_rv32cf.json",
                                  "json/isa_rv32cd.json",
+                                 "json/isa_rv32zihintpause.json",
                                  "json/isa_rv32zilsd.json"},
                                 {"uarch/uarch_rv32g.json"},
                                 uid_init,
@@ -1150,6 +1159,7 @@ int main() {
                                              "json/isa_rv32zifencei.json", // included in "g" spec
                                              "json/isa_rv32c.json",
                                              "json/isa_rv32cd.json",
+                                             "json/isa_rv32zihintpause.json",
                                              "json/isa_rv32zilsd.json",
                                              "json/isa_rv32zclsd.json"},
                                             {"uarch/uarch_rv32g.json"});
