@@ -111,6 +111,7 @@ int main(int argc, char **argv)
                     "json/isa_rv32zifencei.json", // included in "g" spec
                     "json/isa_rv32c.json",
                     "json/isa_rv32cd.json",
+                    "json/isa_rv32zawrs.json",
                     "json/isa_rv32zilsd.json"};
 
         // Zclsd has overlapping encodings with Zcf, so only one can be used at a time
@@ -148,6 +149,7 @@ int main(int argc, char **argv)
                     "json/isa_rv64zihintntl.json",
                     "json/isa_rv64zihintpause.json",
                     "json/isa_rv64zicond.json",
+                    "json/isa_rv64zawrs.json",
                     "json/isa_rv64zfbfmin.json",
                     "json/isa_rv64zvfbfwma.json"},
                 {"uarch/uarch_rv64g.json"}));
