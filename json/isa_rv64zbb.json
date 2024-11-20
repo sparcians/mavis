@@ -1,6 +1,7 @@
 {
   "xlen": 64,
   "extension": "zbb",
+  "meta_extension": "b",
   "opcodes": [
     {
       "mnemonic" : "andn",

@@ -1,6 +1,7 @@
 {
   "xlen": 64,
   "extension": "zbs",
+  "meta_extension": "b",
   "opcodes": [
     {
       "mnemonic" : "bclr",

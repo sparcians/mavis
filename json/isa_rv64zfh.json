@@ -1,6 +1,7 @@
 {
   "xlen": 64,
   "extension": "zfh",
+  "requires": ["f"],
   "opcodes": [
     {
       "mnemonic" : "fadd.h",

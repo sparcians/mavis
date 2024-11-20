@@ -1,6 +1,8 @@
 {
   "xlen": 32,
   "extension": "zcb",
+  "meta_extension": "zce",
+  "requires": ["zca"],
   "opcodes": [
     {
       "mnemonic" : "c.lbu",

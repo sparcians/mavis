@@ -1,0 +1,26 @@
+{
+  "xlen": 32,
+  "extension": "zalrsc",
+  "meta_extension": "a",
+  "opcodes": [
+    {
+      "mnemonic" : "lr.w",
+      "tags" : ["a", "g"],
+      "form" : "AMO",
+      "fixed" : ["rs2"],
+      "stencil" : "0x1000202f",
+      "type" : ["int", "load", "atomic"],
+      "l-oper" : "all",
+      "data" : 32
+    },
+    {
+      "mnemonic" : "sc.w",
+      "tags" : ["a", "g"],
+      "form" : "AMO",
+      "stencil" : "0x1800202f",
+      "type" : ["int", "store", "atomic"],
+      "l-oper" : "all",
+      "data" : 32
+    }
+  ]
+}

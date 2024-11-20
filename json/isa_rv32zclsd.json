@@ -1,6 +1,8 @@
 {
   "xlen": 32,
   "extension": "zclsd",
+  "conflicts": ["zcf"],
+  "requires": ["zca", "zilsd"],
   "opcodes": [
     {
       "mnemonic" : "c.ld",

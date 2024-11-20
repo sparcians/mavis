@@ -2,6 +2,7 @@
   "xlen": 64,
   "extension": "i",
   "meta_extension": "g",
+  "is_base_extension": true,
   "opcodes": [
     {
       "mnemonic" : "beq",

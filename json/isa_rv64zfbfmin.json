@@ -1,6 +1,7 @@
 {
   "xlen": 64,
   "extension": "zfbfmin",
+  "requires": ["f"],
   "opcodes": [
     {
       "mnemonic" : "fcvt.bf16.s",

@@ -1,6 +1,7 @@
 {
   "xlen": [32, 64],
   "extension": "zawrs",
+  "requires": ["zalrsc"],
   "opcodes": [
     {
       "mnemonic" : "wrs.nto",

@@ -1,6 +1,7 @@
 {
   "xlen": 64,
   "extension": "zba",
+  "meta_extension": "b",
   "opcodes": [
     {
       "mnemonic" : "add.uw",

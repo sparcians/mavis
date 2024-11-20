@@ -1,6 +1,7 @@
 {
   "xlen": 64,
   "extension": "zvfbfwma",
+  "requires": ["v"],
   "opcodes": [
     {
       "mnemonic": "vfwmaccbf16.vv",

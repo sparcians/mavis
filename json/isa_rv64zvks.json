@@ -1,0 +1,6 @@
+{
+  "xlen": 64,
+  "extension": "zvks",
+  "meta_extension": ["zvksc", "zvksg"],
+  "is_meta_extension": true
+}

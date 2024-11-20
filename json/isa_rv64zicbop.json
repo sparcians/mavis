@@ -1,43 +1,7 @@
 {
   "xlen": 64,
-  "extension": "zicbo",
+  "extension": "zicbop",
   "opcodes": [
-    {
-      "mnemonic" : "cbo.clean",
-      "tags" : ["zicbo"],
-      "form" : "R",
-      "fixed" : ["rd", "rs2"],
-      "stencil" : "0x10200f",
-      "type" : ["cache", "system"],
-      "l-oper" : ["rs1"]
-    },
-    {
-      "mnemonic" : "cbo.flush",
-      "tags" : ["zicbo"],
-      "form" : "R",
-      "fixed" : ["rd", "rs2"],
-      "stencil" : "0x20200f",
-      "type" : ["cache", "system"],
-      "l-oper" : ["rs1"]
-    },
-    {
-      "mnemonic" : "cbo.inval",
-      "tags" : ["zicbo"],
-      "form" : "R",
-      "fixed" : ["rd", "rs2"],
-      "stencil" : "0x200f",
-      "type" : ["cache", "system"],
-      "l-oper" : ["rs1"]
-    },
-    {
-      "mnemonic" : "cbo.zero",
-      "tags" : ["zicbo"],
-      "form" : "R",
-      "fixed" : ["rd", "rs2"],
-      "stencil" : "0x40200f",
-      "type" : ["cache", "system"],
-      "l-oper" : ["rs1"]
-    },
     {
       "mnemonic" : "prefetch.i",
       "tags" : ["zicbo"],

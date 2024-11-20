@@ -1,7 +1,8 @@
 {
-    "xlen": 32,
-    "extension": "zbs",
-    "opcodes": [
+  "xlen": 32,
+  "extension": "zbs",
+  "meta_extension": "b",
+  "opcodes": [
     {
       "mnemonic" : "bclr",
       "tags" : ["zbs", "b"],

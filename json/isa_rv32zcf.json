@@ -1,7 +1,9 @@
 {
   "xlen": 32,
-  "extension": "cf",
-  "enabled_by": ["c", "f"],
+  "extension": "zcf",
+  "enabled_by": [["c", "f"], ["zce", "f"]]
+  "requires": ["zca", "f"],
+  "conflicts": ["zclsd"],
   "opcodes": [
     {
       "mnemonic" : "c.flw",

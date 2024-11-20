@@ -1,5 +1,6 @@
 {
   "xlen": [32, 64],
-  "extension": "c",
+  "extension": "g",
+  "is_base_extension": true,
   "is_meta_extension": true
 }

@@ -1,6 +1,7 @@
 {
   "xlen": [32, 64],
   "extension": "zifencei",
+  "meta_extension": "g",
   "opcodes": [
     {
       "mnemonic" : "fence.i",

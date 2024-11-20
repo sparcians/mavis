@@ -2,6 +2,8 @@
   "xlen": [32, 64],
   "extension": "cd",
   "enabled_by": ["c", "d"],
+  "requires": ["zca", "d"],
+  "conflicts": ["zcmp", "zcmt"],
   "opcodes": [
     {
       "mnemonic" : "c.fld",
