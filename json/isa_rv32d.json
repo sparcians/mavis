@@ -2,7 +2,7 @@
   "xlen": 32,
   "extension": "d",
   "meta_extension": "g",
-  "requires": ["f"],
+  "enables": ["f"],
   "opcodes": [
     {
       "mnemonic" : "fadd.d",

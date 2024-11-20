@@ -1,4 +1,8 @@
-[
+{
+  "xlen": 64,
+  "extension": "zfhd",
+  "enabled_by": ["zfh", "d"],
+  "opcodes": [
   {
     "mnemonic" : "fcvt.h.d",
     "tags" : ["zfh"],

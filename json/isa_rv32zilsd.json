@@ -1,4 +1,7 @@
-[
+{
+  "xlen": 32,
+  "extension": "zilsd",
+  "opcodes": [
     {
         "mnemonic" : "ld",
         "tags" : ["i", "g"],
@@ -19,4 +22,5 @@
         "l-oper" : "all",
         "data" : 64
     }
-]
+  ]
+}

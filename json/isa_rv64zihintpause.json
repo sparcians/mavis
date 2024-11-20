@@ -1,14 +1,18 @@
-[
-  {
-    "mnemonic" : "pause",
-    "tags" : ["zihintpause"],
-    "overlay" : {
-      "base" : "fence",
-      "match" : ["0xFFFF8F80", "0x01000000"]
-    },
-    "form" : "FENCE",
-    "fixed" : ["rs1", "rd"],
-    "stencil" : "0x0100000f",
-    "type" : ["fence"]
-  }
-]
+{
+  "xlen": [32, 64],
+  "extension": "zihintpause",
+  "opcodes": [
+    {
+      "mnemonic" : "pause",
+      "tags" : ["zihintpause"],
+      "overlay" : {
+        "base" : "fence",
+        "match" : ["0xFFFF8F80", "0x01000000"]
+      },
+      "form" : "FENCE",
+      "fixed" : ["rs1", "rd"],
+      "stencil" : "0x0100000f",
+      "type" : ["fence"]
+    }
+  ]
+}

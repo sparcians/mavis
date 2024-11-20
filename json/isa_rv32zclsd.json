@@ -1,38 +1,42 @@
-[
+{
+  "xlen": 32,
+  "extension": "zclsd",
+  "opcodes": [
     {
-        "mnemonic" : "c.ld",
-        "tags" : ["c"],
-        "expand" : "ld",
-        "form" : "C0",
-        "ignore" : ["func2A"],
-        "xform" : "C0_load_word_pair",
-        "stencil" : "0x6000"
+      "mnemonic" : "c.ld",
+      "tags" : ["c"],
+      "expand" : "ld",
+      "form" : "C0",
+      "ignore" : ["func2A"],
+      "xform" : "C0_load_word_pair",
+      "stencil" : "0x6000"
     },
     {
-        "mnemonic" : "c.ldsp",
-        "tags" : ["c"],
-        "expand" : "ld",
-        "form" : "C2",
-        "ignore" : ["func1"],
-        "xform" : "C2_sp_load_word_pair",
-        "stencil" : "0x6002"
+      "mnemonic" : "c.ldsp",
+      "tags" : ["c"],
+      "expand" : "ld",
+      "form" : "C2",
+      "ignore" : ["func1"],
+      "xform" : "C2_sp_load_word_pair",
+      "stencil" : "0x6002"
     },
     {
-        "mnemonic" : "c.sd",
-        "tags" : ["c"],
-        "expand" : "sd",
-        "form" : "C0",
-        "ignore" : ["func2A"],
-        "xform" : "C0_store_word_pair",
-        "stencil" : "0xe000"
+      "mnemonic" : "c.sd",
+      "tags" : ["c"],
+      "expand" : "sd",
+      "form" : "C0",
+      "ignore" : ["func2A"],
+      "xform" : "C0_store_word_pair",
+      "stencil" : "0xe000"
     },
     {
-        "mnemonic" : "c.sdsp",
-        "tags" : ["c"],
-        "expand" : "sd",
-        "form" : "C2",
-        "ignore" : ["func1"],
-        "xform" : "C2_sp_store_word_pair",
-        "stencil" : "0xe002"
+      "mnemonic" : "c.sdsp",
+      "tags" : ["c"],
+      "expand" : "sd",
+      "form" : "C2",
+      "ignore" : ["func1"],
+      "xform" : "C2_sp_store_word_pair",
+      "stencil" : "0xe002"
     }
-]
+  ]
+}

@@ -1,68 +1,72 @@
-[
-  {
-    "mnemonic" : "csrrw",
-    "tags" : ["zicsr", "g"],
-    "factory" : "csr",
-    "form" : "R",
-    "ignore" : ["func7"],
-    "stencil" : "0x1073",
-    "xform" : "CSR",
-    "type" : ["csr", "system"],
-    "l-oper" : "all"
-  },
-  {
-    "mnemonic" : "csrrs",
-    "tags" : ["zicsr", "g"],
-    "factory" : "csr",
-    "form" : "R",
-    "ignore" : ["func7"],
-    "stencil" : "0x2073",
-    "xform" : "CSR",
-    "type" : ["csr", "system"],
-    "l-oper" : "all"
-  },
-  {
-    "mnemonic" : "csrrc",
-    "tags" : ["zicsr", "g"],
-    "factory" : "csr",
-    "form" : "R",
-    "ignore" : ["func7"],
-    "stencil" : "0x3073",
-    "xform" : "CSR",
-    "type" : ["csr", "system"],
-    "l-oper" : "all"
-  },
-  {
-    "mnemonic" : "csrrwi",
-    "tags" : ["zicsr", "g"],
-    "factory" : "csr",
-    "form" : "R",
-    "ignore" : ["func7"],
-    "stencil" : "0x5073",
-    "xform" : "CSRI",
-    "type" : ["csr", "system"],
-    "l-oper" : "all"
-  },
-  {
-    "mnemonic" : "csrrsi",
-    "tags" : ["zicsr", "g"],
-    "factory" : "csr",
-    "form" : "R",
-    "ignore" : ["func7"],
-    "stencil" : "0x6073",
-    "xform" : "CSRI",
-    "type" : ["csr", "system"],
-    "l-oper" : "all"
-  },
-  {
-    "mnemonic" : "csrrci",
-    "tags" : ["zicsr", "g"],
-    "factory" : "csr",
-    "form" : "R",
-    "ignore" : ["func7"],
-    "stencil" : "0x7073",
-    "xform" : "CSRI",
-    "type" : ["csr", "system"],
-    "l-oper" : "all"
-  }
-]
+{
+  "xlen": [32, 64],
+  "extension": "zicsr",
+  "opcodes": [
+    {
+      "mnemonic" : "csrrw",
+      "tags" : ["zicsr", "g"],
+      "factory" : "csr",
+      "form" : "R",
+      "ignore" : ["func7"],
+      "stencil" : "0x1073",
+      "xform" : "CSR",
+      "type" : ["csr", "system"],
+      "l-oper" : "all"
+    },
+    {
+      "mnemonic" : "csrrs",
+      "tags" : ["zicsr", "g"],
+      "factory" : "csr",
+      "form" : "R",
+      "ignore" : ["func7"],
+      "stencil" : "0x2073",
+      "xform" : "CSR",
+      "type" : ["csr", "system"],
+      "l-oper" : "all"
+    },
+    {
+      "mnemonic" : "csrrc",
+      "tags" : ["zicsr", "g"],
+      "factory" : "csr",
+      "form" : "R",
+      "ignore" : ["func7"],
+      "stencil" : "0x3073",
+      "xform" : "CSR",
+      "type" : ["csr", "system"],
+      "l-oper" : "all"
+    },
+    {
+      "mnemonic" : "csrrwi",
+      "tags" : ["zicsr", "g"],
+      "factory" : "csr",
+      "form" : "R",
+      "ignore" : ["func7"],
+      "stencil" : "0x5073",
+      "xform" : "CSRI",
+      "type" : ["csr", "system"],
+      "l-oper" : "all"
+    },
+    {
+      "mnemonic" : "csrrsi",
+      "tags" : ["zicsr", "g"],
+      "factory" : "csr",
+      "form" : "R",
+      "ignore" : ["func7"],
+      "stencil" : "0x6073",
+      "xform" : "CSRI",
+      "type" : ["csr", "system"],
+      "l-oper" : "all"
+    },
+    {
+      "mnemonic" : "csrrci",
+      "tags" : ["zicsr", "g"],
+      "factory" : "csr",
+      "form" : "R",
+      "ignore" : ["func7"],
+      "stencil" : "0x7073",
+      "xform" : "CSRI",
+      "type" : ["csr", "system"],
+      "l-oper" : "all"
+    }
+  ]
+}

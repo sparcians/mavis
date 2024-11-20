@@ -1,21 +1,25 @@
-[
-  {
-    "mnemonic": "vfwmaccbf16.vv",
-    "tags" : ["zvfbfwma"],
-    "form": "V",
-    "xform": "V_op",
-    "stencil": "0xec001057",
-    "type": [ "vector", "float", "maskable", "widening", "mac" ],
-    "v-oper": [ "rs1", "rs2", "rd" ]
-  },
-  {
-    "mnemonic": "vfwmaccbf16.vf",
-    "tags" : ["zvfbfwma"],
-    "form": "V",
-    "xform": "V_op",
-    "stencil": "0xec005057",
-    "type": [ "vector", "float", "maskable", "widening", "mac" ],
-    "v-oper": [ "rs2", "rd" ],
-    "s-oper": [ "rs1" ]
-  }
-]
+{
+  "xlen": 64,
+  "extension": "zvfbfwma",
+  "opcodes": [
+    {
+      "mnemonic": "vfwmaccbf16.vv",
+      "tags" : ["zvfbfwma"],
+      "form": "V",
+      "xform": "V_op",
+      "stencil": "0xec001057",
+      "type": [ "vector", "float", "maskable", "widening", "mac" ],
+      "v-oper": [ "rs1", "rs2", "rd" ]
+    },
+    {
+      "mnemonic": "vfwmaccbf16.vf",
+      "tags" : ["zvfbfwma"],
+      "form": "V",
+      "xform": "V_op",
+      "stencil": "0xec005057",
+      "type": [ "vector", "float", "maskable", "widening", "mac" ],
+      "v-oper": [ "rs2", "rd" ],
+      "s-oper": [ "rs1" ]
+    }
+  ]
+}
