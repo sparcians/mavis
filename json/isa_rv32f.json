@@ -1,307 +1,312 @@
-[
-  {
-    "mnemonic" : "fadd.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "stencil" : "0x53",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fsub.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "stencil" : "0x8000053",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fmul.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "stencil" : "0x10000053",
-    "s-oper" : "all",
-    "type" : ["float", "mul"]
-  },
-  {
-    "mnemonic" : "fdiv.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "stencil" : "0x18000053",
-    "s-oper" : "all",
-    "type" : ["float", "div"]
-  },
-  {
-    "mnemonic" : "fsgnj.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm" ],
-    "stencil" : "0x20000053",
-    "s-oper" : "all",
-    "type" : ["float", "move"]
-  },
-  {
-    "mnemonic" : "fsgnjn.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm" ],
-    "stencil" : "0x20001053",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fsgnjx.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm" ],
-    "stencil" : "0x20002053",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fmin.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm" ],
-    "stencil" : "0x28000053",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fmax.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm" ],
-    "stencil" : "0x28001053",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fsqrt.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0x58000053",
-    "s-oper" : "all",
-    "type" : ["float", "sqrt"]
-  },
-  {
-    "mnemonic" : "fle.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm" ],
-    "stencil" : "0xa0000053",
-    "s-oper" : ["rs1","rs2"],
-    "w-oper" : ["rd"],
-    "type" : ["float", "compare"]
-  },
-  {
-    "mnemonic" : "flt.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm" ],
-    "stencil" : "0xa0001053",
-    "s-oper" : ["rs1","rs2"],
-    "w-oper" : ["rd"],
-    "type" : ["float", "compare"]
-  },
-  {
-    "mnemonic" : "feq.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm" ],
-    "stencil" : "0xa0002053",
-    "s-oper" : ["rs1","rs2"],
-    "w-oper" : ["rd"],
-    "type" : ["float", "compare"]
-  },
-  {
-    "mnemonic" : "fcvt.w.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0xc0000053",
-    "s-oper" : ["rs1"],
-    "w-oper" : ["rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fcvt.wu.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0xc0100053",
-    "s-oper" : ["rs1"],
-    "w-oper" : ["rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fmv.x.w",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm", "rs2" ],
-    "stencil" : "0xe0000053",
-    "s-oper" : ["rs1"],
-    "l-oper" : ["rd"],
-    "type" : ["float", "move"]
-  },
-  {
-    "mnemonic" : "fclass.s",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm", "rs2" ],
-    "stencil" : "0xe0001053",
-    "s-oper" : ["rs1"],
-    "l-oper" : ["rd"],
-    "type" : ["float", "classify"]
-  },
-  {
-    "mnemonic" : "fcvt.s.w",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0xd0000053",
-    "w-oper" : ["rs1"],
-    "s-oper" : ["rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fcvt.s.wu",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0xd0100053",
-    "w-oper" : ["rs1"],
-    "s-oper" : ["rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fmv.w.x",
-    "tags" : ["f", "g"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm", "rs2" ],
-    "stencil" : "0xf0000053",
-    "l-oper" : ["rs1"],
-    "s-oper" : ["rd"],
-    "type" : ["float", "move"]
-  },
-  {
-    "mnemonic" : "flw",
-    "tags" : ["f", "g"],
-    "form" : "VF_mem",
-    "xform" : "I_load",
-    "stencil" : "0x2007",
-    "ignore" : ["mewop"],
-    "type" : ["float", "load"],
-    "l-oper" : ["rs1"],
-    "s-oper" : ["rd"],
-    "data" : 32
-  },
-  {
-    "mnemonic" : "fsw",
-    "tags" : ["f", "g"],
-    "form" : "VF_mem",
-    "xform" : "S",
-    "stencil" : "0x2027",
-    "ignore" : ["mewop"],
-    "type" : ["float", "store"],
-    "l-oper" : ["rs1"],
-    "s-oper" : ["rs2"],
-    "data" : 32
-  },
-  {
-    "mnemonic" : "fmadd.s",
-    "tags" : ["f", "g"],
-    "form" : "R4",
-    "stencil" : "0x43",
-    "type" : ["float", "mac"],
-    "s-oper" : "all"
-  },
-  {
-    "mnemonic" : "fmsub.s",
-    "tags" : ["f", "g"],
-    "form" : "R4",
-    "stencil" : "0x47",
-    "type" : ["float", "mac"],
-    "s-oper" : "all"
-  },
-  {
-    "mnemonic" : "fnmsub.s",
-    "tags" : ["f", "g"],
-    "form" : "R4",
-    "stencil" : "0x4b",
-    "type" : ["float", "mac"],
-    "s-oper" : "all"
-  },
-  {
-    "mnemonic" : "fnmadd.s",
-    "tags" : ["f", "g"],
-    "form" : "R4",
-    "stencil" : "0x4f",
-    "type" : ["float", "mac"],
-    "s-oper" : "all"
-  },
-  {
-    "mnemonic" : "fleq.s",
-    "stencil" : "0xa0004053",
-    "fixed" : ["rm"],
-    "tags" : ["f", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fli.s",
-    "stencil" : "0xf0100053",
-    "fixed" : ["rs2","rm"],
-    "tags" : ["f", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fltq.s",
-    "stencil" : "0xa0005053",
-    "fixed" : ["rm"],
-    "tags" : ["f", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fmaxm.s",
-    "stencil" : "0x28003053",
-    "fixed" : ["rm"],
-    "tags" : ["f", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fminm.s",
-    "stencil" : "0x28002053",
-    "fixed" : ["rm"],
-    "tags" : ["f", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fround.s",
-    "stencil" : "0x40400053",
-    "fixed" : ["rs2"],
-    "tags" : ["f", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "froundnx.s",
-    "stencil" : "0x40500053",
-    "fixed" : ["rs2"],
-    "tags" : ["f", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  }
-]
+{
+  "xlen": 32,
+  "extension": "f",
+  "meta_extension": "g",
+  "opcodes": [
+    {
+      "mnemonic" : "fadd.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "stencil" : "0x53",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fsub.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "stencil" : "0x8000053",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fmul.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "stencil" : "0x10000053",
+      "s-oper" : "all",
+      "type" : ["float", "mul"]
+    },
+    {
+      "mnemonic" : "fdiv.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "stencil" : "0x18000053",
+      "s-oper" : "all",
+      "type" : ["float", "div"]
+    },
+    {
+      "mnemonic" : "fsgnj.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm" ],
+      "stencil" : "0x20000053",
+      "s-oper" : "all",
+      "type" : ["float", "move"]
+    },
+    {
+      "mnemonic" : "fsgnjn.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm" ],
+      "stencil" : "0x20001053",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fsgnjx.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm" ],
+      "stencil" : "0x20002053",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fmin.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm" ],
+      "stencil" : "0x28000053",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fmax.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm" ],
+      "stencil" : "0x28001053",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fsqrt.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rs2" ],
+      "stencil" : "0x58000053",
+      "s-oper" : "all",
+      "type" : ["float", "sqrt"]
+    },
+    {
+      "mnemonic" : "fle.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm" ],
+      "stencil" : "0xa0000053",
+      "s-oper" : ["rs1","rs2"],
+      "w-oper" : ["rd"],
+      "type" : ["float", "compare"]
+    },
+    {
+      "mnemonic" : "flt.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm" ],
+      "stencil" : "0xa0001053",
+      "s-oper" : ["rs1","rs2"],
+      "w-oper" : ["rd"],
+      "type" : ["float", "compare"]
+    },
+    {
+      "mnemonic" : "feq.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm" ],
+      "stencil" : "0xa0002053",
+      "s-oper" : ["rs1","rs2"],
+      "w-oper" : ["rd"],
+      "type" : ["float", "compare"]
+    },
+    {
+      "mnemonic" : "fcvt.w.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rs2" ],
+      "stencil" : "0xc0000053",
+      "s-oper" : ["rs1"],
+      "w-oper" : ["rd"],
+      "type" : ["float", "convert"]
+    },
+    {
+      "mnemonic" : "fcvt.wu.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rs2" ],
+      "stencil" : "0xc0100053",
+      "s-oper" : ["rs1"],
+      "w-oper" : ["rd"],
+      "type" : ["float", "convert"]
+    },
+    {
+      "mnemonic" : "fmv.x.w",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm", "rs2" ],
+      "stencil" : "0xe0000053",
+      "s-oper" : ["rs1"],
+      "l-oper" : ["rd"],
+      "type" : ["float", "move"]
+    },
+    {
+      "mnemonic" : "fclass.s",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm", "rs2" ],
+      "stencil" : "0xe0001053",
+      "s-oper" : ["rs1"],
+      "l-oper" : ["rd"],
+      "type" : ["float", "classify"]
+    },
+    {
+      "mnemonic" : "fcvt.s.w",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rs2" ],
+      "stencil" : "0xd0000053",
+      "w-oper" : ["rs1"],
+      "s-oper" : ["rd"],
+      "type" : ["float", "convert"]
+    },
+    {
+      "mnemonic" : "fcvt.s.wu",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rs2" ],
+      "stencil" : "0xd0100053",
+      "w-oper" : ["rs1"],
+      "s-oper" : ["rd"],
+      "type" : ["float", "convert"]
+    },
+    {
+      "mnemonic" : "fmv.w.x",
+      "tags" : ["f", "g"],
+      "form" : "Rfloat",
+      "fixed" : [ "rm", "rs2" ],
+      "stencil" : "0xf0000053",
+      "l-oper" : ["rs1"],
+      "s-oper" : ["rd"],
+      "type" : ["float", "move"]
+    },
+    {
+      "mnemonic" : "flw",
+      "tags" : ["f", "g"],
+      "form" : "VF_mem",
+      "xform" : "I_load",
+      "stencil" : "0x2007",
+      "ignore" : ["mewop"],
+      "type" : ["float", "load"],
+      "l-oper" : ["rs1"],
+      "s-oper" : ["rd"],
+      "data" : 32
+    },
+    {
+      "mnemonic" : "fsw",
+      "tags" : ["f", "g"],
+      "form" : "VF_mem",
+      "xform" : "S",
+      "stencil" : "0x2027",
+      "ignore" : ["mewop"],
+      "type" : ["float", "store"],
+      "l-oper" : ["rs1"],
+      "s-oper" : ["rs2"],
+      "data" : 32
+    },
+    {
+      "mnemonic" : "fmadd.s",
+      "tags" : ["f", "g"],
+      "form" : "R4",
+      "stencil" : "0x43",
+      "type" : ["float", "mac"],
+      "s-oper" : "all"
+    },
+    {
+      "mnemonic" : "fmsub.s",
+      "tags" : ["f", "g"],
+      "form" : "R4",
+      "stencil" : "0x47",
+      "type" : ["float", "mac"],
+      "s-oper" : "all"
+    },
+    {
+      "mnemonic" : "fnmsub.s",
+      "tags" : ["f", "g"],
+      "form" : "R4",
+      "stencil" : "0x4b",
+      "type" : ["float", "mac"],
+      "s-oper" : "all"
+    },
+    {
+      "mnemonic" : "fnmadd.s",
+      "tags" : ["f", "g"],
+      "form" : "R4",
+      "stencil" : "0x4f",
+      "type" : ["float", "mac"],
+      "s-oper" : "all"
+    },
+    {
+      "mnemonic" : "fleq.s",
+      "stencil" : "0xa0004053",
+      "fixed" : ["rm"],
+      "tags" : ["f", "zfa"],
+      "form" : "Rfloat",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fli.s",
+      "stencil" : "0xf0100053",
+      "fixed" : ["rs2","rm"],
+      "tags" : ["f", "zfa"],
+      "form" : "Rfloat",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fltq.s",
+      "stencil" : "0xa0005053",
+      "fixed" : ["rm"],
+      "tags" : ["f", "zfa"],
+      "form" : "Rfloat",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fmaxm.s",
+      "stencil" : "0x28003053",
+      "fixed" : ["rm"],
+      "tags" : ["f", "zfa"],
+      "form" : "Rfloat",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fminm.s",
+      "stencil" : "0x28002053",
+      "fixed" : ["rm"],
+      "tags" : ["f", "zfa"],
+      "form" : "Rfloat",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "fround.s",
+      "stencil" : "0x40400053",
+      "fixed" : ["rs2"],
+      "tags" : ["f", "zfa"],
+      "form" : "Rfloat",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    },
+    {
+      "mnemonic" : "froundnx.s",
+      "stencil" : "0x40500053",
+      "fixed" : ["rs2"],
+      "tags" : ["f", "zfa"],
+      "form" : "Rfloat",
+      "s-oper" : "all",
+      "type" : ["float", "arith"]
+    }
+  ]
+}

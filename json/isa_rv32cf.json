@@ -1,38 +1,43 @@
-[
-  {
-    "mnemonic" : "c.flw",
-    "tags" : ["cf"],
-    "expand" : "flw",
-    "form" : "C0",
-    "ignore" : ["func2A"],
-    "xform" : "C0_load_word",
-    "stencil" : "0x6000"
-  },
-  {
-    "mnemonic" : "c.fsw",
-    "tags" : ["cf"],
-    "expand" : "fsw",
-    "form" : "C0",
-    "ignore" : ["func2A"],
-    "xform" : "C0_store_word",
-    "stencil" : "0xe000"
-  },
-  {
-    "mnemonic" : "c.flwsp",
-    "tags" : ["cf"],
-    "expand" : "flw",
-    "form" : "C2",
-    "ignore" : ["func1"],
-    "xform" : "C2_sp_load_float_single",
-    "stencil" : "0x6002"
-  },
-  {
-    "mnemonic" : "c.fswsp",
-    "tags" : ["cf"],
-    "expand" : "fsw",
-    "form" : "C2",
-    "ignore" : ["func1"],
-    "xform" : "C2_sp_store_word",
-    "stencil" : "0xe002"
-  }
-]
+{
+  "xlen": 32,
+  "extension": "cf",
+  "enabled_by": ["c", "f"],
+  "opcodes": [
+    {
+      "mnemonic" : "c.flw",
+      "tags" : ["cf"],
+      "expand" : "flw",
+      "form" : "C0",
+      "ignore" : ["func2A"],
+      "xform" : "C0_load_word",
+      "stencil" : "0x6000"
+    },
+    {
+      "mnemonic" : "c.fsw",
+      "tags" : ["cf"],
+      "expand" : "fsw",
+      "form" : "C0",
+      "ignore" : ["func2A"],
+      "xform" : "C0_store_word",
+      "stencil" : "0xe000"
+    },
+    {
+      "mnemonic" : "c.flwsp",
+      "tags" : ["cf"],
+      "expand" : "flw",
+      "form" : "C2",
+      "ignore" : ["func1"],
+      "xform" : "C2_sp_load_float_single",
+      "stencil" : "0x6002"
+    },
+    {
+      "mnemonic" : "c.fswsp",
+      "tags" : ["cf"],
+      "expand" : "fsw",
+      "form" : "C2",
+      "ignore" : ["func1"],
+      "xform" : "C2_sp_store_word",
+      "stencil" : "0xe002"
+    }
+  ]
+}
