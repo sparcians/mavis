@@ -5,7 +5,6 @@
 #include "mavis/Tag.hpp"
 #include "mavis/Pattern.hpp"
 #include "mavis/ExtractorDirectImplementations.hpp"
-#include "mavis/ExtensionManager.hpp"
 
 #include "Inst.h"
 #include "uArchInfo.h"
@@ -1196,9 +1195,6 @@ int main() {
         assert(inst == nullptr);
     }
     catch(...) {}
-
-    ExtensionManager rv32g_man("rv32g");
-    ExtensionManager rv64g_man("rv64g");
 
     return 0;
 }

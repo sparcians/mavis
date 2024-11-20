@@ -1,5 +1,6 @@
 
 add_subdirectory(basic)
+add_subdirectory(extensions)
 
 # Look for boost po.  If not found, no directed test
 set (_BOOST_COMPONENTS program_options)

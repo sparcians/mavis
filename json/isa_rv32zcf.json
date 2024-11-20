@@ -1,7 +1,7 @@
 {
   "xlen": 32,
   "extension": "zcf",
-  "enabled_by": [["c", "f"], ["zce", "f"]]
+  "enabled_by": [["c", "f"], ["zce", "f"]],
   "requires": ["zca", "f"],
   "conflicts": ["zclsd"],
   "opcodes": [
