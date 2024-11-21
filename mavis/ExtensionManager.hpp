@@ -247,6 +247,11 @@ class ExtensionManager
                 {
                 }
 
+                explicit ExtensionInfo(const std::string& ext) :
+                    extension_(ext)
+                {
+                }
+
                 const std::string& getExtension() const
                 {
                     return extension_;
@@ -787,7 +792,7 @@ class ExtensionManager
             return (val == other) || isOneOf_(val, rest...);
         }
 
-        static uint32_t toDigit_(const char digit)
+        static uint32_t digitToInt_(const char digit)
         {
             return digit - '0';
         }
@@ -823,7 +828,14 @@ class ExtensionManager
 
                 if constexpr(!is_meta_extension)
                 {
-                    xlen_extensions.addExtension(ext, getRequiredJSONValue_<std::string>(ext_obj, "json"));
+                    if(auto json_it = ext_obj.find("json"); json_it != ext_obj.end())
+                    {
+                        xlen_extensions.addExtension(ext, *json_it);
+                    }
+                    else
+                    {
+                        xlen_extensions.addExtension(ext);
+                    }
                 }
 
                 if(is_base_extension)
@@ -1072,7 +1084,7 @@ class ExtensionManager
 
                     if(in_single_char_ext_range(ext) && isdigit(ext))
                     {
-                        uint32_t major_ver = toDigit_(ext);
+                        uint32_t major_ver = digitToInt_(ext);
                         uint32_t minor_ver = DEFAULT_MINOR_VER_;
 
                         isa_view.remove_prefix(1);
@@ -1085,7 +1097,7 @@ class ExtensionManager
                                 throw mavis::InvalidISAStringException(isa_, "Invalid version number specified for extension " + ext_str);
                             }
 
-                            minor_ver = toDigit_(ext);
+                            minor_ver = digitToInt_(ext);
 
                             isa_view.remove_prefix(1);
                         }
@@ -1117,7 +1129,7 @@ class ExtensionManager
 
                         has_version = true;
 
-                        major_ver = toDigit_(*(rit++));
+                        major_ver = digitToInt_(*(rit++));
 
                         if(rit == current_ext.rend())
                         {
@@ -1133,7 +1145,7 @@ class ExtensionManager
                             }
 
                             minor_ver = major_ver;
-                            major_ver = toDigit_(*rit);
+                            major_ver = digitToInt_(*rit);
                             num_to_remove = 3;
                         }
 
@@ -1173,7 +1185,11 @@ class ExtensionManager
             {
                 for(const auto& ext: enabled_extensions_)
                 {
-                    enabled_jsons_.emplace_back(ext.second.getJSON());
+                    const auto& json = ext.second.getJSON();
+                    if(!json.empty())
+                    {
+                        enabled_jsons_.emplace_back(ext.second.getJSON());
+                    }
                 }
             }
 
