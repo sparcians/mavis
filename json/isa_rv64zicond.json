@@ -1,22 +1,18 @@
-{
-  "xlen": [32, 64],
-  "extension": "zicond",
-  "opcodes": [
-    {
-      "mnemonic" : "czero.eqz",
-      "tags" : ["zicond"],
-      "form" : "R",
-      "stencil" : "0xe005033",
-      "type" : ["int", "arith"],
-      "l-oper" : "all"
-    },
-    {
-      "mnemonic" : "czero.nez",
-      "tags" : ["zicond"],
-      "form" : "R",
-      "stencil" : "0xe007033",
-      "type" : ["int", "arith"],
-      "l-oper" : "all"
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "czero.eqz",
+    "tags" : ["zicond"],
+    "form" : "R",
+    "stencil" : "0xe005033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "czero.nez",
+    "tags" : ["zicond"],
+    "form" : "R",
+    "stencil" : "0xe007033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  }
+]

@@ -1,370 +1,365 @@
-{
-  "xlen": 64,
-  "extension": "zfh",
-  "requires": ["f"],
-  "opcodes": [
-    {
-      "mnemonic" : "fadd.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "stencil" : "0x4000053",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fsub.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "stencil" : "0xc000053",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fmul.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "stencil" : "0x14000053",
-      "s-oper" : "all",
-      "type" : ["float", "mul"]
-    },
-    {
-      "mnemonic" : "fdiv.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "stencil" : "0x1c000053",
-      "s-oper" : "all",
-      "type" : ["float", "div"]
-    },
-    {
-      "mnemonic" : "fsgnj.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm" ],
-      "stencil" : "0x24000053",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fsgnjn.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm" ],
-      "stencil" : "0x24001053",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fsgnjx.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm" ],
-      "stencil" : "0x24002053",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fmin.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm" ],
-      "stencil" : "0x2c000053",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fmax.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm" ],
-      "stencil" : "0x2c001053",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fsqrt.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0x5c000053",
-      "s-oper" : "all",
-      "type" : ["float", "sqrt"]
-    },
-    {
-      "mnemonic" : "fle.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm" ],
-      "stencil" : "0xa4000053",
-      "s-oper" : ["rs1","rs2"],
-      "w-oper" : ["rd"],
-      "type" : ["float", "compare"]
-    },
-    {
-      "mnemonic" : "flt.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm" ],
-      "stencil" : "0xa4001053",
-      "s-oper" : ["rs1","rs2"],
-      "w-oper" : ["rd"],
-      "type" : ["float", "compare"]
-    },
-    {
-      "mnemonic" : "feq.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm" ],
-      "stencil" : "0xa4002053",
-      "s-oper" : ["rs1","rs2"],
-      "w-oper" : ["rd"],
-      "type" : ["float", "compare"]
-    },
-    {
-      "mnemonic" : "fcvt.h.s",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0x44000053",
-      "s-oper" : ["rs1","rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.s.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0x40200053",
-      "s-oper" : ["rs1","rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.w.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0xc4000053",
-      "s-oper" : ["rs1"],
-      "w-oper" : ["rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.wu.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0xc4100053",
-      "s-oper" : ["rs1"],
-      "w-oper" : ["rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.l.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0xc4200053",
-      "s-oper" : ["rs1"],
-      "l-oper" : ["rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.lu.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0xc4300053",
-      "s-oper" : ["rs1"],
-      "l-oper" : ["rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.h.l",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0xd4200053",
-      "l-oper" : ["rs1"],
-      "s-oper" : ["rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.h.lu",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0xd4300053",
-      "l-oper" : ["rs1"],
-      "s-oper" : ["rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fmv.x.h",
-      "tags" : ["zfh", "zfbfmin"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm", "rs2" ],
-      "stencil" : "0xe4000053",
-      "s-oper" : ["rs1"],
-      "l-oper" : ["rd"],
-      "type" : ["float", "move"]
-    },
-    {
-      "mnemonic" : "fclass.h",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm", "rs2" ],
-      "stencil" : "0xe4001053",
-      "s-oper" : ["rs1"],
-      "l-oper" : ["rd"],
-      "type" : ["float", "classify"]
-    },
-    {
-      "mnemonic" : "fcvt.h.w",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0xd4000053",
-      "w-oper" : ["rs1"],
-      "s-oper" : ["rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.h.wu",
-      "tags" : ["zfh"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0xd4100053",
-      "w-oper" : ["rs1"],
-      "s-oper" : ["rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fmv.h.x",
-      "tags" : ["zfh", "zfbfmin"],
-      "form" : "Rfloat",
-      "fixed" : [ "rm", "rs2" ],
-      "stencil" : "0xf4000053",
-      "l-oper" : ["rs1"],
-      "s-oper" : ["rd"],
-      "type" : ["float", "move"]
-    },
-    {
-      "mnemonic" : "flh",
-      "tags" : ["zfh", "zfbfmin"],
-      "form" : "VF_mem",
-      "xform" : "I_load",
-      "stencil" : "0x1007",
-      "ignore" : ["mewop"],
-      "type" : ["float", "load"],
-      "l-oper" : ["rs1"],
-      "s-oper" : ["rd"],
-      "data" : 16
-    },
-    {
-      "mnemonic" : "fsh",
-      "tags" : ["zfh", "zfbfmin"],
-      "form" : "VF_mem",
-      "xform" : "S",
-      "stencil" : "0x1027",
-      "ignore" : ["mewop"],
-      "type" : ["float", "store"],
-      "l-oper" : ["rs1"],
-      "s-oper" : ["rs2"],
-      "data" : 16
-    },
-    {
-      "mnemonic" : "fmadd.h",
-      "tags" : ["zfh"],
-      "form" : "R4",
-      "stencil" : "0x4000043",
-      "type" : ["float", "mac"],
-      "s-oper" : "all"
-    },
-    {
-      "mnemonic" : "fmsub.h",
-      "tags" : ["zfh"],
-      "form" : "R4",
-      "stencil" : "0x4000047",
-      "type" : ["float", "mac"],
-      "s-oper" : "all"
-    },
-    {
-      "mnemonic" : "fnmsub.h",
-      "tags" : ["zfh"],
-      "form" : "R4",
-      "stencil" : "0x400004b",
-      "type" : ["float", "mac"],
-      "s-oper" : "all"
-    },
-    {
-      "mnemonic" : "fnmadd.h",
-      "tags" : ["zfh"],
-      "form" : "R4",
-      "stencil" : "0x400004f",
-      "type" : ["float", "mac"],
-      "s-oper" : "all"
-    },
-    {
-      "mnemonic" : "fleq.h",
-      "stencil" : "0xa4004053",
-      "fixed" : ["rm"],
-      "tags" : ["zfh", "zfa"],
-      "form" : "Rfloat",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fli.h",
-      "stencil" : "0xf4100053",
-      "fixed" : ["rs2","rm"],
-      "tags" : ["zfh", "zfa"],
-      "form" : "Rfloat",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fltq.h",
-      "stencil" : "0xa4005053",
-      "fixed" : ["rm"],
-      "tags" : ["zfh", "zfa"],
-      "form" : "Rfloat",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fmaxm.h",
-      "stencil" : "0x2c003053",
-      "fixed" : ["rm"],
-      "tags" : ["zfh", "zfa"],
-      "form" : "Rfloat",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fminm.h",
-      "stencil" : "0x2c002053",
-      "fixed" : ["rm"],
-      "tags" : ["zfh", "zfa"],
-      "form" : "Rfloat",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "fround.h",
-      "stencil" : "0x44400053",
-      "fixed" : ["rs2"],
-      "tags" : ["zfh", "zfa"],
-      "form" : "Rfloat",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    },
-    {
-      "mnemonic" : "froundnx.h",
-      "stencil" : "0x44500053",
-      "fixed" : ["rs2"],
-      "tags" : ["zfh", "zfa"],
-      "form" : "Rfloat",
-      "s-oper" : "all",
-      "type" : ["float", "arith"]
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "fadd.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "stencil" : "0x4000053",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fsub.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "stencil" : "0xc000053",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fmul.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "stencil" : "0x14000053",
+    "s-oper" : "all",
+    "type" : ["float", "mul"]
+  },
+  {
+    "mnemonic" : "fdiv.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "stencil" : "0x1c000053",
+    "s-oper" : "all",
+    "type" : ["float", "div"]
+  },
+  {
+    "mnemonic" : "fsgnj.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm" ],
+    "stencil" : "0x24000053",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fsgnjn.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm" ],
+    "stencil" : "0x24001053",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fsgnjx.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm" ],
+    "stencil" : "0x24002053",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fmin.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm" ],
+    "stencil" : "0x2c000053",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fmax.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm" ],
+    "stencil" : "0x2c001053",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fsqrt.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x5c000053",
+    "s-oper" : "all",
+    "type" : ["float", "sqrt"]
+  },
+  {
+    "mnemonic" : "fle.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm" ],
+    "stencil" : "0xa4000053",
+    "s-oper" : ["rs1","rs2"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "compare"]
+  },
+  {
+    "mnemonic" : "flt.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm" ],
+    "stencil" : "0xa4001053",
+    "s-oper" : ["rs1","rs2"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "compare"]
+  },
+  {
+    "mnemonic" : "feq.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm" ],
+    "stencil" : "0xa4002053",
+    "s-oper" : ["rs1","rs2"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "compare"]
+  },
+  {
+    "mnemonic" : "fcvt.h.s",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x44000053",
+    "s-oper" : ["rs1","rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.s.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x40200053",
+    "s-oper" : ["rs1","rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.w.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xc4000053",
+    "s-oper" : ["rs1"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.wu.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xc4100053",
+    "s-oper" : ["rs1"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.l.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xc4200053",
+    "s-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.lu.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xc4300053",
+    "s-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.h.l",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xd4200053",
+    "l-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.h.lu",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xd4300053",
+    "l-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fmv.x.h",
+    "tags" : ["zfh", "zfbfmin"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm", "rs2" ],
+    "stencil" : "0xe4000053",
+    "s-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "move"]
+  },
+  {
+    "mnemonic" : "fclass.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm", "rs2" ],
+    "stencil" : "0xe4001053",
+    "s-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "classify"]
+  },
+  {
+    "mnemonic" : "fcvt.h.w",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xd4000053",
+    "w-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.h.wu",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xd4100053",
+    "w-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fmv.h.x",
+    "tags" : ["zfh", "zfbfmin"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm", "rs2" ],
+    "stencil" : "0xf4000053",
+    "l-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "type" : ["float", "move"]
+  },
+  {
+    "mnemonic" : "flh",
+    "tags" : ["zfh", "zfbfmin"],
+    "form" : "VF_mem",
+    "xform" : "I_load",
+    "stencil" : "0x1007",
+    "ignore" : ["mewop"],
+    "type" : ["float", "load"],
+    "l-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "data" : 16
+  },
+  {
+    "mnemonic" : "fsh",
+    "tags" : ["zfh", "zfbfmin"],
+    "form" : "VF_mem",
+    "xform" : "S",
+    "stencil" : "0x1027",
+    "ignore" : ["mewop"],
+    "type" : ["float", "store"],
+    "l-oper" : ["rs1"],
+    "s-oper" : ["rs2"],
+    "data" : 16
+  },
+  {
+    "mnemonic" : "fmadd.h",
+    "tags" : ["zfh"],
+    "form" : "R4",
+    "stencil" : "0x4000043",
+    "type" : ["float", "mac"],
+    "s-oper" : "all"
+  },
+  {
+    "mnemonic" : "fmsub.h",
+    "tags" : ["zfh"],
+    "form" : "R4",
+    "stencil" : "0x4000047",
+    "type" : ["float", "mac"],
+    "s-oper" : "all"
+  },
+  {
+    "mnemonic" : "fnmsub.h",
+    "tags" : ["zfh"],
+    "form" : "R4",
+    "stencil" : "0x400004b",
+    "type" : ["float", "mac"],
+    "s-oper" : "all"
+  },
+  {
+    "mnemonic" : "fnmadd.h",
+    "tags" : ["zfh"],
+    "form" : "R4",
+    "stencil" : "0x400004f",
+    "type" : ["float", "mac"],
+    "s-oper" : "all"
+  },
+  {
+    "mnemonic" : "fleq.h",
+    "stencil" : "0xa4004053",
+    "fixed" : ["rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fli.h",
+    "stencil" : "0xf4100053",
+    "fixed" : ["rs2","rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fltq.h",
+    "stencil" : "0xa4005053",
+    "fixed" : ["rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fmaxm.h",
+    "stencil" : "0x2c003053",
+    "fixed" : ["rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fminm.h",
+    "stencil" : "0x2c002053",
+    "fixed" : ["rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fround.h",
+    "stencil" : "0x44400053",
+    "fixed" : ["rs2"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "froundnx.h",
+    "stencil" : "0x44500053",
+    "fixed" : ["rs2"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  }
+]

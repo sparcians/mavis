@@ -1,16 +1,11 @@
-{
-  "xlen": [32, 64],
-  "extension": "zifencei",
-  "meta_extension": "g",
-  "opcodes": [
-    {
-      "mnemonic" : "fence.i",
-      "tags" : ["zifencei", "g"],
-      "form" : "FENCE",
-      "xform" : "I",
-      "stencil" : "0x100f",
-      "type" : ["fence"],
-      "l-oper" : "all"
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "fence.i",
+    "tags" : ["zifencei", "g"],
+    "form" : "FENCE",
+    "xform" : "I",
+    "stencil" : "0x100f",
+    "type" : ["fence"],
+    "l-oper" : "all"
+  }
+]

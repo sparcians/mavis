@@ -1,27 +1,22 @@
-{
-  "xlen": 64,
-  "extension": "zvksh",
-  "meta_extension": "zvks",
-  "opcodes": [
-    {
-      "mnemonic": "vsm3c.vi",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_uimm_implied",
-      "stencil": "0xae002077",
-      "fixed": [ "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": "all"
-    },
-    {
-      "mnemonic": "vsm3me.vv",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op",
-      "stencil": "0x82002077",
-      "fixed": [ "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": "all"
-    }
-  ]
-}
+[
+  {
+    "mnemonic": "vsm3c.vi",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_uimm_implied",
+    "stencil": "0xae002077",
+    "fixed": [ "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vsm3me.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x82002077",
+    "fixed": [ "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": "all"
+  }
+]

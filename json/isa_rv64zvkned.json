@@ -1,117 +1,112 @@
-{
-  "xlen": 64,
-  "extension": "zvkned",
-  "meta_extension": ["zvkn"],
-  "opcodes": [
-    {
-      "mnemonic": "vaesdf.vs",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa600a077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    },
-    {
-      "mnemonic": "vaesdf.vv",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa200a077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    },
-    {
-      "mnemonic": "vaesdm.vs",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa6002077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    },
-    {
-      "mnemonic": "vaesdm.vv",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa2002077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    },
-    {
-      "mnemonic": "vaesef.vs",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa601a077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    },
-    {
-      "mnemonic": "vaesef.vv",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa201a077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    },
-    {
-      "mnemonic": "vaesem.vs",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa6012077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    },
-    {
-      "mnemonic": "vaesem.vv",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa2012077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    },
-    {
-      "mnemonic": "vaeskf1.vi",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_uimm",
-      "stencil": "0x8a002077",
-      "fixed": [ "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": "all"
-    },
-    {
-      "mnemonic": "vaeskf2.vi",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_uimm_implied",
-      "stencil": "0xaa002077",
-      "fixed": [ "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": "all"
-    },
-    {
-      "mnemonic": "vaesz.vs",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa603a077",
-      "fixed": [ "rs1", "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    }
-  ]
-}
+[
+  {
+    "mnemonic": "vaesdf.vs",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa600a077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vaesdf.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa200a077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vaesdm.vs",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa6002077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vaesdm.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa2002077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vaesef.vs",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa601a077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vaesef.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa201a077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vaesem.vs",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa6012077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vaesem.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa2012077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vaeskf1.vi",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_uimm",
+    "stencil": "0x8a002077",
+    "fixed": [ "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vaeskf2.vi",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_uimm_implied",
+    "stencil": "0xaa002077",
+    "fixed": [ "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vaesz.vs",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa603a077",
+    "fixed": [ "rs1", "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  }
+]

@@ -1,88 +1,83 @@
-{
-  "xlen": 32,
-  "extension": "zaamo",
-  "meta_extension": "a",
-  "opcodes": [
-    {
-      "mnemonic" : "amoadd.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0x202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    },
-    {
-      "mnemonic" : "amoxor.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0x2000202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    },
-    {
-      "mnemonic" : "amoor.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0x4000202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    },
-    {
-      "mnemonic" : "amoand.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0x6000202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    },
-    {
-      "mnemonic" : "amomin.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0x8000202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    },
-    {
-      "mnemonic" : "amomax.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0xa000202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    },
-    {
-      "mnemonic" : "amominu.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0xc000202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    },
-    {
-      "mnemonic" : "amomaxu.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0xe000202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    },
-    {
-      "mnemonic" : "amoswap.w",
-      "tags" : ["a", "g"],
-      "form" : "AMO",
-      "stencil" : "0x800202f",
-      "type" : ["int", "load", "atomic"],
-      "l-oper" : "all",
-      "data" : 32
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "amoadd.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0x202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoxor.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0x2000202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoor.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0x4000202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoand.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0x6000202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomin.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0x8000202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomax.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0xa000202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amominu.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0xc000202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomaxu.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0xe000202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoswap.w",
+    "tags" : ["a", "g"],
+    "form" : "AMO",
+    "stencil" : "0x800202f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  }
+]

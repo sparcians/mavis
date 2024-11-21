@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <list>
+#include <string_view>
 #include <unordered_set>
 
 #include "DecoderExceptions.h"
@@ -80,8 +81,8 @@ namespace mavis
     class UnknownExtensionException : public ExtensionManagerException
     {
         public:
-            explicit UnknownExtensionException(const std::string& ext) :
-                ExtensionManagerException("Unknown extension: " + ext)
+            explicit UnknownExtensionException(const uint32_t xlen, const std::string& ext) :
+                ExtensionManagerException("Unknown extension for xlen=" + std::to_string(xlen) + ": " + ext)
             {
             }
     };
@@ -91,6 +92,37 @@ namespace mavis
         public:
             MissingRequiredExtensionException(const std::string& ext, const std::string& req_ext) :
                 ExtensionManagerException(ext + " extension requires " + req_ext + " to also be present in the ISA string")
+            {
+            }
+    };
+
+    class InvalidBaseExtensionException : public ExtensionManagerException
+    {
+        private:
+            static inline std::string genBaseExtensionString_(const std::unordered_set<std::string>& base_extensions)
+            {
+                std::ostringstream ss;
+                bool first = true;
+                for(const auto& ext: base_extensions)
+                {
+                    if(first)
+                    {
+                        first = false;
+                    }
+                    else
+                    {
+                        ss << ", ";
+                    }
+
+                    ss << ext;
+                }
+
+                return ss.str();
+            }
+
+        public:
+            explicit InvalidBaseExtensionException(const std::string& ext, const std::unordered_set<std::string>& base_extensions) :
+                ExtensionManagerException(ext + " is not a valid base extension. Valid extensions are: " + genBaseExtensionString_(base_extensions))
             {
             }
     };
@@ -134,31 +166,10 @@ namespace mavis
 
 class ExtensionManager
 {
-    public:
-        class Extension
-        {
-            private:
-                static constexpr uint32_t DEFAULT_MAJOR_VER_ = 2;
-                static constexpr uint32_t DEFAULT_MINOR_VER_ = 0;
-                const std::string ext_;
-                const uint32_t major_ver_;
-                const uint32_t minor_ver_;
-
-            public:
-                explicit Extension(const std::string& ext, const uint32_t major_ver = DEFAULT_MAJOR_VER_, const uint32_t minor_ver = DEFAULT_MINOR_VER_) :
-                    ext_(ext),
-                    major_ver_(major_ver),
-                    minor_ver_(minor_ver)
-                {
-                }
-
-                const std::string& getName() const
-                {
-                    return ext_;
-                }
-        };
-
     private:
+        static constexpr uint32_t DEFAULT_MAJOR_VER_ = 2;
+        static constexpr uint32_t DEFAULT_MINOR_VER_ = 0;
+
         class ExtensionInfo;
 
         using ExtensionInfoPtr = std::shared_ptr<ExtensionInfo>;
@@ -168,6 +179,8 @@ class ExtensionManager
             private:
                 const std::string extension_;
                 const std::string json_;
+                uint32_t major_ver_ = DEFAULT_MAJOR_VER_;
+                uint32_t minor_ver_ = DEFAULT_MINOR_VER_;
                 bool enabled_ = false;
                 bool force_enabled_ = false;
                 std::vector<ExtensionInfoPtr> enables_extensions_;
@@ -297,8 +310,42 @@ class ExtensionManager
 
                     enabled_ = force_enabled_ || (enabled_ && anyEnablingExtensionsEnabled_());
                 }
+
+                void setVersion(const uint32_t major_ver, const uint32_t minor_ver)
+                {
+                    major_ver_ = major_ver;
+                    minor_ver_ = minor_ver;
+                }
+
+                uint32_t getMajorVersion() const { return major_ver_; }
+                uint32_t getMinorVersion() const { return minor_ver_; }
         };
 
+    public:
+        class Extension
+        {
+            private:
+                const std::string ext_;
+                const uint32_t major_ver_;
+                const uint32_t minor_ver_;
+
+            public:
+                explicit Extension(const ExtensionInfo& ext) :
+                    ext_(ext.getExtension()),
+                    major_ver_(ext.getMajorVersion()),
+                    minor_ver_(ext.getMinorVersion())
+                {
+                }
+
+                const std::string& getName() const
+                {
+                    return ext_;
+                }
+        };
+
+        using ExtensionMap = std::unordered_map<std::string, Extension>;
+
+    private:
         class XLENState
         {
             private:
@@ -374,6 +421,7 @@ class ExtensionManager
                         }
                 };
 
+                const uint32_t xlen_;
                 std::unordered_set<std::string> base_extensions_;
                 std::unordered_map<std::string, ExtensionInfoPtr> extensions_;
                 std::unordered_map<std::string, std::vector<std::string>> meta_extensions_;
@@ -388,7 +436,7 @@ class ExtensionManager
                     }
                     catch(const std::out_of_range&)
                     {
-                        throw mavis::UnknownExtensionException(extension);
+                        throw mavis::UnknownExtensionException(xlen_, extension);
                     }
                 }
 
@@ -416,7 +464,7 @@ class ExtensionManager
 
                     if(exts.size() != dependent_exts.size())
                     {
-                        pending_dependencies_.emplace_back(UnresolvedDependency::Type::ENABLING, dependent_exts, ext);
+                        pending_dependencies_.emplace_back(type, dependent_exts, ext);
                         return {};
                     }
 
@@ -430,7 +478,7 @@ class ExtensionManager
                     const auto dep_it = extensions_.find(dependent_ext);
                     if(dep_it == extensions_.end())
                     {
-                        pending_dependencies_.emplace_back(UnresolvedDependency::Type::ENABLING, dependent_ext, ext);
+                        pending_dependencies_.emplace_back(type, dependent_ext, ext);
                         return NOT_FOUND;
                     }
 
@@ -438,6 +486,11 @@ class ExtensionManager
                 }
 
             public:
+                explicit XLENState(const uint32_t xlen) :
+                    xlen_(xlen)
+                {
+                }
+
                 const ExtensionInfo& getExtensionInfo(const std::string& extension) const
                 {
                     return *getExtensionInfo_(extension);
@@ -458,6 +511,21 @@ class ExtensionManager
                 void addBaseExtension(const std::string& ext)
                 {
                     base_extensions_.emplace(ext);
+                }
+
+                void enableBaseExtension(const std::string& ext)
+                {
+                    if(base_extensions_.count(ext) == 0)
+                    {
+                        throw mavis::InvalidBaseExtensionException(ext, base_extensions_);
+                    }
+
+                    enableExtension(ext);
+                }
+
+                void enableBaseExtension(const char ext)
+                {
+                    enableBaseExtension(std::string(1, ext));
                 }
 
                 void addEnablesExtension(const std::string& ext, const std::string& dependent_ext)
@@ -591,6 +659,30 @@ class ExtensionManager
                     }
                 }
 
+                void setExtensionVersion(const std::string& ext, const uint32_t major_ver, const uint32_t minor_ver)
+                {
+                    if(auto it = meta_extensions_.find(ext); it != meta_extensions_.end())
+                    {
+                        for(const auto& child: it->second)
+                        {
+                            setExtensionVersion(child, major_ver, minor_ver);
+                        }
+                    }
+                    else if(auto alias_it = aliases_.find(ext); alias_it != aliases_.end())
+                    {
+                        setExtensionVersion(alias_it->second, major_ver, minor_ver);
+                    }
+                    else
+                    {
+                        getExtensionInfo_(ext)->setVersion(major_ver, minor_ver);
+                    }
+                }
+
+                void setExtensionVersion(const char ext, const uint32_t major_ver, const uint32_t minor_ver)
+                {
+                    setExtensionVersion(std::string(1, ext), major_ver, minor_ver);
+                }
+
                 void enableExtension(const std::string& ext)
                 {
                     if(auto it = meta_extensions_.find(ext); it != meta_extensions_.end())
@@ -609,32 +701,35 @@ class ExtensionManager
                         getExtensionInfo_(ext)->setEnabled();
                     }
                 }
-        };
 
-        static constexpr std::array<uint32_t, 2> VALID_XLENS_{32, 64};
+                void enableExtension(const char ext)
+                {
+                    enableExtension(std::string(1, ext));
+                }
+
+                void finalize(std::unordered_map<std::string, Extension>& enabled_extensions)
+                {
+                    for(const auto& ext: extensions_)
+                    {
+                        ext.second->finalize();
+                    }
+
+                    for(const auto& ext: extensions_)
+                    {
+                        const auto& ext_info = ext.second;
+                        if(ext_info->isEnabled())
+                        {
+                            enabled_extensions.emplace(ext_info->getExtension(), *ext_info);
+                        }
+                    }
+                }
+        };
 
         const std::string isa_;
         uint32_t xlen_;
-        std::unordered_map<uint32_t, XLENState> extensions_;
-
-        std::unordered_map<std::string, Extension> enabled_extensions_;
-
-        void enableExtension_(const Extension& ext)
-        {
-            enabled_extensions_.try_emplace(ext.getName(), ext);
-        }
-
-        template<typename ... ExtArgs>
-        void enableExtension_(const std::string& ext, ExtArgs&&... ext_args)
-        {
-            enabled_extensions_.try_emplace(ext, Extension(ext, std::forward<ExtArgs>(ext_args)...));
-        }
-
-        template<typename ... ExtArgs>
-        void enableExtension_(const char ext, ExtArgs&&... ext_args)
-        {
-            enableExtension_(std::string(1, ext), std::forward<ExtArgs>(ext_args)...);
-        }
+        using XLENMap = std::unordered_map<uint32_t, XLENState>;
+        XLENMap extensions_;
+        ExtensionMap enabled_extensions_;
 
         static inline std::string toLowercase_(const std::string& str)
         {
@@ -667,7 +762,153 @@ class ExtensionManager
             return false;
         }
 
-        void processExtensionJSON_(const std::string& jfile)
+        template<typename ValType, typename OtherValType>
+        static bool isOneOf_(const ValType val, const OtherValType other)
+        {
+            return (val == other);
+        }
+
+        template<typename ValType, typename OtherValType, typename ... OtherValTypes>
+        static bool isOneOf_(const ValType val, const OtherValType other, const OtherValTypes... rest)
+        {
+            return (val == other) || isOneOf_(val, rest...);
+        }
+
+        static uint32_t toDigit_(const char digit)
+        {
+            return digit - '0';
+        }
+
+        template<bool is_meta_extension>
+        void processExtension_(const nlohmann::json& ext_obj)
+        {
+            const std::string ext = getRequiredJSONValue_<std::string>(ext_obj, "extension");
+
+            std::vector<uint32_t> xlens;
+
+            if(const auto it = ext_obj.find("xlen"); it != ext_obj.end())
+            {
+                if(it->is_array())
+                {
+                    xlens = it->get<std::vector<uint32_t>>();
+                }
+                else
+                {
+                    xlens.emplace_back(*it);
+                }
+            }
+            else
+            {
+                throw mavis::MissingRequiredJSONKeyException("xlen");
+            }
+
+            for(const auto xlen: xlens)
+            {
+                auto& xlen_extensions = extensions_.try_emplace(xlen, xlen).first->second;
+
+                const bool is_base_extension = getBoolJSONValue_(ext_obj, "is_base_extension");
+
+                if constexpr(!is_meta_extension)
+                {
+                    xlen_extensions.addExtension(ext, getRequiredJSONValue_<std::string>(ext_obj, "json"));
+                }
+
+                if(is_base_extension)
+                {
+                    xlen_extensions.addBaseExtension(ext);
+                }
+
+                if(const auto it = ext_obj.find("meta_extension"); it != ext_obj.end())
+                {
+                    std::vector<std::string> meta_extensions;
+
+                    if(it->is_array())
+                    {
+                        meta_extensions = it->get<std::vector<std::string>>();
+                    }
+                    else
+                    {
+                        meta_extensions.emplace_back(*it);
+                    }
+                    xlen_extensions.addMetaExtensions(ext, meta_extensions);
+                }
+
+                if(const auto it = ext_obj.find("aliases"); it != ext_obj.end())
+                {
+                    if constexpr(is_meta_extension)
+                    {
+                        throw mavis::MetaExtensionUnexpectedJSONKeyException("aliases");
+                    }
+
+                    for(const auto& alias_ext: *it)
+                    {
+                        xlen_extensions.addAlias(ext, alias_ext);
+                    }
+                }
+
+                if(const auto it = ext_obj.find("enables"); it != ext_obj.end())
+                {
+                    if constexpr(is_meta_extension)
+                    {
+                        throw mavis::MetaExtensionUnexpectedJSONKeyException("enables");
+                    }
+
+                    for(const auto& enabled_ext: *it)
+                    {
+                        xlen_extensions.addEnablesExtension(ext, enabled_ext);
+                    }
+                }
+
+                if(const auto it = ext_obj.find("enabled_by"); it != ext_obj.end())
+                {
+                    if constexpr(is_meta_extension)
+                    {
+                        throw mavis::MetaExtensionUnexpectedJSONKeyException("enabled_by");
+                    }
+
+                    std::vector<std::vector<std::string>> enabling_extensions;
+
+                    if(it->front().is_array())
+                    {
+                        enabling_extensions = it->get<std::vector<std::vector<std::string>>>();
+                    }
+                    else
+                    {
+                        enabling_extensions.emplace_back(*it);
+                    }
+
+                    xlen_extensions.addEnablingExtensions(ext, enabling_extensions);
+                }
+
+                if(const auto it = ext_obj.find("requires"); it != ext_obj.end())
+                {
+                    if constexpr(is_meta_extension)
+                    {
+                        throw mavis::MetaExtensionUnexpectedJSONKeyException("requires");
+                    }
+
+                    for(const auto& required_ext: *it)
+                    {
+                        xlen_extensions.addRequiredExtension(ext, required_ext);
+                    }
+                }
+
+                if(const auto it = ext_obj.find("conflicts"); it != ext_obj.end())
+                {
+                    if constexpr(is_meta_extension)
+                    {
+                        throw mavis::MetaExtensionUnexpectedJSONKeyException("conflicts");
+                    }
+
+                    for(const auto& conflict_ext: *it)
+                    {
+                        xlen_extensions.addConflictingExtension(ext, conflict_ext);
+                    }
+                }
+            }
+        }
+
+        void processISASpecJSON_(const std::string& jfile)
         {
             std::ifstream fs;
 
@@ -694,129 +935,19 @@ class ExtensionManager
 
             try
             {
-                const std::string ext = getRequiredJSONValue_<std::string>(jobj, "extension");
-
-                std::vector<uint32_t> xlens;
-
-                if(const auto it = jobj.find("xlen"); it != jobj.end())
+                if(auto meta_extensions_it = jobj.find("meta_extensions"); meta_extensions_it != jobj.end())
                 {
-                    if(it->is_array())
+                    for(const auto& meta_ext_obj: *meta_extensions_it)
                     {
-                        xlens = it->get<std::vector<uint32_t>>();
-                    }
-                    else
-                    {
-                        xlens.emplace_back(*it);
+                        processExtension_<true>(meta_ext_obj);
                     }
                 }
-                else
+
+                if(auto extensions_it = jobj.find("extensions"); extensions_it != jobj.end())
                 {
-                    throw mavis::MissingRequiredJSONKeyException("xlen");
-                }
-
-                for(const auto xlen: xlens)
-                {
-                    auto& xlen_extensions = extensions_.try_emplace(xlen).first->second;
-
-                    const bool is_meta_extension = getBoolJSONValue_(jobj, "is_meta_extension");
-                    const bool is_base_extension = getBoolJSONValue_(jobj, "is_base_extension");
-
-                    if(!is_meta_extension)
+                    for(const auto& ext_obj: *extensions_it)
                     {
-                        xlen_extensions.addExtension(ext, jfile);
-                    }
-
-                    if(is_base_extension)
-                    {
-                        xlen_extensions.addBaseExtension(ext);
-                    }
-
-                    if(const auto it = jobj.find("meta_extension"); it != jobj.end())
-                    {
-                        std::vector<std::string> meta_extensions;
-
-                        if(it->is_array())
-                        {
-                            meta_extensions = it->get<std::vector<std::string>>();
-                        }
-                        else
-                        {
-                            meta_extensions.emplace_back(*it);
-                        }
-                        xlen_extensions.addMetaExtensions(ext, meta_extensions);
-                    }
-
-                    if(const auto it = jobj.find("aliases"); it != jobj.end())
-                    {
-                        if(is_meta_extension)
-                        {
-                            throw mavis::MetaExtensionUnexpectedJSONKeyException("aliases");
-                        }
-
-                        for(const auto& alias_ext: *it)
-                        {
-                            xlen_extensions.addAlias(ext, alias_ext);
-                        }
-                    }
-
-                    if(const auto it = jobj.find("enables"); it != jobj.end())
-                    {
-                        if(is_meta_extension)
-                        {
-                            throw mavis::MetaExtensionUnexpectedJSONKeyException("enables");
-                        }
-
-                        for(const auto& enabled_ext: *it)
-                        {
-                            xlen_extensions.addEnablesExtension(ext, enabled_ext);
-                        }
-                    }
-
-                    if(const auto it = jobj.find("enabled_by"); it != jobj.end())
-                    {
-                        if(is_meta_extension)
-                        {
-                            throw mavis::MetaExtensionUnexpectedJSONKeyException("enabled_by");
-                        }
-
-                        std::vector<std::vector<std::string>> enabling_extensions;
-
-                        if(it->front().is_array())
-                        {
-                            enabling_extensions = it->get<std::vector<std::vector<std::string>>>();
-                        }
-                        else
-                        {
-                            enabling_extensions.emplace_back(*it);
-                        }
-
-                        xlen_extensions.addEnablingExtensions(ext, enabling_extensions);
-                    }
-
-                    if(const auto it = jobj.find("requires"); it != jobj.end())
-                    {
-                        if(is_meta_extension)
-                        {
-                            throw mavis::MetaExtensionUnexpectedJSONKeyException("requires");
-                        }
-
-                        for(const auto& required_ext: *it)
-                        {
-                            xlen_extensions.addRequiredExtension(ext, required_ext);
-                        }
-                    }
-
-                    if(const auto it = jobj.find("conflicts"); it != jobj.end())
-                    {
-                        if(is_meta_extension)
-                        {
-                            throw mavis::MetaExtensionUnexpectedJSONKeyException("conflicts");
-                        }
-
-                        for(const auto& conflict_ext: *it)
-                        {
-                            xlen_extensions.addConflictingExtension(ext, conflict_ext);
-                        }
+                        processExtension_<false>(ext_obj);
                     }
                 }
             }
@@ -825,25 +956,42 @@ class ExtensionManager
                 std::cerr << "Error parsing file " << jfile << std::endl;
                 throw;
             }
+
+            for(auto& xlen_extension: extensions_)
+            {
+                xlen_extension.second.finalizeDependencies();
+            }
         }
 
     public:
-        ExtensionManager(const std::string& isa, const std::string& json_dir) :
+        ExtensionManager(const std::string& isa, const std::string& spec_json) :
             isa_(toLowercase_(isa))
         {
+            processISASpecJSON_(spec_json);
+
             // ISA string must at least contain rv, the XLEN, and the base ISA,
             // e.g. rv32i
             static constexpr size_t MIN_LENGTH = 5;
-            if(isa_.size() < MIN_LENGTH || isa_.find("rv") != 0 || !std::isdigit(isa_[2]))
+
+            std::string_view isa_view(isa_);
+            if(isa_view.size() < MIN_LENGTH || isa_view.find("rv") != 0 || !std::isdigit(isa_view[2]))
             {
                 throw mavis::InvalidISAStringException(isa_);
             }
 
+            // Remove "rv" prefix
+            isa_view.remove_prefix(2);
+
+            XLENMap::iterator xlen_extension_it;
+
             try
             {
-                xlen_ = std::stoul(isa_.substr(2, 3));
-
-                if(std::find(VALID_XLENS_.begin(), VALID_XLENS_.end(), xlen_) == VALID_XLENS_.end())
+                size_t num_chars = 0;
+                xlen_ = std::stoul(std::string(isa_view), &num_chars);
+                // Remove XLEN prefix
+                isa_view.remove_prefix(num_chars);
+                xlen_extension_it = extensions_.find(xlen_);
+                if(xlen_extension_it == extensions_.end())
                 {
                     throw std::out_of_range("");
                 }
@@ -857,54 +1005,142 @@ class ExtensionManager
                 throw mavis::InvalidISAStringException(isa_, "Invalid xlen");
             }
 
-            const std::filesystem::path json_dir_path(json_dir);
-            if(!std::filesystem::is_directory(json_dir_path))
+            if(isa_view.empty())
             {
-                throw mavis::InvalidJSONDirectoryException(json_dir);
+                throw mavis::InvalidISAStringException(isa_, "Missing base extension");
             }
 
-            std::unordered_set<std::string> processed_files;
+            auto& xlen_extension = xlen_extension_it->second;
+            const char base_isa = isa_view.front();
 
-            for (const auto& dir_entry : std::filesystem::directory_iterator{json_dir_path}) 
+            xlen_extension.enableBaseExtension(base_isa);
+
+            // Remove base ISA
+            isa_view.remove_prefix(1);
+
+            if(!isa_view.empty())
             {
-                if(dir_entry.is_regular_file())
+                auto in_single_char_ext_range = [&isa_view](char& front_char)
                 {
-                    const auto jfile = std::filesystem::canonical(dir_entry.path());
-                    if(processed_files.count(jfile) != 0)
+                    if(isa_view.empty())
                     {
+                        front_char = '\0';
+                        return false;
+                    }
+
+                    front_char = isa_view.front();
+
+                    return !isOneOf_(front_char, 'z', 's', 'x');
+                };
+
+                char ext;
+                while(in_single_char_ext_range(ext))
+                {
+                    if(ext == '_')
+                    {
+                        isa_view.remove_prefix(1);
                         continue;
                     }
-                    processExtensionJSON_(jfile);
-                    processed_files.emplace(jfile);
+
+                    const std::string ext_str(1, ext);
+                    xlen_extension.enableExtension(ext_str);
+
+                    isa_view.remove_prefix(1);
+
+                    if(in_single_char_ext_range(ext) && isdigit(ext))
+                    {
+                        uint32_t major_ver = toDigit_(ext);
+                        uint32_t minor_ver = DEFAULT_MINOR_VER_;
+
+                        isa_view.remove_prefix(1);
+                        if(in_single_char_ext_range(ext) && ext == 'p')
+                        {
+                            isa_view.remove_prefix(1);
+
+                            if(!(in_single_char_ext_range(ext) && isdigit(ext)))
+                            {
+                                throw mavis::InvalidISAStringException(isa_, "Invalid version number specified for extension " + ext_str);
+                            }
+
+                            minor_ver = toDigit_(ext);
+
+                            isa_view.remove_prefix(1);
+                        }
+
+                        // next_it now points to one-past the last part of the version number
+
+                        xlen_extension.setExtensionVersion(ext_str, major_ver, minor_ver);
+                    }
+                }
+
+                while(!isa_view.empty())
+                {
+                    if(isa_view[0] == '_')
+                    {
+                        isa_view.remove_prefix(1);
+                        continue;
+                    }
+
+                    auto current_ext = isa_view.substr(0, isa_view.find('_'));
+                    const size_t ext_length = current_ext.size();
+
+                    bool has_version = false;
+                    uint32_t major_ver = DEFAULT_MAJOR_VER_;
+                    uint32_t minor_ver = DEFAULT_MINOR_VER_;
+
+                    if(auto rit = current_ext.rbegin(); isdigit(*rit))
+                    {
+                        size_t num_to_remove = 1;
+
+                        has_version = true;
+
+                        major_ver = toDigit_(*(rit++));
+
+                        if(rit == current_ext.rend())
+                        {
+                            throw mavis::InvalidISAStringException(isa_, "Invalid extension " + std::string(current_ext));
+                        }
+
+                        if(*rit == 'p')
+                        {
+                            ++rit;
+                            if(rit == current_ext.rend() || !isdigit(*rit))
+                            {
+                                throw mavis::InvalidISAStringException(isa_, "Invalid version number specified for extension " + std::string(current_ext));
+                            }
+
+                            minor_ver = major_ver;
+                            major_ver = toDigit_(*rit);
+                            num_to_remove = 3;
+                        }
+
+                        current_ext.remove_suffix(num_to_remove);
+                    }
+
+                    const std::string ext_str(current_ext);
+                    xlen_extension.enableExtension(ext_str);
+
+                    if(has_version)
+                    {
+                        xlen_extension.setExtensionVersion(ext_str, major_ver, minor_ver);
+                    }
+
+                    isa_view.remove_prefix(ext_length);
                 }
             }
 
-            for(auto& xlen_extension: extensions_)
-            {
-                xlen_extension.second.finalizeDependencies();
-            }
+            xlen_extension.finalize(enabled_extensions_);
+        }
 
-            const char base_isa = isa[4];
+        bool isEnabled(const std::string& extension) const
+        {
+            return enabled_extensions_.count(extension) != 0;
+        }
 
-            if(base_isa == 'g')
-            {
-                enableExtension_('i');
-                enableExtension_('m');
-                enableExtension_('a');
-                enableExtension_('f');
-                enableExtension_('d');
-                enableExtension_("zicsr");
-                enableExtension_("zifencei");
-            }
-            else if(base_isa == 'i' || base_isa == 'e')
-            {
-                enableExtension_(base_isa);
-            }
-            else
-            {
-                throw mavis::InvalidISAStringException(isa_, "Invalid base ISA");
-            }
+        uint32_t getXLEN() const { return xlen_; }
 
-
+        const ExtensionMap& getEnabledExtensions() const
+        {
+            return enabled_extensions_;
         }
 };

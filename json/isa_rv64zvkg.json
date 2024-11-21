@@ -1,27 +1,22 @@
-{
-  "xlen": 64,
-  "extension": "zvkg",
-  "meta_extension": ["zvkng", "zvksg"],
-  "opcodes": [
-    {
-      "mnemonic": "vghsh.vv",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xb2002077",
-      "fixed": [ "vm" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": "all"
-    },
-    {
-      "mnemonic": "vgmul.vv",
-      "tags" : ["zvk"],
-      "form": "V",
-      "xform": "V_op_implied",
-      "stencil": "0xa208a077",
-      "fixed": [ "vm", "rs1" ],
-      "type": [ "vector", "crypto" ],
-      "v-oper": [ "rs2", "rd" ]
-    }
-  ]
-}
+[
+  {
+    "mnemonic": "vghsh.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xb2002077",
+    "fixed": [ "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vgmul.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xa208a077",
+    "fixed": [ "vm", "rs1" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": [ "rs2", "rd" ]
+  }
+]

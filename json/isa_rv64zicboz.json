@@ -1,15 +1,11 @@
-{
-  "xlen": 64,
-  "extension": "zicboz",
-  "opcodes": [
-    {
-      "mnemonic" : "cbo.zero",
-      "tags" : ["zicbo"],
-      "form" : "R",
-      "fixed" : ["rd", "rs2"],
-      "stencil" : "0x40200f",
-      "type" : ["cache", "system"],
-      "l-oper" : ["rs1"]
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "cbo.zero",
+    "tags" : ["zicbo"],
+    "form" : "R",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x40200f",
+    "type" : ["cache", "system"],
+    "l-oper" : ["rs1"]
+  }
+]

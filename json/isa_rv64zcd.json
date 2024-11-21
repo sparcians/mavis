@@ -1,44 +1,38 @@
-{
-  "xlen": [32, 64],
-  "extension": "zcd",
-  "enabled_by": ["c", "d"],
-  "requires": ["zca", "d"],
-  "opcodes": [
-    {
-      "mnemonic" : "c.fld",
-      "tags" : ["cd"],
-      "expand" : "fld",
-      "form" : "C0",
-      "ignore" : ["func2A"],
-      "xform" : "C0_load_double",
-      "stencil" : "0x2000"
-    },
-    {
-      "mnemonic" : "c.fsd",
-      "tags" : ["cd"],
-      "expand" : "fsd",
-      "form" : "C0",
-      "ignore" : ["func2A"],
-      "xform" : "C0_store_double",
-      "stencil" : "0xa000"
-    },
-    {
-      "mnemonic" : "c.fldsp",
-      "tags" : ["cd"],
-      "expand" : "fld",
-      "form" : "C2",
-      "ignore" : ["func1"],
-      "xform" : "C2_sp_load_float_double",
-      "stencil" : "0x2002"
-    },
-    {
-      "mnemonic" : "c.fsdsp",
-      "tags" : ["cd"],
-      "expand" : "fsd",
-      "form" : "C2",
-      "ignore" : ["func1"],
-      "xform" : "C2_sp_store_double",
-      "stencil" : "0xa002"
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "c.fld",
+    "tags" : ["cd"],
+    "expand" : "fld",
+    "form" : "C0",
+    "ignore" : ["func2A"],
+    "xform" : "C0_load_double",
+    "stencil" : "0x2000"
+  },
+  {
+    "mnemonic" : "c.fsd",
+    "tags" : ["cd"],
+    "expand" : "fsd",
+    "form" : "C0",
+    "ignore" : ["func2A"],
+    "xform" : "C0_store_double",
+    "stencil" : "0xa000"
+  },
+  {
+    "mnemonic" : "c.fldsp",
+    "tags" : ["cd"],
+    "expand" : "fld",
+    "form" : "C2",
+    "ignore" : ["func1"],
+    "xform" : "C2_sp_load_float_double",
+    "stencil" : "0x2002"
+  },
+  {
+    "mnemonic" : "c.fsdsp",
+    "tags" : ["cd"],
+    "expand" : "fsd",
+    "form" : "C2",
+    "ignore" : ["func1"],
+    "xform" : "C2_sp_store_double",
+    "stencil" : "0xa002"
+  }
+]

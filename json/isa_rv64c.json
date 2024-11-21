@@ -1,5 +1,0 @@
-{
-  "xlen": [32, 64],
-  "extension": "c",
-  "is_meta_extension": true
-}

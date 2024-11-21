@@ -1,108 +1,102 @@
-{
-  "xlen": 32,
-  "extension": "zcb",
-  "meta_extension": "zce",
-  "requires": ["zca"],
-  "opcodes": [
-    {
-      "mnemonic" : "c.lbu",
-      "tags" : ["zcb"],
-      "form" : "C0",
-      "ignore" : ["func2A"],
-      "fixed" : [ "imm3" ],
-      "expand" : "lbu",
-      "xform" : "C0_load_byte",
-      "stencil" : "0x8000"
-    },
-    {
-      "mnemonic" : "c.lh",
-      "tags" : ["zcb"],
-      "form" : "C0",
-      "fixed" : [ "imm3" ],
-      "expand" : "lh",
-      "xform" : "C0_load_half",
-      "stencil" : "0x8440"
-    },
-    {
-      "mnemonic" : "c.lhu",
-      "tags" : ["zcb"],
-      "form" : "C0",
-      "fixed" : [ "imm3" ],
-      "expand" : "lhu",
-      "xform" : "C0_load_half",
-      "stencil" : "0x8400"
-    },
-    {
-      "mnemonic" : "c.sb",
-      "tags" : ["zcb"],
-      "form" : "C0",
-      "ignore" : ["func2A"],
-      "fixed" : [ "imm3" ],
-      "expand" : "sb",
-      "xform" : "C0_store_byte",
-      "stencil" : "0x8800"
-    },
-    {
-      "mnemonic" : "c.sh",
-      "tags" : ["zcb"],
-      "form" : "C0",
-      "fixed" : [ "imm3" ],
-      "expand" : "sh",
-      "xform" : "C0_store_half",
-      "stencil" : "0x8c00"
-    },
-    {
-      "mnemonic" : "c.zext.b",
-      "tags" : ["zcb"],
-      "form" : "C1",
-      "fixed" : [ "rs2" ],
-      "expand" : "andi",
-      "xform" : "C1_rsd_I0xFF",
-      "stencil" : "0x9c61"
-    },
-    {
-      "mnemonic" : "c.sext.b",
-      "tags" : ["zcb"],
-      "form" : "C1",
-      "fixed" : [ "rs2" ],
-      "expand" : "sext.b",
-      "xform" : "C1_rsd",
-      "stencil" : "0x9c65"
-    },
-    {
-      "mnemonic" : "c.zext.h",
-      "tags" : ["zcb"],
-      "form" : "C1",
-      "fixed" : [ "rs2" ],
-      "expand" : "packw",
-      "xform" : "C1_rsd_zext_I0",
-      "stencil" : "0x9c69"
-    },
-    {
-      "mnemonic" : "c.sext.h",
-      "tags" : ["zcb"],
-      "form" : "C1",
-      "fixed" : [ "rs2" ],
-      "expand" : "sext.h",
-      "xform" : "C1_rsd",
-      "stencil" : "0x9c6d"
-    },
-    {
-      "mnemonic" : "c.not",
-      "tags" : ["zcb"],
-      "form" : "C1",
-      "fixed" : [ "rs2" ],
-      "expand" : "xori",
-      "xform" : "C1_rsd_Ineg1",
-      "stencil" : "0x9c75"
-    },
-    {
-      "mnemonic" : "c.mul",
-      "tags" : ["zcb"],
-      "form" : "C1",
-      "expand" : "mul",
-      "xform" : "CA",
-      "stencil" : "0x9c41"
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "c.lbu",
+    "tags" : ["zcb"],
+    "form" : "C0",
+    "ignore" : ["func2A"],
+    "fixed" : [ "imm3" ],
+    "expand" : "lbu",
+    "xform" : "C0_load_byte",
+    "stencil" : "0x8000"
+  },
+  {
+    "mnemonic" : "c.lh",
+    "tags" : ["zcb"],
+    "form" : "C0",
+    "fixed" : [ "imm3" ],
+    "expand" : "lh",
+    "xform" : "C0_load_half",
+    "stencil" : "0x8440"
+  },
+  {
+    "mnemonic" : "c.lhu",
+    "tags" : ["zcb"],
+    "form" : "C0",
+    "fixed" : [ "imm3" ],
+    "expand" : "lhu",
+    "xform" : "C0_load_half",
+    "stencil" : "0x8400"
+  },
+  {
+    "mnemonic" : "c.sb",
+    "tags" : ["zcb"],
+    "form" : "C0",
+    "ignore" : ["func2A"],
+    "fixed" : [ "imm3" ],
+    "expand" : "sb",
+    "xform" : "C0_store_byte",
+    "stencil" : "0x8800"
+  },
+  {
+    "mnemonic" : "c.sh",
+    "tags" : ["zcb"],
+    "form" : "C0",
+    "fixed" : [ "imm3" ],
+    "expand" : "sh",
+    "xform" : "C0_store_half",
+    "stencil" : "0x8c00"
+  },
+  {
+    "mnemonic" : "c.zext.b",
+    "tags" : ["zcb"],
+    "form" : "C1",
+    "fixed" : [ "rs2" ],
+    "expand" : "andi",
+    "xform" : "C1_rsd_I0xFF",
+    "stencil" : "0x9c61"
+  },
+  {
+    "mnemonic" : "c.sext.b",
+    "tags" : ["zcb"],
+    "form" : "C1",
+    "fixed" : [ "rs2" ],
+    "expand" : "sext.b",
+    "xform" : "C1_rsd",
+    "stencil" : "0x9c65"
+  },
+  {
+    "mnemonic" : "c.zext.h",
+    "tags" : ["zcb"],
+    "form" : "C1",
+    "fixed" : [ "rs2" ],
+    "expand" : "packw",
+    "xform" : "C1_rsd_zext_I0",
+    "stencil" : "0x9c69"
+  },
+  {
+    "mnemonic" : "c.sext.h",
+    "tags" : ["zcb"],
+    "form" : "C1",
+    "fixed" : [ "rs2" ],
+    "expand" : "sext.h",
+    "xform" : "C1_rsd",
+    "stencil" : "0x9c6d"
+  },
+  {
+    "mnemonic" : "c.not",
+    "tags" : ["zcb"],
+    "form" : "C1",
+    "fixed" : [ "rs2" ],
+    "expand" : "xori",
+    "xform" : "C1_rsd_Ineg1",
+    "stencil" : "0x9c75"
+  },
+  {
+    "mnemonic" : "c.mul",
+    "tags" : ["zcb"],
+    "form" : "C1",
+    "expand" : "mul",
+    "xform" : "CA",
+    "stencil" : "0x9c41"
+  }
+]

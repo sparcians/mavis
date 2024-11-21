@@ -1,23 +1,18 @@
-{
-  "xlen": [32, 64],
-  "extension": "zawrs",
-  "requires": ["zalrsc"],
-  "opcodes": [
-    {
-      "mnemonic" : "wrs.nto",
-      "tags" : ["zawrs"],
-      "form" : "R",
-      "fixed" : ["rs2", "rs1", "rd"],
-      "stencil" : "0xd00073",
-      "type" : ["system"]
-    },
-    {
-      "mnemonic" : "wrs.sto",
-      "tags" : ["zawrs"],
-      "form" : "R",
-      "fixed" : ["rs2", "rs1", "rd"],
-      "stencil" : "0x1d00073",
-      "type" : ["system"]
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "wrs.nto",
+    "tags" : ["zawrs"],
+    "form" : "R",
+    "fixed" : ["rs2", "rs1", "rd"],
+    "stencil" : "0xd00073",
+    "type" : ["system"]
+  },
+  {
+    "mnemonic" : "wrs.sto",
+    "tags" : ["zawrs"],
+    "form" : "R",
+    "fixed" : ["rs2", "rs1", "rd"],
+    "stencil" : "0x1d00073",
+    "type" : ["system"]
+  }
+]

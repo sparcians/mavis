@@ -1,25 +1,20 @@
-{
-  "xlen": 64,
-  "extension": "zfbfmin",
-  "requires": ["f"],
-  "opcodes": [
-    {
-      "mnemonic" : "fcvt.bf16.s",
-      "tags" : ["zfbfmin"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0x44800053",
-      "s-oper" : ["rs1","rd"],
-      "type" : ["float", "convert"]
-    },
-    {
-      "mnemonic" : "fcvt.s.bf16",
-      "tags" : ["zfbfmin"],
-      "form" : "Rfloat",
-      "fixed" : [ "rs2" ],
-      "stencil" : "0x40600053",
-      "s-oper" : ["rs1","rd"],
-      "type" : ["float", "convert"]
-    }
-  ]
-}
+[
+  {
+    "mnemonic" : "fcvt.bf16.s",
+    "tags" : ["zfbfmin"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x44800053",
+    "s-oper" : ["rs1","rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.s.bf16",
+    "tags" : ["zfbfmin"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x40600053",
+    "s-oper" : ["rs1","rd"],
+    "type" : ["float", "convert"]
+  }
+]

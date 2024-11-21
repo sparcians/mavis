@@ -1,81 +1,76 @@
-{
-  "xlen": 64,
-  "extension": "zba",
-  "meta_extension": "b",
-  "opcodes": [
-    {
-      "mnemonic" : "add.uw",
-      "tags" : ["zba", "b"],
-      "form" : "R",
-      "stencil" : "0x800003b",
-      "type" : ["int", "arith"],
-      "isa" : ["B"],
-      "l-oper" : "all"
+[
+  {
+    "mnemonic" : "add.uw",
+    "tags" : ["zba", "b"],
+    "form" : "R",
+    "stencil" : "0x800003b",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "sh1add",
+    "tags" : ["zba", "b"],
+    "form" : "R",
+    "stencil" : "0x20002033",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "sh1add.uw",
+    "tags" : ["zba", "b"],
+    "form" : "R",
+    "stencil" : "0x2000203b",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "sh2add",
+    "tags" : ["zba", "b"],
+    "form" : "R",
+    "stencil" : "0x20004033",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "sh2add.uw",
+    "tags" : ["zba", "b"],
+    "form" : "R",
+    "stencil" : "0x2000403b",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "sh3add",
+    "tags" : ["zba", "b"],
+    "form" : "R",
+    "stencil" : "0x20006033",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
     },
-    {
-      "mnemonic" : "sh1add",
-      "tags" : ["zba", "b"],
-      "form" : "R",
-      "stencil" : "0x20002033",
-      "type" : ["int", "arith"],
-      "isa" : ["B"],
-      "l-oper" : "all"
-    },
-    {
-      "mnemonic" : "sh1add.uw",
-      "tags" : ["zba", "b"],
-      "form" : "R",
-      "stencil" : "0x2000203b",
-      "type" : ["int", "arith"],
-      "isa" : ["B"],
-      "l-oper" : "all"
-    },
-    {
-      "mnemonic" : "sh2add",
-      "tags" : ["zba", "b"],
-      "form" : "R",
-      "stencil" : "0x20004033",
-      "type" : ["int", "arith"],
-      "isa" : ["B"],
-      "l-oper" : "all"
-    },
-    {
-      "mnemonic" : "sh2add.uw",
-      "tags" : ["zba", "b"],
-      "form" : "R",
-      "stencil" : "0x2000403b",
-      "type" : ["int", "arith"],
-      "isa" : ["B"],
-      "l-oper" : "all"
-    },
-    {
-      "mnemonic" : "sh3add",
-      "tags" : ["zba", "b"],
-      "form" : "R",
-      "stencil" : "0x20006033",
-      "type" : ["int", "arith"],
-      "isa" : ["B"],
-      "l-oper" : "all"
-      },
-    {
-      "mnemonic" : "sh3add.uw",
-      "tags" : ["zba", "b"],
-      "form" : "R",
-      "stencil" : "0x2000603b",
-      "type" : ["int", "arith"],
-      "isa" : ["B"],
-      "l-oper" : "all"
-    },
-    {
-      "mnemonic" : "slli.uw",
-      "tags" : ["zba", "b"],
-      "form" : "ISHW",
-      "xform" : "ISH",
-      "stencil" : "0x800101b",
-      "alias" : ["0xa00101b"],
-      "type" : ["int", "arith"],
-      "isa" : ["B"],
-      "l-oper" : "all"
-    }
-  ]
-}
+  {
+    "mnemonic" : "sh3add.uw",
+    "tags" : ["zba", "b"],
+    "form" : "R",
+    "stencil" : "0x2000603b",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "slli.uw",
+    "tags" : ["zba", "b"],
+    "form" : "ISHW",
+    "xform" : "ISH",
+    "stencil" : "0x800101b",
+    "alias" : ["0xa00101b"],
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  }
+]
