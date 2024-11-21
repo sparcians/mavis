@@ -122,7 +122,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            isa_files.emplace_back("json/isa_rv32cf.json");
+            isa_files.emplace_back("json/isa_rv32zcf.json");
         }
         mavis_facade.reset(new MavisType(isa_files, {"uarch/uarch_rv64g.json"}));
     }
