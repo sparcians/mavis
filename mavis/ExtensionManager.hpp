@@ -319,27 +319,39 @@ class ExtensionManager
 
                 uint32_t getMajorVersion() const { return major_ver_; }
                 uint32_t getMinorVersion() const { return minor_ver_; }
+                const std::string& getJSON() const { return json_; }
         };
 
     public:
         class Extension
         {
             private:
-                const std::string ext_;
-                const uint32_t major_ver_;
-                const uint32_t minor_ver_;
+                const ExtensionInfoPtr ext_;
 
             public:
-                explicit Extension(const ExtensionInfo& ext) :
-                    ext_(ext.getExtension()),
-                    major_ver_(ext.getMajorVersion()),
-                    minor_ver_(ext.getMinorVersion())
+                explicit Extension(const ExtensionInfoPtr& ext) :
+                    ext_(ext)
                 {
                 }
 
                 const std::string& getName() const
                 {
-                    return ext_;
+                    return ext_->getExtension();
+                }
+
+                const std::string& getJSON() const
+                {
+                    return ext_->getJSON();
+                }
+
+                uint32_t getMajorVersion() const
+                {
+                    return ext_->getMajorVersion();
+                }
+
+                uint32_t getMinorVersion() const
+                {
+                    return ext_->getMinorVersion();
                 }
         };
 
@@ -719,7 +731,7 @@ class ExtensionManager
                         const auto& ext_info = ext.second;
                         if(ext_info->isEnabled())
                         {
-                            enabled_extensions.emplace(ext_info->getExtension(), *ext_info);
+                            enabled_extensions.emplace(ext_info->getExtension(), ext_info);
                         }
                     }
                 }
@@ -730,6 +742,7 @@ class ExtensionManager
         using XLENMap = std::unordered_map<uint32_t, XLENState>;
         XLENMap extensions_;
         ExtensionMap enabled_extensions_;
+        mutable std::vector<std::string> enabled_jsons_;
 
         static inline std::string toLowercase_(const std::string& str)
         {
@@ -963,6 +976,16 @@ class ExtensionManager
             }
         }
 
+        template<typename InstType,
+                 typename AnnotationType,
+                 typename InstTypeAllocator,
+                 typename AnnotationTypeAllocator,
+                 typename ... MavisArgs>
+        Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator> constructMavis_(MavisArgs&&... mavis_args)
+        {
+            return Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(getJSONs(), std::forward<MavisArgs>(mavis_args)...);
+        }
+
     public:
         ExtensionManager(const std::string& isa, const std::string& spec_json) :
             isa_(toLowercase_(isa))
@@ -1143,4 +1166,98 @@ class ExtensionManager
         {
             return enabled_extensions_;
         }
+
+        const std::vector<std::string>& getJSONs() const
+        {
+            if(enabled_jsons_.empty())
+            {
+                for(const auto& ext: enabled_extensions_)
+                {
+                    enabled_jsons_.emplace_back(ext.second.getJSON());
+                }
+            }
+
+            return enabled_jsons_;
+        }
+
+        template<typename InstType,
+                 typename AnnotationType,
+                 typename InstTypeAllocator       = mavis::SharedPtrAllocator<InstType>,
+                 typename AnnotationTypeAllocator = mavis::SharedPtrAllocator<AnnotationType>>
+        Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>
+        constructMavis(const mavis::FileNameListType& anno_files,
+                       const mavis::InstUIDList& uid_list,
+                       const mavis::AnnotationOverrides& anno_overrides,
+                       const mavis::MatchSet<mavis::Pattern>& inclusions,
+                       const mavis::MatchSet<mavis::Pattern>& exclusions,
+                       const InstTypeAllocator& inst_allocator = mavis::SharedPtrAllocator<InstType>(),
+                       const AnnotationTypeAllocator& annotation_allocator = mavis::SharedPtrAllocator<AnnotationType>())
+        {
+            return constructMavis_<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
+                anno_files,
+                uid_list,
+                anno_overrides,
+                inclusions,
+                exclusions,
+                inst_allocator,
+                annotation_allocator
+            );
+        }
+
+        template<typename InstType,
+                 typename AnnotationType,
+                 typename InstTypeAllocator       = mavis::SharedPtrAllocator<InstType>,
+                 typename AnnotationTypeAllocator = mavis::SharedPtrAllocator<AnnotationType>>
+        Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>
+        constructMavis(const mavis::FileNameListType& anno_files,
+                       const mavis::InstUIDList& uid_list,
+                       const mavis::AnnotationOverrides& anno_overrides = {},
+                       const InstTypeAllocator& inst_allocator = mavis::SharedPtrAllocator<InstType>(),
+                       const AnnotationTypeAllocator& annotation_allocator = mavis::SharedPtrAllocator<AnnotationType>())
+        {
+            return constructMavis_<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
+                anno_files,
+                uid_list,
+                anno_overrides,
+                inst_allocator,
+                annotation_allocator
+            );
+        }
+
+        template<typename InstType,
+                 typename AnnotationType,
+                 typename InstTypeAllocator       = mavis::SharedPtrAllocator<InstType>,
+                 typename AnnotationTypeAllocator = mavis::SharedPtrAllocator<AnnotationType>>
+        Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>
+        constructMavis(const mavis::FileNameListType& anno_files,
+                       const mavis::MatchSet<mavis::Pattern>& inclusions,
+                       const mavis::MatchSet<mavis::Pattern>& exclusions,
+                       const InstTypeAllocator& inst_allocator = mavis::SharedPtrAllocator<InstType>(),
+                       const AnnotationTypeAllocator& annotation_allocator = mavis::SharedPtrAllocator<AnnotationType>())
+        {
+            return constructMavis_<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
+                anno_files,
+                inclusions,
+                exclusions,
+                inst_allocator,
+                annotation_allocator
+            );
+        }
+
+        template<typename InstType,
+                 typename AnnotationType,
+                 typename InstTypeAllocator       = mavis::SharedPtrAllocator<InstType>,
+                 typename AnnotationTypeAllocator = mavis::SharedPtrAllocator<AnnotationType>>
+        Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>
+        constructMavis(const mavis::FileNameListType& anno_files,
+                       const InstTypeAllocator& inst_allocator = mavis::SharedPtrAllocator<InstType>(),
+                       const AnnotationTypeAllocator& annotation_allocator = mavis::SharedPtrAllocator<AnnotationType>())
+        {
+            return constructMavis_<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
+                anno_files,
+                inst_allocator,
+                annotation_allocator
+            );
+        }
+
 };
