@@ -105,8 +105,14 @@
     {
       "xlen": 32,
       "extension": "m",
+      "enables": "zmmul",
       "meta_extension": "g",
       "json": "isa_rv32m.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zmmul",
+      "json": "isa_rv32zmmul.json"
     },
     {
       "xlen": 32,
@@ -199,8 +205,14 @@
     {
       "xlen": 64,
       "extension": "m",
+      "enables": "zmmul",
       "meta_extension": "g",
       "json": "isa_rv64m.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zmmul",
+      "json": "isa_rv64zmmul.json"
     },
     {
       "xlen": 64,
