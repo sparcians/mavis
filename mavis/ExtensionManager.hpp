@@ -165,6 +165,15 @@ namespace mavis
             }
     };
 
+    class ELFNotFoundException : public ExtensionManagerException
+    {
+        public:
+            explicit ELFNotFoundException(const std::string& elf) :
+                ExtensionManagerException("Could not open ELF " + elf)
+            {
+            }
+    };
+
     class ISANotFoundInELFException : public ExtensionManagerException
     {
         public:
@@ -1035,7 +1044,7 @@ class ExtensionManager
             return Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(getJSONs(), std::forward<MavisArgs>(mavis_args)...);
         }
 
-        std::bitset<128> readULEB128_(const char* ptr, const char** end = nullptr)
+        static std::bitset<128> readULEB128_(const char* ptr, const char** end = nullptr)
         {
             std::bitset<128> result = 0;
             size_t shift = 0;
@@ -1057,6 +1066,13 @@ class ExtensionManager
             }
 
             return result;
+        }
+
+        static uint32_t readU32_(const char* ptr, const ELFIO::endianness_convertor& convertor)
+        {
+            uint32_t val;
+            std::memcpy(&val, ptr, sizeof(uint32_t));
+            return convertor(val);
         }
 
     public:
@@ -1085,11 +1101,14 @@ class ExtensionManager
             ELFIO::elfio elf_reader;
             if(!elf_reader.load(elf))
             {
+                throw mavis::ELFNotFoundException(elf);
             }
 
             // Print ELF file sections info
             const ELFIO::Elf_Half sec_num = elf_reader.sections.size();
             bool found = false;
+
+            const auto& endian_conv = elf_reader.get_convertor();
 
             for ( int i = 0; !found && i < sec_num; ++i ) {
                 const ELFIO::section* psec = elf_reader.sections[i];
@@ -1113,7 +1132,7 @@ class ExtensionManager
 
                         while(!riscv_subsec && sub_sec < end)
                         {
-                            std::memcpy(&sub_section_length, sub_sec, sizeof(sub_section_length));
+                            sub_section_length = readU32_(sub_sec, endian_conv);
                             const char* vendor = sub_sec + sizeof(sub_section_length);
                             if(riscv_vendor.compare(vendor) == 0)
                             {
@@ -1137,7 +1156,7 @@ class ExtensionManager
                         {
                             const char* ptr = nullptr;
                             const std::bitset<128> sub_sub_sec_tag = readULEB128_(sub_sub_sec, &ptr);
-                            std::memcpy(&sub_sub_sec_len, ptr, sizeof(sub_sub_sec_len));
+                            sub_sub_sec_len = readU32_(ptr, endian_conv);
 
                             const char* const sub_sub_sec_end = sub_sub_sec + sub_sub_sec_len;
 
@@ -1176,6 +1195,7 @@ class ExtensionManager
 
             if(!found)
             {
+                throw mavis::ISANotFoundInELFException(elf);
             }
         }
 
