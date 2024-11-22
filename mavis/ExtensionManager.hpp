@@ -164,6 +164,15 @@ namespace mavis
             {
             }
     };
+
+    class ISANotFoundInELFException : public ExtensionManagerException
+    {
+        public:
+            explicit ISANotFoundInELFException(const std::string& elf) :
+                ExtensionManagerException("Could not find a RISCV ISA string in " + elf)
+            {
+            }
+    };
 }
 
 class ExtensionManager
@@ -1026,6 +1035,30 @@ class ExtensionManager
             return Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(getJSONs(), std::forward<MavisArgs>(mavis_args)...);
         }
 
+        std::bitset<128> readULEB128_(const char* ptr, const char** end = nullptr)
+        {
+            std::bitset<128> result = 0;
+            size_t shift = 0;
+            while (true)
+            {
+                const char cur_byte = *ptr;
+                result |= std::bitset<128>(cur_byte & 0x7f) << shift;
+                ++ptr;
+                if ((cur_byte >> 7) == 0)
+                {
+                    break;
+                }
+                shift += 7;
+            }
+
+            if(end != nullptr)
+            {
+                *end = ptr;
+            }
+
+            return result;
+        }
+
     public:
         explicit ExtensionManager(const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR) :
             unknown_extension_action_(unknown_extension_action)
@@ -1041,20 +1074,25 @@ class ExtensionManager
 
         static ExtensionManager fromELF(const std::string& elf, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
         {
+            ExtensionManager man(spec_json, unknown_extension_action);
+            man.setISAFromELF(elf);
+            return man;
         }
 
         void setISAFromELF(const std::string& elf)
         {
-            static constexpr Elf_Word SHT_RISCV_ATTRIBUTES = 0x70000003;
+            static constexpr ELFIO::Elf_Word SHT_RISCV_ATTRIBUTES = 0x70000003;
             ELFIO::elfio elf_reader;
             if(!elf_reader.load(elf))
             {
             }
 
             // Print ELF file sections info
-            const Elf_Half sec_num = reader.sections.size();
-            for ( int i = 0; i < sec_num; ++i ) {
-                const section* psec = reader.sections[i];
+            const ELFIO::Elf_Half sec_num = elf_reader.sections.size();
+            bool found = false;
+
+            for ( int i = 0; !found && i < sec_num; ++i ) {
+                const ELFIO::section* psec = elf_reader.sections[i];
                 if(psec->get_type() == SHT_RISCV_ATTRIBUTES && psec->get_name() == ".riscv.attributes")
                 {
                     const char* data = psec->get_data();
@@ -1067,38 +1105,77 @@ class ExtensionManager
                     const char* riscv_subsec = nullptr;
                     uint32_t sub_section_length = 0;
                     const char* sub_sec = data + 1;
-                    static constexpr size_t riscv_vendor_length = strlen("riscv") + 1;
 
-                    while(!riscv_subsec && data < end)
+                    while(!found && sub_sec < end)
                     {
-                        std::memcpy(&sub_section_length, sub_sec, sizeof(sub_section_length));
-                        const char* vendor = sub_sec + sizeof(sub_section_length);
-                        if(strcmp(vendor, "riscv") == 0)
+                        static constexpr std::string_view riscv_vendor("riscv");
+                        static constexpr size_t riscv_vendor_length = riscv_vendor.size() + 1;
+
+                        while(!riscv_subsec && sub_sec < end)
                         {
-                            riscv_subsec = sub_sec;
+                            std::memcpy(&sub_section_length, sub_sec, sizeof(sub_section_length));
+                            const char* vendor = sub_sec + sizeof(sub_section_length);
+                            if(riscv_vendor.compare(vendor) == 0)
+                            {
+                                riscv_subsec = sub_sec;
+                                break;
+                            }
+                            sub_sec += sub_section_length;
+                        }
+
+                        if(!riscv_subsec)
+                        {
                             break;
                         }
-                        sub_sec += sub_section_length;
-                    }
 
-                    if(!riscv_subsec)
-                    {
-                    }
+                        static constexpr uint32_t Tag_file = 1;
+                        static constexpr uint32_t Tag_RISCV_arch = 5;
 
-                    const char* sub_sub_sec = sub_sec + sizeof(sub_section_length) + riscv_vendor_length;
-                    while()
-                    {
-                        std::bitset<128> result = 0;
-                        size_t shift = 0;
-                        while (true) {
-                          byte = next byte in input;
-                          result |= (low-order 7 bits of byte) << shift;
-                          if (high-order bit of byte == 0)
-                            break;
-                          shift += 7;
+                        const char* sub_sub_sec = sub_sec + sizeof(sub_section_length) + riscv_vendor_length;
+                        uint32_t sub_sub_sec_len = 0;
+                        do
+                        {
+                            const char* ptr = nullptr;
+                            const std::bitset<128> sub_sub_sec_tag = readULEB128_(sub_sub_sec, &ptr);
+                            std::memcpy(&sub_sub_sec_len, ptr, sizeof(sub_sub_sec_len));
+
+                            const char* const sub_sub_sec_end = sub_sub_sec + sub_sub_sec_len;
+
+                            if(sub_sub_sec_tag == Tag_file)
+                            {
+                                ptr += sizeof(sub_sub_sec_len);
+
+                                while(ptr < sub_sub_sec_end)
+                                {
+                                    const std::bitset<128> tag = readULEB128_(ptr, &ptr);
+                                    if(tag == Tag_RISCV_arch)
+                                    {
+                                        setISA(ptr);
+                                        found = true;
+                                        break;
+                                    }
+                                    else if(tag.test(0)) // string value
+                                    {
+                                        ptr += strlen(ptr) + 1;
+                                    }
+                                    else // ULEB128 value
+                                    {
+                                        readULEB128_(ptr, &ptr);
+                                    }
+                                }
+                            }
+
+                            sub_sub_sec += sub_sub_sec_len;
                         }
+                        while(!found && sub_sub_sec < end);
+
+                        riscv_subsec = nullptr;
                     }
                 }
+            }
+
+            if(!found)
+            {
             }
         }
 
