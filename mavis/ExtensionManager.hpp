@@ -9,6 +9,8 @@
 #include "json.hpp"
 #include "mavis/Mavis.h"
 
+#include "elfio/elfio.hpp"
+
 namespace mavis
 {
     class ExtensionManagerException : public std::exception
@@ -768,8 +770,8 @@ class ExtensionManager
         };
 
         const UnknownExtensionAction unknown_extension_action_;
-        const std::string isa_;
-        uint32_t xlen_;
+        std::string isa_;
+        uint32_t xlen_ = 0;
         using XLENMap = std::unordered_map<uint32_t, XLENState>;
         XLENMap extensions_;
         ExtensionMap enabled_extensions_;
@@ -1025,18 +1027,91 @@ class ExtensionManager
         }
 
     public:
-        ExtensionManager(const std::string& isa, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR) :
-            unknown_extension_action_(unknown_extension_action),
-            isa_(toLowercase_(isa))
+        explicit ExtensionManager(const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR) :
+            unknown_extension_action_(unknown_extension_action)
         {
             processISASpecJSON_(spec_json);
+        }
 
+        ExtensionManager(const std::string& isa, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR) :
+            ExtensionManager(spec_json, unknown_extension_action)
+        {
+            setISA(isa);
+        }
+
+        static ExtensionManager fromELF(const std::string& elf, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
+        {
+        }
+
+        void setISAFromELF(const std::string& elf)
+        {
+            static constexpr Elf_Word SHT_RISCV_ATTRIBUTES = 0x70000003;
+            ELFIO::elfio elf_reader;
+            if(!elf_reader.load(elf))
+            {
+            }
+
+            // Print ELF file sections info
+            const Elf_Half sec_num = reader.sections.size();
+            for ( int i = 0; i < sec_num; ++i ) {
+                const section* psec = reader.sections[i];
+                if(psec->get_type() == SHT_RISCV_ATTRIBUTES && psec->get_name() == ".riscv.attributes")
+                {
+                    const char* data = psec->get_data();
+                    const char* const end = data + psec->get_size();
+                    if(*data != 'A')
+                    {
+                        continue;
+                    }
+
+                    const char* riscv_subsec = nullptr;
+                    uint32_t sub_section_length = 0;
+                    const char* sub_sec = data + 1;
+                    static constexpr size_t riscv_vendor_length = strlen("riscv") + 1;
+
+                    while(!riscv_subsec && data < end)
+                    {
+                        std::memcpy(&sub_section_length, sub_sec, sizeof(sub_section_length));
+                        const char* vendor = sub_sec + sizeof(sub_section_length);
+                        if(strcmp(vendor, "riscv") == 0)
+                        {
+                            riscv_subsec = sub_sec;
+                            break;
+                        }
+                        sub_sec += sub_section_length;
+                    }
+
+                    if(!riscv_subsec)
+                    {
+                    }
+
+                    const char* sub_sub_sec = sub_sec + sizeof(sub_section_length) + riscv_vendor_length;
+                    while()
+                    {
+                        std::bitset<128> result = 0;
+                        size_t shift = 0;
+                        while (true) {
+                          byte = next byte in input;
+                          result |= (low-order 7 bits of byte) << shift;
+                          if (high-order bit of byte == 0)
+                            break;
+                          shift += 7;
+                        }
+                    }
+                }
+            }
+        }
+
+        void setISA(const std::string& isa)
+        {
             // ISA string must at least contain rv, the XLEN, and the base ISA,
             // e.g. rv32i
             static constexpr size_t MIN_LENGTH = 5;
 
+            isa_ = toLowercase_(isa);
+
             std::string_view isa_view(isa_);
-            if(isa_view.size() < MIN_LENGTH || isa_view.find("rv") != 0 || !std::isdigit(isa_view[2]))
+            if(isa_view.size() < MIN_LENGTH || isa_view.find("rv") != 0 || !isdigit(isa_view[2]))
             {
                 throw mavis::InvalidISAStringException(isa_);
             }
@@ -1073,7 +1148,7 @@ class ExtensionManager
             }
 
             auto& xlen_extension = xlen_extension_it->second;
-            const char base_isa = isa_view.front();
+            const std::string base_isa(1, isa_view.front());
 
             xlen_extension.enableBaseExtension(base_isa);
 
@@ -1082,7 +1157,9 @@ class ExtensionManager
 
             if(!isa_view.empty())
             {
-                auto in_single_char_ext_range = [&isa_view](char& front_char)
+                char ext;
+
+                auto get_char_if_valid = [&isa_view](char& front_char)
                 {
                     if(isa_view.empty())
                     {
@@ -1092,10 +1169,33 @@ class ExtensionManager
 
                     front_char = isa_view.front();
 
-                    return !isOneOf_(front_char, 'z', 's', 'x');
+                    return true;
                 };
 
-                char ext;
+                auto in_single_char_ext_range = [&get_char_if_valid](char& front_char)
+                {
+                    return get_char_if_valid(front_char) && !isOneOf_(front_char, 'z', 's', 'x');
+                };
+
+                if(get_char_if_valid(ext) && isdigit(ext))
+                {
+                    uint32_t major_ver = digitToInt_(ext);
+                    uint32_t minor_ver = DEFAULT_MINOR_VER_;
+                    isa_view.remove_prefix(1);
+                    if(get_char_if_valid(ext) && ext == 'p')
+                    {
+                        isa_view.remove_prefix(1);
+                        if(!get_char_if_valid(ext) || !isdigit(ext))
+                        {
+                            throw mavis::InvalidISAStringException(isa_, "Invalid version number specified for extension " + base_isa);
+                        }
+
+                        minor_ver = digitToInt_(ext);
+                        isa_view.remove_prefix(1);
+                    }
+                    xlen_extension.setExtensionVersion(base_isa, major_ver, minor_ver);
+                }
+
                 while(in_single_char_ext_range(ext))
                 {
                     if(ext == '_')
