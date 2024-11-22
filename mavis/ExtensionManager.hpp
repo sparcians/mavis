@@ -1044,10 +1044,14 @@ class ExtensionManager
             return Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(getJSONs(), std::forward<MavisArgs>(mavis_args)...);
         }
 
-        static std::bitset<128> readULEB128_(const char* ptr, const char** end = nullptr)
+        // Reads a ULEB128 value into the result bitset from the buffer at ptr
+        // Returns a pointer to the first byte after the ULEB128 value
+        // Based on the pseudocode at https://en.wikipedia.org/wiki/LEB128#Decode_unsigned_integer
+        static const char* readULEB128_(std::bitset<128>& result, const char* ptr)
         {
-            std::bitset<128> result = 0;
             size_t shift = 0;
+
+            result.reset();
             while (true)
             {
                 const char cur_byte = *ptr;
@@ -1060,12 +1064,7 @@ class ExtensionManager
                 shift += 7;
             }
 
-            if(end != nullptr)
-            {
-                *end = ptr;
-            }
-
-            return result;
+            return ptr;
         }
 
         static uint32_t readU32_(const char* ptr, const ELFIO::endianness_convertor& convertor)
@@ -1073,6 +1072,94 @@ class ExtensionManager
             uint32_t val;
             std::memcpy(&val, ptr, sizeof(uint32_t));
             return convertor(val);
+        }
+
+        static const char* findISAStringInELF_(const ELFIO::elfio& elf_reader)
+        {
+            static constexpr ELFIO::Elf_Word SHT_RISCV_ATTRIBUTES = 0x70000003;
+            static constexpr std::string_view riscv_attributes_sec_name(".riscv.attributes");
+            static constexpr std::string_view riscv_vendor("riscv");
+            static constexpr size_t riscv_vendor_length = riscv_vendor.size() + 1;
+            static constexpr uint32_t Tag_file = 1;
+            static constexpr uint32_t Tag_RISCV_arch = 5;
+
+            const ELFIO::section* riscv_attr_sec = elf_reader.sections[riscv_attributes_sec_name];
+
+            if(riscv_attr_sec && riscv_attr_sec->get_type() == SHT_RISCV_ATTRIBUTES)
+            {
+                const char* data = riscv_attr_sec->get_data();
+                const char* const end = data + riscv_attr_sec->get_size();
+
+                // The .riscv.attributes section should start with an 'A' byte, followed by the first sub-section
+                if(*data == 'A')
+                {
+                    const auto& endian_conv = elf_reader.get_convertor();
+
+                    const char* sub_sec = data + 1;
+
+                    std::bitset<128> tag;
+
+                    while(sub_sec < end)
+                    {
+                        // Each sub-section has the following format:
+                        // * length (uint32_t)
+                        // * vendor name (null-terminated string)
+                        // * sub-sub-sections
+                        const uint32_t sub_section_length = readU32_(sub_sec, endian_conv);
+                        const char* vendor = sub_sec + sizeof(uint32_t);
+
+                        // The ISA string lives in the "riscv" sub-section
+                        if(riscv_vendor.compare(vendor) == 0)
+                        {
+                            const char* sub_sub_sec = vendor + riscv_vendor_length;
+
+                            while(sub_sub_sec < end)
+                            {
+                                // Each sub-sub-section has the following format:
+                                // * tag (ULEB128)
+                                // * length (uint32_t)
+                                // * attribute-value pairs
+                                // Each attribute-value pair consists of a ULEB128 tag and either:
+                                // * ULEB128 integer (if attribute tag is even)
+                                // * null-terminated string (if attribute tag is odd)
+                                const char* ptr = readULEB128_(tag, sub_sub_sec);
+                                const uint32_t sub_sub_sec_len = readU32_(ptr, endian_conv);
+
+                                // The ISA string applies to the entire ELF, so its sub-sub-section should have tag == Tag_file
+                                if(tag == Tag_file)
+                                {
+                                    const char* const sub_sub_sec_end = sub_sub_sec + sub_sub_sec_len;
+
+                                    ptr += sizeof(uint32_t);
+
+                                    // ptr now points to the first attribute-value pair
+                                    while(ptr < sub_sub_sec_end)
+                                    {
+                                        ptr = readULEB128_(tag, ptr);
+                                        if(tag == Tag_RISCV_arch) // This is the ISA string. It starts at ptr
+                                        {
+                                            return ptr;
+                                        }
+                                        else if(tag.test(0)) // Some other string value
+                                        {
+                                            ptr += strlen(ptr) + 1;
+                                        }
+                                        else // ULEB128 value
+                                        {
+                                            ptr = readULEB128_(tag, ptr);
+                                        }
+                                    }
+                                }
+                                // Jump to the next sub-sub-section
+                                sub_sub_sec += sub_sub_sec_len;
+                            }
+                        }
+                        sub_sec += sub_section_length;
+                    }
+                }
+            }
+
+            return nullptr;
         }
 
     public:
@@ -1097,106 +1184,20 @@ class ExtensionManager
 
         void setISAFromELF(const std::string& elf)
         {
-            static constexpr ELFIO::Elf_Word SHT_RISCV_ATTRIBUTES = 0x70000003;
             ELFIO::elfio elf_reader;
             if(!elf_reader.load(elf))
             {
                 throw mavis::ELFNotFoundException(elf);
             }
 
-            // Print ELF file sections info
-            const ELFIO::Elf_Half sec_num = elf_reader.sections.size();
-            bool found = false;
+            const char* isa_str = findISAStringInELF_(elf_reader);
 
-            const auto& endian_conv = elf_reader.get_convertor();
-
-            for ( int i = 0; !found && i < sec_num; ++i ) {
-                const ELFIO::section* psec = elf_reader.sections[i];
-                if(psec->get_type() == SHT_RISCV_ATTRIBUTES && psec->get_name() == ".riscv.attributes")
-                {
-                    const char* data = psec->get_data();
-                    const char* const end = data + psec->get_size();
-                    if(*data != 'A')
-                    {
-                        continue;
-                    }
-
-                    const char* riscv_subsec = nullptr;
-                    uint32_t sub_section_length = 0;
-                    const char* sub_sec = data + 1;
-
-                    while(!found && sub_sec < end)
-                    {
-                        static constexpr std::string_view riscv_vendor("riscv");
-                        static constexpr size_t riscv_vendor_length = riscv_vendor.size() + 1;
-
-                        while(!riscv_subsec && sub_sec < end)
-                        {
-                            sub_section_length = readU32_(sub_sec, endian_conv);
-                            const char* vendor = sub_sec + sizeof(sub_section_length);
-                            if(riscv_vendor.compare(vendor) == 0)
-                            {
-                                riscv_subsec = sub_sec;
-                                break;
-                            }
-                            sub_sec += sub_section_length;
-                        }
-
-                        if(!riscv_subsec)
-                        {
-                            break;
-                        }
-
-                        static constexpr uint32_t Tag_file = 1;
-                        static constexpr uint32_t Tag_RISCV_arch = 5;
-
-                        const char* sub_sub_sec = sub_sec + sizeof(sub_section_length) + riscv_vendor_length;
-                        uint32_t sub_sub_sec_len = 0;
-                        do
-                        {
-                            const char* ptr = nullptr;
-                            const std::bitset<128> sub_sub_sec_tag = readULEB128_(sub_sub_sec, &ptr);
-                            sub_sub_sec_len = readU32_(ptr, endian_conv);
-
-                            const char* const sub_sub_sec_end = sub_sub_sec + sub_sub_sec_len;
-
-                            if(sub_sub_sec_tag == Tag_file)
-                            {
-                                ptr += sizeof(sub_sub_sec_len);
-
-                                while(ptr < sub_sub_sec_end)
-                                {
-                                    const std::bitset<128> tag = readULEB128_(ptr, &ptr);
-                                    if(tag == Tag_RISCV_arch)
-                                    {
-                                        setISA(ptr);
-                                        found = true;
-                                        break;
-                                    }
-                                    else if(tag.test(0)) // string value
-                                    {
-                                        ptr += strlen(ptr) + 1;
-                                    }
-                                    else // ULEB128 value
-                                    {
-                                        readULEB128_(ptr, &ptr);
-                                    }
-                                }
-                            }
-
-                            sub_sub_sec += sub_sub_sec_len;
-                        }
-                        while(!found && sub_sub_sec < end);
-
-                        riscv_subsec = nullptr;
-                    }
-                }
-            }
-
-            if(!found)
+            if(!isa_str)
             {
                 throw mavis::ISANotFoundInELFException(elf);
             }
+
+            setISA(isa_str);
         }
 
         void setISA(const std::string& isa)
