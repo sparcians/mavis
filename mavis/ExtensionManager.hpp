@@ -328,6 +328,13 @@ class ExtensionManager
         };
 
     public:
+        enum class UnknownExtensionAction
+        {
+            ERROR,
+            WARN,
+            IGNORE
+        };
+
         class Extension
         {
             private:
@@ -439,6 +446,7 @@ class ExtensionManager
                 };
 
                 const uint32_t xlen_;
+                const UnknownExtensionAction unknown_extension_action_;
                 std::unordered_set<std::string> base_extensions_;
                 std::unordered_map<std::string, ExtensionInfoPtr> extensions_;
                 std::unordered_map<std::string, std::vector<std::string>> meta_extensions_;
@@ -503,8 +511,9 @@ class ExtensionManager
                 }
 
             public:
-                explicit XLENState(const uint32_t xlen) :
-                    xlen_(xlen)
+                XLENState(const uint32_t xlen, const UnknownExtensionAction unknown_extension_action) :
+                    xlen_(xlen),
+                    unknown_extension_action_(unknown_extension_action)
                 {
                 }
 
@@ -513,7 +522,7 @@ class ExtensionManager
                     return *getExtensionInfo_(extension);
                 }
 
-                ExtensionInfo& addExtension(const std::string& extension, const std::string& json)
+                ExtensionInfo& addExtension(const std::string& extension, const std::string& json = "")
                 {
                     if(const auto it = extensions_.find(extension); it != extensions_.end())
                     {
@@ -715,7 +724,23 @@ class ExtensionManager
                     }
                     else
                     {
-                        getExtensionInfo_(ext)->setEnabled();
+                        try
+                        {
+                            getExtensionInfo_(ext)->setEnabled();
+                        }
+                        catch(const mavis::UnknownExtensionException&)
+                        {
+                            switch(unknown_extension_action_)
+                            {
+                                case UnknownExtensionAction::ERROR:
+                                    throw;
+                                case UnknownExtensionAction::WARN:
+                                    std::cerr << "WARNING: ISA string contains an unknown extension (" << ext << "). Ignoring.";
+                                    break;
+                                case UnknownExtensionAction::IGNORE:
+                                    break;
+                            }
+                        }
                     }
                 }
 
@@ -742,6 +767,7 @@ class ExtensionManager
                 }
         };
 
+        const UnknownExtensionAction unknown_extension_action_;
         const std::string isa_;
         uint32_t xlen_;
         using XLENMap = std::unordered_map<uint32_t, XLENState>;
@@ -822,7 +848,7 @@ class ExtensionManager
 
             for(const auto xlen: xlens)
             {
-                auto& xlen_extensions = extensions_.try_emplace(xlen, xlen).first->second;
+                auto& xlen_extensions = extensions_.try_emplace(xlen, xlen, unknown_extension_action_).first->second;
 
                 const bool is_base_extension = getBoolJSONValue_(ext_obj, "is_base_extension");
 
@@ -999,7 +1025,8 @@ class ExtensionManager
         }
 
     public:
-        ExtensionManager(const std::string& isa, const std::string& spec_json) :
+        ExtensionManager(const std::string& isa, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR) :
+            unknown_extension_action_(unknown_extension_action),
             isa_(toLowercase_(isa))
         {
             processISASpecJSON_(spec_json);
