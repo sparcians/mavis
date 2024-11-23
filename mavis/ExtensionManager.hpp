@@ -355,7 +355,17 @@ class ExtensionManager
             IGNORE
         };
 
-        class Extension
+        class ExtensionBase
+        {
+            public:
+                virtual ~ExtensionBase() = default;
+                virtual const std::string& getName() const = 0;
+                virtual const std::string& getJSON() const = 0;
+                virtual uint32_t getMajorVersion() const = 0;
+                virtual uint32_t getMinorVersion() const = 0;
+        };
+
+        class Extension : public ExtensionBase
         {
             private:
                 const ExtensionInfoPtr ext_;
@@ -366,28 +376,61 @@ class ExtensionManager
                 {
                 }
 
-                const std::string& getName() const
+                const std::string& getName() const override final
                 {
                     return ext_->getExtension();
                 }
 
-                const std::string& getJSON() const
+                const std::string& getJSON() const override final
                 {
                     return ext_->getJSON();
                 }
 
-                uint32_t getMajorVersion() const
+                uint32_t getMajorVersion() const override final
                 {
                     return ext_->getMajorVersion();
                 }
 
-                uint32_t getMinorVersion() const
+                uint32_t getMinorVersion() const override final
                 {
                     return ext_->getMinorVersion();
                 }
         };
 
-        using ExtensionMap = std::unordered_map<std::string, Extension>;
+        class MetaExtension : public ExtensionBase
+        {
+            private:
+                const std::string ext_;
+
+            public:
+                explicit MetaExtension(const std::string& ext) :
+                    ext_(ext)
+                {
+                }
+
+                const std::string& getName() const override final
+                {
+                    return ext_;
+                }
+
+                const std::string& getJSON() const override final
+                {
+                    static const std::string EMPTY{};
+                    return EMPTY;
+                }
+
+                uint32_t getMajorVersion() const override final
+                {
+                    return 0;
+                }
+
+                uint32_t getMinorVersion() const override final
+                {
+                    return 0;
+                }
+        };
+
+        using ExtensionMap = std::unordered_map<std::string, std::unique_ptr<ExtensionBase>>;
 
     private:
         class XLENState
@@ -470,8 +513,10 @@ class ExtensionManager
                 std::unordered_set<std::string> base_extensions_;
                 std::unordered_map<std::string, ExtensionInfoPtr> extensions_;
                 std::unordered_map<std::string, std::vector<std::string>> meta_extensions_;
+                std::unordered_map<std::string, bool> config_extensions_;
                 std::unordered_map<std::string, std::string> aliases_;
                 std::list<UnresolvedDependency> pending_dependencies_;
+                std::unordered_set<std::string> enabled_meta_extensions_;
 
                 const ExtensionInfoPtr& getExtensionInfo_(const std::string& extension) const
                 {
@@ -552,6 +597,11 @@ class ExtensionManager
                     const auto result = extensions_.emplace(extension, std::make_shared<ExtensionInfo>(extension, json));
 
                     return *result.first->second;
+                }
+
+                void addConfigExtension(const std::string& ext)
+                {
+                    config_extensions_.emplace(ext, false);
                 }
 
                 void addBaseExtension(const std::string& ext)
@@ -718,7 +768,7 @@ class ExtensionManager
                     {
                         setExtensionVersion(alias_it->second, major_ver, minor_ver);
                     }
-                    else
+                    else if(!config_extensions_.count(ext))
                     {
                         getExtensionInfo_(ext)->setVersion(major_ver, minor_ver);
                     }
@@ -731,6 +781,7 @@ class ExtensionManager
 
                 void enableExtension(const std::string& ext)
                 {
+                    bool is_meta = true;
                     if(auto it = meta_extensions_.find(ext); it != meta_extensions_.end())
                     {
                         for(const auto& child: it->second)
@@ -742,11 +793,16 @@ class ExtensionManager
                     {
                         enableExtension(alias_it->second);
                     }
+                    else if(auto config_it = config_extensions_.find(ext); config_it != config_extensions_.end())
+                    {
+                        config_it->second = true;
+                    }
                     else
                     {
                         try
                         {
                             getExtensionInfo_(ext)->setEnabled();
+                            is_meta = false;
                         }
                         catch(const mavis::UnknownExtensionException&)
                         {
@@ -762,6 +818,11 @@ class ExtensionManager
                             }
                         }
                     }
+
+                    if(is_meta)
+                    {
+                        enabled_meta_extensions_.emplace(ext);
+                    }
                 }
 
                 void enableExtension(const char ext)
@@ -769,7 +830,7 @@ class ExtensionManager
                     enableExtension(std::string(1, ext));
                 }
 
-                void finalize(std::unordered_map<std::string, Extension>& enabled_extensions)
+                void finalize(ExtensionMap& enabled_extensions)
                 {
                     for(const auto& ext: extensions_)
                     {
@@ -781,8 +842,13 @@ class ExtensionManager
                         const auto& ext_info = ext.second;
                         if(ext_info->isEnabled())
                         {
-                            enabled_extensions.emplace(ext_info->getExtension(), ext_info);
+                            enabled_extensions.emplace(ext_info->getExtension(), std::make_unique<Extension>(ext_info));
                         }
+                    }
+
+                    for(const auto& ext: enabled_meta_extensions_)
+                    {
+                        enabled_extensions.emplace(ext, std::make_unique<MetaExtension>(ext));
                     }
                 }
         };
@@ -843,9 +909,19 @@ class ExtensionManager
             return digit - '0';
         }
 
-        template<bool is_meta_extension>
+        enum class ExtensionType
+        {
+            META,
+            CONFIG,
+            NORMAL
+        };
+
+        template<ExtensionType extension_type>
         void processExtension_(const nlohmann::json& ext_obj)
         {
+            static constexpr bool is_normal_extension = extension_type == ExtensionType::NORMAL;
+            static constexpr bool is_config_extension = extension_type == ExtensionType::CONFIG;
+
             const std::string ext = getRequiredJSONValue_<std::string>(ext_obj, "extension");
 
             std::vector<uint32_t> xlens;
@@ -870,9 +946,7 @@ class ExtensionManager
             {
                 auto& xlen_extensions = extensions_.try_emplace(xlen, xlen, unknown_extension_action_).first->second;
 
-                const bool is_base_extension = getBoolJSONValue_(ext_obj, "is_base_extension");
-
-                if constexpr(!is_meta_extension)
+                if constexpr(is_normal_extension)
                 {
                     if(auto json_it = ext_obj.find("json"); json_it != ext_obj.end())
                     {
@@ -883,10 +957,21 @@ class ExtensionManager
                         xlen_extensions.addExtension(ext);
                     }
                 }
-
-                if(is_base_extension)
+                else if constexpr(is_config_extension)
                 {
-                    xlen_extensions.addBaseExtension(ext);
+                    xlen_extensions.addConfigExtension(ext);
+                }
+
+                if(getBoolJSONValue_(ext_obj, "is_base_extension"))
+                {
+                    if constexpr(is_config_extension)
+                    {
+                        throw mavis::MetaExtensionUnexpectedJSONKeyException("is_base_extension");
+                    }
+                    else
+                    {
+                        xlen_extensions.addBaseExtension(ext);
+                    }
                 }
 
                 if(const auto it = ext_obj.find("meta_extension"); it != ext_obj.end())
@@ -906,7 +991,7 @@ class ExtensionManager
 
                 if(const auto it = ext_obj.find("aliases"); it != ext_obj.end())
                 {
-                    if constexpr(is_meta_extension)
+                    if constexpr(!is_normal_extension)
                     {
                         throw mavis::MetaExtensionUnexpectedJSONKeyException("aliases");
                     }
@@ -919,7 +1004,7 @@ class ExtensionManager
 
                 if(const auto it = ext_obj.find("enables"); it != ext_obj.end())
                 {
-                    if constexpr(is_meta_extension)
+                    if constexpr(!is_normal_extension)
                     {
                         throw mavis::MetaExtensionUnexpectedJSONKeyException("enables");
                     }
@@ -932,7 +1017,7 @@ class ExtensionManager
 
                 if(const auto it = ext_obj.find("enabled_by"); it != ext_obj.end())
                 {
-                    if constexpr(is_meta_extension)
+                    if constexpr(!is_normal_extension)
                     {
                         throw mavis::MetaExtensionUnexpectedJSONKeyException("enabled_by");
                     }
@@ -953,7 +1038,7 @@ class ExtensionManager
 
                 if(const auto it = ext_obj.find("requires"); it != ext_obj.end())
                 {
-                    if constexpr(is_meta_extension)
+                    if constexpr(!is_normal_extension)
                     {
                         throw mavis::MetaExtensionUnexpectedJSONKeyException("requires");
                     }
@@ -966,7 +1051,7 @@ class ExtensionManager
 
                 if(const auto it = ext_obj.find("conflicts"); it != ext_obj.end())
                 {
-                    if constexpr(is_meta_extension)
+                    if constexpr(!is_normal_extension)
                     {
                         throw mavis::MetaExtensionUnexpectedJSONKeyException("conflicts");
                     }
@@ -1010,7 +1095,15 @@ class ExtensionManager
                 {
                     for(const auto& meta_ext_obj: *meta_extensions_it)
                     {
-                        processExtension_<true>(meta_ext_obj);
+                        processExtension_<ExtensionType::META>(meta_ext_obj);
+                    }
+                }
+
+                if(auto config_extensions_it = jobj.find("config_extensions"); config_extensions_it != jobj.end())
+                {
+                    for(const auto& config_ext_obj: *config_extensions_it)
+                    {
+                        processExtension_<ExtensionType::CONFIG>(config_ext_obj);
                     }
                 }
 
@@ -1018,7 +1111,7 @@ class ExtensionManager
                 {
                     for(const auto& ext_obj: *extensions_it)
                     {
-                        processExtension_<false>(ext_obj);
+                        processExtension_<ExtensionType::NORMAL>(ext_obj);
                     }
                 }
             }
@@ -1410,10 +1503,10 @@ class ExtensionManager
             {
                 for(const auto& ext: enabled_extensions_)
                 {
-                    const auto& json = ext.second.getJSON();
+                    const auto& json = ext.second->getJSON();
                     if(!json.empty())
                     {
-                        enabled_jsons_.emplace_back(ext.second.getJSON());
+                        enabled_jsons_.emplace_back(json);
                     }
                 }
             }

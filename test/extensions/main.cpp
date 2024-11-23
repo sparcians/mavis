@@ -16,5 +16,7 @@ int main(int argc, char* argv[])
     assert(rv64g_man.isEnabled("zba"));
     assert(rv64g_man.isEnabled("v"));
 
+    const auto elf_man = ExtensionManager::fromELF("hello", "json/riscv_isa_spec.json");
+
     return 0;
 }
