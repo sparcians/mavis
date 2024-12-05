@@ -187,6 +187,7 @@ namespace mavis::extension_manager::riscv
 
             static uint32_t digitToInt_(const char digit)
             {
+                assert(isdigit(static_cast<unsigned char>(digit)) && "Attempted to convert a non-digit to an int");
                 return digit - '0';
             }
 
