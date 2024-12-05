@@ -1,4 +1,4 @@
-#include "mavis/RISCVExtensionManager.hpp"
+#include "mavis/extension_managers/RISCVExtensionManager.hpp"
 
 int main(int argc, char* argv[])
 {
