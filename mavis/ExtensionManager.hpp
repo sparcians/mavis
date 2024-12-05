@@ -150,19 +150,19 @@ namespace mavis::extension_manager
         REQUIRED,
         CONFLICTING
     };
-    
+
     template<DependencyType dep_type>
     struct DependencyTraits
     {
         using value_type = std::string;
     };
-    
+
     template<>
     struct DependencyTraits<DependencyType::ENABLING>
     {
         using value_type = std::vector<std::string>;
     };
-    
+
     template<typename DataT>
     struct JSONVectorConverter
     {
@@ -172,18 +172,18 @@ namespace mavis::extension_manager
             {
                 return obj.get<std::vector<DataT>>();
             }
-    
+
             return std::vector<DataT>(1, obj.get<DataT>());
         }
     };
-    
+
     template<typename DataT>
     struct JSONVectorConverter<std::vector<DataT>>
     {
         static std::vector<std::vector<DataT>> get(const nlohmann::json& obj)
         {
             std::vector<std::vector<DataT>> result;
-    
+
             if(obj.is_array())
             {
                 for(const auto& elem: obj)
@@ -195,14 +195,14 @@ namespace mavis::extension_manager
             {
                 result.emplace_back(std::vector<DataT>(1, obj.get<DataT>()));
             }
-    
+
             return result;
         }
     };
-    
+
     class ExtensionInfoBase;
     using ExtensionInfoBasePtr = std::shared_ptr<ExtensionInfoBase>;
-    
+
     class ExtensionInfoBase
     {
         private:
@@ -214,24 +214,24 @@ namespace mavis::extension_manager
             std::vector<std::vector<ExtensionInfoBasePtr>> enabling_extensions_;
             std::vector<ExtensionInfoBasePtr> required_extensions_;
             std::vector<ExtensionInfoBasePtr> conflicting_extensions_;
-    
+
             static bool allEnabled_(const std::vector<ExtensionInfoBasePtr>& extensions)
             {
                 return std::all_of(extensions.begin(), extensions.end(), [](const ExtensionInfoBasePtr& ext){ return ext->isEnabled(); });
             }
-    
+
             bool anyEnablingExtensionsEnabled_() const
             {
                 return enabling_extensions_.empty() || std::any_of(enabling_extensions_.begin(), enabling_extensions_.end(), [](const std::vector<ExtensionInfoBasePtr>& exts) { return allEnabled_(exts); });
             }
-    
+
             template<bool assert_enabled>
             void validateConstraints_(const std::vector<ExtensionInfoBasePtr>& constraint_extensions) const
             {
                 std::vector<ExtensionInfoBasePtr>::const_iterator it;
-    
+
                 using ExceptionType = std::conditional_t<assert_enabled, MissingRequiredExtensionException, ConflictingExtensionException>;
-    
+
                 if constexpr(assert_enabled)
                 {
                     it = std::find_if_not(constraint_extensions.begin(),
@@ -244,13 +244,13 @@ namespace mavis::extension_manager
                                       constraint_extensions.end(),
                                       [](const ExtensionInfoBasePtr& ext){ return ext->isEnabled(); });
                 }
-    
+
                 if(it != constraint_extensions.end())
                 {
                     throw ExceptionType(extension_, (*it)->getExtension());
                 }
             }
-    
+
             void assertNotSelfReferential_(const ExtensionInfoBasePtr& ext) const
             {
                 if(ext.get() == this)
@@ -258,7 +258,7 @@ namespace mavis::extension_manager
                     throw SelfReferentialException(extension_);
                 }
             }
-    
+
             void assertNotSelfReferential_(const std::vector<ExtensionInfoBasePtr>& exts) const
             {
                 if(std::any_of(exts.begin(), exts.end(), [this](const ExtensionInfoBasePtr& ext) { return ext.get() == this; }))
@@ -266,61 +266,61 @@ namespace mavis::extension_manager
                     throw SelfReferentialException(extension_);
                 }
             }
-    
+
         public:
             ExtensionInfoBase(const std::string& ext, const std::string& json) :
                 extension_(ext),
                 json_(json)
             {
             }
-    
+
             explicit ExtensionInfoBase(const std::string& ext) :
                 extension_(ext)
             {
             }
-    
+
             const std::string& getExtension() const
             {
                 return extension_;
             }
-    
+
             void addEnablesExtension(const ExtensionInfoBasePtr& ext)
             {
                 assertNotSelfReferential_(ext);
                 enables_extensions_.emplace_back(ext);
             }
-    
+
             void addEnablingExtensions(const std::vector<ExtensionInfoBasePtr>& exts)
             {
                 assertNotSelfReferential_(exts);
                 enabling_extensions_.emplace_back(exts);
             }
-    
+
             template<typename DerivedExtensionInfo>
             std::enable_if_t<std::is_base_of_v<ExtensionInfoBase, DerivedExtensionInfo>> addEnablingExtensions(const std::vector<std::shared_ptr<DerivedExtensionInfo>>& exts)
             {
                 addEnablingExtensions(std::vector<ExtensionInfoBasePtr>(exts.begin(), exts.end()));
             }
-    
+
             void addRequiredExtension(const ExtensionInfoBasePtr& ext)
             {
                 assertNotSelfReferential_(ext);
-    
+
                 required_extensions_.emplace_back(ext);
             }
-    
+
             void addConflictingExtension(const ExtensionInfoBasePtr& ext)
             {
                 assertNotSelfReferential_(ext);
-    
+
                 conflicting_extensions_.emplace_back(ext);
             }
-    
+
             template<DependencyType type>
             void addDependency(const ExtensionInfoBasePtr& ext)
             {
                 static_assert(type != DependencyType::ENABLING);
-    
+
                 switch(type)
                 {
                     case DependencyType::ENABLES:
@@ -334,7 +334,7 @@ namespace mavis::extension_manager
                         break;
                 }
             }
-    
+
             template<DependencyType type>
             void addDependency(const std::vector<ExtensionInfoBasePtr>& exts)
             {
@@ -350,19 +350,19 @@ namespace mavis::extension_manager
                     }
                 }
             }
-    
+
             template<DependencyType type, typename DerivedExtensionInfo>
             std::enable_if_t<std::is_base_of_v<ExtensionInfoBase, DerivedExtensionInfo>> addDependency(const std::vector<std::shared_ptr<DerivedExtensionInfo>>& exts)
             {
                 addDependency<type>(std::vector<ExtensionInfoBasePtr>(exts.begin(), exts.end()));
             }
-    
+
             void forceEnabled()
             {
                 setEnabled();
                 force_enabled_ = true;
             }
-    
+
             void setEnabled()
             {
                 enabled_ = true;
@@ -371,41 +371,41 @@ namespace mavis::extension_manager
                     ext->forceEnabled();
                 }
             }
-    
+
             bool isEnabled() const
             {
                 return force_enabled_ || (enabled_ && anyEnablingExtensionsEnabled_());
             }
-    
+
             void setDisabled()
             {
                 enabled_ = false;
                 force_enabled_ = false;
             }
-    
+
             void finalize()
             {
                 if(!enabled_)
                 {
                     return;
                 }
-    
+
                 validateConstraints_<true>(required_extensions_);
                 validateConstraints_<false>(conflicting_extensions_);
-    
+
                 enabled_ = force_enabled_ || (enabled_ && anyEnablingExtensionsEnabled_());
             }
-    
+
             const std::string& getJSON() const { return json_; }
     };
-    
+
     enum class UnknownExtensionAction
     {
         ERROR,
         WARN,
         IGNORE
     };
-    
+
     class ExtensionBase
     {
         public:
@@ -413,67 +413,67 @@ namespace mavis::extension_manager
             virtual const std::string& getName() const = 0;
             virtual const std::string& getJSON() const = 0;
     };
-    
+
     class Extension : public ExtensionBase
     {
         private:
             const ExtensionInfoBasePtr ext_;
-    
+
         public:
             explicit Extension(const ExtensionInfoBasePtr& ext) :
                 ext_(ext)
             {
             }
-    
+
             const std::string& getName() const override final
             {
                 return ext_->getExtension();
             }
-    
+
             const std::string& getJSON() const override final
             {
                 return ext_->getJSON();
             }
     };
-    
+
     using ExtensionMap = std::unordered_map<std::string, std::unique_ptr<ExtensionBase>>;
-    
+
     class MetaExtension : public ExtensionBase
     {
         private:
             const std::string ext_;
-    
+
         public:
             explicit MetaExtension(const std::string& ext) :
                 ext_(ext)
             {
             }
-    
+
             const std::string& getName() const override final
             {
                 return ext_;
             }
-    
+
             const std::string& getJSON() const override final
             {
                 static const std::string EMPTY{};
                 return EMPTY;
             }
     };
-    
+
     template<typename ExtensionInfo>
     class ExtensionStateBase
     {
         private:
             using ExtensionInfoPtr = std::shared_ptr<ExtensionInfo>;
-    
+
             class UnresolvedDependency
             {
                 private:
                     const DependencyType type_;
                     const ExtensionInfoPtr ext_;
                     std::unordered_set<std::string> dep_ext_;
-    
+
                     UnresolvedDependency(const DependencyType type, std::unordered_set<std::string>&& dep_ext, const ExtensionInfoPtr ext) :
                         type_(type),
                         ext_(ext),
@@ -484,38 +484,38 @@ namespace mavis::extension_manager
                             throw UnresolvedDependencyException(ext->getExtension());
                         }
                     }
-    
+
                 public:
                     UnresolvedDependency(const DependencyType type, const std::vector<std::string>& dep_ext, const ExtensionInfoPtr ext) :
                         UnresolvedDependency(type, std::unordered_set<std::string>(dep_ext.begin(), dep_ext.end()), ext)
                     {
                     }
-    
+
                     UnresolvedDependency(const DependencyType type, const std::string& dep_ext, const ExtensionInfoPtr ext) :
                         UnresolvedDependency(type, std::unordered_set<std::string>{dep_ext}, ext)
                     {
                     }
-    
+
                     DependencyType getType() const
                     {
                         return type_;
                     }
-    
+
                     const std::unordered_set<std::string>& getDependentExtensions() const
                     {
                         return dep_ext_;
                     }
-    
+
                     void removeDependentExtension(const std::string& ext)
                     {
                         dep_ext_.erase(ext);
                     }
-    
+
                     void addDependentExtension(const std::string& ext)
                     {
                         dep_ext_.emplace(ext);
                     }
-    
+
                     void addDependentExtensions(const std::vector<std::string>& exts)
                     {
                         for(const auto& ext: exts)
@@ -523,24 +523,24 @@ namespace mavis::extension_manager
                             addDependentExtension(ext);
                         }
                     }
-    
+
                     const ExtensionInfoPtr& getExtension() const
                     {
                         return ext_;
                     }
             };
-    
+
             class UnresolvableDependencyException : public ExtensionManagerException
             {
                 private:
                     static std::string getDependencyString_(const std::list<UnresolvedDependency>& dependencies)
                     {
                         std::ostringstream ss;
-    
+
                         for(const auto& dep_info: dependencies)
                         {
                             ss << '\t' << dep_info.getExtension()->getExtension() << " -> " << '[';
-    
+
                             bool first = true;
                             for(const auto& dep: dep_info.getDependentExtensions())
                             {
@@ -554,30 +554,30 @@ namespace mavis::extension_manager
                                 }
                                 ss << dep;
                             }
-    
+
                             ss << ']' << std::endl;
                         }
-    
+
                         return ss.str();
                     }
-    
+
                 public:
                     explicit UnresolvableDependencyException(const std::list<UnresolvedDependency>& dependencies) :
                         ExtensionManagerException("Unresolvable dependencies detected:\n" + getDependencyString_(dependencies))
                     {
                     }
             };
-    
+
             virtual void throwUnknownExtensionException_(const std::string& extension) const
             {
                 throw UnknownExtensionExceptionBase("Unknown extension specified: " + extension);
             }
-    
+
             template<typename ContainerType>
             std::vector<ExtensionInfoPtr> getExtensions_(const ContainerType& ext_strs)
             {
                 std::vector<ExtensionInfoPtr> exts;
-    
+
                 for(const auto& ext: ext_strs)
                 {
                     const auto it = extensions_.find(ext);
@@ -587,37 +587,37 @@ namespace mavis::extension_manager
                     }
                     exts.emplace_back(it->second);
                 }
-    
+
                 return exts;
             }
-    
+
             std::vector<ExtensionInfoPtr> getDependencyOrDefer_(const DependencyType type, const std::vector<std::string>& dependent_exts, const ExtensionInfoPtr& ext)
             {
                 const std::vector<ExtensionInfoPtr> exts = getExtensions_(dependent_exts);
-    
+
                 if(exts.size() != dependent_exts.size())
                 {
                     pending_dependencies_.emplace_back(type, dependent_exts, ext);
                     return {};
                 }
-    
+
                 return exts;
             }
-    
+
             const ExtensionInfoPtr& getDependencyOrDefer_(const DependencyType type, const std::string& dependent_ext, const ExtensionInfoPtr& ext)
             {
                 static const ExtensionInfoPtr NOT_FOUND{nullptr};
-    
+
                 const auto dep_it = extensions_.find(dependent_ext);
                 if(dep_it == extensions_.end())
                 {
                     pending_dependencies_.emplace_back(type, dependent_ext, ext);
                     return NOT_FOUND;
                 }
-    
+
                 return dep_it->second;
             }
-    
+
         protected:
             const ExtensionInfoPtr& getExtensionInfo_(const std::string& extension) const
             {
@@ -629,10 +629,10 @@ namespace mavis::extension_manager
                 {
                     throwUnknownExtensionException_(extension);
                 }
-    
+
                 __builtin_unreachable();
             }
-    
+
             const uint32_t arch_id_;
             const UnknownExtensionAction unknown_extension_action_;
             std::unordered_map<std::string, ExtensionInfoPtr> extensions_;
@@ -641,47 +641,47 @@ namespace mavis::extension_manager
             std::unordered_map<std::string, std::string> aliases_;
             std::list<UnresolvedDependency> pending_dependencies_;
             std::unordered_set<std::string> enabled_meta_extensions_;
-    
+
         public:
             ExtensionStateBase(const uint32_t arch_id, const UnknownExtensionAction unknown_extension_action) :
                 arch_id_(arch_id),
                 unknown_extension_action_(unknown_extension_action)
             {
             }
-    
+
             const ExtensionInfo& getExtensionInfo(const std::string& extension) const
             {
                 return *getExtensionInfo_(extension);
             }
-    
+
             ExtensionInfo& addExtension(const std::string& extension, const std::string& json = "")
             {
                 if(const auto it = extensions_.find(extension); it != extensions_.end())
                 {
                     throw DuplicateExtensionException(extension);
                 }
-    
+
                 const auto result = extensions_.emplace(extension, std::make_shared<ExtensionInfo>(extension, json));
-    
+
                 return *result.first->second;
             }
-    
+
             void addConfigExtension(const std::string& ext)
             {
                 config_extensions_.emplace(ext, false);
             }
-    
+
             template<DependencyType type>
             void addDependency(const std::string& extension, const std::string& dep)
             {
                 const auto& ext_ptr = getExtensionInfo_(extension);
-    
+
                 if(const auto& dep_ext = getDependencyOrDefer_(type, dep, ext_ptr); dep_ext)
                 {
                     ext_ptr->template addDependency<type>(dep_ext);
                 }
             }
-    
+
             template<DependencyType type>
             void addDependency(const std::string& extension, const std::vector<std::string>& deps)
             {
@@ -703,36 +703,36 @@ namespace mavis::extension_manager
                 else
                 {
                     const auto& ext_ptr = getExtensionInfo_(extension);
-    
+
                     if(const auto dep_ext = getDependencyOrDefer_(type, deps, ext_ptr); !dep_ext.empty())
                     {
                         ext_ptr->template addDependency<type>(dep_ext);
                     }
                 }
             }
-    
+
             template<DependencyType type>
             void addDependency(const std::string& extension, const std::vector<std::vector<std::string>>& deps)
             {
                 static_assert(type == DependencyType::ENABLING);
-    
+
                 for(const auto& dep: deps)
                 {
                     addDependency<type>(extension, dep);
                 }
             }
-    
+
             void finalizeDependencies()
             {
                 // Resolve any meta-extensions and aliases first
                 for(auto& dep_info: pending_dependencies_)
                 {
                     bool retry = false;
-    
+
                     do
                     {
                         retry = false;
-    
+
                         for(const auto& dep: dep_info.getDependentExtensions())
                         {
                             if(auto meta_it = meta_extensions_.find(dep); meta_it != meta_extensions_.end())
@@ -753,18 +753,18 @@ namespace mavis::extension_manager
                     }
                     while(retry);    
                 }
-    
+
                 while(!pending_dependencies_.empty())
                 {
                     auto it = pending_dependencies_.begin();
-    
+
                     uint32_t num_resolved = 0;
-    
+
                     while(it != pending_dependencies_.end())
                     {
                         const auto& ext = it->getExtension();
                         const auto& dep_exts = it->getDependentExtensions();
-    
+
                         if(std::none_of(dep_exts.begin(), dep_exts.end(), [this](const std::string& dep_ext) { return extensions_.count(dep_ext) == 0; }))
                         {
                             switch(it->getType())
@@ -785,7 +785,7 @@ namespace mavis::extension_manager
                                     ext->addConflictingExtension(getExtensionInfo_(*dep_exts.begin()));
                                     break;
                             }
-    
+
                             it = pending_dependencies_.erase(it);
                             ++num_resolved;
                         }
@@ -794,14 +794,14 @@ namespace mavis::extension_manager
                             ++it;
                         }
                     }
-    
+
                     if(num_resolved == 0)
                     {
                         throw UnresolvableDependencyException(pending_dependencies_);
                     }
                 }
             }
-    
+
             void enableExtension(const std::string& ext)
             {
                 bool is_meta = true;
@@ -841,25 +841,25 @@ namespace mavis::extension_manager
                         }
                     }
                 }
-    
+
                 if(is_meta)
                 {
                     enabled_meta_extensions_.emplace(ext);
                 }
             }
-    
+
             void enableExtension(const char ext)
             {
                 enableExtension(std::string(1, ext));
             }
-    
+
             void finalize(ExtensionMap& enabled_extensions)
             {
                 for(const auto& ext: extensions_)
                 {
                     ext.second->finalize();
                 }
-    
+
                 for(const auto& ext: extensions_)
                 {
                     const auto& ext_info = ext.second;
@@ -868,29 +868,29 @@ namespace mavis::extension_manager
                         enabled_extensions.emplace(ext_info->getExtension(), std::make_unique<Extension>(ext_info));
                     }
                 }
-    
+
                 for(const auto& ext: enabled_meta_extensions_)
                 {
                     enabled_extensions.emplace(ext, std::make_unique<MetaExtension>(ext));
                 }
             }
-    
+
             void reset()
             {
                 for(const auto& ext: extensions_)
                 {
                     ext.second->setDisabled();
                 }
-    
+
                 for(auto& ext: config_extensions_)
                 {
                     ext.second = false;
                 }
-    
+
                 enabled_meta_extensions_.clear();
             }
     };
-    
+
     template<typename ExtensionInfo, typename ExtensionState>
     class ExtensionManager
     {
@@ -901,30 +901,30 @@ namespace mavis::extension_manager
             ArchMap extensions_;
             ExtensionMap enabled_extensions_;
             mutable std::vector<std::string> enabled_jsons_;
-    
+
             enum class ExtensionType
             {
                 META,
                 CONFIG,
                 NORMAL
             };
-    
+
             virtual void processArchSpecificExtensionInfo_(ExtensionState&, const std::string&, const nlohmann::json&, const ExtensionType) const
             {
             }
-    
+
             virtual uint32_t convertMultiArchString_(const std::string& multiarch_str) const = 0;
-    
+
             virtual std::vector<uint32_t> convertMultiArchVector_(const std::vector<std::string>& multiarch_str_vec) const
             {
                 std::vector<uint32_t> arches;
                 arches.resize(multiarch_str_vec.size());
-    
+
                 std::transform(multiarch_str_vec.begin(), multiarch_str_vec.end(), arches.begin(), [this](const std::string& multiarch_str) { return convertMultiArchString_(multiarch_str); });
-    
+
                 return arches;
             }
-    
+
             virtual std::vector<uint32_t> getMultiArchVector_(const nlohmann::json& multiarch_obj) const
             {
                 if(multiarch_obj.is_array())
@@ -940,7 +940,7 @@ namespace mavis::extension_manager
                             return multiarch_obj.get<std::vector<uint32_t>>();
                         }
                     }
-    
+
                     throw InvalidJSONValueException(getMultiArchKey_());
                 }
                 else
@@ -948,12 +948,12 @@ namespace mavis::extension_manager
                     return std::vector<uint32_t>(1, multiarch_obj.get<uint32_t>());
                 }
             }
-    
+
             virtual const char* getMultiArchKey_() const
             {
                 return nullptr;
             }
-    
+
             template<typename ManagerType>
             static ManagerType fromELF_(const std::string& elf, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
@@ -961,7 +961,7 @@ namespace mavis::extension_manager
                 man.setISAFromELF(elf);
                 return man;
             }
-    
+
             template<typename ManagerType>
             static ManagerType fromISA_(const std::string& isa, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
@@ -969,7 +969,7 @@ namespace mavis::extension_manager
                 man.setISA(isa);
                 return man;
             }
-    
+
             template<typename ManagerType>
             static ManagerType fromISASpecJSON_(const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
@@ -977,11 +977,11 @@ namespace mavis::extension_manager
                 man.setISASpecJSON(spec_json);
                 return man;
             }
-    
+
             virtual std::string getISAFromELF_(const std::string& elf) const = 0;
-    
+
             virtual void setISAImpl_(const std::string& isa) = 0;
-    
+
         private:
             template<bool is_normal_extension, DependencyType dep_type>
             constexpr static bool isDependencyAllowed_()
@@ -998,7 +998,7 @@ namespace mavis::extension_manager
                         return is_normal_extension;
                 };
             }
-    
+
             template<DependencyType dep_type>
             constexpr static const char* getDependencyKey_()
             {
@@ -1018,29 +1018,29 @@ namespace mavis::extension_manager
                         return "conflicts";
                 };
             }
-    
+
             template<DependencyType dep_type>
             static std::vector<typename DependencyTraits<dep_type>::value_type> getDependencyValue_(const nlohmann::json& obj)
             {
                 return JSONVectorConverter<typename DependencyTraits<dep_type>::value_type>::get(obj);
             }
-    
+
             template<bool is_normal_extension, DependencyType dep_type>
             static void processOptionalDependency_(ExtensionState& extensions, const std::string& ext, const nlohmann::json& obj)
             {
                 constexpr const char* key = getDependencyKey_<dep_type>();
-    
+
                 if(const auto it = obj.find(key); it != obj.end())
                 {
                     if constexpr(!isDependencyAllowed_<is_normal_extension, dep_type>())
                     {
                         throw MetaExtensionUnexpectedJSONKeyException(key);
                     }
-    
+
                     extensions.template addDependency<dep_type>(ext, getDependencyValue_<dep_type>(*it));
                 }
             }
-    
+
             template<typename T>
             static T getRequiredJSONValue_(const nlohmann::json& jobj, const std::string& key)
             {
@@ -1053,19 +1053,19 @@ namespace mavis::extension_manager
                     throw MissingRequiredJSONKeyException(key);
                 }
             }
-    
+
             template<ExtensionType extension_type>
             void processExtension_(const nlohmann::json& ext_obj)
             {
                 static constexpr bool is_normal_extension = extension_type == ExtensionType::NORMAL;
                 static constexpr bool is_config_extension = extension_type == ExtensionType::CONFIG;
-    
+
                 const std::string ext = getRequiredJSONValue_<std::string>(ext_obj, "extension");
-    
+
                 std::vector<uint32_t> arches;
-    
+
                 const char* multiarch_key = getMultiArchKey_();
-    
+
                 if(multiarch_key)
                 {
                     if(const auto it = ext_obj.find(multiarch_key); it != ext_obj.end())
@@ -1081,11 +1081,11 @@ namespace mavis::extension_manager
                 {
                     arches.emplace_back(0);
                 }
-    
+
                 for(const auto arch: arches)
                 {
                     auto& arch_extensions = extensions_.try_emplace(arch, arch, unknown_extension_action_).first->second;
-    
+
                     if constexpr(is_normal_extension)
                     {
                         if(auto json_it = ext_obj.find("json"); json_it != ext_obj.end())
@@ -1101,7 +1101,7 @@ namespace mavis::extension_manager
                     {
                         arch_extensions.addConfigExtension(ext);
                     }
-    
+
                     processArchSpecificExtensionInfo_(arch_extensions, ext, ext_obj, extension_type);
                     processOptionalDependency_<is_normal_extension, DependencyType::META>(arch_extensions, ext, ext_obj);
                     processOptionalDependency_<is_normal_extension, DependencyType::ALIAS>(arch_extensions, ext, ext_obj);
@@ -1111,7 +1111,7 @@ namespace mavis::extension_manager
                     processOptionalDependency_<is_normal_extension, DependencyType::CONFLICTING>(arch_extensions, ext, ext_obj);
                 }
             }
-    
+
             template<typename InstType,
                      typename AnnotationType,
                      typename InstTypeAllocator,
@@ -1121,21 +1121,21 @@ namespace mavis::extension_manager
             {
                 return Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(getJSONs(), std::forward<MavisArgs>(mavis_args)...);
             }
-    
+
         public:
             explicit ExtensionManager(const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR) :
                 unknown_extension_action_(unknown_extension_action)
             {
             }
-    
+
             ExtensionManager(const ExtensionManager&) = delete;
             ExtensionManager(ExtensionManager&&) = default;
             virtual ~ExtensionManager() = default;
-    
+
             void setISASpecJSON(const std::string& jfile)
             {
                 std::ifstream fs;
-    
+
                 try
                 {
                     fs.open(jfile);
@@ -1144,9 +1144,9 @@ namespace mavis::extension_manager
                 {
                     throw BadISAFile(jfile);
                 }
-    
+
                 nlohmann::json jobj;
-    
+
                 try
                 {
                     fs >> jobj;
@@ -1156,7 +1156,7 @@ namespace mavis::extension_manager
                     std::cerr << "Error parsing file " << jfile << std::endl;
                     throw;
                 }
-    
+
                 try
                 {
                     if(auto meta_extensions_it = jobj.find("meta_extensions"); meta_extensions_it != jobj.end())
@@ -1166,7 +1166,7 @@ namespace mavis::extension_manager
                             processExtension_<ExtensionType::META>(meta_ext_obj);
                         }
                     }
-    
+
                     if(auto config_extensions_it = jobj.find("config_extensions"); config_extensions_it != jobj.end())
                     {
                         for(const auto& config_ext_obj: *config_extensions_it)
@@ -1174,7 +1174,7 @@ namespace mavis::extension_manager
                             processExtension_<ExtensionType::CONFIG>(config_ext_obj);
                         }
                     }
-    
+
                     if(auto extensions_it = jobj.find("extensions"); extensions_it != jobj.end())
                     {
                         for(const auto& ext_obj: *extensions_it)
@@ -1188,18 +1188,18 @@ namespace mavis::extension_manager
                     std::cerr << "Error parsing file " << jfile << std::endl;
                     throw;
                 }
-    
+
                 for(auto& ext: extensions_)
                 {
                     ext.second.finalizeDependencies();
                 }
             }
-    
+
             void setISAFromELF(const std::string& elf)
             {
                 setISA(getISAFromELF_(elf));
             }
-    
+
             void setISA(const std::string& isa)
             {
                 if(!isa_.empty())
@@ -1208,23 +1208,23 @@ namespace mavis::extension_manager
                     {
                         ext.second.reset();
                     }
-    
+
                     enabled_extensions_.clear();
                 }
-    
+
                 setISAImpl_(isa);
             }
-    
+
             bool isEnabled(const std::string& extension) const
             {
                 return enabled_extensions_.count(extension) != 0;
             }
-    
+
             const ExtensionMap& getEnabledExtensions() const
             {
                 return enabled_extensions_;
             }
-    
+
             const std::vector<std::string>& getJSONs() const
             {
                 if(enabled_jsons_.empty())
@@ -1238,10 +1238,10 @@ namespace mavis::extension_manager
                         }
                     }
                 }
-    
+
                 return enabled_jsons_;
             }
-    
+
             template<typename InstType,
                      typename AnnotationType,
                      typename InstTypeAllocator       = SharedPtrAllocator<InstType>,
@@ -1265,7 +1265,7 @@ namespace mavis::extension_manager
                     annotation_allocator
                 );
             }
-    
+
             template<typename InstType,
                      typename AnnotationType,
                      typename InstTypeAllocator       = SharedPtrAllocator<InstType>,
@@ -1285,7 +1285,7 @@ namespace mavis::extension_manager
                     annotation_allocator
                 );
             }
-    
+
             template<typename InstType,
                      typename AnnotationType,
                      typename InstTypeAllocator       = SharedPtrAllocator<InstType>,
@@ -1305,7 +1305,7 @@ namespace mavis::extension_manager
                     annotation_allocator
                 );
             }
-    
+
             template<typename InstType,
                      typename AnnotationType,
                      typename InstTypeAllocator       = SharedPtrAllocator<InstType>,
@@ -1321,6 +1321,5 @@ namespace mavis::extension_manager
                     annotation_allocator
                 );
             }
-    
     };
 }
