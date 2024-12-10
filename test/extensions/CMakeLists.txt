@@ -21,6 +21,7 @@ endif()
 
 file(CREATE_LINK ${CMAKE_SOURCE_DIR}/json ${CMAKE_CURRENT_BINARY_DIR}/json SYMBOLIC)
 file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/extensions/hello ${CMAKE_CURRENT_BINARY_DIR}/hello SYMBOLIC)
+file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/extensions/hello_stripped ${CMAKE_CURRENT_BINARY_DIR}/hello_stripped SYMBOLIC)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
