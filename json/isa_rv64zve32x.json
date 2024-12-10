@@ -17,18 +17,6 @@
     "xform": "V_vsetvl",
     "l-oper": "all"
   },
-    {
-    "mnemonic": "vlm.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x2b00007",
-    "fixed": [ "nf", "vm", "rs2" ],
-    "xform": "V_load",
-    "type": [ "vector", "mask", "unit_stride", "load" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rd" ],
-    "data": 8
-  },
   {
     "mnemonic": "vsetivli",
     "tags" : ["v"],
@@ -76,18 +64,18 @@
     "data" : 32
   },
   {
-    "mnemonic": "vle64.v",
+    "mnemonic": "vlm.v",
     "tags" : ["v"],
     "form": "VF_mem",
-    "stencil": "0x7007",
-    "fixed": [ "rs2" ],
+    "stencil": "0x2b00007",
+    "fixed": [ "nf", "vm", "rs2" ],
     "xform": "V_load",
-    "type": [ "vector", "maskable", "unit_stride", "segment", "load" ],
+    "type": [ "vector", "mask", "unit_stride", "load" ],
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
-    "data" : 64
+    "data": 8
   },
-    {
+  {
     "mnemonic": "vsm.v",
     "tags" : ["v"],
     "form": "VF_mem",
@@ -136,18 +124,6 @@
     "data" : 32
   },
   {
-    "mnemonic": "vse64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x7027",
-    "fixed": [ "rs2" ],
-    "xform": "V_store",
-    "type": [ "vector", "maskable", "unit_stride", "segment", "store" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rs3" ],
-    "data" : 64
-  },
-  {
     "mnemonic": "vlse8.v",
     "tags" : ["v"],
     "form": "VF_mem",
@@ -179,17 +155,6 @@
     "l-oper": [ "rs2", "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 32
-  },
-  {
-    "mnemonic": "vlse64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x8007007",
-    "xform": "V_load",
-    "type": [ "vector", "maskable", "stride", "segment", "load" ],
-    "l-oper": [ "rs2", "rs1" ],
-    "v-oper": [ "rd" ],
-    "data" : 64
   },
   {
     "mnemonic": "vsse8.v",
@@ -225,17 +190,6 @@
     "data" : 32
   },
   {
-    "mnemonic": "vsse64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x8007027",
-    "xform": "V_store",
-    "type": [ "vector", "maskable", "stride", "segment", "store" ],
-    "l-oper": [ "rs2", "rs1" ],
-    "v-oper": [ "rs3" ],
-    "data" : 64
-  },
-  {
     "mnemonic": "vloxei8.v",
     "tags" : ["v"],
     "form": "VF_mem",
@@ -245,7 +199,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rd" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vloxei16.v",
     "tags" : ["v"],
@@ -256,7 +210,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rd" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vloxei32.v",
     "tags" : ["v"],
@@ -267,19 +221,8 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rd" ],
     "data" : 32
-    },
+  },
   {
-    "mnemonic": "vloxei64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0xc007007",
-    "xform": "V_load",
-    "type": [ "vector", "maskable", "ordered_indexed", "segment", "load" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rs2", "rd" ],
-    "data" : 64
-    },
-    {
     "mnemonic": "vluxei8.v",
     "tags" : ["v"],
     "form": "VF_mem",
@@ -289,7 +232,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rd" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vluxei16.v",
     "tags" : ["v"],
@@ -300,7 +243,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rd" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vluxei32.v",
     "tags" : ["v"],
@@ -311,18 +254,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rd" ],
     "data" : 32
-    },
-  {
-    "mnemonic": "vluxei64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x4007007",
-    "xform": "V_load",
-    "type": [ "vector", "maskable", "unordered_indexed", "segment", "load" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rs2", "rd" ],
-    "data" : 64
-    },
+  },
   {
     "mnemonic": "vsoxei8.v",
     "tags" : ["v"],
@@ -333,7 +265,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rs3" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vsoxei16.v",
     "tags" : ["v"],
@@ -344,7 +276,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rs3" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vsoxei32.v",
     "tags" : ["v"],
@@ -355,18 +287,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rs3" ],
     "data" : 32
-    },
-  {
-    "mnemonic": "vsoxei64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0xc007027",
-    "xform": "V_store",
-    "type": [ "vector", "maskable", "ordered_indexed", "segment", "store" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rs2", "rs3" ],
-    "data" : 64
-    },
+  },
   {
     "mnemonic": "vsuxei8.v",
     "tags" : ["v"],
@@ -377,7 +298,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rs3" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vsuxei16.v",
     "tags" : ["v"],
@@ -388,7 +309,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rs3" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vsuxei32.v",
     "tags" : ["v"],
@@ -399,18 +320,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rs3" ],
     "data" : 32
-    },
-  {
-    "mnemonic": "vsuxei64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x4007027",
-    "xform": "V_store",
-    "type": [ "vector", "maskable", "unordered_indexed", "segment", "store" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rs2", "rs3" ],
-    "data" : 64
-    },
+  },
   {
     "mnemonic": "vle8ff.v",
     "tags" : ["v"],
@@ -422,7 +332,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vle16ff.v",
     "tags" : ["v"],
@@ -434,7 +344,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vle32ff.v",
     "tags" : ["v"],
@@ -446,19 +356,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 32
-    },
-  {
-    "mnemonic": "vle64ff.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x1007007",
-    "fixed": [ "rs2" ],
-    "xform": "V_load",
-    "type": [ "vector", "maskable", "unit_stride", "segment", "faultfirst", "load" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rd" ],
-    "data" : 64
-    },
+  },
   {
     "mnemonic": "vl1re8.v",
     "tags" : ["v"],
@@ -470,7 +368,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vl1re16.v",
     "tags" : ["v"],
@@ -482,7 +380,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vl1re32.v",
     "tags" : ["v"],
@@ -494,19 +392,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 32
-    },
-  {
-    "mnemonic": "vl1re64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x2807007",
-    "fixed": [ "nf", "vm", "rs2" ],
-    "xform": "V_load",
-    "type": [ "vector", "load", "whole" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rd" ],
-    "data" : 64
-    },
+  },
   {
     "mnemonic": "vl2re8.v",
     "tags" : ["v"],
@@ -518,7 +404,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vl2re16.v",
     "tags" : ["v"],
@@ -530,7 +416,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vl2re32.v",
     "tags" : ["v"],
@@ -542,19 +428,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 32
-    },
-  {
-    "mnemonic": "vl2re64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x22807007",
-    "fixed": [ "nf", "vm", "rs2" ],
-    "xform": "V_load",
-    "type": [ "vector", "load", "whole" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rd" ],
-    "data" : 64
-    },
+  },
   {
     "mnemonic": "vl4re8.v",
     "tags" : ["v"],
@@ -566,7 +440,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vl4re16.v",
     "tags" : ["v"],
@@ -578,7 +452,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vl4re32.v",
     "tags" : ["v"],
@@ -590,19 +464,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 32
-    },
-  {
-    "mnemonic": "vl4re64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0x62807007",
-    "fixed": [ "nf", "vm", "rs2" ],
-    "xform": "V_load",
-    "type": [ "vector", "load", "whole" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rd" ],
-    "data" : 64
-    },
+  },
   {
     "mnemonic": "vl8re8.v",
     "tags" : ["v"],
@@ -614,7 +476,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vl8re16.v",
     "tags" : ["v"],
@@ -626,7 +488,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 16
-    },
+  },
   {
     "mnemonic": "vl8re32.v",
     "tags" : ["v"],
@@ -638,19 +500,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rd" ],
     "data" : 32
-    },
-  {
-    "mnemonic": "vl8re64.v",
-    "tags" : ["v"],
-    "form": "VF_mem",
-    "stencil": "0xe2807007",
-    "fixed": [ "nf", "vm", "rs2" ],
-    "xform": "V_load",
-    "type": [ "vector", "load", "whole" ],
-    "l-oper": [ "rs1" ],
-    "v-oper": [ "rd" ],
-    "data" : 64
-    },
+  },
   {
     "mnemonic": "vs1r.v",
     "tags" : ["v"],
@@ -662,7 +512,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs3" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vs2r.v",
     "tags" : ["v"],
@@ -674,7 +524,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs3" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vs4r.v",
     "tags" : ["v"],
@@ -686,7 +536,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs3" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vs8r.v",
     "tags" : ["v"],
@@ -698,7 +548,7 @@
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs3" ],
     "data" : 8
-    },
+  },
   {
     "mnemonic": "vadd.vx",
     "tags" : ["v"],

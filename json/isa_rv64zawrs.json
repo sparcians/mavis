@@ -1,5 +1,5 @@
 [
-    {
+  {
     "mnemonic" : "wrs.nto",
     "tags" : ["zawrs"],
     "form" : "R",
@@ -7,7 +7,7 @@
     "stencil" : "0xd00073",
     "type" : ["system"]
   },
-    {
+  {
     "mnemonic" : "wrs.sto",
     "tags" : ["zawrs"],
     "form" : "R",
