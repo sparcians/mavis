@@ -1148,11 +1148,11 @@ int main() {
     // "ZCLSD" context should exist yet
     assert(mavis_facade_rv32.hasContext("ZCLSD") == false);
 
-    cout << "====== TESTING RV32 Zclsd =========" << endl;
+    cout << "====== TESTING RV32 Zclsd Zabha =========" << endl;
 
     // Create new context to test Zclsd extension
     // Zclsd has overlapping encodings with Zcf, so they can't be used at the same time
-    mavis_facade_rv32.makeContext("ZCLSD", {"json/isa_rv32i.json",        // included in "g" spec
+    mavis_facade_rv32.makeContext("ZCLSD_ZABHA", {"json/isa_rv32i.json",        // included in "g" spec
                                              "json/isa_rv32f.json",        // included in "g" spec
                                              "json/isa_rv32m.json",        // included in "g" spec
                                              "json/isa_rv32a.json",        // included in "g" spec
@@ -1163,9 +1163,10 @@ int main() {
                                              "json/isa_rv32cd.json",
                                              "json/isa_rv32zihintpause.json",
                                              "json/isa_rv32zilsd.json",
-                                             "json/isa_rv32zclsd.json"},
+                                             "json/isa_rv32zclsd.json",
+                                             "json/isa_rv32zabha.json"},
                                             {"uarch/uarch_rv32g.json"});
-    mavis_facade_rv32.switchContext("ZCLSD");
+    mavis_facade_rv32.switchContext("ZCLSD_ZABHA");
     cout << mavis_facade_rv32;
 
     // When using zclsd, 0x6008 should map to c.ld x10,x8, IMM=0
@@ -1195,6 +1196,17 @@ int main() {
         assert(inst == nullptr);
     }
     catch(...) {}
+
+    // Zabha testing...
+    // amoadd.b
+    inst = mavis_facade_rv32.makeInst(0x006382af, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x006382af = " << inst->dasmString() << endl;
+
+    // amoadd.h
+    inst = mavis_facade_rv32.makeInst(0x006392af, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x006392af = " << inst->dasmString() << endl;
 
     return 0;
 }

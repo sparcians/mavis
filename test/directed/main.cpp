@@ -112,7 +112,8 @@ int main(int argc, char **argv)
                     "json/isa_rv32c.json",
                     "json/isa_rv32cd.json",
                     "json/isa_rv32zawrs.json",
-                    "json/isa_rv32zilsd.json"};
+                    "json/isa_rv32zilsd.json",
+                    "json/isa_rv32zabha.json"};
 
         // Zclsd has overlapping encodings with Zcf, so only one can be used at a time
         if (vm.count("zclsd"))
