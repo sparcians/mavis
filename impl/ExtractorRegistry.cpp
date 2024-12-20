@@ -3,8 +3,6 @@
 #include "impl/forms/ExtractorForms.h"
 #include "impl/forms/ExtractorDerived.h"
 
-#include <iostream>
-
 namespace mavis {
 
     const ExtractorIF::PtrType &ExtractorRegistry::getExtractor(const std::string &fname)

@@ -5,8 +5,6 @@
 #include "mavis/FormStub.h"
 #include "impl/forms/ExtractorForms.h"
 
-#include <iostream>
-
 namespace mavis {
 
 /**
@@ -3248,11 +3246,9 @@ public:
     OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
                                     bool suppress_x0 = false) const override
     {
-        std::cout << "Form_AMO_pair (start)" << std::endl;
         OperandInfo olist;
         if(const uint32_t reg = extract_(Form_AMO::idType::RD, icode); reg != REGISTER_X0)
         {
-            std::cout << "Form_AMO_pair" << std::endl;
             olist = Extractor<Form_AMO>::getDestOperandInfo(icode, meta, suppress_x0);
             auto rd2_elem = olist.getElements().at(0);
             rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;

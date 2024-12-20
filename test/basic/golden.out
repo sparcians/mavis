@@ -3700,7 +3700,7 @@ line 1129: DASM: 0x2001 = c.jal	x1, +0x0
 line 1134: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
 line 1139: DASM: 0x6008 = c.flw	f10,x8, IMM=0
 line 1145: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
-====== TESTING RV32 Zclsd Zabha =========
+====== TESTING RV32 Zclsd Zabha Zacas =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
 |	|	[0]: IFactoryDenseComposite::Field func3
@@ -3951,6 +3951,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'sc.w', value=0x1800202f, extractor=Extractor 'AMO', factory=IFactory('sc.w'), stencil = 0x1800202f
 |	|	|	|	[4]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'amoxor.w', value=0x2000202f, extractor=Extractor 'AMO', factory=IFactory('amoxor.w'), stencil = 0x2000202f
+|	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amocas.w', value=0x2800202f, extractor=Extractor 'AMO', factory=IFactory('amocas.w'), stencil = 0x2800202f
 |	|	|	|	[8]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'amoor.w', value=0x4000202f, extractor=Extractor 'AMO', factory=IFactory('amoor.w'), stencil = 0x4000202f
 |	|	|	|	[c]: IFactorySpecialCaseComposite::Field 
@@ -3963,6 +3965,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'amominu.w', value=0xc000202f, extractor=Extractor 'AMO', factory=IFactory('amominu.w'), stencil = 0xc000202f
 |	|	|	|	[1c]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'amomaxu.w', value=0xe000202f, extractor=Extractor 'AMO', factory=IFactory('amomaxu.w'), stencil = 0xe000202f
+|	|	|	[3]: IFactoryDenseComposite::Field func5
+|	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amocas.d', value=0x2800302f, extractor=Extractor 'AMO', factory=IFactory('amocas.d'), stencil = 0x2800302f
 |	|	[33]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactoryDenseComposite::Field func7
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
@@ -4167,7 +4172,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1175: DASM: 0x6008 = c.ld	x10,x8, IMM=0
-line 1189: DASM: 0xe008 = c.sd	x10,x8, IMM=0
-line 1204: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
-line 1209: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1176: DASM: 0x6008 = c.ld	x10,x8, IMM=0
+line 1190: DASM: 0xe008 = c.sd	x10,x8, IMM=0
+line 1205: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1210: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1216: DASM: 0x2867322f = amocas.d	x4,x14,x6, aq/wd=0, rl/vm=0
+line 1221: DASM: 0x2863b22f = amocas.d	x4,x7,x6, aq/wd=0, rl/vm=0

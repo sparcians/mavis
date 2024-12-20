@@ -1148,7 +1148,7 @@ int main() {
     // "ZCLSD" context should exist yet
     assert(mavis_facade_rv32.hasContext("ZCLSD") == false);
 
-    cout << "====== TESTING RV32 Zclsd Zabha Zacas=========" << endl;
+    cout << "====== TESTING RV32 Zclsd Zabha Zacas =========" << endl;
 
     // Create new context to test Zclsd extension
     // Zclsd has overlapping encodings with Zcf, so they can't be used at the same time
@@ -1211,14 +1211,20 @@ int main() {
 
     // Zacas testing...
     // amocas.w
-    inst = mavis_facade_rv32.makeInst(0x2863a2af, 0);
+    inst = mavis_facade_rv32.makeInst(0x2867322f, 0);
     assert(inst != nullptr);
-    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2863a2af = " << inst->dasmString() << endl;
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2867322f = " << inst->dasmString() << endl;
 
     // amocas.d
-    inst = mavis_facade_rv32.makeInst(0x2863b2af, 0);
+    inst = mavis_facade_rv32.makeInst(0x2863b22f, 0);
     assert(inst != nullptr);
-    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2863b2af = " << inst->dasmString() << endl;
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2863b22f = " << inst->dasmString() << endl;
+    try {
+        // Illegal form due to rd starts at an odd reg number
+        inst = mavis_facade_rv32.makeInst(0x2863b2af, 0);
+        assert(inst == nullptr);
+    }
+    catch(...) {}
 
     return 0;
 }

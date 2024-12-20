@@ -11,7 +11,8 @@
   {
     "mnemonic" : "amocas.d",
     "tags" : ["zacas"],
-    "form" : "AMO_pair",
+    "form" : "AMO",
+    "xform" : "AMO_pair",
     "stencil" : "0x2800302f",
     "type" : ["int", "load", "atomic"],
     "l-oper" : "all",
