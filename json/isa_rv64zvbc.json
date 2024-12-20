@@ -1,0 +1,40 @@
+[
+  {
+    "mnemonic": "vclmul.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x30002057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vclmul.vx",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x30006057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "l-oper": [ "rs1" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vclmulh.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x34002057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vclmulh.vx",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x34006057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "l-oper": [ "rs1" ],
+    "v-oper": [ "rs2", "rd" ]
+  }
+]

@@ -1,0 +1,158 @@
+[
+  {
+    "mnemonic": "vandn.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x4000057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vandn.vx",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x4004057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "l-oper": [ "rs1" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vbrev8.v",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x48042057",
+    "fixed": [ "rs1" ],
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vrev8.v",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x4804a057",
+    "fixed": [ "rs1" ],
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vbrev.v",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x48052057",
+    "fixed": [ "rs1" ],
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vclz.v",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x48062057",
+    "fixed": [ "rs1" ],
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vctz.v",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x4806a057",
+    "fixed": [ "rs1" ],
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vcpop.v",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x48072057",
+    "fixed": [ "rs1" ],
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+
+  {
+    "mnemonic": "vrol.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x54000057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vrol.vx",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x54004057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "l-oper": [ "rs1" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vror.vi",
+    "tags" : ["zvk"],
+    "form": "V",
+    "stencil": "0x50003057",
+    "ignore": [ "func1c" ],
+    "xform": "V_uimm6",
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vror.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x50000057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vror.vx",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0x50004057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "l-oper": [ "rs1" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vwsll.vi",
+    "tags" : ["zvk"],
+    "form": "V",
+    "stencil": "0xd4003057",
+    "xform": "V_uimm",
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vwsll.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0xd4000057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vwsll.vx",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op",
+    "stencil": "0xd4004057",
+    "type": [ "vector", "crypto", "maskable" ],
+    "l-oper": [ "rs1" ],
+    "v-oper": [ "rs2", "rd" ]
+  }
+]

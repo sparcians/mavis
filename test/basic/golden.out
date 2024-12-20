@@ -828,21 +828,21 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	|	|	|	[3]: 'vfcvt.f.x.v', mask=0xf8000, field_set=0x40, value=0x18000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfcvt.f.x.v'), stencil = 0x48019057
 |	|	|	|	|	|	|	|	[4]: 'vfcvt.rtz.xu.f.v', mask=0xf8000, field_set=0x40, value=0x30000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfcvt.rtz.xu.f.v'), stencil = 0x48031057
 |	|	|	|	|	|	|	|	[5]: 'vfcvt.rtz.x.f.v', mask=0xf8000, field_set=0x40, value=0x38000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfcvt.rtz.x.f.v'), stencil = 0x48039057
-|	|	|	|	|	|	|	|	[6]: 'vfwcvt.xu.f.v', mask=0xf8000, field_set=0x40, value=0x40000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.xu.f.v'), stencil = 0x48041057
-|	|	|	|	|	|	|	|	[7]: 'vfwcvt.x.f.v', mask=0xf8000, field_set=0x40, value=0x48000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.x.f.v'), stencil = 0x48049057
-|	|	|	|	|	|	|	|	[8]: 'vfwcvt.f.xu.v', mask=0xf8000, field_set=0x40, value=0x50000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.xu.v'), stencil = 0x48051057
-|	|	|	|	|	|	|	|	[9]: 'vfwcvt.f.x.v', mask=0xf8000, field_set=0x40, value=0x58000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.x.v'), stencil = 0x48059057
-|	|	|	|	|	|	|	|	[a]: 'vfwcvt.f.f.v', mask=0xf8000, field_set=0x40, value=0x60000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.f.v'), stencil = 0x48061057
-|	|	|	|	|	|	|	|	[b]: 'vfwcvt.rtz.xu.f.v', mask=0xf8000, field_set=0x40, value=0x70000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.rtz.xu.f.v'), stencil = 0x48071057
-|	|	|	|	|	|	|	|	[c]: 'vfwcvt.rtz.x.f.v', mask=0xf8000, field_set=0x40, value=0x78000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.rtz.x.f.v'), stencil = 0x48079057
-|	|	|	|	|	|	|	|	[d]: 'vfncvt.xu.f.w', mask=0xf8000, field_set=0x40, value=0x80000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.xu.f.w'), stencil = 0x48081057
-|	|	|	|	|	|	|	|	[e]: 'vfncvt.x.f.w', mask=0xf8000, field_set=0x40, value=0x88000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.x.f.w'), stencil = 0x48089057
-|	|	|	|	|	|	|	|	[f]: 'vfncvt.f.xu.w', mask=0xf8000, field_set=0x40, value=0x90000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.xu.w'), stencil = 0x48091057
-|	|	|	|	|	|	|	|	[10]: 'vfncvt.f.x.w', mask=0xf8000, field_set=0x40, value=0x98000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.x.w'), stencil = 0x48099057
-|	|	|	|	|	|	|	|	[11]: 'vfncvt.f.f.w', mask=0xf8000, field_set=0x40, value=0xa0000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.f.w'), stencil = 0x480a1057
-|	|	|	|	|	|	|	|	[12]: 'vfncvt.rod.f.f.w', mask=0xf8000, field_set=0x40, value=0xa8000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rod.f.f.w'), stencil = 0x480a9057
-|	|	|	|	|	|	|	|	[13]: 'vfncvt.rtz.xu.f.w', mask=0xf8000, field_set=0x40, value=0xb0000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rtz.xu.f.w'), stencil = 0x480b1057
-|	|	|	|	|	|	|	|	[14]: 'vfncvt.rtz.x.f.w', mask=0xf8000, field_set=0x40, value=0xb8000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rtz.x.f.w'), stencil = 0x480b9057
+|	|	|	|	|	|	|	|	[6]: 'vfncvt.xu.f.w', mask=0xf8000, field_set=0x40, value=0x80000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.xu.f.w'), stencil = 0x48081057
+|	|	|	|	|	|	|	|	[7]: 'vfncvt.x.f.w', mask=0xf8000, field_set=0x40, value=0x88000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.x.f.w'), stencil = 0x48089057
+|	|	|	|	|	|	|	|	[8]: 'vfncvt.f.xu.w', mask=0xf8000, field_set=0x40, value=0x90000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.xu.w'), stencil = 0x48091057
+|	|	|	|	|	|	|	|	[9]: 'vfncvt.f.x.w', mask=0xf8000, field_set=0x40, value=0x98000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.x.w'), stencil = 0x48099057
+|	|	|	|	|	|	|	|	[a]: 'vfncvt.f.f.w', mask=0xf8000, field_set=0x40, value=0xa0000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.f.w'), stencil = 0x480a1057
+|	|	|	|	|	|	|	|	[b]: 'vfncvt.rod.f.f.w', mask=0xf8000, field_set=0x40, value=0xa8000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rod.f.f.w'), stencil = 0x480a9057
+|	|	|	|	|	|	|	|	[c]: 'vfncvt.rtz.xu.f.w', mask=0xf8000, field_set=0x40, value=0xb0000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rtz.xu.f.w'), stencil = 0x480b1057
+|	|	|	|	|	|	|	|	[d]: 'vfncvt.rtz.x.f.w', mask=0xf8000, field_set=0x40, value=0xb8000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rtz.x.f.w'), stencil = 0x480b9057
+|	|	|	|	|	|	|	|	[e]: 'vfwcvt.xu.f.v', mask=0xf8000, field_set=0x40, value=0x40000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.xu.f.v'), stencil = 0x48041057
+|	|	|	|	|	|	|	|	[f]: 'vfwcvt.x.f.v', mask=0xf8000, field_set=0x40, value=0x48000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.x.f.v'), stencil = 0x48049057
+|	|	|	|	|	|	|	|	[10]: 'vfwcvt.f.xu.v', mask=0xf8000, field_set=0x40, value=0x50000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.xu.v'), stencil = 0x48051057
+|	|	|	|	|	|	|	|	[11]: 'vfwcvt.f.x.v', mask=0xf8000, field_set=0x40, value=0x58000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.x.v'), stencil = 0x48059057
+|	|	|	|	|	|	|	|	[12]: 'vfwcvt.f.f.v', mask=0xf8000, field_set=0x40, value=0x60000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.f.v'), stencil = 0x48061057
+|	|	|	|	|	|	|	|	[13]: 'vfwcvt.rtz.xu.f.v', mask=0xf8000, field_set=0x40, value=0x70000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.rtz.xu.f.v'), stencil = 0x48071057
+|	|	|	|	|	|	|	|	[14]: 'vfwcvt.rtz.x.f.v', mask=0xf8000, field_set=0x40, value=0x78000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.rtz.x.f.v'), stencil = 0x48079057
 |	|	|	|	|	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vzext.vf8', mask=0xf8000, field_set=0x40, value=0x10000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vzext.vf8'), stencil = 0x48012057
 |	|	|	|	|	|	|	|	[1]: 'vsext.vf8', mask=0xf8000, field_set=0x40, value=0x18000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vsext.vf8'), stencil = 0x4801a057
@@ -2453,21 +2453,21 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	|	|	|	[3]: 'vfcvt.f.x.v', mask=0xf8000, field_set=0x40, value=0x18000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfcvt.f.x.v'), stencil = 0x48019057
 |	|	|	|	|	|	|	|	[4]: 'vfcvt.rtz.xu.f.v', mask=0xf8000, field_set=0x40, value=0x30000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfcvt.rtz.xu.f.v'), stencil = 0x48031057
 |	|	|	|	|	|	|	|	[5]: 'vfcvt.rtz.x.f.v', mask=0xf8000, field_set=0x40, value=0x38000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfcvt.rtz.x.f.v'), stencil = 0x48039057
-|	|	|	|	|	|	|	|	[6]: 'vfwcvt.xu.f.v', mask=0xf8000, field_set=0x40, value=0x40000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.xu.f.v'), stencil = 0x48041057
-|	|	|	|	|	|	|	|	[7]: 'vfwcvt.x.f.v', mask=0xf8000, field_set=0x40, value=0x48000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.x.f.v'), stencil = 0x48049057
-|	|	|	|	|	|	|	|	[8]: 'vfwcvt.f.xu.v', mask=0xf8000, field_set=0x40, value=0x50000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.xu.v'), stencil = 0x48051057
-|	|	|	|	|	|	|	|	[9]: 'vfwcvt.f.x.v', mask=0xf8000, field_set=0x40, value=0x58000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.x.v'), stencil = 0x48059057
-|	|	|	|	|	|	|	|	[a]: 'vfwcvt.f.f.v', mask=0xf8000, field_set=0x40, value=0x60000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.f.v'), stencil = 0x48061057
-|	|	|	|	|	|	|	|	[b]: 'vfwcvt.rtz.xu.f.v', mask=0xf8000, field_set=0x40, value=0x70000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.rtz.xu.f.v'), stencil = 0x48071057
-|	|	|	|	|	|	|	|	[c]: 'vfwcvt.rtz.x.f.v', mask=0xf8000, field_set=0x40, value=0x78000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.rtz.x.f.v'), stencil = 0x48079057
-|	|	|	|	|	|	|	|	[d]: 'vfncvt.xu.f.w', mask=0xf8000, field_set=0x40, value=0x80000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.xu.f.w'), stencil = 0x48081057
-|	|	|	|	|	|	|	|	[e]: 'vfncvt.x.f.w', mask=0xf8000, field_set=0x40, value=0x88000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.x.f.w'), stencil = 0x48089057
-|	|	|	|	|	|	|	|	[f]: 'vfncvt.f.xu.w', mask=0xf8000, field_set=0x40, value=0x90000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.xu.w'), stencil = 0x48091057
-|	|	|	|	|	|	|	|	[10]: 'vfncvt.f.x.w', mask=0xf8000, field_set=0x40, value=0x98000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.x.w'), stencil = 0x48099057
-|	|	|	|	|	|	|	|	[11]: 'vfncvt.f.f.w', mask=0xf8000, field_set=0x40, value=0xa0000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.f.w'), stencil = 0x480a1057
-|	|	|	|	|	|	|	|	[12]: 'vfncvt.rod.f.f.w', mask=0xf8000, field_set=0x40, value=0xa8000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rod.f.f.w'), stencil = 0x480a9057
-|	|	|	|	|	|	|	|	[13]: 'vfncvt.rtz.xu.f.w', mask=0xf8000, field_set=0x40, value=0xb0000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rtz.xu.f.w'), stencil = 0x480b1057
-|	|	|	|	|	|	|	|	[14]: 'vfncvt.rtz.x.f.w', mask=0xf8000, field_set=0x40, value=0xb8000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rtz.x.f.w'), stencil = 0x480b9057
+|	|	|	|	|	|	|	|	[6]: 'vfncvt.xu.f.w', mask=0xf8000, field_set=0x40, value=0x80000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.xu.f.w'), stencil = 0x48081057
+|	|	|	|	|	|	|	|	[7]: 'vfncvt.x.f.w', mask=0xf8000, field_set=0x40, value=0x88000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.x.f.w'), stencil = 0x48089057
+|	|	|	|	|	|	|	|	[8]: 'vfncvt.f.xu.w', mask=0xf8000, field_set=0x40, value=0x90000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.xu.w'), stencil = 0x48091057
+|	|	|	|	|	|	|	|	[9]: 'vfncvt.f.x.w', mask=0xf8000, field_set=0x40, value=0x98000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.x.w'), stencil = 0x48099057
+|	|	|	|	|	|	|	|	[a]: 'vfncvt.f.f.w', mask=0xf8000, field_set=0x40, value=0xa0000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.f.f.w'), stencil = 0x480a1057
+|	|	|	|	|	|	|	|	[b]: 'vfncvt.rod.f.f.w', mask=0xf8000, field_set=0x40, value=0xa8000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rod.f.f.w'), stencil = 0x480a9057
+|	|	|	|	|	|	|	|	[c]: 'vfncvt.rtz.xu.f.w', mask=0xf8000, field_set=0x40, value=0xb0000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rtz.xu.f.w'), stencil = 0x480b1057
+|	|	|	|	|	|	|	|	[d]: 'vfncvt.rtz.x.f.w', mask=0xf8000, field_set=0x40, value=0xb8000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfncvt.rtz.x.f.w'), stencil = 0x480b9057
+|	|	|	|	|	|	|	|	[e]: 'vfwcvt.xu.f.v', mask=0xf8000, field_set=0x40, value=0x40000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.xu.f.v'), stencil = 0x48041057
+|	|	|	|	|	|	|	|	[f]: 'vfwcvt.x.f.v', mask=0xf8000, field_set=0x40, value=0x48000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.x.f.v'), stencil = 0x48049057
+|	|	|	|	|	|	|	|	[10]: 'vfwcvt.f.xu.v', mask=0xf8000, field_set=0x40, value=0x50000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.xu.v'), stencil = 0x48051057
+|	|	|	|	|	|	|	|	[11]: 'vfwcvt.f.x.v', mask=0xf8000, field_set=0x40, value=0x58000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.x.v'), stencil = 0x48059057
+|	|	|	|	|	|	|	|	[12]: 'vfwcvt.f.f.v', mask=0xf8000, field_set=0x40, value=0x60000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.f.f.v'), stencil = 0x48061057
+|	|	|	|	|	|	|	|	[13]: 'vfwcvt.rtz.xu.f.v', mask=0xf8000, field_set=0x40, value=0x70000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.rtz.xu.f.v'), stencil = 0x48071057
+|	|	|	|	|	|	|	|	[14]: 'vfwcvt.rtz.x.f.v', mask=0xf8000, field_set=0x40, value=0x78000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfwcvt.rtz.x.f.v'), stencil = 0x48079057
 |	|	|	|	|	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vzext.vf8', mask=0xf8000, field_set=0x40, value=0x10000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vzext.vf8'), stencil = 0x48012057
 |	|	|	|	|	|	|	|	[1]: 'vsext.vf8', mask=0xf8000, field_set=0x40, value=0x18000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vsext.vf8'), stencil = 0x4801a057
@@ -3084,152 +3084,152 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 267: DASM: 0x9c61 = c.zext.b	x8,x8
-line 274: DASM: 0x9c69 = c.zext.h	x8,x8
-line 283: DASM: 0x9c71 = c.zext.w	x8,x8
-line 292: DASM: 0x0x60401013 = sext.b	x0,x0
-line 301: DASM: 0x003100b3 = add	x1,x2,x3
-line 306: DASM: 0x02028593 = addi	x11,x5, +0x20
-line 311: DASM: 0x00028593 = mv	x11,x5, +0x0
-line 312: Has Immediate? no
-line 317: DASM: 0x4081 = c.li	x1, x0, +0x0
-line 322: DASM: 0x000280e7 = jalr	x1,x5, +0x0
-line 331: DASM: 0xe152 = c.sdsp	x20, SP, IMM=128
-line 336: DASM: 0xfcd6 = c.sdsp	x21, SP, IMM=120
-line 341: DASM: 0xf1402573 = csrrs	x10,x0, CSR=0xf14
-line 346: DIRECT: 'add' = add	3,1,2
-line 351: DIRECT_BM: 'add' = add	3,1,2 0x0
-line 356: DIRECT: 'sw' = sw	2(D),1(A), 0x0
-line 361: DIRECT_BM: 'sw' = sw	 D:2, A:1 0x0
-line 366: DASM: 0x907405e3 = beq	x8,x7 +0xfffffffffffff90a
-line 367: Signed-offset: 0xfffffffffffff90a
-line 372: DASM: 0x107405e3 = beq	x8,x7 +0x90a
-line 373: Signed-offset: 0x90a
-line 378: DASM: 0xd3ad = c.beqz	x15, x0, +0xffffffffffffff62
-line 379: Signed-offset: 0xffffffffffffff62
-line 384: DASM: 0xc3ad = c.beqz	x15, x0, +0x62
-line 385: Signed-offset: 0x62
-line 390: DASM: 0x8f16c3ef = jal	x7, +0xfffffffffff6c8f0
-line 391: Signed-offset: 0xfffffffffff6c8f0
-line 396: DASM: 0x0f16c3ef = jal	x7, +0x6c8f0
-line 397: Signed-offset: 0x6c8f0
-line 402: DASM: 0xb555 = c.j	x0, +0xfffffffffffffea4
-line 403: Signed-offset: 0xfffffffffffffea4
-line 408: DASM: 0xa555 = c.j	x0, +0x6a4
-line 409: Signed-offset: 0x6a4
-line 414: DASM: 0xa9cc0767 = jalr	x14,x24, +0xfffffffffffffa9c
-line 415: Signed-offset: 0xfffffffffffffa9c
-line 420: DASM: 0xbe10afa3 = sw	x1,x1, +0xfffffffffffffbff
-line 421: A-Sources: 0000000000000000000000000000000000000000000000000000000000000010
-line 422: D-Sources: 0000000000000000000000000000000000000000000000000000000000000010
-line 425: Stencil for 'jalr' = 0x67
-line 428: DASM: 0x67 = jalr	x0,x0, +0x0
-line 433: DASM: 0x60e2 = c.ldsp	x1, SP, IMM=24
-line 434: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
-line 435: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 436: Has Immediate? YES
-line 441: DASM: 0x53007 = fld	f0,x10, +0x0
-line 442: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 443: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 448: DASM: 0x2120 = c.fld	f8,x10, IMM=64
-line 449: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 450: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 455: DASM: 0x30200073 = mret	
-line 456: A-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 457: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 462: DASM: 0x1000202f = lr.w	x0,x0, aq/wd=0, rl/vm=0
-line 463: A-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 464: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 469: DASM: 0x2928 = c.fld	f10,x10, IMM=80
-line 470: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 471: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 472: Int-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 473: Float-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 474: Int-Dests: 0000000000000000000000000000000000000000000000000000000000000000
-line 475: Float-Dests: 0000000000000000000000000000000000000000000000000000010000000000
-line 480: DASM: 0x2d2c = c.fld	f11,x10, IMM=88
-line 481: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 482: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 483: Int-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 484: Float-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 485: Int-Dests: 0000000000000000000000000000000000000000000000000000000000000000
-line 486: Float-Dests: 0000000000000000000000000000000000000000000000000000100000000000
-line 491: DASM: 0x72a7f543 = fmadd.d	f10,f15,f10,f14, RM=7
-line 492: fmadd.d RM field = 0x7
-line 500: DIRECT: 'fcvt.l.d' = fcvt.l.d	4,1
-line 510: DASM: 0x8006 = c.mv	x0, x1
-line 515: MORPH DASM: = cmov	4,1,2,3
-line 523: DASM (CANONICAL_NOP): = nop	x0,x0, +0x0
-line 529: DASM (C.NOP/CANONICAL_CNOP): = c.nop	+0x0
-line 536: DIRECT: 'feq.s' = feq.s	4,1,2
-line 541: DASM: 0x710d = c.addi16sp	x2,x2, +0xfffffffffffffea0
-line 546: DASM: 0x5769 = c.li	x14, x0, +0xfffffffffffffffa
-line 551: DASM: 0x7769 = c.lui	x14, +0xffffffffffffa000
-line 556: DASM: 0x177c = c.addi4spn	x15, SP, IMM=940
-line 561: DASM: 0x0063b2af = amoadd.d	x5,x7,x6, aq/wd=0, rl/vm=0
-line 566: DASM: 0x8516 = c.mv	x10, x5
-line 571: DASM: 0xe3c1 = c.bnez	x15, x0, +0x80
-line 576: DASM: 0x9696 = c.add	x13,x13,x5
-line 581: DASM: 0x5877857 = vsetvli	x16,x14, e64,m1,ta,mu
-line 586: DASM: 0x803170d7 = vsetvl	x1,x2,x3
-line 595: DASM: 0x2f007 = vle64.v	v0,x5,v0.t
-line 603: DASM: 0x102f007 = vle64ff.v	v0,x5,v0.t
-line 612: DASM: 0x202f007 = vle64.v	v0,x5
-line 620: DASM: 0x2206e007 = vlseg2e32.v	v0,x13
-line 628: DASM: 0xa606e007 = vluxseg6ei32.v	v0,x13,v0
-line 636: DASM: 0xea06e007 = vlsseg8e32.v	v0,x13,x0
-line 644: DASM: 0xc000007 = vloxei8.v	v0,x0,v0,v0.t
-line 651: DASM: 0x4000027 = vsuxei8.v	v0,x0,v0,v0.t
-line 657: DASM: 0x03ffbfd7 = vadd.vi	v31,v31,-1
-line 664: DASM: 0x3100D7 = vadd.vv	v1,v3,v2,v0.t
-line 679: OperandInfo field ID 'rs3' is invalid
-line 685: DASM: 0x403100D7 = vadc.vvm	v1,v2,v3
-line 693: DASM: 0x5E008157 = vmv.v.v	v2,v1
-line 700: DASM: 0x3140D7 = vadd.vx	v1,v3,x2,v0.t
-line 708: DASM: 0x403140D7 = vadc.vxm	v1,x2,v3
-line 716: DASM: 0x5E00C157 = vmv.v.x	v2,x1
-line 723: DASM: 9E2030D7 = vmv1r.v	v1,v2
-line 730: DASM: 5008A0D7 = vid.v	v1,v0.t
-line 737: DASM: 100a7 = vse8.v	v1,x2,v0.t
-line 745: DASM: 0xc6880857 = vwredsum.vs	v16,v8,v16
-line 750: DASM: 0x52a1b657 = vror.vi	v12,v10, IMM=3
-line 757: DASM: 0x56b43757 = vror.vi	v14,v11, IMM=40
-line 764: DASM: 0x56b43757 = vmacc.vv	v4,v5,v6
-line 787: DASM(Direct): = vsext.vf2	8,30
-line 801: DASM(DirectOpInfo): = vsext.vf2	8,30
-line 813: DASM: 0x53007 = c.fld	f8,x10, IMM=64
-line 814: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 815: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 820: DASM: 0x40e2 = c.lwsp	x1, SP, IMM=24
-line 821: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
-line 822: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 823: Has Immediate? YES
-line 828: DASM: 0x60e2 = c.ldsp	x1, SP, IMM=24
-line 829: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
-line 830: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 831: Has Immediate? YES
-line 836: DASM: 0x650d = c.lui	x10, +0x3000
-line 841: DASM: 0x12000073 = sfence.vma	x0,x0
-line 846: DASM: 0xa422 = c.fsdsp	f8, SP, IMM=8
-line 859: PSEUDO = P0	3,1,2, 0x0
-line 863: PSEUDO = P0	3,1,2
-line 870: PSEUDO = P0	3,1,2 0xdead
-line 877: PSEUDO = P1	2(D),1(A), 0x0
-line 878: VM = 3
-line 892: PSEUDO = P1	 D:2, A:1 0xbeef
-line 905: PSEUDO = P0	3,1,2, 0x0
-line 918: DASM: 0x6f8c = c.ld	x11,x15, IMM=24
-line 922: DASM: 0x01043823 = sd	x16,x8, +0x10
-line 932: DASM: 0x613 = li	x12, +0x0
-line 937: DASM: 0x80000613 = li	x12, +0xfffffffffffff800
-line 942: DASM: 0x13 = nop	x0,x0, +0x0
-line 947: DASM: 0x8613 = mv	x12,x1, +0x0
-line 952: DASM: 0x80008613 = addi	x12,x1, +0xfffffffffffff800
-line 957: DASM: 0x6013 = prefetch.i	x0, +0x0
-line 964: DASM: 0x6013 = ori	x0,x0, +0x2
-line 971: DASM: 0x106013 = prefetch.r	x0, +0x0
-line 978: DASM: 0x306013 = prefetch.w	x0, +0x1
-line 985: DASM: 0x0100000f = pause	x0,x0, fm=0x0, pred=0x1, succ=0x0
+line 283: DASM: 0x9c61 = c.zext.b	x8,x8
+line 290: DASM: 0x9c69 = c.zext.h	x8,x8
+line 299: DASM: 0x9c71 = c.zext.w	x8,x8
+line 308: DASM: 0x0x60401013 = sext.b	x0,x0
+line 317: DASM: 0x003100b3 = add	x1,x2,x3
+line 322: DASM: 0x02028593 = addi	x11,x5, +0x20
+line 327: DASM: 0x00028593 = mv	x11,x5, +0x0
+line 328: Has Immediate? no
+line 333: DASM: 0x4081 = c.li	x1, x0, +0x0
+line 338: DASM: 0x000280e7 = jalr	x1,x5, +0x0
+line 347: DASM: 0xe152 = c.sdsp	x20, SP, IMM=128
+line 352: DASM: 0xfcd6 = c.sdsp	x21, SP, IMM=120
+line 357: DASM: 0xf1402573 = csrrs	x10,x0, CSR=0xf14
+line 362: DIRECT: 'add' = add	3,1,2
+line 367: DIRECT_BM: 'add' = add	3,1,2 0x0
+line 372: DIRECT: 'sw' = sw	2(D),1(A), 0x0
+line 377: DIRECT_BM: 'sw' = sw	 D:2, A:1 0x0
+line 382: DASM: 0x907405e3 = beq	x8,x7 +0xfffffffffffff90a
+line 383: Signed-offset: 0xfffffffffffff90a
+line 388: DASM: 0x107405e3 = beq	x8,x7 +0x90a
+line 389: Signed-offset: 0x90a
+line 394: DASM: 0xd3ad = c.beqz	x15, x0, +0xffffffffffffff62
+line 395: Signed-offset: 0xffffffffffffff62
+line 400: DASM: 0xc3ad = c.beqz	x15, x0, +0x62
+line 401: Signed-offset: 0x62
+line 406: DASM: 0x8f16c3ef = jal	x7, +0xfffffffffff6c8f0
+line 407: Signed-offset: 0xfffffffffff6c8f0
+line 412: DASM: 0x0f16c3ef = jal	x7, +0x6c8f0
+line 413: Signed-offset: 0x6c8f0
+line 418: DASM: 0xb555 = c.j	x0, +0xfffffffffffffea4
+line 419: Signed-offset: 0xfffffffffffffea4
+line 424: DASM: 0xa555 = c.j	x0, +0x6a4
+line 425: Signed-offset: 0x6a4
+line 430: DASM: 0xa9cc0767 = jalr	x14,x24, +0xfffffffffffffa9c
+line 431: Signed-offset: 0xfffffffffffffa9c
+line 436: DASM: 0xbe10afa3 = sw	x1,x1, +0xfffffffffffffbff
+line 437: A-Sources: 0000000000000000000000000000000000000000000000000000000000000010
+line 438: D-Sources: 0000000000000000000000000000000000000000000000000000000000000010
+line 441: Stencil for 'jalr' = 0x67
+line 444: DASM: 0x67 = jalr	x0,x0, +0x0
+line 449: DASM: 0x60e2 = c.ldsp	x1, SP, IMM=24
+line 450: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
+line 451: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 452: Has Immediate? YES
+line 457: DASM: 0x53007 = fld	f0,x10, +0x0
+line 458: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 459: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 464: DASM: 0x2120 = c.fld	f8,x10, IMM=64
+line 465: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 466: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 471: DASM: 0x30200073 = mret	
+line 472: A-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 473: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 478: DASM: 0x1000202f = lr.w	x0,x0, aq/wd=0, rl/vm=0
+line 479: A-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 480: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 485: DASM: 0x2928 = c.fld	f10,x10, IMM=80
+line 486: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 487: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 488: Int-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 489: Float-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 490: Int-Dests: 0000000000000000000000000000000000000000000000000000000000000000
+line 491: Float-Dests: 0000000000000000000000000000000000000000000000000000010000000000
+line 496: DASM: 0x2d2c = c.fld	f11,x10, IMM=88
+line 497: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 498: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 499: Int-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 500: Float-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 501: Int-Dests: 0000000000000000000000000000000000000000000000000000000000000000
+line 502: Float-Dests: 0000000000000000000000000000000000000000000000000000100000000000
+line 507: DASM: 0x72a7f543 = fmadd.d	f10,f15,f10,f14, RM=7
+line 508: fmadd.d RM field = 0x7
+line 516: DIRECT: 'fcvt.l.d' = fcvt.l.d	4,1
+line 526: DASM: 0x8006 = c.mv	x0, x1
+line 531: MORPH DASM: = cmov	4,1,2,3
+line 539: DASM (CANONICAL_NOP): = nop	x0,x0, +0x0
+line 545: DASM (C.NOP/CANONICAL_CNOP): = c.nop	+0x0
+line 552: DIRECT: 'feq.s' = feq.s	4,1,2
+line 557: DASM: 0x710d = c.addi16sp	x2,x2, +0xfffffffffffffea0
+line 562: DASM: 0x5769 = c.li	x14, x0, +0xfffffffffffffffa
+line 567: DASM: 0x7769 = c.lui	x14, +0xffffffffffffa000
+line 572: DASM: 0x177c = c.addi4spn	x15, SP, IMM=940
+line 577: DASM: 0x0063b2af = amoadd.d	x5,x7,x6, aq/wd=0, rl/vm=0
+line 582: DASM: 0x8516 = c.mv	x10, x5
+line 587: DASM: 0xe3c1 = c.bnez	x15, x0, +0x80
+line 592: DASM: 0x9696 = c.add	x13,x13,x5
+line 597: DASM: 0x5877857 = vsetvli	x16,x14, e64,m1,ta,mu
+line 602: DASM: 0x803170d7 = vsetvl	x1,x2,x3
+line 611: DASM: 0x2f007 = vle64.v	v0,x5,v0.t
+line 619: DASM: 0x102f007 = vle64ff.v	v0,x5,v0.t
+line 628: DASM: 0x202f007 = vle64.v	v0,x5
+line 636: DASM: 0x2206e007 = vlseg2e32.v	v0,x13
+line 644: DASM: 0xa606e007 = vluxseg6ei32.v	v0,x13,v0
+line 652: DASM: 0xea06e007 = vlsseg8e32.v	v0,x13,x0
+line 660: DASM: 0xc000007 = vloxei8.v	v0,x0,v0,v0.t
+line 667: DASM: 0x4000027 = vsuxei8.v	v0,x0,v0,v0.t
+line 673: DASM: 0x03ffbfd7 = vadd.vi	v31,v31,-1
+line 680: DASM: 0x3100D7 = vadd.vv	v1,v3,v2,v0.t
+line 695: OperandInfo field ID 'rs3' is invalid
+line 701: DASM: 0x403100D7 = vadc.vvm	v1,v2,v3
+line 709: DASM: 0x5E008157 = vmv.v.v	v2,v1
+line 716: DASM: 0x3140D7 = vadd.vx	v1,v3,x2,v0.t
+line 724: DASM: 0x403140D7 = vadc.vxm	v1,x2,v3
+line 732: DASM: 0x5E00C157 = vmv.v.x	v2,x1
+line 739: DASM: 9E2030D7 = vmv1r.v	v1,v2
+line 746: DASM: 5008A0D7 = vid.v	v1,v0.t
+line 753: DASM: 100a7 = vse8.v	v1,x2,v0.t
+line 761: DASM: 0xc6880857 = vwredsum.vs	v16,v8,v16
+line 766: DASM: 0x52a1b657 = vror.vi	v12,v10, IMM=3
+line 773: DASM: 0x56b43757 = vror.vi	v14,v11, IMM=40
+line 780: DASM: 0x56b43757 = vmacc.vv	v4,v5,v6
+line 803: DASM(Direct): = vsext.vf2	8,30
+line 817: DASM(DirectOpInfo): = vsext.vf2	8,30
+line 829: DASM: 0x53007 = c.fld	f8,x10, IMM=64
+line 830: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 831: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 836: DASM: 0x40e2 = c.lwsp	x1, SP, IMM=24
+line 837: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
+line 838: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 839: Has Immediate? YES
+line 844: DASM: 0x60e2 = c.ldsp	x1, SP, IMM=24
+line 845: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
+line 846: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 847: Has Immediate? YES
+line 852: DASM: 0x650d = c.lui	x10, +0x3000
+line 857: DASM: 0x12000073 = sfence.vma	x0,x0
+line 862: DASM: 0xa422 = c.fsdsp	f8, SP, IMM=8
+line 875: PSEUDO = P0	3,1,2, 0x0
+line 879: PSEUDO = P0	3,1,2
+line 886: PSEUDO = P0	3,1,2 0xdead
+line 893: PSEUDO = P1	2(D),1(A), 0x0
+line 894: VM = 3
+line 908: PSEUDO = P1	 D:2, A:1 0xbeef
+line 921: PSEUDO = P0	3,1,2, 0x0
+line 934: DASM: 0x6f8c = c.ld	x11,x15, IMM=24
+line 938: DASM: 0x01043823 = sd	x16,x8, +0x10
+line 948: DASM: 0x613 = li	x12, +0x0
+line 953: DASM: 0x80000613 = li	x12, +0xfffffffffffff800
+line 958: DASM: 0x13 = nop	x0,x0, +0x0
+line 963: DASM: 0x8613 = mv	x12,x1, +0x0
+line 968: DASM: 0x80008613 = addi	x12,x1, +0xfffffffffffff800
+line 973: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 980: DASM: 0x6013 = ori	x0,x0, +0x2
+line 987: DASM: 0x106013 = prefetch.r	x0, +0x0
+line 994: DASM: 0x306013 = prefetch.w	x0, +0x1
+line 1001: DASM: 0x0100000f = pause	x0,x0, fm=0x0, pred=0x1, succ=0x0
 ====== TAG 'pf' EXCLUDED =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3244,7 +3244,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[6]: IFactoryDenseComposite::Field func6
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'ori', value=0x6013, extractor=Extractor 'I', factory=IFactory('ori'), stencil = 0x6013
-line 1008: DASM: 0x6013 = ori	x0,x0, +0x0
+line 1024: DASM: 0x6013 = ori	x0,x0, +0x0
 ====== TAG 'ccf' EXCLUDED =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3252,7 +3252,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[6]: IFactoryDenseComposite::Field func6
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'ori', value=0x6013, extractor=Extractor 'I', factory=IFactory('ori'), stencil = 0x6013
-line 1026: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 1042: DASM: 0x6013 = prefetch.i	x0, +0x0
 ====== TAG 'ccf' INCLUDED (ONLY) =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3263,9 +3263,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[1]: 'cbo.flush', mask=0x1f00f80, field_set=0x12, value=0x200000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.flush'), stencil = 0x20200f
 |	|	|	|	|	[2]: 'cbo.inval', mask=0x1f00f80, field_set=0x12, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.inval'), stencil = 0x200f
 |	|	|	|	|	[3]: 'cbo.zero', mask=0x1f00f80, field_set=0x12, value=0x400000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.zero'), stencil = 0x40200f
-line 1046: DASM: 0x6013 fails to decode. This is expected
-line 1057: Missing ORI definition during build. This is expected
-line 1065: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 1062: DASM: 0x6013 fails to decode. This is expected
+line 1073: Missing ORI definition during build. This is expected
+line 1081: DASM: 0x6013 = prefetch.i	x0, +0x0
 ====== TESTING RV32 =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
@@ -3740,17 +3740,17 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1098: DASM: 0x003100b3 = add	x1,x2,x3
-line 1104: DASM: 0x03103 = ld	x2,x0, +0x0
-line 1121: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
-line 1126: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
-line 1132: DASM: 0x2867322f = amocas.d	x4,x14,x6, aq/wd=0, rl/vm=0
-line 1137: DASM: 0x2863b22f = amocas.d	x4,x7,x6, aq/wd=0, rl/vm=0
-line 1149: DASM: 0x203023 = sd	x2,x0, +0x0
-line 1162: DASM: 0x2001 = c.jal	x1, +0x0
-line 1167: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
-line 1172: DASM: 0x6008 = c.flw	f10,x8, IMM=0
-line 1178: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
+line 1116: DASM: 0x003100b3 = add	x1,x2,x3
+line 1122: DASM: 0x03103 = ld	x2,x0, +0x0
+line 1139: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1144: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1150: DASM: 0x2867322f = amocas.d	x4,x14,x6, aq/wd=0, rl/vm=0
+line 1155: DASM: 0x2863b22f = amocas.d	x4,x7,x6, aq/wd=0, rl/vm=0
+line 1167: DASM: 0x203023 = sd	x2,x0, +0x0
+line 1180: DASM: 0x2001 = c.jal	x1, +0x0
+line 1185: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
+line 1190: DASM: 0x6008 = c.flw	f10,x8, IMM=0
+line 1196: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
 ====== TESTING RV32 Zclsd =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
@@ -4176,5 +4176,5 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1207: DASM: 0x6008 = c.ld	x10,x8, IMM=0
-line 1221: DASM: 0xe008 = c.sd	x10,x8, IMM=0
+line 1227: DASM: 0x6008 = c.ld	x10,x8, IMM=0
+line 1241: DASM: 0xe008 = c.sd	x10,x8, IMM=0

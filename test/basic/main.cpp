@@ -172,21 +172,32 @@ int main() {
     MavisType mavis_facade({"json/isa_rv64i.json",        // included in "g" spec
                             "json/isa_rv64f.json",        // included in "g" spec
                             "json/isa_rv64m.json",        // included in "g" spec
-                            "json/isa_rv64a.json",        // included in "g" spec
+                            "json/isa_rv64zmmul.json",    // included in "g" spec
+                            "json/isa_rv64zaamo.json",    // included in "g" spec
+                            "json/isa_rv64zalrsc.json",   // included in "g" spec
                             "json/isa_rv64d.json",        // included in "g" spec
                             "json/isa_rv64zicsr.json",    // included in "g" spec
                             "json/isa_rv64zifencei.json", // included in "g" spec
-                            "json/isa_rv64c.json",
-                            "json/isa_rv64cf.json",
-                            "json/isa_rv64cd.json",
+                            "json/isa_rv64zca.json",
+                            "json/isa_rv64zcd.json",
                             "json/isa_rv64q.json",
                             "json/isa_rv64h.json",
-                            "json/isa_rv64v.json",
-                            "json/isa_rv64vf.json",
-                            "json/isa_rv64zvk.json",
+                            "json/isa_rv64zve32x.json",
+                            "json/isa_rv64zve32f.json",
+                            "json/isa_rv64zve64x.json",
+                            "json/isa_rv64zve64d.json",
+                            "json/isa_rv64zvbb.json",
+                            "json/isa_rv64zvbc.json",
+                            "json/isa_rv64zvkned.json",
+                            "json/isa_rv64zvkg.json",
+                            "json/isa_rv64zvknh.json",
+                            "json/isa_rv64zvksed.json",
+                            "json/isa_rv64zvksh.json",
                             "json/isa_rv64zfh.json",
                             "json/isa_rv64zfh_d.json",
-                            "json/isa_rv64zicbo.json",
+                            "json/isa_rv64zicbom.json",
+                            "json/isa_rv64zicbop.json",
+                            "json/isa_rv64zicboz.json",
                             "json/isa_rv64zihintntl.json",
                             "json/isa_rv64zihintpause.json",
                             "json/isa_rv64zicond.json",
@@ -231,23 +242,28 @@ int main() {
     // Try creating a new context
     mavis_facade.makeContext("NEW", {"json/isa_rv64i.json",
                                      "json/isa_rv64m.json",
-                                     "json/isa_rv64a.json",
+                                     "json/isa_rv64zmmul.json",
+                                     "json/isa_rv64zaamo.json",
+                                     "json/isa_rv64zalrsc.json",
                                      "json/isa_rv64f.json",
                                      "json/isa_rv64d.json",
-                                     "json/isa_rv64c.json",
-                                     "json/isa_rv64cf.json",
-                                     "json/isa_rv64cd.json",
+                                     "json/isa_rv64zca.json",
+                                     "json/isa_rv64zcd.json",
                                      "json/isa_rv64zicsr.json",
                                      "json/isa_rv64zifencei.json",
-                                     "json/isa_rv64v.json",
-                                     "json/isa_rv64vf.json",
+                                     "json/isa_rv64zve32x.json",
+                                     "json/isa_rv64zve32f.json",
+                                     "json/isa_rv64zve64x.json",
+                                     "json/isa_rv64zve64d.json",
                                      "json/isa_rv64zfh.json",
                                      "json/isa_rv64zfh_d.json",
                                      "json/isa_rv64zba.json",
                                      "json/isa_rv64zbb.json",
                                      "json/isa_rv64zbc.json",
                                      "json/isa_rv64zbs.json",
-                                     "json/isa_rv64zicbo.json",
+                                     "json/isa_rv64zicbom.json",
+                                     "json/isa_rv64zicbop.json",
+                                     "json/isa_rv64zicboz.json",
                                      "json/isa_rv64zcb.json",
                                      "json/isa_rv64zihintntl.json",
                                      "json/isa_rv64zihintpause.json",
@@ -1075,13 +1091,15 @@ int main() {
     MavisType mavis_facade_rv32({"json/isa_rv32i.json",        // included in "g" spec
                                  "json/isa_rv32f.json",        // included in "g" spec
                                  "json/isa_rv32m.json",        // included in "g" spec
-                                 "json/isa_rv32a.json",        // included in "g" spec
+                                 "json/isa_rv32zmmul.json",    // included in "g" spec
+                                 "json/isa_rv32zaamo.json",    // included in "g" spec
+                                 "json/isa_rv32zalrsc.json",   // included in "g" spec
                                  "json/isa_rv32d.json",        // included in "g" spec
                                  "json/isa_rv32zicsr.json",    // included in "g" spec
                                  "json/isa_rv32zifencei.json", // included in "g" spec
-                                 "json/isa_rv32c.json",
-                                 "json/isa_rv32cf.json",
-                                 "json/isa_rv32cd.json",
+                                 "json/isa_rv32zca.json",
+                                 "json/isa_rv32zcf.json",
+                                 "json/isa_rv32zcd.json",
                                  "json/isa_rv32zihintpause.json",
                                  "json/isa_rv32zawrs.json",
                                  "json/isa_rv32zilsd.json",
@@ -1185,15 +1203,17 @@ int main() {
 
     // Create new context to test Zclsd extension
     // Zclsd has overlapping encodings with Zcf, so they can't be used at the same time
-    mavis_facade_rv32.makeContext("ZCLSD", {"json/isa_rv32i.json",        // included in "g" spec
+    mavis_facade_rv32.makeContext("ZCLSD", {"json/isa_rv32i.json",         // included in "g" spec
                                              "json/isa_rv32f.json",        // included in "g" spec
                                              "json/isa_rv32m.json",        // included in "g" spec
-                                             "json/isa_rv32a.json",        // included in "g" spec
+                                             "json/isa_rv32zmmul.json",    // included in "g" spec
+                                             "json/isa_rv32zaamo.json",    // included in "g" spec
+                                             "json/isa_rv32zalrsc.json",   // included in "g" spec
                                              "json/isa_rv32d.json",        // included in "g" spec
                                              "json/isa_rv32zicsr.json",    // included in "g" spec
                                              "json/isa_rv32zifencei.json", // included in "g" spec
-                                             "json/isa_rv32c.json",
-                                             "json/isa_rv32cd.json",
+                                             "json/isa_rv32zca.json",
+                                             "json/isa_rv32zcd.json",
                                              "json/isa_rv32zihintpause.json",
                                              "json/isa_rv32zilsd.json",
                                              "json/isa_rv32zclsd.json"},

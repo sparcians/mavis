@@ -1,0 +1,32 @@
+[
+  {
+    "mnemonic": "vsha2ch.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xba002077",
+    "fixed": [ "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vsha2cl.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xbe002077",
+    "fixed": [ "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": "all"
+  },
+  {
+    "mnemonic": "vsha2ms.vv",
+    "tags" : ["zvk"],
+    "form": "V",
+    "xform": "V_op_implied",
+    "stencil": "0xb6002077",
+    "fixed": [ "vm" ],
+    "type": [ "vector", "crypto" ],
+    "v-oper": "all"
+  }
+]

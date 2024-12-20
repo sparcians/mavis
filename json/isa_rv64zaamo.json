@@ -81,25 +81,6 @@
     "data" : 32
   },
   {
-    "mnemonic" : "lr.w",
-    "tags" : ["a", "g"],
-    "form" : "AMO",
-    "fixed" : ["rs2"],
-    "stencil" : "0x1000202f",
-    "type" : ["int", "load", "atomic"],
-    "l-oper" : "all",
-    "data" : 32
-  },
-  {
-    "mnemonic" : "sc.w",
-    "tags" : ["a", "g"],
-    "form" : "AMO",
-    "stencil" : "0x1800202f",
-    "type" : ["int", "store", "atomic"],
-    "l-oper" : "all",
-    "data" : 32
-  },
-  {
     "mnemonic" : "amoadd.d",
     "tags" : ["a", "g"],
     "form" : "AMO",
@@ -177,25 +158,6 @@
     "form" : "AMO",
     "stencil" : "0x800302f",
     "type" : ["int", "load", "atomic"],
-    "l-oper" : "all",
-    "data" : 64
-  },
-  {
-    "mnemonic" : "lr.d",
-    "tags" : ["a", "g"],
-    "form" : "AMO",
-    "fixed" : ["rs2"],
-    "stencil" : "0x1000302f",
-    "type" : ["int", "load", "atomic"],
-    "l-oper" : "all",
-    "data" : 64
-  },
-  {
-    "mnemonic" : "sc.d",
-    "tags" : ["a", "g"],
-    "form" : "AMO",
-    "stencil" : "0x1800302f",
-    "type" : ["int", "store", "atomic"],
     "l-oper" : "all",
     "data" : 64
   }
