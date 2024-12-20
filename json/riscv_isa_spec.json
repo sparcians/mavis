@@ -285,11 +285,6 @@
     },
     {
       "xlen": 64,
-      "extension": "vf",
-      "json": "isa_rv64vf.json"
-    },
-    {
-      "xlen": 64,
       "extension": "zaamo",
       "meta_extension": "a",
       "json": "isa_rv64zaamo.json"
@@ -417,6 +412,16 @@
       "extension": "zvksh",
       "meta_extension": "zvks",
       "json": "isa_rv64zvksh.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zabha",
+      "json": "isa_rv32zabha.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zacas",
+      "json": "isa_rv32zacas.json"
     }
   ]
 }

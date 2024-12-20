@@ -172,6 +172,7 @@ int main() {
     MavisType mavis_facade({"json/isa_rv64i.json",        // included in "g" spec
                             "json/isa_rv64f.json",        // included in "g" spec
                             "json/isa_rv64m.json",        // included in "g" spec
+                            "json/isa_rv64zmmul.json",    // included in "g" spec
                             "json/isa_rv64zaamo.json",    // included in "g" spec
                             "json/isa_rv64zalrsc.json",   // included in "g" spec
                             "json/isa_rv64d.json",        // included in "g" spec
@@ -181,8 +182,10 @@ int main() {
                             "json/isa_rv64zcd.json",
                             "json/isa_rv64q.json",
                             "json/isa_rv64h.json",
-                            "json/isa_rv64v.json",
-                            "json/isa_rv64vf.json",
+                            "json/isa_rv64zve32x.json",
+                            "json/isa_rv64zve32f.json",
+                            "json/isa_rv64zve64x.json",
+                            "json/isa_rv64zve64d.json",
                             "json/isa_rv64zvbb.json",
                             "json/isa_rv64zvbc.json",
                             "json/isa_rv64zvkned.json",
@@ -239,6 +242,7 @@ int main() {
     // Try creating a new context
     mavis_facade.makeContext("NEW", {"json/isa_rv64i.json",
                                      "json/isa_rv64m.json",
+                                     "json/isa_rv64zmmul.json",
                                      "json/isa_rv64zaamo.json",
                                      "json/isa_rv64zalrsc.json",
                                      "json/isa_rv64f.json",
@@ -247,8 +251,10 @@ int main() {
                                      "json/isa_rv64zcd.json",
                                      "json/isa_rv64zicsr.json",
                                      "json/isa_rv64zifencei.json",
-                                     "json/isa_rv64v.json",
-                                     "json/isa_rv64vf.json",
+                                     "json/isa_rv64zve32x.json",
+                                     "json/isa_rv64zve32f.json",
+                                     "json/isa_rv64zve64x.json",
+                                     "json/isa_rv64zve64d.json",
                                      "json/isa_rv64zfh.json",
                                      "json/isa_rv64zfh_d.json",
                                      "json/isa_rv64zba.json",
@@ -1085,6 +1091,7 @@ int main() {
     MavisType mavis_facade_rv32({"json/isa_rv32i.json",        // included in "g" spec
                                  "json/isa_rv32f.json",        // included in "g" spec
                                  "json/isa_rv32m.json",        // included in "g" spec
+                                 "json/isa_rv32zmmul.json",    // included in "g" spec
                                  "json/isa_rv32zaamo.json",    // included in "g" spec
                                  "json/isa_rv32zalrsc.json",   // included in "g" spec
                                  "json/isa_rv32d.json",        // included in "g" spec
@@ -1196,9 +1203,10 @@ int main() {
 
     // Create new context to test Zclsd extension
     // Zclsd has overlapping encodings with Zcf, so they can't be used at the same time
-    mavis_facade_rv32.makeContext("ZCLSD", {"json/isa_rv32i.json",        // included in "g" spec
+    mavis_facade_rv32.makeContext("ZCLSD", {"json/isa_rv32i.json",         // included in "g" spec
                                              "json/isa_rv32f.json",        // included in "g" spec
                                              "json/isa_rv32m.json",        // included in "g" spec
+                                             "json/isa_rv32zmmul.json",    // included in "g" spec
                                              "json/isa_rv32zaamo.json",    // included in "g" spec
                                              "json/isa_rv32zalrsc.json",   // included in "g" spec
                                              "json/isa_rv32d.json",        // included in "g" spec
