@@ -3206,5 +3206,104 @@ protected:
     uint64_t fixed_field_mask_ = 0;
 };
 
+/**
+ * Atomic Double which has reads a pair of memory locations and can
+ * write a pair of memory locations
+ * RV32 NOTE: rs1 is the address base, rd is the dest data starting register.
+ * The second register added will be rd+1 and rs2+1
+ * Also, checks for alignment of those registers.
+ */
+template<>
+class Extractor<Form_AMO_pair> : public Extractor<Form_AMO>
+{
+public:
+    Extractor() = default;
+
+    bool isIllop(Opcode icode) const override
+    {
+        // illegal if the destination reg is odd
+        const uint32_t dest_reg = extract_(Form_AMO::idType::RD, icode);
+        // illegal if the source reg is odd
+        const uint32_t src_reg = extract_(Form_AMO::idType::RS2, icode);
+        return (dest_reg & 0b1) != 0 || (src_reg & 0b1) != 0;
+    }
+
+    // Take the standard load and append a second destination to it.
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        uint64_t dest_mask = 0;
+        if(const uint32_t reg = extract_(Form_AMO::idType::RD, icode); reg != REGISTER_X0)
+        {
+            dest_mask =
+                extractUnmaskedIndexBit_(Form_AMO::idType::RD, icode, fixed_field_mask_);
+
+            const uint32_t rd_val_pos = 64 - __builtin_clzll(dest_mask);
+            dest_mask |= (0x1ull << rd_val_pos);
+        }
+        return dest_mask;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                    bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        if(const uint32_t reg = extract_(Form_AMO::idType::RD, icode); reg != REGISTER_X0)
+        {
+            olist = Extractor<Form_AMO>::getDestOperandInfo(icode, meta, suppress_x0);
+            auto rd2_elem = olist.getElements().at(0);
+            rd2_elem.field_id = InstMetaData::OperandFieldID::RD2;
+            ++rd2_elem.field_value;
+
+            // Add the second RD
+            olist.addElement(rd2_elem);
+        }
+        return olist;
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        // The mask for all of the source regs (addr + data) is
+        // actually the original RS1/RS2 | RS3, but RS3 is not part of
+        // the icode
+        return Extractor<Form_AMO>::getSourceRegs(icode) | getSourceDataRegs(icode);
+    }
+
+    uint64_t getSourceDataRegs(const Opcode icode) const override
+    {
+        // Add a second source to the pair
+        uint64_t src_mask = 0;
+        if(const uint32_t reg = extract_(Form_AMO::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            src_mask = extractUnmaskedIndexBit_(Form_AMO::idType::RS2, icode, fixed_field_mask_);
+            const uint32_t rs2_val_pos = 64 - __builtin_clzll(src_mask);
+            src_mask |= (0x1ull << rs2_val_pos);
+        }
+        return src_mask;
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
+                                   fixed_field_mask_, Form_AMO::idType::RS1,
+                                   false, suppress_x0);
+        if(const uint32_t reg = extract_(Form_AMO::idType::RS2, icode); reg != REGISTER_X0)
+        {
+            appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS2,
+                                       fixed_field_mask_, Form_AMO::idType::RS2,
+                                       false, suppress_x0);
+            auto rs3_elem = olist.getElements().at(1);
+            assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+
+            rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
+            ++rs3_elem.field_value;
+
+            // Add the second RS
+            olist.addElement(rs3_elem);
+        }
+        return olist;
+    }
+};
 
 } // namespace mavis

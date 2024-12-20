@@ -112,7 +112,9 @@ int main(int argc, char **argv)
                     "json/isa_rv32c.json",
                     "json/isa_rv32cd.json",
                     "json/isa_rv32zawrs.json",
-                    "json/isa_rv32zilsd.json"};
+                    "json/isa_rv32zilsd.json",
+                    "json/isa_rv32zacas.json",
+                    "json/isa_rv32zabha.json"};
 
         // Zclsd has overlapping encodings with Zcf, so only one can be used at a time
         if (vm.count("zclsd"))
@@ -123,7 +125,7 @@ int main(int argc, char **argv)
         {
             isa_files.emplace_back("json/isa_rv32cf.json");
         }
-        mavis_facade.reset(new MavisType(isa_files, {"uarch/uarch_rv64g.json"}));
+        mavis_facade.reset(new MavisType(isa_files, {"uarch/uarch_rv32g.json"}));
     }
     else if(rv_isa == "rv64")
     {
