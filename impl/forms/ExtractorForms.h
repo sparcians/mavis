@@ -177,8 +177,6 @@ private:
     Extractor<Form_AMO>(const uint64_t ffmask, const uint64_t fset) :
         ExtractorBase(ffmask)
     {}
-
-
 };
 
 /**
@@ -2780,8 +2778,6 @@ private:
     Extractor<Form_S>(const uint64_t ffmask, const uint64_t fset) :
         ExtractorBase(ffmask)
     {}
-
-
 };
 
 /**

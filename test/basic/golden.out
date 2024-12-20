@@ -3464,6 +3464,48 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'fsd', value=0x3027, extractor=Extractor 'S', factory=IFactory('fsd'), stencil = 0x3027
 |	|	[2f]: IFactoryDenseComposite::Field func3
+|	|	|	[0]: IFactoryDenseComposite::Field func5
+|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoadd.b', value=0x2f, extractor=Extractor 'AMO', factory=IFactory('amoadd.b'), stencil = 0x2f
+|	|	|	|	[1]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoswap.b', value=0x800002f, extractor=Extractor 'AMO', factory=IFactory('amoswap.b'), stencil = 0x800002f
+|	|	|	|	[4]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoxor.b', value=0x2000002f, extractor=Extractor 'AMO', factory=IFactory('amoxor.b'), stencil = 0x2000002f
+|	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amocas.b', value=0x2800002f, extractor=Extractor 'AMO', factory=IFactory('amocas.b'), stencil = 0x2800002f
+|	|	|	|	[8]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoor.b', value=0x4000002f, extractor=Extractor 'AMO', factory=IFactory('amoor.b'), stencil = 0x4000002f
+|	|	|	|	[c]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoand.b', value=0x6000002f, extractor=Extractor 'AMO', factory=IFactory('amoand.b'), stencil = 0x6000002f
+|	|	|	|	[10]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amomin.b', value=0x8000002f, extractor=Extractor 'AMO', factory=IFactory('amomin.b'), stencil = 0x8000002f
+|	|	|	|	[14]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amomax.b', value=0xa000002f, extractor=Extractor 'AMO', factory=IFactory('amomax.b'), stencil = 0xa000002f
+|	|	|	|	[18]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amominu.b', value=0xc000002f, extractor=Extractor 'AMO', factory=IFactory('amominu.b'), stencil = 0xc000002f
+|	|	|	|	[1c]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amomaxu.b', value=0xe000002f, extractor=Extractor 'AMO', factory=IFactory('amomaxu.b'), stencil = 0xe000002f
+|	|	|	[1]: IFactoryDenseComposite::Field func5
+|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoadd.h', value=0x102f, extractor=Extractor 'AMO', factory=IFactory('amoadd.h'), stencil = 0x102f
+|	|	|	|	[1]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoswap.h', value=0x800102f, extractor=Extractor 'AMO', factory=IFactory('amoswap.h'), stencil = 0x800102f
+|	|	|	|	[4]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoxor.h', value=0x2000102f, extractor=Extractor 'AMO', factory=IFactory('amoxor.h'), stencil = 0x2000102f
+|	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amocas.h', value=0x2800102f, extractor=Extractor 'AMO', factory=IFactory('amocas.h'), stencil = 0x2800102f
+|	|	|	|	[8]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoor.h', value=0x4000102f, extractor=Extractor 'AMO', factory=IFactory('amoor.h'), stencil = 0x4000102f
+|	|	|	|	[c]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amoand.h', value=0x6000102f, extractor=Extractor 'AMO', factory=IFactory('amoand.h'), stencil = 0x6000102f
+|	|	|	|	[10]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amomin.h', value=0x8000102f, extractor=Extractor 'AMO', factory=IFactory('amomin.h'), stencil = 0x8000102f
+|	|	|	|	[14]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amomax.h', value=0xa000102f, extractor=Extractor 'AMO', factory=IFactory('amomax.h'), stencil = 0xa000102f
+|	|	|	|	[18]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amominu.h', value=0xc000102f, extractor=Extractor 'AMO', factory=IFactory('amominu.h'), stencil = 0xc000102f
+|	|	|	|	[1c]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amomaxu.h', value=0xe000102f, extractor=Extractor 'AMO', factory=IFactory('amomaxu.h'), stencil = 0xe000102f
 |	|	|	[2]: IFactoryDenseComposite::Field func5
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'amoadd.w', value=0x202f, extractor=Extractor 'AMO', factory=IFactory('amoadd.w'), stencil = 0x202f
@@ -3475,6 +3517,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'sc.w', value=0x1800202f, extractor=Extractor 'AMO', factory=IFactory('sc.w'), stencil = 0x1800202f
 |	|	|	|	[4]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'amoxor.w', value=0x2000202f, extractor=Extractor 'AMO', factory=IFactory('amoxor.w'), stencil = 0x2000202f
+|	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amocas.w', value=0x2800202f, extractor=Extractor 'AMO', factory=IFactory('amocas.w'), stencil = 0x2800202f
 |	|	|	|	[8]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'amoor.w', value=0x4000202f, extractor=Extractor 'AMO', factory=IFactory('amoor.w'), stencil = 0x4000202f
 |	|	|	|	[c]: IFactorySpecialCaseComposite::Field 
@@ -3487,6 +3531,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'amominu.w', value=0xc000202f, extractor=Extractor 'AMO', factory=IFactory('amominu.w'), stencil = 0xc000202f
 |	|	|	|	[1c]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'amomaxu.w', value=0xe000202f, extractor=Extractor 'AMO', factory=IFactory('amomaxu.w'), stencil = 0xe000202f
+|	|	|	[3]: IFactoryDenseComposite::Field func5
+|	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'amocas.d', value=0x2800302f, extractor=Extractor 'AMO', factory=IFactory('amocas.d'), stencil = 0x2800302f
 |	|	[33]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactoryDenseComposite::Field func7
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
@@ -3693,13 +3740,17 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1107: DASM: 0x003100b3 = add	x1,x2,x3
-line 1113: DASM: 0x03103 = ld	x2,x0, +0x0
-line 1127: DASM: 0x203023 = sd	x2,x0, +0x0
-line 1140: DASM: 0x2001 = c.jal	x1, +0x0
-line 1145: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
-line 1150: DASM: 0x6008 = c.flw	f10,x8, IMM=0
-line 1156: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
+line 1098: DASM: 0x003100b3 = add	x1,x2,x3
+line 1104: DASM: 0x03103 = ld	x2,x0, +0x0
+line 1121: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1126: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1132: DASM: 0x2867322f = amocas.d	x4,x14,x6, aq/wd=0, rl/vm=0
+line 1137: DASM: 0x2863b22f = amocas.d	x4,x7,x6, aq/wd=0, rl/vm=0
+line 1149: DASM: 0x203023 = sd	x2,x0, +0x0
+line 1162: DASM: 0x2001 = c.jal	x1, +0x0
+line 1167: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
+line 1172: DASM: 0x6008 = c.flw	f10,x8, IMM=0
+line 1178: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
 ====== TESTING RV32 Zclsd =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
@@ -4125,5 +4176,5 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1186: DASM: 0x6008 = c.ld	x10,x8, IMM=0
-line 1200: DASM: 0xe008 = c.sd	x10,x8, IMM=0
+line 1207: DASM: 0x6008 = c.ld	x10,x8, IMM=0
+line 1221: DASM: 0xe008 = c.sd	x10,x8, IMM=0

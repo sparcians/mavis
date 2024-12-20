@@ -1,0 +1,182 @@
+[
+  {
+    "mnemonic" : "amoadd.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x02f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoxor.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x2000002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoor.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x4000002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoand.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x6000002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomin.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x8000002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomax.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0xa000002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amominu.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0xc000002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomaxu.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0xe000002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoswap.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x800002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amocas.b",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x2800002f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoadd.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoxor.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x2000102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoor.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x4000102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoand.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x6000102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomin.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x8000102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomax.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0xa000102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amominu.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0xc000102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amomaxu.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0xe000102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amoswap.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x800102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  },
+  {
+    "mnemonic" : "amocas.h",
+    "tags" : ["zabha"],
+    "form" : "AMO",
+    "stencil" : "0x2800102f",
+    "type" : ["int", "load", "atomic"],
+    "l-oper" : "all",
+    "data" : 32
+  }
+]

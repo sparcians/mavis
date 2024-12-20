@@ -1095,7 +1095,9 @@ int main() {
                                  "json/isa_rv32zcd.json",
                                  "json/isa_rv32zihintpause.json",
                                  "json/isa_rv32zawrs.json",
-                                 "json/isa_rv32zilsd.json"},
+                                 "json/isa_rv32zilsd.json",
+                                 "json/isa_rv32zacas.json",
+                                 "json/isa_rv32zabha.json"},
                                 {"uarch/uarch_rv32g.json"},
                                 uid_init,
                                 anno_overrides);
@@ -1116,6 +1118,37 @@ int main() {
     try {
         // Illegal form of load pair -- rd starts odd
         inst = mavis_facade_rv32.makeInst(0x03f83, 0);
+        assert(inst == nullptr);
+    }
+    catch(...) {}
+
+    //
+    // Test 32-bit atomics zabha zacas extension
+    //
+    // Zabha testing
+    // amoadd.b
+    inst = mavis_facade_rv32.makeInst(0x006382af, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x006382af = " << inst->dasmString() << endl;
+
+    // amoadd.h
+    inst = mavis_facade_rv32.makeInst(0x006392af, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x006392af = " << inst->dasmString() << endl;
+
+    // Zacas testing
+    // amocas.w
+    inst = mavis_facade_rv32.makeInst(0x2867322f, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2867322f = " << inst->dasmString() << endl;
+
+    // amocas.d
+    inst = mavis_facade_rv32.makeInst(0x2863b22f, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2863b22f = " << inst->dasmString() << endl;
+    try {
+        // Illegal form due to rd starts at an odd reg number
+        inst = mavis_facade_rv32.makeInst(0x2863b2af, 0);
         assert(inst == nullptr);
     }
     catch(...) {}

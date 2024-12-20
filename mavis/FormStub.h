@@ -544,4 +544,14 @@ public:
     static inline const std::string name {"PF_hint"};
 };
 
+/**
+ * Stub for AMO_pair extractor
+ */
+class Form_AMO_pair
+{
+public:
+    using idType = uint32_t;
+    static inline const std::string name {"AMO_pair"};
+};
+
 } // namespace mavis
