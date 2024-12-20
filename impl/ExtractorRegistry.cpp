@@ -3,12 +3,15 @@
 #include "impl/forms/ExtractorForms.h"
 #include "impl/forms/ExtractorDerived.h"
 
+#include <iostream>
+
 namespace mavis {
 
     const ExtractorIF::PtrType &ExtractorRegistry::getExtractor(const std::string &fname)
     {
         static const std::map<std::string, ExtractorIF::PtrType> EXTRACTOR_REGISTRY = {
             {Form_AMO::name,                      std::make_shared<Extractor<Form_AMO>>()},
+            {Form_AMO_pair::name,                 std::make_shared<Extractor<Form_AMO_pair>>()},
             {Form_B::name,                        std::make_shared<Extractor<Form_B>>()},
             {Form_C0::name,                       std::make_shared<Extractor<Form_C0>>()},
             {Form_C0_load_double::name,           std::make_shared<Extractor<Form_C0_load_double>>()},

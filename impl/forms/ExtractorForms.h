@@ -8,6 +8,7 @@
 #include "impl/forms/VectorForms.h"
 
 #include <cinttypes>
+#include <iostream>
 
 namespace {
     std::string dasmVsetImmediate(const uint64_t immediate)
@@ -109,6 +110,7 @@ public:
     OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType& meta,
                                        bool suppress_x0 = false) const override
     {
+        std::cout << "Form_AMO (start)" << std::endl;
         OperandInfo olist;
         appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
                                    fixed_field_mask_, Form_AMO::idType::RD,
@@ -177,8 +179,6 @@ private:
     Extractor<Form_AMO>(const uint64_t ffmask, const uint64_t fset) :
         ExtractorBase(ffmask)
     {}
-
-
 };
 
 /**
@@ -2780,8 +2780,6 @@ private:
     Extractor<Form_S>(const uint64_t ffmask, const uint64_t fset) :
         ExtractorBase(ffmask)
     {}
-
-
 };
 
 /**
