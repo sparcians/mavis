@@ -8,11 +8,11 @@ void testFailingISAString(const std::string& isa)
     {
         if constexpr(is_elf)
         {
-            const auto rv_bad_isa_str = mavis::extension_manager::riscv::RISCVExtensionManager::fromELF(isa, "json/riscv_isa_spec.json");
+            const auto rv_bad_isa_str = mavis::extension_manager::riscv::RISCVExtensionManager::fromELF(isa, "json/riscv_isa_spec.json", "json");
         }
         else
         {
-            const auto rv_bad_isa_str = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(isa, "json/riscv_isa_spec.json");
+            const auto rv_bad_isa_str = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(isa, "json/riscv_isa_spec.json", "json");
         }
     }
     catch(const ExpectedExceptionType&)
@@ -25,7 +25,7 @@ void testFailingISAString(const std::string& isa)
 int main(int argc, char* argv[])
 {
     {
-        const auto rv32g_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA("rv32gcb", "json/riscv_isa_spec.json");
+        const auto rv32g_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA("rv32gcb", "json/riscv_isa_spec.json", "json");
 
         assert(rv32g_man.isEnabled("i"));
 
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     }
 
     {
-        const auto rv64g_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA("rv64gcbv", "json/riscv_isa_spec.json");
+        const auto rv64g_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA("rv64gcbv", "json/riscv_isa_spec.json", "json");
 
         assert(rv64g_man.isEnabled("i"));
 
@@ -44,12 +44,12 @@ int main(int argc, char* argv[])
 
     {
         // Test getting a string from an ELF
-        const auto elf_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromELF("hello", "json/riscv_isa_spec.json");
+        const auto elf_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromELF("hello", "json/riscv_isa_spec.json", "json");
     }
 
     {
         // Test reusing the same object with a new ISA string
-        auto rv_generic_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISASpecJSON("json/riscv_isa_spec.json");
+        auto rv_generic_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISASpecJSON("json/riscv_isa_spec.json", "json");
         rv_generic_man.setISA("rv64gcbv");
 
         assert(rv_generic_man.getXLEN() == 64);

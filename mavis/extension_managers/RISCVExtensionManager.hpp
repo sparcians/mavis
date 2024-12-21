@@ -153,7 +153,77 @@ namespace mavis::extension_manager::riscv
     class RISCVExtensionManager : public ExtensionManager<RISCVExtensionInfo, RISCVXLENState>
     {
         private:
+            class VersionNumberExtractionError : public std::exception
+            {
+                public:
+                    const char* what() const noexcept override
+                    {
+                        return "Failed to extract version number";
+                    }
+            };
+
+            static constexpr std::string_view DIGITS_{"0123456789"};
+
             uint32_t xlen_ = 0;
+
+            template<typename ValType, typename OtherValType>
+            static bool isOneOf_(const ValType val, const OtherValType other)
+            {
+                return (val == other);
+            }
+
+            template<typename ValType, typename OtherValType, typename ... OtherValTypes>
+            static bool isOneOf_(const ValType val, const OtherValType other, const OtherValTypes... rest)
+            {
+                return (val == other) || isOneOf_(val, rest...);
+            }
+
+            static bool getCharIfValid_(const std::string_view& isa_view, char& front_char)
+            {
+                if(isa_view.empty())
+                {
+                    front_char = '\0';
+                    return false;
+                }
+
+                front_char = isa_view.front();
+
+                return true;
+            }
+
+            static bool inSingleCharExtRange_(const std::string_view& isa_view, char& front_char)
+            {
+                return getCharIfValid_(isa_view, front_char) && !isOneOf_(front_char, 'z', 's', 'x');
+            }
+
+            static uint32_t extractNumber_(std::string_view& isa_view)
+            {
+                const auto number_end = isa_view.find_first_not_of(DIGITS_);
+
+                const uint32_t val = std::stoul(std::string(isa_view.substr(0, number_end)));
+                isa_view.remove_prefix(number_end == std::string_view::npos ? isa_view.size() : number_end);
+                return val;
+            }
+
+            static std::pair<uint32_t, uint32_t> extractVersions_(std::string_view& isa_view)
+            {
+                const uint32_t major_ver = extractNumber_(isa_view);
+                uint32_t minor_ver = RISCV_DEFAULT_MINOR_VER;
+
+                if(!isa_view.empty() && isa_view[0] == 'p')
+                {
+                    isa_view.remove_prefix(1);
+
+                    if(char next_char; !getCharIfValid_(isa_view, next_char) || !isdigit(next_char))
+                    {
+                        throw VersionNumberExtractionError();
+                    }
+
+                    minor_ver = extractNumber_(isa_view);
+                }
+
+                return std::make_pair(major_ver, minor_ver);
+            }
 
             static inline std::string toLowercase_(const std::string& str)
             {
@@ -171,24 +241,6 @@ namespace mavis::extension_manager::riscv
                 }
 
                 return false;
-            }
-
-            template<typename ValType, typename OtherValType>
-            static bool isOneOf_(const ValType val, const OtherValType other)
-            {
-                return (val == other);
-            }
-
-            template<typename ValType, typename OtherValType, typename ... OtherValTypes>
-            static bool isOneOf_(const ValType val, const OtherValType other, const OtherValTypes... rest)
-            {
-                return (val == other) || isOneOf_(val, rest...);
-            }
-
-            static uint32_t digitToInt_(const char digit)
-            {
-                assert(isdigit(static_cast<unsigned char>(digit)) && "Attempted to convert a non-digit to an int");
-                return digit - '0';
             }
 
             // Handles the case where someone specifies an XLEN as a string - just convert it to an int
@@ -410,44 +462,20 @@ namespace mavis::extension_manager::riscv
                 {
                     char ext;
 
-                    auto get_char_if_valid = [&isa_view](char& front_char)
+                    if(getCharIfValid_(isa_view, ext) && isdigit(ext))
                     {
-                        if(isa_view.empty())
+                        try
                         {
-                            front_char = '\0';
-                            return false;
+                            const auto [major_ver, minor_ver] = extractVersions_(isa_view);
+                            xlen_extension.setExtensionVersion(base_isa, major_ver, minor_ver);
                         }
-
-                        front_char = isa_view.front();
-
-                        return true;
-                    };
-
-                    auto in_single_char_ext_range = [&get_char_if_valid](char& front_char)
-                    {
-                        return get_char_if_valid(front_char) && !isOneOf_(front_char, 'z', 's', 'x');
-                    };
-
-                    if(get_char_if_valid(ext) && isdigit(ext))
-                    {
-                        uint32_t major_ver = digitToInt_(ext);
-                        uint32_t minor_ver = RISCV_DEFAULT_MINOR_VER;
-                        isa_view.remove_prefix(1);
-                        if(get_char_if_valid(ext) && ext == 'p')
+                        catch(const VersionNumberExtractionError&)
                         {
-                            isa_view.remove_prefix(1);
-                            if(!get_char_if_valid(ext) || !isdigit(ext))
-                            {
-                                throw InvalidISAStringException(isa_, "Invalid version number specified for extension " + base_isa);
-                            }
-
-                            minor_ver = digitToInt_(ext);
-                            isa_view.remove_prefix(1);
+                            throw InvalidISAStringException(isa_, "Invalid version number specified for extension " + base_isa);
                         }
-                        xlen_extension.setExtensionVersion(base_isa, major_ver, minor_ver);
                     }
 
-                    while(in_single_char_ext_range(ext))
+                    while(inSingleCharExtRange_(isa_view, ext))
                     {
                         if(ext == '_')
                         {
@@ -460,29 +488,17 @@ namespace mavis::extension_manager::riscv
 
                         isa_view.remove_prefix(1);
 
-                        if(in_single_char_ext_range(ext) && isdigit(ext))
+                        if(inSingleCharExtRange_(isa_view, ext) && isdigit(ext))
                         {
-                            uint32_t major_ver = digitToInt_(ext);
-                            uint32_t minor_ver = RISCV_DEFAULT_MINOR_VER;
-
-                            isa_view.remove_prefix(1);
-                            if(in_single_char_ext_range(ext) && ext == 'p')
+                            try
                             {
-                                isa_view.remove_prefix(1);
-
-                                if(!(in_single_char_ext_range(ext) && isdigit(ext)))
-                                {
-                                    throw InvalidISAStringException(isa_, "Invalid version number specified for extension " + ext_str);
-                                }
-
-                                minor_ver = digitToInt_(ext);
-
-                                isa_view.remove_prefix(1);
+                                const auto [major_ver, minor_ver] = extractVersions_(isa_view);
+                                xlen_extension.setExtensionVersion(ext_str, major_ver, minor_ver);
                             }
-
-                            // next_it now points to one-past the last part of the version number
-
-                            xlen_extension.setExtensionVersion(ext_str, major_ver, minor_ver);
+                            catch(const VersionNumberExtractionError&)
+                            {
+                                throw InvalidISAStringException(isa_, "Invalid version number specified for extension " + ext_str);
+                            }
                         }
                     }
 
@@ -501,33 +517,43 @@ namespace mavis::extension_manager::riscv
                         uint32_t major_ver = RISCV_DEFAULT_MAJOR_VER;
                         uint32_t minor_ver = RISCV_DEFAULT_MINOR_VER;
 
-                        if(auto rit = current_ext.rbegin(); isdigit(*rit))
+                        if(isdigit(current_ext.back()))
                         {
-                            size_t num_to_remove = 1;
-
-                            has_version = true;
-
-                            major_ver = digitToInt_(*(rit++));
-
-                            if(rit == current_ext.rend())
+                            auto ver_pos = current_ext.find_last_not_of(DIGITS_);
+                            if(ver_pos == std::string_view::npos)
                             {
-                                throw InvalidISAStringException(isa_, "Invalid extension " + std::string(current_ext));
+                                throw InvalidISAStringException(isa_, "Invalid version number specified for extension " + std::string(current_ext));
                             }
-
-                            if(*rit == 'p')
+                            else if(current_ext[ver_pos] == 'p')
                             {
-                                ++rit;
-                                if(rit == current_ext.rend() || !isdigit(*rit))
+                                if(ver_pos == 0)
                                 {
                                     throw InvalidISAStringException(isa_, "Invalid version number specified for extension " + std::string(current_ext));
                                 }
 
-                                minor_ver = major_ver;
-                                major_ver = digitToInt_(*rit);
-                                num_to_remove = 3;
+                                ver_pos = current_ext.find_last_not_of(DIGITS_, ver_pos - 1);
+
+                                if(ver_pos == std::string_view::npos)
+                                {
+                                    throw InvalidISAStringException(isa_, "Invalid version number specified for extension " + std::string(current_ext));
+                                }
                             }
 
-                            current_ext.remove_suffix(num_to_remove);
+                            ++ver_pos;
+
+                            auto ver_str = current_ext.substr(ver_pos);
+                            current_ext.remove_suffix(ver_str.size());
+
+                            try
+                            {
+                                std::tie(major_ver, minor_ver) = extractVersions_(ver_str);
+                            }
+                            catch(const VersionNumberExtractionError&)
+                            {
+                                throw InvalidISAStringException(isa_, "Invalid version number specified for extension " + std::string(current_ext));
+                            }
+
+                            has_version = true;
                         }
 
                         const std::string ext_str(current_ext);
@@ -551,19 +577,19 @@ namespace mavis::extension_manager::riscv
             {
             }
 
-            static RISCVExtensionManager fromISASpecJSON(const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
+            static RISCVExtensionManager fromISASpecJSON(const std::string& spec_json, const std::string& mavis_json_dir, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
-                return fromISASpecJSON_<RISCVExtensionManager>(spec_json, unknown_extension_action);
+                return fromISASpecJSON_<RISCVExtensionManager>(spec_json, mavis_json_dir, unknown_extension_action);
             }
 
-            static RISCVExtensionManager fromISA(const std::string& isa, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
+            static RISCVExtensionManager fromISA(const std::string& isa, const std::string& spec_json, const std::string& mavis_json_dir, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
-                return fromISA_<RISCVExtensionManager>(isa, spec_json, unknown_extension_action);
+                return fromISA_<RISCVExtensionManager>(isa, spec_json, mavis_json_dir, unknown_extension_action);
             }
 
-            static RISCVExtensionManager fromELF(const std::string& elf, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
+            static RISCVExtensionManager fromELF(const std::string& elf, const std::string& spec_json, const std::string& mavis_json_dir, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
-                return fromELF_<RISCVExtensionManager>(elf, spec_json, unknown_extension_action);
+                return fromELF_<RISCVExtensionManager>(elf, spec_json, mavis_json_dir, unknown_extension_action);
             }
 
             uint32_t getXLEN() const { return xlen_; }

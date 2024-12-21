@@ -1,0 +1,64 @@
+[
+  {
+    "mnemonic" : "flh",
+    "tags" : ["zfh", "zfbfmin"],
+    "form" : "VF_mem",
+    "xform" : "I_load",
+    "stencil" : "0x1007",
+    "ignore" : ["mewop"],
+    "type" : ["float", "load"],
+    "l-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "data" : 16
+  },
+  {
+    "mnemonic" : "fsh",
+    "tags" : ["zfh", "zfbfmin"],
+    "form" : "VF_mem",
+    "xform" : "S",
+    "stencil" : "0x1027",
+    "ignore" : ["mewop"],
+    "type" : ["float", "store"],
+    "l-oper" : ["rs1"],
+    "s-oper" : ["rs2"],
+    "data" : 16
+  },
+  {
+    "mnemonic" : "fmv.x.h",
+    "tags" : ["zfh", "zfbfmin"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm", "rs2" ],
+    "stencil" : "0xe4000053",
+    "s-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "move"]
+  },
+  {
+    "mnemonic" : "fmv.h.x",
+    "tags" : ["zfh", "zfbfmin"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm", "rs2" ],
+    "stencil" : "0xf4000053",
+    "l-oper" : ["rs1"],
+    "s-oper" : ["rd"],
+    "type" : ["float", "move"]
+  },
+  {
+    "mnemonic" : "fcvt.h.s",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x44000053",
+    "s-oper" : ["rs1","rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.s.h",
+    "tags" : ["zfh"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0x40200053",
+    "s-oper" : ["rs1","rd"],
+    "type" : ["float", "convert"]
+  }
+]
