@@ -896,6 +896,7 @@ namespace mavis::extension_manager
     {
         protected:
             const UnknownExtensionAction unknown_extension_action_;
+            std::string mavis_json_dir_;
             std::string isa_;
             using ArchMap = std::unordered_map<uint32_t, ExtensionState>;
             ArchMap extensions_;
@@ -955,26 +956,26 @@ namespace mavis::extension_manager
             }
 
             template<typename ManagerType>
-            static ManagerType fromELF_(const std::string& elf, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
+            static ManagerType fromELF_(const std::string& elf, const std::string& spec_json, const std::string& mavis_json_dir, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
-                auto man = fromISASpecJSON_<ManagerType>(spec_json, unknown_extension_action);
+                auto man = fromISASpecJSON_<ManagerType>(spec_json, mavis_json_dir, unknown_extension_action);
                 man.setISAFromELF(elf);
                 return man;
             }
 
             template<typename ManagerType>
-            static ManagerType fromISA_(const std::string& isa, const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
+            static ManagerType fromISA_(const std::string& isa, const std::string& spec_json, const std::string& mavis_json_dir, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
-                auto man = fromISASpecJSON_<ManagerType>(spec_json, unknown_extension_action);
+                auto man = fromISASpecJSON_<ManagerType>(spec_json, mavis_json_dir, unknown_extension_action);
                 man.setISA(isa);
                 return man;
             }
 
             template<typename ManagerType>
-            static ManagerType fromISASpecJSON_(const std::string& spec_json, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
+            static ManagerType fromISASpecJSON_(const std::string& spec_json, const std::string& mavis_json_dir, const UnknownExtensionAction unknown_extension_action = UnknownExtensionAction::ERROR)
             {
                 ManagerType man(unknown_extension_action);
-                man.setISASpecJSON(spec_json);
+                man.setISASpecJSON(spec_json, mavis_json_dir);
                 return man;
             }
 
@@ -1117,7 +1118,7 @@ namespace mavis::extension_manager
                      typename InstTypeAllocator,
                      typename AnnotationTypeAllocator,
                      typename ... MavisArgs>
-            Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator> constructMavis_(MavisArgs&&... mavis_args)
+            Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator> constructMavis_(MavisArgs&&... mavis_args) const
             {
                 return Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(getJSONs(), std::forward<MavisArgs>(mavis_args)...);
             }
@@ -1132,8 +1133,10 @@ namespace mavis::extension_manager
             ExtensionManager(ExtensionManager&&) = default;
             virtual ~ExtensionManager() = default;
 
-            void setISASpecJSON(const std::string& jfile)
+            void setISASpecJSON(const std::string& jfile, const std::string& mavis_json_dir)
             {
+                mavis_json_dir_ = mavis_json_dir;
+
                 std::ifstream fs;
 
                 try
@@ -1234,7 +1237,7 @@ namespace mavis::extension_manager
                         const auto& json = ext.second->getJSON();
                         if(!json.empty())
                         {
-                            enabled_jsons_.emplace_back(json);
+                            enabled_jsons_.emplace_back(mavis_json_dir_ + "/" + json);
                         }
                     }
                 }
@@ -1253,7 +1256,7 @@ namespace mavis::extension_manager
                            const MatchSet<Pattern>& inclusions,
                            const MatchSet<Pattern>& exclusions,
                            const InstTypeAllocator& inst_allocator = SharedPtrAllocator<InstType>(),
-                           const AnnotationTypeAllocator& annotation_allocator = SharedPtrAllocator<AnnotationType>())
+                           const AnnotationTypeAllocator& annotation_allocator = SharedPtrAllocator<AnnotationType>()) const
             {
                 return constructMavis_<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
                     anno_files,
@@ -1275,7 +1278,7 @@ namespace mavis::extension_manager
                            const InstUIDList& uid_list,
                            const AnnotationOverrides& anno_overrides = {},
                            const InstTypeAllocator& inst_allocator = SharedPtrAllocator<InstType>(),
-                           const AnnotationTypeAllocator& annotation_allocator = SharedPtrAllocator<AnnotationType>())
+                           const AnnotationTypeAllocator& annotation_allocator = SharedPtrAllocator<AnnotationType>()) const
             {
                 return constructMavis_<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
                     anno_files,
@@ -1295,7 +1298,7 @@ namespace mavis::extension_manager
                            const MatchSet<Pattern>& inclusions,
                            const MatchSet<Pattern>& exclusions,
                            const InstTypeAllocator& inst_allocator = SharedPtrAllocator<InstType>(),
-                           const AnnotationTypeAllocator& annotation_allocator = SharedPtrAllocator<AnnotationType>())
+                           const AnnotationTypeAllocator& annotation_allocator = SharedPtrAllocator<AnnotationType>()) const
             {
                 return constructMavis_<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
                     anno_files,
@@ -1313,7 +1316,7 @@ namespace mavis::extension_manager
             Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>
             constructMavis(const FileNameListType& anno_files,
                            const InstTypeAllocator& inst_allocator = SharedPtrAllocator<InstType>(),
-                           const AnnotationTypeAllocator& annotation_allocator = SharedPtrAllocator<AnnotationType>())
+                           const AnnotationTypeAllocator& annotation_allocator = SharedPtrAllocator<AnnotationType>()) const
             {
                 return constructMavis_<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
                     anno_files,
