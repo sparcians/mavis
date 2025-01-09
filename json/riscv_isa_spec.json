@@ -74,6 +74,50 @@
     {
       "xlen": 64,
       "extension": "zvl1024b"
+    },
+    {
+      "xlen": 64,
+      "extension": "zvkt"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "smaia"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "smstateen"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "ss"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "ssaia"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "sscofpmf"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "ssstateen"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "sv"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "svinval"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "svnapot"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "svpbmt"
     }
   ],
   "extensions": [
@@ -336,13 +380,19 @@
       "xlen": 64,
       "extension": "zfh",
       "requires": ["f"],
+      "enables": "zfhmin",
       "json": "isa_rv64zfh.json"
     },
     {
       "xlen": 64,
-      "extension": "zfhd",
-      "enabled_by": ["zfh", "d"],
-      "json": "isa_rv64zfh_d.json"
+      "extension": "zfhmin",
+      "json": "isa_rv64zfhmin.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zfhmind",
+      "enabled_by": ["zfhmin", "d"],
+      "json": "isa_rv64zfhmin_d.json"
     },
     {
       "xlen": 64,
