@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include_directories(.)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ELFIO)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/elfio)
 
 add_library(mavis
   impl/ExtractorRegistry.cpp
