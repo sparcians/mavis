@@ -409,5 +409,5 @@
     "fixed" : ["rs2", "rs1", "rd"],
     "stencil" : "0x10500073",
     "type" : ["system"]
-  },
+  }
 ]
