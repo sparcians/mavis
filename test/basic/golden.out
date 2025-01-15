@@ -1464,9 +1464,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'ecall', mask=0x1ff8f80, field_set=0x16, value=0x0, nfixed=3, extractor=Extractor 'R', factory=IFactory('ecall'), stencil = 0x73
 |	|	|	|	|	[1]: 'ebreak', mask=0x1ff8f80, field_set=0x16, value=0x100000, nfixed=3, extractor=Extractor 'R', factory=IFactory('ebreak'), stencil = 0x100073
-|	|	|	|	|	[2]: 'uret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('uret'), stencil = 0x200073
-|	|	|	|	|	[3]: 'wrs.nto', mask=0x1ff8f80, field_set=0x16, value=0xd00000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wrs.nto'), stencil = 0xd00073
-|	|	|	|	|	[4]: 'wrs.sto', mask=0x1ff8f80, field_set=0x16, value=0x1d00000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wrs.sto'), stencil = 0x1d00073
+|	|	|	|	|	[2]: 'wrs.nto', mask=0x1ff8f80, field_set=0x16, value=0xd00000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wrs.nto'), stencil = 0xd00073
+|	|	|	|	|	[3]: 'wrs.sto', mask=0x1ff8f80, field_set=0x16, value=0x1d00000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wrs.sto'), stencil = 0x1d00073
 |	|	|	|	[8]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'sret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('sret'), stencil = 0x10200073
 |	|	|	|	|	[1]: 'wfi', mask=0x1ff8f80, field_set=0x16, value=0x500000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wfi'), stencil = 0x10500073
@@ -1478,12 +1477,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[0]: 'mret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('mret'), stencil = 0x30200073
 |	|	|	|	[31]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'hfence.gvma', mask=0xf80, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'R', factory=IFactory('hfence.gvma'), stencil = 0x62000073
-|	|	|	|	[3d]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'dret', mask=0x1ff8f80, field_set=0x16, value=0x1200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('dret'), stencil = 0x7b200073
-|	|	|	|	[7e]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'cflush.d.l1', mask=0x1f00f80, field_set=0x12, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('cflush.d.l1'), stencil = 0xfc000073
-|	|	|	|	|	[1]: 'cdiscard.d.l1', mask=0x1f00f80, field_set=0x12, value=0x200000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cdiscard.d.l1'), stencil = 0xfc200073
-|	|	|	|	|	[2]: 'cflush.i.l1', mask=0x1f00f80, field_set=0x12, value=0x100000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cflush.i.l1'), stencil = 0xfc100073
 |	|	|	[1]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrw', value=0x1073, extractor=Extractor 'CSR', factory=IFactory('csr'), stencil = 0x1073
@@ -3052,7 +3045,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'ecall', mask=0x1ff8f80, field_set=0x16, value=0x0, nfixed=3, extractor=Extractor 'R', factory=IFactory('ecall'), stencil = 0x73
 |	|	|	|	|	[1]: 'ebreak', mask=0x1ff8f80, field_set=0x16, value=0x100000, nfixed=3, extractor=Extractor 'R', factory=IFactory('ebreak'), stencil = 0x100073
-|	|	|	|	|	[2]: 'uret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('uret'), stencil = 0x200073
 |	|	|	|	[8]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'sret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('sret'), stencil = 0x10200073
 |	|	|	|	|	[1]: 'wfi', mask=0x1ff8f80, field_set=0x16, value=0x500000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wfi'), stencil = 0x10500073
@@ -3060,12 +3052,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[0]: 'sfence.vma', mask=0xf80, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'R', factory=IFactory('sfence.vma'), stencil = 0x12000073
 |	|	|	|	[18]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'mret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('mret'), stencil = 0x30200073
-|	|	|	|	[3d]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'dret', mask=0x1ff8f80, field_set=0x16, value=0x1200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('dret'), stencil = 0x7b200073
-|	|	|	|	[7e]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'cflush.d.l1', mask=0x1f00f80, field_set=0x12, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('cflush.d.l1'), stencil = 0xfc000073
-|	|	|	|	|	[1]: 'cdiscard.d.l1', mask=0x1f00f80, field_set=0x12, value=0x200000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cdiscard.d.l1'), stencil = 0xfc200073
-|	|	|	|	|	[2]: 'cflush.i.l1', mask=0x1f00f80, field_set=0x12, value=0x100000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cflush.i.l1'), stencil = 0xfc100073
 |	|	|	[1]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrw', value=0x1073, extractor=Extractor 'CSR', factory=IFactory('csr'), stencil = 0x1073
@@ -3706,9 +3692,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'ecall', mask=0x1ff8f80, field_set=0x16, value=0x0, nfixed=3, extractor=Extractor 'R', factory=IFactory('ecall'), stencil = 0x73
 |	|	|	|	|	[1]: 'ebreak', mask=0x1ff8f80, field_set=0x16, value=0x100000, nfixed=3, extractor=Extractor 'R', factory=IFactory('ebreak'), stencil = 0x100073
-|	|	|	|	|	[2]: 'uret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('uret'), stencil = 0x200073
-|	|	|	|	|	[3]: 'wrs.nto', mask=0x1ff8f80, field_set=0x16, value=0xd00000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wrs.nto'), stencil = 0xd00073
-|	|	|	|	|	[4]: 'wrs.sto', mask=0x1ff8f80, field_set=0x16, value=0x1d00000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wrs.sto'), stencil = 0x1d00073
+|	|	|	|	|	[2]: 'wrs.nto', mask=0x1ff8f80, field_set=0x16, value=0xd00000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wrs.nto'), stencil = 0xd00073
+|	|	|	|	|	[3]: 'wrs.sto', mask=0x1ff8f80, field_set=0x16, value=0x1d00000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wrs.sto'), stencil = 0x1d00073
 |	|	|	|	[8]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'sret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('sret'), stencil = 0x10200073
 |	|	|	|	|	[1]: 'wfi', mask=0x1ff8f80, field_set=0x16, value=0x500000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wfi'), stencil = 0x10500073
@@ -3716,12 +3701,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[0]: 'sfence.vma', mask=0xf80, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'R', factory=IFactory('sfence.vma'), stencil = 0x12000073
 |	|	|	|	[18]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'mret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('mret'), stencil = 0x30200073
-|	|	|	|	[3d]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'dret', mask=0x1ff8f80, field_set=0x16, value=0x1200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('dret'), stencil = 0x7b200073
-|	|	|	|	[7e]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'cflush.d.l1', mask=0x1f00f80, field_set=0x12, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('cflush.d.l1'), stencil = 0xfc000073
-|	|	|	|	|	[1]: 'cdiscard.d.l1', mask=0x1f00f80, field_set=0x12, value=0x200000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cdiscard.d.l1'), stencil = 0xfc200073
-|	|	|	|	|	[2]: 'cflush.i.l1', mask=0x1f00f80, field_set=0x12, value=0x100000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cflush.i.l1'), stencil = 0xfc100073
 |	|	|	[1]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrw', value=0x1073, extractor=Extractor 'CSR', factory=IFactory('csr'), stencil = 0x1073
@@ -4144,7 +4123,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'ecall', mask=0x1ff8f80, field_set=0x16, value=0x0, nfixed=3, extractor=Extractor 'R', factory=IFactory('ecall'), stencil = 0x73
 |	|	|	|	|	[1]: 'ebreak', mask=0x1ff8f80, field_set=0x16, value=0x100000, nfixed=3, extractor=Extractor 'R', factory=IFactory('ebreak'), stencil = 0x100073
-|	|	|	|	|	[2]: 'uret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('uret'), stencil = 0x200073
 |	|	|	|	[8]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'sret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('sret'), stencil = 0x10200073
 |	|	|	|	|	[1]: 'wfi', mask=0x1ff8f80, field_set=0x16, value=0x500000, nfixed=3, extractor=Extractor 'R', factory=IFactory('wfi'), stencil = 0x10500073
@@ -4152,12 +4130,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[0]: 'sfence.vma', mask=0xf80, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'R', factory=IFactory('sfence.vma'), stencil = 0x12000073
 |	|	|	|	[18]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'mret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('mret'), stencil = 0x30200073
-|	|	|	|	[3d]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'dret', mask=0x1ff8f80, field_set=0x16, value=0x1200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('dret'), stencil = 0x7b200073
-|	|	|	|	[7e]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'cflush.d.l1', mask=0x1f00f80, field_set=0x12, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('cflush.d.l1'), stencil = 0xfc000073
-|	|	|	|	|	[1]: 'cdiscard.d.l1', mask=0x1f00f80, field_set=0x12, value=0x200000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cdiscard.d.l1'), stencil = 0xfc200073
-|	|	|	|	|	[2]: 'cflush.i.l1', mask=0x1f00f80, field_set=0x12, value=0x100000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cflush.i.l1'), stencil = 0xfc100073
 |	|	|	[1]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrw', value=0x1073, extractor=Extractor 'CSR', factory=IFactory('csr'), stencil = 0x1073

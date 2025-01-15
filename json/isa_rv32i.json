@@ -377,14 +377,6 @@
     "type" : ["int", "system"],
     "l-oper" : "all"
   },
-    {
-    "mnemonic" : "uret",
-    "tags" : ["i", "g"],
-    "form" : "R",
-    "fixed" : ["rs2", "rs1", "rd"],
-    "stencil" : "0x200073",
-    "type" : ["system"]
-  },
   {
     "mnemonic" : "sret",
     "tags" : ["i", "g"],
@@ -399,14 +391,6 @@
     "form" : "R",
     "fixed" : ["rs2", "rs1", "rd"],
     "stencil" : "0x30200073",
-    "type" : ["system"]
-  },
-  {
-    "mnemonic" : "dret",
-    "tags" : ["i", "g"],
-    "form" : "R",
-    "fixed" : ["rs2", "rs1", "rd"],
-    "stencil" : "0x7b200073",
     "type" : ["system"]
   },
   {
@@ -425,30 +409,5 @@
     "fixed" : ["rs2", "rs1", "rd"],
     "stencil" : "0x10500073",
     "type" : ["system"]
-  },
-  {
-    "mnemonic" : "cflush.d.l1",
-    "tags" : ["i", "g"],
-    "form" : "R",
-    "fixed" : ["rd", "rs2"],
-    "stencil" : "0xfc000073",
-    "type" : ["cache", "system"],
-    "l-oper" : ["rs1"]
-  },
-  {
-    "mnemonic" : "cdiscard.d.l1",
-    "tags" : ["i", "g"],
-    "form" : "R",
-    "fixed" : ["rd", "rs2"],
-    "stencil" : "0xfc200073",
-    "type" : ["cache", "system"]
-  },
-  {
-    "mnemonic" : "cflush.i.l1",
-    "tags" : ["i", "g"],
-    "form" : "R",
-    "fixed" : ["rd", "rs2"],
-    "stencil" : "0xfc100073",
-    "type" : ["cache", "system"]
   }
 ]
