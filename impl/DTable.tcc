@@ -150,7 +150,13 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
                     }
                     else
                     {
-                        expansions.emplace_back(std::bind(&DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_, this, jfile, inst, mnemonic, tags));
+                        expansions.emplace_back(std::bind(
+                            &DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_,
+                                                                                                  this,
+                                                                                                  jfile,
+                                                                                                  inst,
+                                                                                                  mnemonic,
+                                                                                                  tags));
                     }
                 } else if (!tags.isEmpty()) {
                     bool included = inclusions.isEmpty() || tags.matchAnyAny(inclusions);
@@ -163,7 +169,13 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
                             }
                             else
                             {
-                                expansions.emplace_back(std::bind(&DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_, this, jfile, inst, mnemonic, tags));
+                                expansions.emplace_back(std::bind(
+                                    &DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_,
+                                                                                                          this,
+                                                                                                          jfile,
+                                                                                                          inst,
+                                                                                                          mnemonic,
+                                                                                                          tags));
                             }
                         }
                     }
