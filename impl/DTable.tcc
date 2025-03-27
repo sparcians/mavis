@@ -110,6 +110,26 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
                                                                           const MatchSet<Pattern>& inclusions,
                                                                           const MatchSet<Pattern>& exclusions)
 {
+    // Instructions with an "expand" clause must be parsed last since their
+    // factories must already exist for them to be registered successfully.
+    struct parseInstInfoArgs
+    {
+        const std::string jfile;
+        const nlohmann::json inst;
+        const std::string mnemonic;
+        const MatchSet<Tag> tags;
+
+        parseInstInfoArgs(const std::string& jfile,
+                          const nlohmann::json& inst,
+                          const std::string& mnemonic,
+                          const MatchSet<Tag>& tags) :
+            jfile(jfile),
+            inst(inst),
+            mnemonic(mnemonic),
+            tags(tags)
+        {}
+    };
+    std::vector<parseInstInfoArgs> expansions;
 
     // Now populate the default factories from the provided JSON files...
     for (const auto &jfile : isa_files) {
@@ -137,15 +157,31 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
                     tags = MatchSet<Tag>(inst["tags"].get<std::vector<std::string>>());
                 }
 
+                const bool is_expansion = inst.find("expand") != inst.end();
+
                 if ((inclusions.isEmpty() && exclusions.isEmpty()) || (inclusions.isEmpty() && tags.isEmpty())) {
                     // Inclusions & exclusions are empty, or inclusions empty and tags empty, no filtering active
-                    parseInstInfo_(jfile, inst, mnemonic, tags);
+                    if (!is_expansion)
+                    {
+                        parseInstInfo_(jfile, inst, mnemonic, tags);
+                    }
+                    else
+                    {
+                        expansions.emplace_back(jfile, inst, mnemonic, tags);
+                    }
                 } else if (!tags.isEmpty()) {
                     bool included = inclusions.isEmpty() || tags.matchAnyAny(inclusions);
                     if (included) {
                         bool excluded = !exclusions.isEmpty() && tags.matchAnyAny(exclusions);
                         if (!excluded) {
-                            parseInstInfo_(jfile, inst, mnemonic, tags);
+                            if (!is_expansion)
+                            {
+                                parseInstInfo_(jfile, inst, mnemonic, tags);
+                            }
+                            else
+                            {
+                                expansions.emplace_back(jfile, inst, mnemonic, tags);
+                            }
                         }
                     }
                 }
@@ -167,6 +203,13 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
 
         fs.close();
     }
+
+    // Parse all expansion instructions
+    for (auto& exp : expansions)
+    {
+        parseInstInfo_(exp.jfile, exp.inst, exp.mnemonic, exp.tags);
+    }
+
     // At this point, we could throw away the builder_
 }
 
