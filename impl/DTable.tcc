@@ -112,7 +112,24 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
 {
     // Instructions with an "expand" clause must be parsed last since their
     // factories must already exist for them to be registered successfully.
-    std::vector<std::function<void(void)>> expansions;
+    struct parseInstInfoArgs
+    {
+        const std::string jfile;
+        const nlohmann::json inst;
+        const std::string mnemonic;
+        const MatchSet<Tag> tags;
+
+        parseInstInfoArgs(const std::string& jfile,
+                          const nlohmann::json& inst,
+                          const std::string& mnemonic,
+                          const MatchSet<Tag>& tags) :
+            jfile(jfile),
+            inst(inst),
+            mnemonic(mnemonic),
+            tags(tags)
+        {}
+    };
+    std::vector<parseInstInfoArgs> expansions;
 
     // Now populate the default factories from the provided JSON files...
     for (const auto &jfile : isa_files) {
@@ -150,13 +167,7 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
                     }
                     else
                     {
-                        expansions.emplace_back(std::bind(
-                            &DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_,
-                                                                                                  this,
-                                                                                                  jfile,
-                                                                                                  inst,
-                                                                                                  mnemonic,
-                                                                                                  tags));
+                        expansions.emplace_back(jfile, inst, mnemonic, tags);
                     }
                 } else if (!tags.isEmpty()) {
                     bool included = inclusions.isEmpty() || tags.matchAnyAny(inclusions);
@@ -169,13 +180,7 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
                             }
                             else
                             {
-                                expansions.emplace_back(std::bind(
-                                    &DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_,
-                                                                                                          this,
-                                                                                                          jfile,
-                                                                                                          inst,
-                                                                                                          mnemonic,
-                                                                                                          tags));
+                                expansions.emplace_back(jfile, inst, mnemonic, tags);
                             }
                         }
                     }
@@ -200,9 +205,9 @@ void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::configure(const 
     }
 
     // Parse all expansion instructions
-    for (auto& expansion : expansions)
+    for (auto& exp : expansions)
     {
-        expansion();
+        parseInstInfo_(exp.jfile, exp.inst, exp.mnemonic, exp.tags);
     }
 
     // At this point, we could throw away the builder_
