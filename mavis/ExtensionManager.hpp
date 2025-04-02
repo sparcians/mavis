@@ -28,6 +28,24 @@ namespace mavis::extension_manager
             }
     };
 
+    class UninitializedISASpecException : public ExtensionManagerException
+    {
+        public:
+            UninitializedISASpecException() :
+                ExtensionManagerException("Attempted to modify extension manager state without calling setISASpecJSON first")
+            {
+            }
+    };
+
+    class UninitializedISAException : public ExtensionManagerException
+    {
+        public:
+            UninitializedISAException() :
+                ExtensionManagerException("Attempted to modify extension manager state without calling setISA first")
+            {
+            }
+    };
+
     class InvalidJSONDirectoryException : public ExtensionManagerException
     {
         public:
@@ -110,6 +128,43 @@ namespace mavis::extension_manager
         public:
             ConflictingExtensionException(const std::string& ext, const std::string& conflict_ext) :
                 ExtensionManagerException(ext + " extension conflicts with " + conflict_ext)
+            {
+            }
+    };
+
+    class ExtensionNotAllowedException : public ExtensionManagerException
+    {
+        private:
+            static inline std::string setToString_(const std::unordered_set<std::string>& set)
+            {
+                std::string result("[");
+                bool first = true;
+                for(const auto& str: set)
+                {
+                    if(first)
+                    {
+                        first = false;
+                    }
+                    else
+                    {
+                        result += ',';
+                    }
+
+                    result += str;
+                }
+
+                result += "]";
+
+                return result;
+            }
+
+        public:
+            ExtensionNotAllowedException(const std::string& ext, const std::unordered_set<std::string>& allowlist, const std::unordered_set<std::string>& blocklist) :
+                ExtensionManagerException(
+                    "Attempted to enable " + ext + " extension, but it is not allowed."
+                    " allowlist = " + setToString_(allowlist) +
+                    " blocklist = " + setToString_(blocklist)
+                )
             {
             }
     };
@@ -573,6 +628,22 @@ namespace mavis::extension_manager
                 throw UnknownExtensionExceptionBase("Unknown extension specified: " + extension);
             }
 
+            bool handleUnknownExtensionException_(const std::string& ext) const
+            {
+                switch(unknown_extension_action_)
+                {
+                    case UnknownExtensionAction::ERROR:
+                        return true;
+                    case UnknownExtensionAction::WARN:
+                        std::cerr << "WARNING: ISA string contains an unknown extension (" << ext << "). Ignoring.";
+                        break;
+                    case UnknownExtensionAction::IGNORE:
+                        break;
+                }
+
+                return false;
+            }
+
             template<typename ContainerType>
             std::vector<ExtensionInfoPtr> getExtensions_(const ContainerType& ext_strs)
             {
@@ -618,6 +689,21 @@ namespace mavis::extension_manager
                 return dep_it->second;
             }
 
+            bool extensionAllowed_(const std::string& ext) const
+            {
+                if(!extension_allowlist_.empty() && extension_allowlist_.count(ext) == 0)
+                {
+                    return false;
+                }
+
+                if(extension_blocklist_.count(ext) != 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
         protected:
             const ExtensionInfoPtr& getExtensionInfo_(const std::string& extension) const
             {
@@ -633,6 +719,28 @@ namespace mavis::extension_manager
                 __builtin_unreachable();
             }
 
+            template<typename Callback>
+            bool recurseExtension_(const std::string& extension, Callback&& callback)
+            {
+                if(auto it = meta_extensions_.find(extension); it != meta_extensions_.end())
+                {
+                    for(const auto& child: it->second)
+                    {
+                        callback(child);
+                    }
+
+                    return true;
+                }
+                else if(auto alias_it = aliases_.find(extension); alias_it != aliases_.end())
+                {
+                    callback(alias_it->second);
+
+                    return true;
+                }
+
+                return false;
+            }
+
             const uint32_t arch_id_;
             const UnknownExtensionAction unknown_extension_action_;
             std::unordered_map<std::string, ExtensionInfoPtr> extensions_;
@@ -641,6 +749,8 @@ namespace mavis::extension_manager
             std::unordered_map<std::string, std::string> aliases_;
             std::list<UnresolvedDependency> pending_dependencies_;
             std::unordered_set<std::string> enabled_meta_extensions_;
+            std::unordered_set<std::string> extension_allowlist_;
+            std::unordered_set<std::string> extension_blocklist_;
 
         public:
             ExtensionStateBase(const uint32_t arch_id, const UnknownExtensionAction unknown_extension_action) :
@@ -802,19 +912,41 @@ namespace mavis::extension_manager
                 }
             }
 
+            void allowExtension(const std::string& extension)
+            {
+                recurseExtension_(extension, [this](const std::string& child){ allowExtension(child); });
+
+                extension_allowlist_.emplace(extension);
+            }
+
+            void clearAllowedExtensions()
+            {
+                extension_allowlist_.clear();
+            }
+
+            void blockExtension(const std::string& extension)
+            {
+                recurseExtension_(extension, [this](const std::string& child){ blockExtension(child); });
+
+                extension_blocklist_.emplace(extension);
+            }
+
+            void clearBlockedExtensions()
+            {
+                extension_blocklist_.clear();
+            }
+
             void enableExtension(const std::string& ext)
             {
-                bool is_meta = true;
-                if(auto it = meta_extensions_.find(ext); it != meta_extensions_.end())
+                if(!extensionAllowed_(ext))
                 {
-                    for(const auto& child: it->second)
-                    {
-                        enableExtension(child);
-                    }
+                    throw ExtensionNotAllowedException(ext, extension_allowlist_, extension_blocklist_);
                 }
-                else if(auto alias_it = aliases_.find(ext); alias_it != aliases_.end())
+
+                bool is_meta = true;
+                if(recurseExtension_(ext, [this](const std::string& child) { enableExtension(child); }))
                 {
-                    enableExtension(alias_it->second);
+                    // It was either a meta extension or an alias
                 }
                 else if(auto config_it = config_extensions_.find(ext); config_it != config_extensions_.end())
                 {
@@ -829,15 +961,9 @@ namespace mavis::extension_manager
                     }
                     catch(const UnknownExtensionExceptionBase&)
                     {
-                        switch(unknown_extension_action_)
+                        if(handleUnknownExtensionException_(ext))
                         {
-                            case UnknownExtensionAction::ERROR:
-                                throw;
-                            case UnknownExtensionAction::WARN:
-                                std::cerr << "WARNING: ISA string contains an unknown extension (" << ext << "). Ignoring.";
-                                break;
-                            case UnknownExtensionAction::IGNORE:
-                                break;
+                            throw;
                         }
                     }
                 }
@@ -845,6 +971,39 @@ namespace mavis::extension_manager
                 if(is_meta)
                 {
                     enabled_meta_extensions_.emplace(ext);
+                }
+            }
+
+            void disableExtension(const std::string& ext)
+            {
+                bool is_meta = true;
+                if(recurseExtension_(ext, [this](const std::string& child) { disableExtension(child); }))
+                {
+                    // It was either a meta extension or an alias
+                }
+                else if(auto config_it = config_extensions_.find(ext); config_it != config_extensions_.end())
+                {
+                    config_it->second = false;
+                }
+                else
+                {
+                    try
+                    {
+                        getExtensionInfo_(ext)->setDisabled();
+                        is_meta = false;
+                    }
+                    catch(const UnknownExtensionExceptionBase&)
+                    {
+                        if(handleUnknownExtensionException_(ext))
+                        {
+                            throw;
+                        }
+                    }
+                }
+
+                if(is_meta)
+                {
+                    enabled_meta_extensions_.erase(ext);
                 }
             }
 
@@ -900,6 +1059,7 @@ namespace mavis::extension_manager
             std::string isa_;
             using ArchMap = std::unordered_map<uint32_t, ExtensionState>;
             ArchMap extensions_;
+            typename ArchMap::iterator enabled_arch_{extensions_.end()};
             ExtensionMap enabled_extensions_;
             mutable std::vector<std::string> enabled_jsons_;
 
@@ -1113,6 +1273,58 @@ namespace mavis::extension_manager
                 }
             }
 
+            void assertISASpecInitialized_() const
+            {
+                if(extensions_.empty())
+                {
+                    throw UninitializedISASpecException();
+                }
+            }
+
+            void assertISAInitialized_() const
+            {
+                if(enabled_arch_ == extensions_.end())
+                {
+                    throw UninitializedISAException();
+                }
+            }
+
+            void refresh_()
+            {
+                assertISAInitialized_();
+                enabled_extensions_.clear();
+                enabled_jsons_.clear();
+                enabled_arch_->second.finalize(enabled_extensions_);
+            }
+
+            template<bool refresh = true>
+            void enableExtension_(const std::string& ext)
+            {
+                if(!isEnabled(ext))
+                {
+                    enabled_arch_->second.enableExtension(ext);
+
+                    if constexpr(refresh)
+                    {
+                        refresh_();
+                    }
+                }
+            }
+
+            template<bool refresh = true>
+            void disableExtension_(const std::string& ext)
+            {
+                if(isEnabled(ext))
+                {
+                    enabled_arch_->second.disableExtension(ext);
+
+                    if constexpr(refresh)
+                    {
+                        refresh_();
+                    }
+                }
+            }
+
             template<typename InstType,
                      typename AnnotationType,
                      typename InstTypeAllocator,
@@ -1213,6 +1425,7 @@ namespace mavis::extension_manager
                     }
 
                     enabled_extensions_.clear();
+                    enabled_jsons_.clear();
                 }
 
                 setISAImpl_(isa);
@@ -1243,6 +1456,172 @@ namespace mavis::extension_manager
                 }
 
                 return enabled_jsons_;
+            }
+
+            // Adds the specified extension to the allowlist for arch_key
+            // NOTE: Allowlist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void allowExtension(const uint32_t arch_key, const std::string& extension)
+            {
+                assertISASpecInitialized_();
+                extensions_.at(arch_key).allowExtension(extension);
+            }
+
+            // Adds the specified extension to all allowlists
+            // NOTE: Allowlist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void allowExtension(const std::string& extension)
+            {
+                assertISASpecInitialized_();
+                for(auto& ext_info: extensions_)
+                {
+                    ext_info.second.allowExtension(extension);
+                }
+            }
+
+            // Adds the specified extensions to the allowlist for arch_key
+            // NOTE: Allowlist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void allowExtensions(const uint32_t arch_key, const std::vector<std::string>& extensions)
+            {
+                for(const auto& ext: extensions)
+                {
+                    allowExtension(arch_key, ext);
+                }
+            }
+
+            // Adds the specified extensions to all allowlists
+            // NOTE: Allowlist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void allowExtensions(const std::vector<std::string>& extensions)
+            {
+                for(const auto& ext: extensions)
+                {
+                    allowExtension(ext);
+                }
+            }
+
+            // Clears the allowlist for arch_key
+            // NOTE: Allowlist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void clearAllowedExtensions(const uint32_t arch_key)
+            {
+                assertISASpecInitialized_();
+                extensions_.at(arch_key).clearAllowedExtensions();
+            }
+
+            // Clears all allowlists
+            // NOTE: Allowlist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void clearAllowedExtensions()
+            {
+                assertISASpecInitialized_();
+                for(auto& ext_info: extensions_)
+                {
+                    ext_info.second.clearAllowedExtensions();
+                }
+            }
+
+            // Adds the specified extension to the blocklist for arch_key
+            // NOTE: Blocklist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void blockExtension(const uint32_t arch_key, const std::string& extension)
+            {
+                assertISASpecInitialized_();
+                extensions_.at(arch_key).blockExtension(extension);
+            }
+
+            // Adds the specified extension to all blocklists
+            // NOTE: Blocklist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void blockExtension(const std::string& extension)
+            {
+                assertISASpecInitialized_();
+                for(auto& ext_info: extensions_)
+                {
+                    ext_info.second.blockExtension(extension);
+                }
+            }
+
+            // Adds the specified extensions to the blocklist for arch_key
+            // NOTE: Blocklist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void blockExtensions(const uint32_t arch_key, const std::vector<std::string>& extensions)
+            {
+                for(const auto& ext: extensions)
+                {
+                    blockExtension(arch_key, ext);
+                }
+            }
+
+            // Adds the specified extensions to all blocklists
+            // NOTE: Blocklist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void blockExtensions(const std::vector<std::string>& extensions)
+            {
+                for(const auto& ext: extensions)
+                {
+                    blockExtension(ext);
+                }
+            }
+
+            // Clears the blocklist for arch_key
+            // NOTE: Blocklist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void clearBlockedExtensions(const uint32_t arch_key)
+            {
+                assertISASpecInitialized_();
+                extensions_.at(arch_key).clearBlockedExtensions();
+            }
+
+            // Clears all blocklists
+            // NOTE: Blocklist changes will only apply to future invocations of setISA.
+            // Existing enabled extensions are not affected.
+            void clearBlockedExtensions()
+            {
+                assertISASpecInitialized_();
+                for(auto& ext_info: extensions_)
+                {
+                    ext_info.second.clearBlockedExtensions();
+                }
+            }
+
+            // Enables the specified extension for the currently selected arch
+            void enableExtension(const std::string& ext)
+            {
+                assertISAInitialized_();
+                enableExtension_(ext);
+            }
+
+            // Enables the specified extensions for the currently selected arch
+            void enableExtensions(const std::vector<std::string>& extensions)
+            {
+                assertISAInitialized_();
+                for(const auto& ext: extensions)
+                {
+                    enableExtension_<false>(ext);
+                }
+
+                refresh_();
+            }
+
+            // Disables the specified extension for the currently selected arch
+            void disableExtension(const std::string& ext)
+            {
+                assertISAInitialized_();
+                disableExtension_(ext);
+            }
+
+            // Disables the specified extensions for the currently selected arch
+            void disableExtensions(const std::vector<std::string>& extensions)
+            {
+                assertISAInitialized_();
+                for(const auto& ext: extensions)
+                {
+                    disableExtension_<false>(ext);
+                }
+
+                refresh_();
             }
 
             template<typename InstType,

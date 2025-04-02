@@ -422,16 +422,14 @@ namespace mavis::extension_manager::riscv
                 // Remove "rv" prefix
                 isa_view.remove_prefix(2);
 
-                ArchMap::iterator xlen_extension_it;
-
                 try
                 {
                     size_t num_chars = 0;
                     xlen_ = std::stoul(std::string(isa_view), &num_chars);
                     // Remove XLEN prefix
                     isa_view.remove_prefix(num_chars);
-                    xlen_extension_it = extensions_.find(xlen_);
-                    if(xlen_extension_it == extensions_.end())
+                    enabled_arch_ = extensions_.find(xlen_);
+                    if(enabled_arch_ == extensions_.end())
                     {
                         throw std::out_of_range("");
                     }
@@ -450,7 +448,7 @@ namespace mavis::extension_manager::riscv
                     throw InvalidISAStringException(isa_, "Missing base extension");
                 }
 
-                auto& xlen_extension = xlen_extension_it->second;
+                auto& xlen_extension = enabled_arch_->second;
                 const std::string base_isa(1, isa_view.front());
 
                 xlen_extension.enableBaseExtension(base_isa);
