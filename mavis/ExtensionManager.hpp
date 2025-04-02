@@ -916,6 +916,7 @@ namespace mavis::extension_manager
             {
                 recurseExtension_(extension, [this](const std::string& child){ allowExtension(child); });
 
+                extension_blocklist_.erase(extension);
                 extension_allowlist_.emplace(extension);
             }
 
@@ -928,6 +929,7 @@ namespace mavis::extension_manager
             {
                 recurseExtension_(extension, [this](const std::string& child){ blockExtension(child); });
 
+                extension_allowlist_.erase(extension);
                 extension_blocklist_.emplace(extension);
             }
 
