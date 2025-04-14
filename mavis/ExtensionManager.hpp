@@ -132,38 +132,23 @@ namespace mavis::extension_manager
             }
     };
 
+    template<typename IterableT>
+    static std::string iterableToString(const IterableT& iterable)
+    {
+        const auto it = iterable.begin();
+        return std::accumulate(
+            std::next(it), iterable.end(), '[' + *it, [](std::string val, const std::string& item) { return std::move(val) + ',' + item; }
+        ) + ']';
+    }
+
     class ExtensionNotAllowedException : public ExtensionManagerException
     {
-        private:
-            static inline std::string setToString_(const std::unordered_set<std::string>& set)
-            {
-                std::string result("[");
-                bool first = true;
-                for(const auto& str: set)
-                {
-                    if(first)
-                    {
-                        first = false;
-                    }
-                    else
-                    {
-                        result += ',';
-                    }
-
-                    result += str;
-                }
-
-                result += "]";
-
-                return result;
-            }
-
         public:
             ExtensionNotAllowedException(const std::string& ext, const std::unordered_set<std::string>& allowlist, const std::unordered_set<std::string>& blocklist) :
                 ExtensionManagerException(
                     "Attempted to enable " + ext + " extension, but it is not allowed."
-                    " allowlist = " + setToString_(allowlist) +
-                    " blocklist = " + setToString_(blocklist)
+                    " allowlist = " + iterableToString(allowlist) +
+                    " blocklist = " + iterableToString(blocklist)
                 )
             {
             }
@@ -594,23 +579,9 @@ namespace mavis::extension_manager
 
                         for(const auto& dep_info: dependencies)
                         {
-                            ss << '\t' << dep_info.getExtension()->getExtension() << " -> " << '[';
-
-                            bool first = true;
-                            for(const auto& dep: dep_info.getDependentExtensions())
-                            {
-                                if(first)
-                                {
-                                    first = false;
-                                }
-                                else
-                                {
-                                    ss << ',';
-                                }
-                                ss << dep;
-                            }
-
-                            ss << ']' << std::endl;
+                            ss << '\t'
+                               << dep_info.getExtension()->getExtension() << " -> "
+                               << iterableToString(dep_info.getDependentExtensions()) << std::endl;
                         }
 
                         return ss.str();
