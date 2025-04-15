@@ -170,6 +170,7 @@ int main(int argc, char **argv)
                     "json/isa_rv64zvksed.json",
                     "json/isa_rv64zvksh.json",
                     "json/isa_rv64zfh.json",
+                    "json/isa_rv64zfh_addons.json",
                     "json/isa_rv64zfhmin.json",
                     "json/isa_rv64zfhmin_d.json",
                     "json/isa_rv64zicbom.json",

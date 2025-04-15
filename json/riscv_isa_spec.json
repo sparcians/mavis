@@ -425,7 +425,7 @@
       "json": "isa_rv64zfbfmin.json"
     },
     {
-      "xlen": 32,
+      "xlen": [32, 64, 128]
       "extension": "zfh",
       "requires": ["f"],
       "enables": "zfhmin",
@@ -433,10 +433,9 @@
     },
     {
       "xlen": [64, 128],
-      "extension": "zfh",
-      "requires": ["f"],
-      "enables": "zfhmin",
-      "json": "isa_rv64zfh.json"
+      "extension": "zfhrv64",
+      "enabled_by": ["zfh"],
+      "json": "isa_rv64zfh_addons.json"
     },
     {
       "xlen": [32, 64, 128],
