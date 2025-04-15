@@ -1,0 +1,42 @@
+[
+  {
+    "mnemonic" : "fcvt.l.q",
+    "tags" : ["q"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xc6200053",
+    "q-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.lu.q",
+    "tags" : ["q"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xc6300053",
+    "q-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.q.l",
+    "tags" : ["q"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xd6200053",
+    "l-oper" : ["rs1"],
+    "q-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fcvt.q.lu",
+    "tags" : ["q"],
+    "form" : "Rfloat",
+    "fixed" : [ "rs2" ],
+    "stencil" : "0xd6300053",
+    "l-oper" : ["rs1"],
+    "q-oper" : ["rd"],
+    "type" : ["float", "convert"]
+  }
+]

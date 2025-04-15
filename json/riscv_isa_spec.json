@@ -276,28 +276,28 @@
       "json": "isa_rv32zfa.json"
     },
     {
-      "xlen": 32,
+      "xlen": [32, 64, 128],
       "extension": "zfad",
       "enabled_by": ["zfa", "d"],
       "json": "isa_rv32zfa_d.json"
     },
     {
-      "xlen": [64, 128],
-      "extension": "zfad",
-      "enabled_by": ["zfa", "d"],
-      "json": "isa_rv64zfa_d.json"
+      "xlen": 32,
+      "extension": "zfadrv32",
+      "enabled_by": ["zfad"],
+      "json": "isa_rv32zfa_d_addons.json"
     },
     {
-      "xlen": 32,
+      "xlen": [32, 64, 128],
       "extension": "zfaq",
       "enabled_by": ["zfa", "q"],
       "json": "isa_rv32zfa_q.json"
     },
     {
       "xlen": [64, 128],
-      "extension": "zfaq",
-      "enabled_by": ["zfa", "q"],
-      "json": "isa_rv64zfa_q.json"
+      "extension": "zfaqrv64",
+      "enabled_by": ["zfaq"],
+      "json": "isa_rv64zfa_q_addons.json"
     },
     {
       "xlen": [32, 64, 128],
@@ -330,22 +330,22 @@
       "json": "isa_rv64zmmul.json"
     },
     {
-      "xlen": 32,
+      "xlen": [32, 64, 128],
       "extension": "q",
       "enables": ["d"],
       "json": "isa_rv32q.json"
     },
     {
-      "xlen": 64,
-      "extension": "q",
-      "enables": ["d"],
-      "json": "isa_rv64q.json"
+      "xlen": [64, 128],
+      "extension": "qrv64",
+      "enabled_by": ["q"],
+      "json": "isa_rv64q_addons.json"
     },
     {
       "xlen": 128,
-      "extension": "q",
-      "enables": ["d"],
-      "json": "isa_rv128q.json"
+      "extension": "qrv128",
+      "enabled_by": ["q"],
+      "json": "isa_rv128q_addons.json"
     },
     {
       "xlen": [32, 64],
