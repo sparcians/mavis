@@ -45,7 +45,7 @@
       "extension": "v"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zve64f",
       "meta_extension": "v"
     }
@@ -300,28 +300,28 @@
       "json": "isa_rv64q.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zve32x",
       "meta_extension": "zve64f",
       "requires": "zicsr",
       "json": "isa_rv64zve32x.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zve32f",
       "meta_extension": "zve64f",
       "requires": ["zve32x", "f"],
       "json": "isa_rv64zve32f.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zve64x",
       "meta_extension": "zve64f",
       "requires": "zve32x",
       "json": "isa_rv64zve64x.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zve64d",
       "meta_extension": "v",
       "requires": ["zve64f", "d"],
