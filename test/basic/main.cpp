@@ -182,6 +182,10 @@ int main() {
                             "json/isa_rv64zcd.json",
                             "json/isa_rv64q.json",
                             "json/isa_rv64h.json",
+                            "json/isa_rv64zfa.json",
+                            "json/isa_rv64zfa_d.json",
+                            "json/isa_rv64zfa_q.json",
+                            "json/isa_rv64zfa_h.json",
                             "json/isa_rv64zve32x.json",
                             "json/isa_rv64zve32f.json",
                             "json/isa_rv64zve64x.json",
@@ -248,6 +252,10 @@ int main() {
                                      "json/isa_rv64zalrsc.json",
                                      "json/isa_rv64f.json",
                                      "json/isa_rv64d.json",
+                                     "json/isa_rv64zfa.json",
+                                     "json/isa_rv64zfa_d.json",
+                                     "json/isa_rv64zfa_q.json",
+                                     "json/isa_rv64zfa_h.json",
                                      "json/isa_rv64zca.json",
                                      "json/isa_rv64zcd.json",
                                      "json/isa_rv64zicsr.json",
@@ -1099,9 +1107,17 @@ int main() {
                                  "json/isa_rv32d.json",        // included in "g" spec
                                  "json/isa_rv32zicsr.json",    // included in "g" spec
                                  "json/isa_rv32zifencei.json", // included in "g" spec
+                                 "json/isa_rv32q.json",
+                                 "json/isa_rv32zfa.json",
+                                 "json/isa_rv32zfa_d.json",
+                                 "json/isa_rv32zfa_q.json",
+                                 "json/isa_rv32zfa_h.json",
                                  "json/isa_rv32zca.json",
                                  "json/isa_rv32zcf.json",
                                  "json/isa_rv32zcd.json",
+                                 "json/isa_rv32zfh.json",
+                                 "json/isa_rv32zfhmin.json",
+                                 "json/isa_rv32zfhmin_d.json",
                                  "json/isa_rv32zihintpause.json",
                                  "json/isa_rv32zawrs.json",
                                  "json/isa_rv32zilsd.json",
@@ -1214,6 +1230,8 @@ int main() {
                                              "json/isa_rv32d.json",        // included in "g" spec
                                              "json/isa_rv32zicsr.json",    // included in "g" spec
                                              "json/isa_rv32zifencei.json", // included in "g" spec
+                                             "json/isa_rv32zfa.json",
+                                             "json/isa_rv32zfa_d.json",
                                              "json/isa_rv32zca.json",
                                              "json/isa_rv32zcd.json",
                                              "json/isa_rv32zihintpause.json",

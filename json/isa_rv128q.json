@@ -193,6 +193,16 @@
     "type" : ["float", "convert"]
   },
   {
+    "mnemonic" : "fmv.x.q",
+    "tags" : ["q"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm", "rs2" ],
+    "stencil" : "0xe6000053",
+    "q-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "move"]
+  },
+  {
     "mnemonic" : "fclass.q",
     "tags" : ["q"],
     "form" : "Rfloat",
@@ -241,6 +251,16 @@
     "l-oper" : ["rs1"],
     "q-oper" : ["rd"],
     "type" : ["float", "convert"]
+  },
+  {
+    "mnemonic" : "fmv.q.x",
+    "tags" : ["q"],
+    "form" : "Rfloat",
+    "fixed" : [ "rm", "rs2" ],
+    "stencil" : "0xf6000053",
+    "l-oper" : ["rs1"],
+    "q-oper" : ["rd"],
+    "type" : ["float", "move"]
   },
   {
     "mnemonic" : "flq",

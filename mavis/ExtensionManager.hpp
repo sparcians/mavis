@@ -135,6 +135,11 @@ namespace mavis::extension_manager
     template<typename IterableT>
     static std::string iterableToString(const IterableT& iterable)
     {
+        if(iterable.empty())
+        {
+            return "[]";
+        }
+
         const auto it = iterable.begin();
         return std::accumulate(
             std::next(it), iterable.end(), '[' + *it, [](std::string val, const std::string& item) { return std::move(val) + ',' + item; }
@@ -430,8 +435,8 @@ namespace mavis::extension_manager
                     return;
                 }
 
-                validateConstraints_<true>(required_extensions_);
                 validateConstraints_<false>(conflicting_extensions_);
+                validateConstraints_<true>(required_extensions_);
 
                 enabled_ = force_enabled_ || (enabled_ && anyEnablingExtensionsEnabled_());
             }

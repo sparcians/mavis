@@ -1,0 +1,65 @@
+[
+  {
+    "mnemonic" : "fleq.h",
+    "stencil" : "0xa4004053",
+    "fixed" : ["rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fli.h",
+    "stencil" : "0xf4100053",
+    "fixed" : ["rs2","rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fltq.h",
+    "stencil" : "0xa4005053",
+    "fixed" : ["rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fmaxm.h",
+    "stencil" : "0x2c003053",
+    "fixed" : ["rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fminm.h",
+    "stencil" : "0x2c002053",
+    "fixed" : ["rm"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fround.h",
+    "stencil" : "0x44400053",
+    "fixed" : ["rs2"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "froundnx.h",
+    "stencil" : "0x44500053",
+    "fixed" : ["rs2"],
+    "tags" : ["zfh", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  }
+]

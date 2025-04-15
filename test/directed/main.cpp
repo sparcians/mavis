@@ -111,8 +111,16 @@ int main(int argc, char **argv)
                     "json/isa_rv32d.json",        // included in "g" spec
                     "json/isa_rv32zicsr.json",    // included in "g" spec
                     "json/isa_rv32zifencei.json", // included in "g" spec
+                    "json/isa_rv32q.json",
+                    "json/isa_rv32zfa.json",
+                    "json/isa_rv32zfa_d.json",
+                    "json/isa_rv32zfa_q.json",
+                    "json/isa_rv32zfa_h.json",
                     "json/isa_rv32zca.json",
                     "json/isa_rv32zcd.json",
+                    "json/isa_rv32zfh.json",
+                    "json/isa_rv32zfhmin.json",
+                    "json/isa_rv32zfhmin_d.json",
                     "json/isa_rv32zawrs.json",
                     "json/isa_rv32zilsd.json",
                     "json/isa_rv32zacas.json",
@@ -145,6 +153,10 @@ int main(int argc, char **argv)
                     "json/isa_rv64zcd.json",
                     "json/isa_rv64q.json",
                     "json/isa_rv64h.json",
+                    "json/isa_rv64zfa.json",
+                    "json/isa_rv64zfa_d.json",
+                    "json/isa_rv64zfa_q.json",
+                    "json/isa_rv64zfa_h.json",
                     "json/isa_rv64v.json",
                     "json/isa_rv64vf.json",
                     "json/isa_rv64zvbb.json",
