@@ -12,7 +12,7 @@ jobs:
     steps:
       # Install jq
       - name: Install jq
-        run: apt-get update && apt-get install -y jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
       # Get Mavis
       - name: Clone Mavis
