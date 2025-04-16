@@ -14,7 +14,7 @@
       "extension": "c"
     },
     {
-      "xlen": [32, 64],
+      "xlen": [32, 64, 128],
       "extension": "g",
       "is_base_extension": true
     },
@@ -257,17 +257,53 @@
       "json": "isa_rv32zilsd.json"
     },
     {
-      "xlen": 64,
+      "xlen": [64, 128],
       "extension": "d",
       "meta_extension": "g",
       "enables": ["f"],
       "json": "isa_rv64d.json"
     },
     {
-      "xlen": 64,
+      "xlen": [64, 128],
       "extension": "f",
       "meta_extension": "g",
       "json": "isa_rv64f.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfa",
+      "requires": "f",
+      "json": "isa_rv32zfa.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfad",
+      "enabled_by": ["zfa", "d"],
+      "json": "isa_rv32zfa_d.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zfadrv32",
+      "enabled_by": ["zfad"],
+      "json": "isa_rv32zfa_d_addons.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfaq",
+      "enabled_by": ["zfa", "q"],
+      "json": "isa_rv32zfa_q.json"
+    },
+    {
+      "xlen": [64, 128],
+      "extension": "zfaqrv64",
+      "enabled_by": ["zfaq"],
+      "json": "isa_rv64zfa_q_addons.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfah",
+      "enabled_by": ["zfa", "zfh"],
+      "json": "isa_rv32zfa_h.json"
     },
     {
       "xlen": 64,
@@ -294,10 +330,22 @@
       "json": "isa_rv64zmmul.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64, 128],
       "extension": "q",
       "enables": ["d"],
-      "json": "isa_rv64q.json"
+      "json": "isa_rv32q.json"
+    },
+    {
+      "xlen": [64, 128],
+      "extension": "qrv64",
+      "enabled_by": ["q"],
+      "json": "isa_rv64q_addons.json"
+    },
+    {
+      "xlen": 128,
+      "extension": "qrv128",
+      "enabled_by": ["q"],
+      "json": "isa_rv128q_addons.json"
     },
     {
       "xlen": [32, 64],
@@ -377,22 +425,28 @@
       "json": "isa_rv64zfbfmin.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64, 128]
       "extension": "zfh",
       "requires": ["f"],
       "enables": "zfhmin",
-      "json": "isa_rv64zfh.json"
+      "json": "isa_rv32zfh.json"
     },
     {
-      "xlen": 64,
+      "xlen": [64, 128],
+      "extension": "zfhrv64",
+      "enabled_by": ["zfh"],
+      "json": "isa_rv64zfh_addons.json"
+    },
+    {
+      "xlen": [32, 64, 128],
       "extension": "zfhmin",
-      "json": "isa_rv64zfhmin.json"
+      "json": "isa_rv32zfhmin.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64, 128],
       "extension": "zfhmind",
       "enabled_by": ["zfhmin", "d"],
-      "json": "isa_rv64zfhmin_d.json"
+      "json": "isa_rv32zfhmin_d.json"
     },
     {
       "xlen": 64,

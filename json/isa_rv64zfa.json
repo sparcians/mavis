@@ -1,0 +1,65 @@
+[
+  {
+    "mnemonic" : "fleq.s",
+    "stencil" : "0xa0004053",
+    "fixed" : ["rm"],
+    "tags" : ["f", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fli.s",
+    "stencil" : "0xf0100053",
+    "fixed" : ["rs2","rm"],
+    "tags" : ["f", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fltq.s",
+    "stencil" : "0xa0005053",
+    "fixed" : ["rm"],
+    "tags" : ["f", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fmaxm.s",
+    "stencil" : "0x28003053",
+    "fixed" : ["rm"],
+    "tags" : ["f", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fminm.s",
+    "stencil" : "0x28002053",
+    "fixed" : ["rm"],
+    "tags" : ["f", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fround.s",
+    "stencil" : "0x40400053",
+    "fixed" : ["rs2"],
+    "tags" : ["f", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "froundnx.s",
+    "stencil" : "0x40500053",
+    "fixed" : ["rs2"],
+    "tags" : ["f", "zfa"],
+    "form" : "Rfloat",
+    "s-oper" : "all",
+    "type" : ["float", "arith"]
+  }
+]

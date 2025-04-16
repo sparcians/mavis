@@ -557,27 +557,27 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[2]: 'fmaxm.d', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.d'), stencil = 0x2a003053
 |	|	|	|	[3]: 'fminm.d', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.d'), stencil = 0x2a002053
 |	|	|	[16]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fmin.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.h'), stencil = 0x2c000053
-|	|	|	|	[1]: 'fmax.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.h'), stencil = 0x2c001053
-|	|	|	|	[2]: 'fmaxm.h', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.h'), stencil = 0x2c003053
-|	|	|	|	[3]: 'fminm.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.h'), stencil = 0x2c002053
+|	|	|	|	[0]: 'fmaxm.h', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.h'), stencil = 0x2c003053
+|	|	|	|	[1]: 'fminm.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.h'), stencil = 0x2c002053
+|	|	|	|	[2]: 'fmin.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.h'), stencil = 0x2c000053
+|	|	|	|	[3]: 'fmax.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.h'), stencil = 0x2c001053
 |	|	|	[17]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmin.q', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.q'), stencil = 0x2e000053
 |	|	|	|	[1]: 'fmax.q', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.q'), stencil = 0x2e001053
 |	|	|	|	[2]: 'fmaxm.q', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.q'), stencil = 0x2e003053
 |	|	|	|	[3]: 'fminm.q', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.q'), stencil = 0x2e002053
 |	|	|	[20]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fround.s', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.s'), stencil = 0x40400053
-|	|	|	|	[1]: 'froundnx.s', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.s'), stencil = 0x40500053
-|	|	|	|	[2]: 'fcvt.s.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.d'), stencil = 0x40100053
-|	|	|	|	[3]: 'fcvt.s.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.q'), stencil = 0x40300053
+|	|	|	|	[0]: 'fcvt.s.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.d'), stencil = 0x40100053
+|	|	|	|	[1]: 'fcvt.s.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.q'), stencil = 0x40300053
+|	|	|	|	[2]: 'fround.s', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.s'), stencil = 0x40400053
+|	|	|	|	[3]: 'froundnx.s', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.s'), stencil = 0x40500053
 |	|	|	|	[4]: 'fcvt.s.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.h'), stencil = 0x40200053
 |	|	|	|	[5]: 'fcvt.s.bf16', mask=0x1f00000, field_set=0x2, value=0x600000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.bf16'), stencil = 0x40600053
 |	|	|	[21]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.d.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.s'), stencil = 0x42000053
-|	|	|	|	[1]: 'fround.d', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.d'), stencil = 0x42400053
-|	|	|	|	[2]: 'froundnx.d', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.d'), stencil = 0x42500053
-|	|	|	|	[3]: 'fcvt.d.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.q'), stencil = 0x42300053
+|	|	|	|	[1]: 'fcvt.d.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.q'), stencil = 0x42300053
+|	|	|	|	[2]: 'fround.d', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.d'), stencil = 0x42400053
+|	|	|	|	[3]: 'froundnx.d', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.d'), stencil = 0x42500053
 |	|	|	|	[4]: 'fcvt.d.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.h'), stencil = 0x42200053
 |	|	|	[22]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fround.h', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.h'), stencil = 0x44400053
@@ -611,11 +611,11 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[3]: 'fleq.d', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.d'), stencil = 0xa2004053
 |	|	|	|	[4]: 'fltq.d', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.d'), stencil = 0xa2005053
 |	|	|	[52]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fle.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.h'), stencil = 0xa4000053
-|	|	|	|	[1]: 'flt.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.h'), stencil = 0xa4001053
-|	|	|	|	[2]: 'feq.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.h'), stencil = 0xa4002053
-|	|	|	|	[3]: 'fleq.h', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.h'), stencil = 0xa4004053
-|	|	|	|	[4]: 'fltq.h', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.h'), stencil = 0xa4005053
+|	|	|	|	[0]: 'fleq.h', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.h'), stencil = 0xa4004053
+|	|	|	|	[1]: 'fltq.h', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.h'), stencil = 0xa4005053
+|	|	|	|	[2]: 'fle.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.h'), stencil = 0xa4000053
+|	|	|	|	[3]: 'flt.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.h'), stencil = 0xa4001053
+|	|	|	|	[4]: 'feq.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.h'), stencil = 0xa4002053
 |	|	|	[53]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fle.q', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.q'), stencil = 0xa6000053
 |	|	|	|	[1]: 'flt.q', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.q'), stencil = 0xa6001053
@@ -656,10 +656,10 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[2]: 'fcvt.d.l', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.l'), stencil = 0xd2200053
 |	|	|	|	[3]: 'fcvt.d.lu', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.lu'), stencil = 0xd2300053
 |	|	|	[6a]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fcvt.h.l', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.l'), stencil = 0xd4200053
-|	|	|	|	[1]: 'fcvt.h.lu', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.lu'), stencil = 0xd4300053
-|	|	|	|	[2]: 'fcvt.h.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.w'), stencil = 0xd4000053
-|	|	|	|	[3]: 'fcvt.h.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.wu'), stencil = 0xd4100053
+|	|	|	|	[0]: 'fcvt.h.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.w'), stencil = 0xd4000053
+|	|	|	|	[1]: 'fcvt.h.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.wu'), stencil = 0xd4100053
+|	|	|	|	[2]: 'fcvt.h.l', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.l'), stencil = 0xd4200053
+|	|	|	|	[3]: 'fcvt.h.lu', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.lu'), stencil = 0xd4300053
 |	|	|	[6b]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.q.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.w'), stencil = 0xd6000053
 |	|	|	|	[1]: 'fcvt.q.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.wu'), stencil = 0xd6100053
@@ -675,9 +675,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: 'fclass.h', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.h'), stencil = 0xe4001053
 |	|	|	|	[1]: 'fmv.x.h', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.x.h'), stencil = 0xe4000053
 |	|	|	[73]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fmv.x.q', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.x.q'), stencil = 0xe6000053
-|	|	|	|	[1]: 'fclass.q', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.q'), stencil = 0xe6001053
-|	|	|	|	[2]: 'fmvh.x.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmvh.x.q'), stencil = 0xe6100053
+|	|	|	|	[0]: 'fclass.q', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.q'), stencil = 0xe6001053
+|	|	|	|	[1]: 'fmvh.x.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmvh.x.q'), stencil = 0xe6100053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
 |	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
@@ -688,8 +687,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.h'), stencil = 0xf4100053
 |	|	|	|	[1]: 'fmv.h.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.h.x'), stencil = 0xf4000053
 |	|	|	[7b]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fmv.q.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.q.x'), stencil = 0xf6000053
-|	|	|	|	[1]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.q'), stencil = 0xf6100053
+|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.q'), stencil = 0xf6100053
 |	|	[57]: IFactoryDenseComposite::Field func3a
 |	|	|	[0]: IFactoryDenseComposite::Field func1a
 |	|	|	|	[0]: IFactoryDenseComposite::Field func1b
@@ -1771,6 +1769,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	[3]: IFactoryDenseComposite::Field mewop
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'fld', value=0x3007, extractor=Extractor 'I_load', factory=IFactory('fld'), stencil = 0x3007
+|	|	|	[4]: IFactoryDenseComposite::Field mewop
+|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'flq', value=0x4007, extractor=Extractor 'I_load', factory=IFactory('flq'), stencil = 0x4007
 |	|	|	[5]: IFactoryDenseComposite::Field mewop
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'vl1re16.v', mask=0xe3f00000, field_set=0xd, value=0x2800000, nfixed=3, extractor=Extractor 'V_load', factory=IFactory('vl1re16.v'), stencil = 0x2805007
@@ -1929,6 +1930,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	[3]: IFactoryDenseComposite::Field mewop
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'fsd', value=0x3027, extractor=Extractor 'S', factory=IFactory('fsd'), stencil = 0x3027
+|	|	|	[4]: IFactoryDenseComposite::Field mewop
+|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'fsq', value=0x4027, extractor=Extractor 'S', factory=IFactory('fsq'), stencil = 0x4027
 |	|	|	[5]: IFactoryDenseComposite::Field mewop
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'vse16.v', mask=0x1f00000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'V_store', factory=IFactory('vse16.v'), stencil = 0x5027
@@ -2151,6 +2155,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: 'fmadd.d', value=0x2000043, extractor=Extractor 'R4', factory=IFactory('fmadd.d'), stencil = 0x2000043
 |	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmadd.h', value=0x4000043, extractor=Extractor 'R4', factory=IFactory('fmadd.h'), stencil = 0x4000043
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmadd.q', value=0x6000043, extractor=Extractor 'R4', factory=IFactory('fmadd.q'), stencil = 0x6000043
 |	|	[47]: IFactoryDenseComposite::Field func2
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmsub.s', value=0x47, extractor=Extractor 'R4', factory=IFactory('fmsub.s'), stencil = 0x47
@@ -2158,6 +2164,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: 'fmsub.d', value=0x2000047, extractor=Extractor 'R4', factory=IFactory('fmsub.d'), stencil = 0x2000047
 |	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmsub.h', value=0x4000047, extractor=Extractor 'R4', factory=IFactory('fmsub.h'), stencil = 0x4000047
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmsub.q', value=0x6000047, extractor=Extractor 'R4', factory=IFactory('fmsub.q'), stencil = 0x6000047
 |	|	[4b]: IFactoryDenseComposite::Field func2
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fnmsub.s', value=0x4b, extractor=Extractor 'R4', factory=IFactory('fnmsub.s'), stencil = 0x4b
@@ -2165,6 +2173,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: 'fnmsub.d', value=0x200004b, extractor=Extractor 'R4', factory=IFactory('fnmsub.d'), stencil = 0x200004b
 |	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fnmsub.h', value=0x400004b, extractor=Extractor 'R4', factory=IFactory('fnmsub.h'), stencil = 0x400004b
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fnmsub.q', value=0x600004b, extractor=Extractor 'R4', factory=IFactory('fnmsub.q'), stencil = 0x600004b
 |	|	[4f]: IFactoryDenseComposite::Field func2
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fnmadd.s', value=0x4f, extractor=Extractor 'R4', factory=IFactory('fnmadd.s'), stencil = 0x4f
@@ -2172,6 +2182,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: 'fnmadd.d', value=0x200004f, extractor=Extractor 'R4', factory=IFactory('fnmadd.d'), stencil = 0x200004f
 |	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fnmadd.h', value=0x400004f, extractor=Extractor 'R4', factory=IFactory('fnmadd.h'), stencil = 0x400004f
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fnmadd.q', value=0x600004f, extractor=Extractor 'R4', factory=IFactory('fnmadd.q'), stencil = 0x600004f
 |	|	[53]: IFactoryDenseComposite::Field func7
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fadd.s', value=0x53, extractor=Extractor 'Rfloat', factory=IFactory('fadd.s'), stencil = 0x53
@@ -2179,24 +2191,32 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: 'fadd.d', value=0x2000053, extractor=Extractor 'Rfloat', factory=IFactory('fadd.d'), stencil = 0x2000053
 |	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fadd.h', value=0x4000053, extractor=Extractor 'Rfloat', factory=IFactory('fadd.h'), stencil = 0x4000053
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fadd.q', value=0x6000053, extractor=Extractor 'Rfloat', factory=IFactory('fadd.q'), stencil = 0x6000053
 |	|	|	[4]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fsub.s', value=0x8000053, extractor=Extractor 'Rfloat', factory=IFactory('fsub.s'), stencil = 0x8000053
 |	|	|	[5]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fsub.d', value=0xa000053, extractor=Extractor 'Rfloat', factory=IFactory('fsub.d'), stencil = 0xa000053
 |	|	|	[6]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fsub.h', value=0xc000053, extractor=Extractor 'Rfloat', factory=IFactory('fsub.h'), stencil = 0xc000053
+|	|	|	[7]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fsub.q', value=0xe000053, extractor=Extractor 'Rfloat', factory=IFactory('fsub.q'), stencil = 0xe000053
 |	|	|	[8]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmul.s', value=0x10000053, extractor=Extractor 'Rfloat', factory=IFactory('fmul.s'), stencil = 0x10000053
 |	|	|	[9]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmul.d', value=0x12000053, extractor=Extractor 'Rfloat', factory=IFactory('fmul.d'), stencil = 0x12000053
 |	|	|	[a]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmul.h', value=0x14000053, extractor=Extractor 'Rfloat', factory=IFactory('fmul.h'), stencil = 0x14000053
+|	|	|	[b]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmul.q', value=0x16000053, extractor=Extractor 'Rfloat', factory=IFactory('fmul.q'), stencil = 0x16000053
 |	|	|	[c]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fdiv.s', value=0x18000053, extractor=Extractor 'Rfloat', factory=IFactory('fdiv.s'), stencil = 0x18000053
 |	|	|	[d]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fdiv.d', value=0x1a000053, extractor=Extractor 'Rfloat', factory=IFactory('fdiv.d'), stencil = 0x1a000053
 |	|	|	[e]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fdiv.h', value=0x1c000053, extractor=Extractor 'Rfloat', factory=IFactory('fdiv.h'), stencil = 0x1c000053
+|	|	|	[f]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fdiv.q', value=0x1e000053, extractor=Extractor 'Rfloat', factory=IFactory('fdiv.q'), stencil = 0x1e000053
 |	|	|	[10]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fsgnj.s', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnj.s'), stencil = 0x20000053
 |	|	|	|	[1]: 'fsgnjn.s', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjn.s'), stencil = 0x20001053
@@ -2209,6 +2229,10 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: 'fsgnj.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnj.h'), stencil = 0x24000053
 |	|	|	|	[1]: 'fsgnjn.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjn.h'), stencil = 0x24001053
 |	|	|	|	[2]: 'fsgnjx.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjx.h'), stencil = 0x24002053
+|	|	|	[13]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fsgnj.q', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnj.q'), stencil = 0x26000053
+|	|	|	|	[1]: 'fsgnjn.q', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjn.q'), stencil = 0x26001053
+|	|	|	|	[2]: 'fsgnjx.q', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjx.q'), stencil = 0x26002053
 |	|	|	[14]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmin.s', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.s'), stencil = 0x28000053
 |	|	|	|	[1]: 'fmax.s', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.s'), stencil = 0x28001053
@@ -2220,31 +2244,45 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[2]: 'fmaxm.d', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.d'), stencil = 0x2a003053
 |	|	|	|	[3]: 'fminm.d', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.d'), stencil = 0x2a002053
 |	|	|	[16]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fmin.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.h'), stencil = 0x2c000053
-|	|	|	|	[1]: 'fmax.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.h'), stencil = 0x2c001053
-|	|	|	|	[2]: 'fmaxm.h', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.h'), stencil = 0x2c003053
-|	|	|	|	[3]: 'fminm.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.h'), stencil = 0x2c002053
+|	|	|	|	[0]: 'fmaxm.h', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.h'), stencil = 0x2c003053
+|	|	|	|	[1]: 'fminm.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.h'), stencil = 0x2c002053
+|	|	|	|	[2]: 'fmin.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.h'), stencil = 0x2c000053
+|	|	|	|	[3]: 'fmax.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.h'), stencil = 0x2c001053
+|	|	|	[17]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fmin.q', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.q'), stencil = 0x2e000053
+|	|	|	|	[1]: 'fmax.q', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.q'), stencil = 0x2e001053
+|	|	|	|	[2]: 'fmaxm.q', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.q'), stencil = 0x2e003053
+|	|	|	|	[3]: 'fminm.q', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.q'), stencil = 0x2e002053
 |	|	|	[20]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fround.s', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.s'), stencil = 0x40400053
-|	|	|	|	[1]: 'froundnx.s', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.s'), stencil = 0x40500053
-|	|	|	|	[2]: 'fcvt.s.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.d'), stencil = 0x40100053
-|	|	|	|	[3]: 'fcvt.s.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.h'), stencil = 0x40200053
+|	|	|	|	[0]: 'fcvt.s.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.d'), stencil = 0x40100053
+|	|	|	|	[1]: 'fcvt.s.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.q'), stencil = 0x40300053
+|	|	|	|	[2]: 'fround.s', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.s'), stencil = 0x40400053
+|	|	|	|	[3]: 'froundnx.s', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.s'), stencil = 0x40500053
+|	|	|	|	[4]: 'fcvt.s.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.h'), stencil = 0x40200053
 |	|	|	[21]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.d.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.s'), stencil = 0x42000053
-|	|	|	|	[1]: 'fround.d', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.d'), stencil = 0x42400053
-|	|	|	|	[2]: 'froundnx.d', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.d'), stencil = 0x42500053
-|	|	|	|	[3]: 'fcvt.d.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.h'), stencil = 0x42200053
+|	|	|	|	[1]: 'fcvt.d.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.q'), stencil = 0x42300053
+|	|	|	|	[2]: 'fround.d', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.d'), stencil = 0x42400053
+|	|	|	|	[3]: 'froundnx.d', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.d'), stencil = 0x42500053
+|	|	|	|	[4]: 'fcvt.d.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.h'), stencil = 0x42200053
 |	|	|	[22]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fround.h', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.h'), stencil = 0x44400053
 |	|	|	|	[1]: 'froundnx.h', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.h'), stencil = 0x44500053
 |	|	|	|	[2]: 'fcvt.h.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.s'), stencil = 0x44000053
 |	|	|	|	[3]: 'fcvt.h.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.d'), stencil = 0x44100053
+|	|	|	[23]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fcvt.q.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.s'), stencil = 0x46000053
+|	|	|	|	[1]: 'fcvt.q.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.d'), stencil = 0x46100053
+|	|	|	|	[2]: 'fround.q', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.q'), stencil = 0x46400053
+|	|	|	|	[3]: 'froundnx.q', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.q'), stencil = 0x46500053
 |	|	|	[2c]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fsqrt.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsqrt.s'), stencil = 0x58000053
 |	|	|	[2d]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fsqrt.d', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsqrt.d'), stencil = 0x5a000053
 |	|	|	[2e]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fsqrt.h', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsqrt.h'), stencil = 0x5c000053
+|	|	|	[2f]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fsqrt.q', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsqrt.q'), stencil = 0x5e000053
 |	|	|	[50]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fle.s', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.s'), stencil = 0xa0000053
 |	|	|	|	[1]: 'flt.s', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.s'), stencil = 0xa0001053
@@ -2258,11 +2296,19 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[3]: 'fleq.d', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.d'), stencil = 0xa2004053
 |	|	|	|	[4]: 'fltq.d', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.d'), stencil = 0xa2005053
 |	|	|	[52]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fle.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.h'), stencil = 0xa4000053
-|	|	|	|	[1]: 'flt.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.h'), stencil = 0xa4001053
-|	|	|	|	[2]: 'feq.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.h'), stencil = 0xa4002053
-|	|	|	|	[3]: 'fleq.h', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.h'), stencil = 0xa4004053
-|	|	|	|	[4]: 'fltq.h', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.h'), stencil = 0xa4005053
+|	|	|	|	[0]: 'fleq.h', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.h'), stencil = 0xa4004053
+|	|	|	|	[1]: 'fltq.h', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.h'), stencil = 0xa4005053
+|	|	|	|	[2]: 'fle.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.h'), stencil = 0xa4000053
+|	|	|	|	[3]: 'flt.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.h'), stencil = 0xa4001053
+|	|	|	|	[4]: 'feq.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.h'), stencil = 0xa4002053
+|	|	|	[53]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fle.q', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.q'), stencil = 0xa6000053
+|	|	|	|	[1]: 'flt.q', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.q'), stencil = 0xa6001053
+|	|	|	|	[2]: 'feq.q', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.q'), stencil = 0xa6002053
+|	|	|	|	[3]: 'fleq.q', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.q'), stencil = 0xa6004053
+|	|	|	|	[4]: 'fltq.q', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.q'), stencil = 0xa6005053
+|	|	|	[5b]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fmvp.q.x', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmvp.q.x'), stencil = 0xb6000053
 |	|	|	[60]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.w.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.w.s'), stencil = 0xc0000053
 |	|	|	|	[1]: 'fcvt.wu.s', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.wu.s'), stencil = 0xc0100053
@@ -2279,6 +2325,11 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[1]: 'fcvt.wu.h', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.wu.h'), stencil = 0xc4100053
 |	|	|	|	[2]: 'fcvt.l.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.l.h'), stencil = 0xc4200053
 |	|	|	|	[3]: 'fcvt.lu.h', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.lu.h'), stencil = 0xc4300053
+|	|	|	[63]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fcvt.w.q', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.w.q'), stencil = 0xc6000053
+|	|	|	|	[1]: 'fcvt.wu.q', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.wu.q'), stencil = 0xc6100053
+|	|	|	|	[2]: 'fcvt.l.q', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.l.q'), stencil = 0xc6200053
+|	|	|	|	[3]: 'fcvt.lu.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.lu.q'), stencil = 0xc6300053
 |	|	|	[68]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.s.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.w'), stencil = 0xd0000053
 |	|	|	|	[1]: 'fcvt.s.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.wu'), stencil = 0xd0100053
@@ -2290,10 +2341,15 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[2]: 'fcvt.d.l', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.l'), stencil = 0xd2200053
 |	|	|	|	[3]: 'fcvt.d.lu', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.lu'), stencil = 0xd2300053
 |	|	|	[6a]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fcvt.h.l', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.l'), stencil = 0xd4200053
-|	|	|	|	[1]: 'fcvt.h.lu', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.lu'), stencil = 0xd4300053
-|	|	|	|	[2]: 'fcvt.h.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.w'), stencil = 0xd4000053
-|	|	|	|	[3]: 'fcvt.h.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.wu'), stencil = 0xd4100053
+|	|	|	|	[0]: 'fcvt.h.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.w'), stencil = 0xd4000053
+|	|	|	|	[1]: 'fcvt.h.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.wu'), stencil = 0xd4100053
+|	|	|	|	[2]: 'fcvt.h.l', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.l'), stencil = 0xd4200053
+|	|	|	|	[3]: 'fcvt.h.lu', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.lu'), stencil = 0xd4300053
+|	|	|	[6b]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fcvt.q.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.w'), stencil = 0xd6000053
+|	|	|	|	[1]: 'fcvt.q.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.wu'), stencil = 0xd6100053
+|	|	|	|	[2]: 'fcvt.q.l', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.l'), stencil = 0xd6200053
+|	|	|	|	[3]: 'fcvt.q.lu', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.lu'), stencil = 0xd6300053
 |	|	|	[70]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.x.w', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.x.w'), stencil = 0xe0000053
 |	|	|	|	[1]: 'fclass.s', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.s'), stencil = 0xe0001053
@@ -2303,6 +2359,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	[72]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fclass.h', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.h'), stencil = 0xe4001053
 |	|	|	|	[1]: 'fmv.x.h', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.x.h'), stencil = 0xe4000053
+|	|	|	[73]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fclass.q', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.q'), stencil = 0xe6001053
+|	|	|	|	[1]: 'fmvh.x.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmvh.x.q'), stencil = 0xe6100053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
 |	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
@@ -2312,6 +2371,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7a]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.h'), stencil = 0xf4100053
 |	|	|	|	[1]: 'fmv.h.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.h.x'), stencil = 0xf4000053
+|	|	|	[7b]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.q'), stencil = 0xf6100053
 |	|	[57]: IFactoryDenseComposite::Field func3a
 |	|	|	[0]: IFactoryDenseComposite::Field func1a
 |	|	|	|	[0]: IFactoryDenseComposite::Field func1b
@@ -3070,152 +3131,152 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 285: DASM: 0x9c61 = c.zext.b	x8,x8
-line 292: DASM: 0x9c69 = c.zext.h	x8,x8
-line 301: DASM: 0x9c71 = c.zext.w	x8,x8
-line 310: DASM: 0x0x60401013 = sext.b	x0,x0
-line 319: DASM: 0x003100b3 = add	x1,x2,x3
-line 324: DASM: 0x02028593 = addi	x11,x5, +0x20
-line 329: DASM: 0x00028593 = mv	x11,x5, +0x0
-line 330: Has Immediate? no
-line 335: DASM: 0x4081 = c.li	x1, x0, +0x0
-line 340: DASM: 0x000280e7 = jalr	x1,x5, +0x0
-line 349: DASM: 0xe152 = c.sdsp	x20, SP, IMM=128
-line 354: DASM: 0xfcd6 = c.sdsp	x21, SP, IMM=120
-line 359: DASM: 0xf1402573 = csrrs	x10,x0, CSR=0xf14
-line 364: DIRECT: 'add' = add	3,1,2
-line 369: DIRECT_BM: 'add' = add	3,1,2 0x0
-line 374: DIRECT: 'sw' = sw	2(D),1(A), 0x0
-line 379: DIRECT_BM: 'sw' = sw	 D:2, A:1 0x0
-line 384: DASM: 0x907405e3 = beq	x8,x7 +0xfffffffffffff90a
-line 385: Signed-offset: 0xfffffffffffff90a
-line 390: DASM: 0x107405e3 = beq	x8,x7 +0x90a
-line 391: Signed-offset: 0x90a
-line 396: DASM: 0xd3ad = c.beqz	x15, x0, +0xffffffffffffff62
-line 397: Signed-offset: 0xffffffffffffff62
-line 402: DASM: 0xc3ad = c.beqz	x15, x0, +0x62
-line 403: Signed-offset: 0x62
-line 408: DASM: 0x8f16c3ef = jal	x7, +0xfffffffffff6c8f0
-line 409: Signed-offset: 0xfffffffffff6c8f0
-line 414: DASM: 0x0f16c3ef = jal	x7, +0x6c8f0
-line 415: Signed-offset: 0x6c8f0
-line 420: DASM: 0xb555 = c.j	x0, +0xfffffffffffffea4
-line 421: Signed-offset: 0xfffffffffffffea4
-line 426: DASM: 0xa555 = c.j	x0, +0x6a4
-line 427: Signed-offset: 0x6a4
-line 432: DASM: 0xa9cc0767 = jalr	x14,x24, +0xfffffffffffffa9c
-line 433: Signed-offset: 0xfffffffffffffa9c
-line 438: DASM: 0xbe10afa3 = sw	x1,x1, +0xfffffffffffffbff
-line 439: A-Sources: 0000000000000000000000000000000000000000000000000000000000000010
-line 440: D-Sources: 0000000000000000000000000000000000000000000000000000000000000010
-line 443: Stencil for 'jalr' = 0x67
-line 446: DASM: 0x67 = jalr	x0,x0, +0x0
-line 451: DASM: 0x60e2 = c.ldsp	x1, SP, IMM=24
-line 452: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
-line 453: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 454: Has Immediate? YES
-line 459: DASM: 0x53007 = fld	f0,x10, +0x0
-line 460: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 461: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 466: DASM: 0x2120 = c.fld	f8,x10, IMM=64
-line 467: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 300: DASM: 0x9c61 = c.zext.b	x8,x8
+line 307: DASM: 0x9c69 = c.zext.h	x8,x8
+line 316: DASM: 0x9c71 = c.zext.w	x8,x8
+line 325: DASM: 0x0x60401013 = sext.b	x0,x0
+line 334: DASM: 0x003100b3 = add	x1,x2,x3
+line 339: DASM: 0x02028593 = addi	x11,x5, +0x20
+line 344: DASM: 0x00028593 = mv	x11,x5, +0x0
+line 345: Has Immediate? no
+line 350: DASM: 0x4081 = c.li	x1, x0, +0x0
+line 355: DASM: 0x000280e7 = jalr	x1,x5, +0x0
+line 364: DASM: 0xe152 = c.sdsp	x20, SP, IMM=128
+line 369: DASM: 0xfcd6 = c.sdsp	x21, SP, IMM=120
+line 374: DASM: 0xf1402573 = csrrs	x10,x0, CSR=0xf14
+line 379: DIRECT: 'add' = add	3,1,2
+line 384: DIRECT_BM: 'add' = add	3,1,2 0x0
+line 389: DIRECT: 'sw' = sw	2(D),1(A), 0x0
+line 394: DIRECT_BM: 'sw' = sw	 D:2, A:1 0x0
+line 399: DASM: 0x907405e3 = beq	x8,x7 +0xfffffffffffff90a
+line 400: Signed-offset: 0xfffffffffffff90a
+line 405: DASM: 0x107405e3 = beq	x8,x7 +0x90a
+line 406: Signed-offset: 0x90a
+line 411: DASM: 0xd3ad = c.beqz	x15, x0, +0xffffffffffffff62
+line 412: Signed-offset: 0xffffffffffffff62
+line 417: DASM: 0xc3ad = c.beqz	x15, x0, +0x62
+line 418: Signed-offset: 0x62
+line 423: DASM: 0x8f16c3ef = jal	x7, +0xfffffffffff6c8f0
+line 424: Signed-offset: 0xfffffffffff6c8f0
+line 429: DASM: 0x0f16c3ef = jal	x7, +0x6c8f0
+line 430: Signed-offset: 0x6c8f0
+line 435: DASM: 0xb555 = c.j	x0, +0xfffffffffffffea4
+line 436: Signed-offset: 0xfffffffffffffea4
+line 441: DASM: 0xa555 = c.j	x0, +0x6a4
+line 442: Signed-offset: 0x6a4
+line 447: DASM: 0xa9cc0767 = jalr	x14,x24, +0xfffffffffffffa9c
+line 448: Signed-offset: 0xfffffffffffffa9c
+line 453: DASM: 0xbe10afa3 = sw	x1,x1, +0xfffffffffffffbff
+line 454: A-Sources: 0000000000000000000000000000000000000000000000000000000000000010
+line 455: D-Sources: 0000000000000000000000000000000000000000000000000000000000000010
+line 458: Stencil for 'jalr' = 0x67
+line 461: DASM: 0x67 = jalr	x0,x0, +0x0
+line 466: DASM: 0x60e2 = c.ldsp	x1, SP, IMM=24
+line 467: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
 line 468: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 473: DASM: 0x30200073 = mret	
-line 474: A-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 475: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 480: DASM: 0x1000202f = lr.w	x0,x0, aq/wd=0, rl/vm=0
-line 481: A-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 482: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 487: DASM: 0x2928 = c.fld	f10,x10, IMM=80
-line 488: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 489: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 490: Int-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 491: Float-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 492: Int-Dests: 0000000000000000000000000000000000000000000000000000000000000000
-line 493: Float-Dests: 0000000000000000000000000000000000000000000000000000010000000000
-line 498: DASM: 0x2d2c = c.fld	f11,x10, IMM=88
-line 499: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 500: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 501: Int-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 502: Float-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 503: Int-Dests: 0000000000000000000000000000000000000000000000000000000000000000
-line 504: Float-Dests: 0000000000000000000000000000000000000000000000000000100000000000
-line 509: DASM: 0x72a7f543 = fmadd.d	f10,f15,f10,f14, RM=7
-line 510: fmadd.d RM field = 0x7
-line 518: DIRECT: 'fcvt.l.d' = fcvt.l.d	4,1
-line 528: DASM: 0x8006 = c.mv	x0, x1
-line 533: MORPH DASM: = cmov	4,1,2,3
-line 541: DASM (CANONICAL_NOP): = nop	x0,x0, +0x0
-line 547: DASM (C.NOP/CANONICAL_CNOP): = c.nop	+0x0
-line 554: DIRECT: 'feq.s' = feq.s	4,1,2
-line 559: DASM: 0x710d = c.addi16sp	x2,x2, +0xfffffffffffffea0
-line 564: DASM: 0x5769 = c.li	x14, x0, +0xfffffffffffffffa
-line 569: DASM: 0x7769 = c.lui	x14, +0xffffffffffffa000
-line 574: DASM: 0x177c = c.addi4spn	x15, SP, IMM=940
-line 579: DASM: 0x0063b2af = amoadd.d	x5,x7,x6, aq/wd=0, rl/vm=0
-line 584: DASM: 0x8516 = c.mv	x10, x5
-line 589: DASM: 0xe3c1 = c.bnez	x15, x0, +0x80
-line 594: DASM: 0x9696 = c.add	x13,x13,x5
-line 599: DASM: 0x5877857 = vsetvli	x16,x14, e64,m1,ta,mu
-line 604: DASM: 0x803170d7 = vsetvl	x1,x2,x3
-line 613: DASM: 0x2f007 = vle64.v	v0,x5,v0.t
-line 621: DASM: 0x102f007 = vle64ff.v	v0,x5,v0.t
-line 630: DASM: 0x202f007 = vle64.v	v0,x5
-line 638: DASM: 0x2206e007 = vlseg2e32.v	v0,x13
-line 646: DASM: 0xa606e007 = vluxseg6ei32.v	v0,x13,v0
-line 654: DASM: 0xea06e007 = vlsseg8e32.v	v0,x13,x0
-line 662: DASM: 0xc000007 = vloxei8.v	v0,x0,v0,v0.t
-line 669: DASM: 0x4000027 = vsuxei8.v	v0,x0,v0,v0.t
-line 675: DASM: 0x03ffbfd7 = vadd.vi	v31,v31,-1
-line 682: DASM: 0x3100D7 = vadd.vv	v1,v3,v2,v0.t
-line 697: OperandInfo field ID 'rs3' is invalid
-line 703: DASM: 0x403100D7 = vadc.vvm	v1,v2,v3
-line 711: DASM: 0x5E008157 = vmv.v.v	v2,v1
-line 718: DASM: 0x3140D7 = vadd.vx	v1,v3,x2,v0.t
-line 726: DASM: 0x403140D7 = vadc.vxm	v1,x2,v3
-line 734: DASM: 0x5E00C157 = vmv.v.x	v2,x1
-line 741: DASM: 9E2030D7 = vmv1r.v	v1,v2
-line 748: DASM: 5008A0D7 = vid.v	v1,v0.t
-line 755: DASM: 100a7 = vse8.v	v1,x2,v0.t
-line 763: DASM: 0xc6880857 = vwredsum.vs	v16,v8,v16
-line 768: DASM: 0x52a1b657 = vror.vi	v12,v10, IMM=3
-line 775: DASM: 0x56b43757 = vror.vi	v14,v11, IMM=40
-line 782: DASM: 0x56b43757 = vmacc.vv	v4,v5,v6
-line 805: DASM(Direct): = vsext.vf2	8,30
-line 819: DASM(DirectOpInfo): = vsext.vf2	8,30
-line 831: DASM: 0x53007 = c.fld	f8,x10, IMM=64
-line 832: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
-line 833: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 838: DASM: 0x40e2 = c.lwsp	x1, SP, IMM=24
-line 839: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
-line 840: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 841: Has Immediate? YES
-line 846: DASM: 0x60e2 = c.ldsp	x1, SP, IMM=24
-line 847: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
+line 469: Has Immediate? YES
+line 474: DASM: 0x53007 = fld	f0,x10, +0x0
+line 475: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 476: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 481: DASM: 0x2120 = c.fld	f8,x10, IMM=64
+line 482: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 483: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 488: DASM: 0x30200073 = mret	
+line 489: A-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 490: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 495: DASM: 0x1000202f = lr.w	x0,x0, aq/wd=0, rl/vm=0
+line 496: A-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 497: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 502: DASM: 0x2928 = c.fld	f10,x10, IMM=80
+line 503: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 504: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 505: Int-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 506: Float-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 507: Int-Dests: 0000000000000000000000000000000000000000000000000000000000000000
+line 508: Float-Dests: 0000000000000000000000000000000000000000000000000000010000000000
+line 513: DASM: 0x2d2c = c.fld	f11,x10, IMM=88
+line 514: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 515: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 516: Int-Sources: 0000000000000000000000000000000000000000000000000000010000000000
+line 517: Float-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 518: Int-Dests: 0000000000000000000000000000000000000000000000000000000000000000
+line 519: Float-Dests: 0000000000000000000000000000000000000000000000000000100000000000
+line 524: DASM: 0x72a7f543 = fmadd.d	f10,f15,f10,f14, RM=7
+line 525: fmadd.d RM field = 0x7
+line 533: DIRECT: 'fcvt.l.d' = fcvt.l.d	4,1
+line 543: DASM: 0x8006 = c.mv	x0, x1
+line 548: MORPH DASM: = cmov	4,1,2,3
+line 556: DASM (CANONICAL_NOP): = nop	x0,x0, +0x0
+line 562: DASM (C.NOP/CANONICAL_CNOP): = c.nop	+0x0
+line 569: DIRECT: 'feq.s' = feq.s	4,1,2
+line 574: DASM: 0x710d = c.addi16sp	x2,x2, +0xfffffffffffffea0
+line 579: DASM: 0x5769 = c.li	x14, x0, +0xfffffffffffffffa
+line 584: DASM: 0x7769 = c.lui	x14, +0xffffffffffffa000
+line 589: DASM: 0x177c = c.addi4spn	x15, SP, IMM=940
+line 594: DASM: 0x0063b2af = amoadd.d	x5,x7,x6, aq/wd=0, rl/vm=0
+line 599: DASM: 0x8516 = c.mv	x10, x5
+line 604: DASM: 0xe3c1 = c.bnez	x15, x0, +0x80
+line 609: DASM: 0x9696 = c.add	x13,x13,x5
+line 614: DASM: 0x5877857 = vsetvli	x16,x14, e64,m1,ta,mu
+line 619: DASM: 0x803170d7 = vsetvl	x1,x2,x3
+line 628: DASM: 0x2f007 = vle64.v	v0,x5,v0.t
+line 636: DASM: 0x102f007 = vle64ff.v	v0,x5,v0.t
+line 645: DASM: 0x202f007 = vle64.v	v0,x5
+line 653: DASM: 0x2206e007 = vlseg2e32.v	v0,x13
+line 661: DASM: 0xa606e007 = vluxseg6ei32.v	v0,x13,v0
+line 669: DASM: 0xea06e007 = vlsseg8e32.v	v0,x13,x0
+line 677: DASM: 0xc000007 = vloxei8.v	v0,x0,v0,v0.t
+line 684: DASM: 0x4000027 = vsuxei8.v	v0,x0,v0,v0.t
+line 690: DASM: 0x03ffbfd7 = vadd.vi	v31,v31,-1
+line 697: DASM: 0x3100D7 = vadd.vv	v1,v3,v2,v0.t
+line 712: OperandInfo field ID 'rs3' is invalid
+line 718: DASM: 0x403100D7 = vadc.vvm	v1,v2,v3
+line 726: DASM: 0x5E008157 = vmv.v.v	v2,v1
+line 733: DASM: 0x3140D7 = vadd.vx	v1,v3,x2,v0.t
+line 741: DASM: 0x403140D7 = vadc.vxm	v1,x2,v3
+line 749: DASM: 0x5E00C157 = vmv.v.x	v2,x1
+line 756: DASM: 9E2030D7 = vmv1r.v	v1,v2
+line 763: DASM: 5008A0D7 = vid.v	v1,v0.t
+line 770: DASM: 100a7 = vse8.v	v1,x2,v0.t
+line 778: DASM: 0xc6880857 = vwredsum.vs	v16,v8,v16
+line 783: DASM: 0x52a1b657 = vror.vi	v12,v10, IMM=3
+line 790: DASM: 0x56b43757 = vror.vi	v14,v11, IMM=40
+line 797: DASM: 0x56b43757 = vmacc.vv	v4,v5,v6
+line 820: DASM(Direct): = vsext.vf2	8,30
+line 834: DASM(DirectOpInfo): = vsext.vf2	8,30
+line 846: DASM: 0x53007 = c.fld	f8,x10, IMM=64
+line 847: A-Sources: 0000000000000000000000000000000000000000000000000000010000000000
 line 848: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
-line 849: Has Immediate? YES
-line 854: DASM: 0x650d = c.lui	x10, +0x3000
-line 859: DASM: 0x12000073 = sfence.vma	x0,x0
-line 864: DASM: 0xa422 = c.fsdsp	f8, SP, IMM=8
-line 877: PSEUDO = P0	3,1,2, 0x0
-line 881: PSEUDO = P0	3,1,2
-line 888: PSEUDO = P0	3,1,2 0xdead
-line 895: PSEUDO = P1	2(D),1(A), 0x0
-line 896: VM = 3
-line 910: PSEUDO = P1	 D:2, A:1 0xbeef
-line 923: PSEUDO = P0	3,1,2, 0x0
-line 936: DASM: 0x6f8c = c.ld	x11,x15, IMM=24
-line 940: DASM: 0x01043823 = sd	x16,x8, +0x10
-line 950: DASM: 0x613 = li	x12, +0x0
-line 955: DASM: 0x80000613 = li	x12, +0xfffffffffffff800
-line 960: DASM: 0x13 = nop	x0,x0, +0x0
-line 965: DASM: 0x8613 = mv	x12,x1, +0x0
-line 970: DASM: 0x80008613 = addi	x12,x1, +0xfffffffffffff800
-line 975: DASM: 0x6013 = prefetch.i	x0, +0x0
-line 982: DASM: 0x6013 = ori	x0,x0, +0x2
-line 989: DASM: 0x106013 = prefetch.r	x0, +0x0
-line 996: DASM: 0x306013 = prefetch.w	x0, +0x1
-line 1003: DASM: 0x0100000f = pause	x0,x0, fm=0x0, pred=0x1, succ=0x0
+line 853: DASM: 0x40e2 = c.lwsp	x1, SP, IMM=24
+line 854: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
+line 855: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 856: Has Immediate? YES
+line 861: DASM: 0x60e2 = c.ldsp	x1, SP, IMM=24
+line 862: A-Sources: 0000000000000000000000000000000000000000000000000000000000000100
+line 863: D-Sources: 0000000000000000000000000000000000000000000000000000000000000000
+line 864: Has Immediate? YES
+line 869: DASM: 0x650d = c.lui	x10, +0x3000
+line 874: DASM: 0x12000073 = sfence.vma	x0,x0
+line 879: DASM: 0xa422 = c.fsdsp	f8, SP, IMM=8
+line 892: PSEUDO = P0	3,1,2, 0x0
+line 896: PSEUDO = P0	3,1,2
+line 903: PSEUDO = P0	3,1,2 0xdead
+line 910: PSEUDO = P1	2(D),1(A), 0x0
+line 911: VM = 3
+line 925: PSEUDO = P1	 D:2, A:1 0xbeef
+line 938: PSEUDO = P0	3,1,2, 0x0
+line 951: DASM: 0x6f8c = c.ld	x11,x15, IMM=24
+line 955: DASM: 0x01043823 = sd	x16,x8, +0x10
+line 965: DASM: 0x613 = li	x12, +0x0
+line 970: DASM: 0x80000613 = li	x12, +0xfffffffffffff800
+line 975: DASM: 0x13 = nop	x0,x0, +0x0
+line 980: DASM: 0x8613 = mv	x12,x1, +0x0
+line 985: DASM: 0x80008613 = addi	x12,x1, +0xfffffffffffff800
+line 990: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 997: DASM: 0x6013 = ori	x0,x0, +0x2
+line 1004: DASM: 0x106013 = prefetch.r	x0, +0x0
+line 1011: DASM: 0x306013 = prefetch.w	x0, +0x1
+line 1018: DASM: 0x0100000f = pause	x0,x0, fm=0x0, pred=0x1, succ=0x0
 ====== TAG 'pf' EXCLUDED =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3230,7 +3291,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[6]: IFactoryDenseComposite::Field func6
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'ori', value=0x6013, extractor=Extractor 'I', factory=IFactory('ori'), stencil = 0x6013
-line 1026: DASM: 0x6013 = ori	x0,x0, +0x0
+line 1041: DASM: 0x6013 = ori	x0,x0, +0x0
 ====== TAG 'ccf' EXCLUDED =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3238,7 +3299,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[6]: IFactoryDenseComposite::Field func6
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'ori', value=0x6013, extractor=Extractor 'I', factory=IFactory('ori'), stencil = 0x6013
-line 1044: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 1059: DASM: 0x6013 = prefetch.i	x0, +0x0
 ====== TAG 'ccf' INCLUDED (ONLY) =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3249,9 +3310,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[1]: 'cbo.flush', mask=0x1f00f80, field_set=0x12, value=0x200000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.flush'), stencil = 0x20200f
 |	|	|	|	|	[2]: 'cbo.inval', mask=0x1f00f80, field_set=0x12, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.inval'), stencil = 0x200f
 |	|	|	|	|	[3]: 'cbo.zero', mask=0x1f00f80, field_set=0x12, value=0x400000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.zero'), stencil = 0x40200f
-line 1064: DASM: 0x6013 fails to decode. This is expected
-line 1075: Missing ORI definition during build. This is expected
-line 1083: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 1079: DASM: 0x6013 fails to decode. This is expected
+line 1090: Missing ORI definition during build. This is expected
+line 1098: DASM: 0x6013 = prefetch.i	x0, +0x0
 ====== TESTING RV32 =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
@@ -3392,12 +3453,18 @@ IFactoryMatchListComposite::Field family
 |	|	|	[5]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'lhu', value=0x5003, extractor=Extractor 'I_load', factory=IFactory('lhu'), stencil = 0x5003
 |	|	[7]: IFactoryDenseComposite::Field width
+|	|	|	[1]: IFactoryDenseComposite::Field mewop
+|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'flh', value=0x1007, extractor=Extractor 'I_load', factory=IFactory('flh'), stencil = 0x1007
 |	|	|	[2]: IFactoryDenseComposite::Field mewop
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'flw', value=0x2007, extractor=Extractor 'I_load', factory=IFactory('flw'), stencil = 0x2007
 |	|	|	[3]: IFactoryDenseComposite::Field mewop
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'fld', value=0x3007, extractor=Extractor 'I_load', factory=IFactory('fld'), stencil = 0x3007
+|	|	|	[4]: IFactoryDenseComposite::Field mewop
+|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'flq', value=0x4007, extractor=Extractor 'I_load', factory=IFactory('flq'), stencil = 0x4007
 |	|	[f]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fence', value=0xf, extractor=Extractor 'FENCE', factory=IFactory('fence'), stencil = 0xf
@@ -3443,12 +3510,18 @@ IFactoryMatchListComposite::Field family
 |	|	|	[3]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'sd', value=0x3023, extractor=Extractor 'S', factory=IFactory('sd'), stencil = 0x3023
 |	|	[27]: IFactoryDenseComposite::Field width
+|	|	|	[1]: IFactoryDenseComposite::Field mewop
+|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'fsh', value=0x1027, extractor=Extractor 'S', factory=IFactory('fsh'), stencil = 0x1027
 |	|	|	[2]: IFactoryDenseComposite::Field mewop
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'fsw', value=0x2027, extractor=Extractor 'S', factory=IFactory('fsw'), stencil = 0x2027
 |	|	|	[3]: IFactoryDenseComposite::Field mewop
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'fsd', value=0x3027, extractor=Extractor 'S', factory=IFactory('fsd'), stencil = 0x3027
+|	|	|	[4]: IFactoryDenseComposite::Field mewop
+|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'fsq', value=0x4027, extractor=Extractor 'S', factory=IFactory('fsq'), stencil = 0x4027
 |	|	[2f]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactoryDenseComposite::Field func5
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
@@ -3572,38 +3645,70 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: 'fmadd.s', value=0x43, extractor=Extractor 'R4', factory=IFactory('fmadd.s'), stencil = 0x43
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmadd.d', value=0x2000043, extractor=Extractor 'R4', factory=IFactory('fmadd.d'), stencil = 0x2000043
+|	|	|	[2]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmadd.h', value=0x4000043, extractor=Extractor 'R4', factory=IFactory('fmadd.h'), stencil = 0x4000043
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmadd.q', value=0x6000043, extractor=Extractor 'R4', factory=IFactory('fmadd.q'), stencil = 0x6000043
 |	|	[47]: IFactoryDenseComposite::Field func2
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmsub.s', value=0x47, extractor=Extractor 'R4', factory=IFactory('fmsub.s'), stencil = 0x47
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmsub.d', value=0x2000047, extractor=Extractor 'R4', factory=IFactory('fmsub.d'), stencil = 0x2000047
+|	|	|	[2]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmsub.h', value=0x4000047, extractor=Extractor 'R4', factory=IFactory('fmsub.h'), stencil = 0x4000047
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmsub.q', value=0x6000047, extractor=Extractor 'R4', factory=IFactory('fmsub.q'), stencil = 0x6000047
 |	|	[4b]: IFactoryDenseComposite::Field func2
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fnmsub.s', value=0x4b, extractor=Extractor 'R4', factory=IFactory('fnmsub.s'), stencil = 0x4b
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fnmsub.d', value=0x200004b, extractor=Extractor 'R4', factory=IFactory('fnmsub.d'), stencil = 0x200004b
+|	|	|	[2]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fnmsub.h', value=0x400004b, extractor=Extractor 'R4', factory=IFactory('fnmsub.h'), stencil = 0x400004b
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fnmsub.q', value=0x600004b, extractor=Extractor 'R4', factory=IFactory('fnmsub.q'), stencil = 0x600004b
 |	|	[4f]: IFactoryDenseComposite::Field func2
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fnmadd.s', value=0x4f, extractor=Extractor 'R4', factory=IFactory('fnmadd.s'), stencil = 0x4f
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fnmadd.d', value=0x200004f, extractor=Extractor 'R4', factory=IFactory('fnmadd.d'), stencil = 0x200004f
+|	|	|	[2]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fnmadd.h', value=0x400004f, extractor=Extractor 'R4', factory=IFactory('fnmadd.h'), stencil = 0x400004f
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fnmadd.q', value=0x600004f, extractor=Extractor 'R4', factory=IFactory('fnmadd.q'), stencil = 0x600004f
 |	|	[53]: IFactoryDenseComposite::Field func7
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fadd.s', value=0x53, extractor=Extractor 'Rfloat', factory=IFactory('fadd.s'), stencil = 0x53
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fadd.d', value=0x2000053, extractor=Extractor 'Rfloat', factory=IFactory('fadd.d'), stencil = 0x2000053
+|	|	|	[2]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fadd.h', value=0x4000053, extractor=Extractor 'Rfloat', factory=IFactory('fadd.h'), stencil = 0x4000053
+|	|	|	[3]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fadd.q', value=0x6000053, extractor=Extractor 'Rfloat', factory=IFactory('fadd.q'), stencil = 0x6000053
 |	|	|	[4]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fsub.s', value=0x8000053, extractor=Extractor 'Rfloat', factory=IFactory('fsub.s'), stencil = 0x8000053
 |	|	|	[5]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fsub.d', value=0xa000053, extractor=Extractor 'Rfloat', factory=IFactory('fsub.d'), stencil = 0xa000053
+|	|	|	[6]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fsub.h', value=0xc000053, extractor=Extractor 'Rfloat', factory=IFactory('fsub.h'), stencil = 0xc000053
+|	|	|	[7]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fsub.q', value=0xe000053, extractor=Extractor 'Rfloat', factory=IFactory('fsub.q'), stencil = 0xe000053
 |	|	|	[8]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmul.s', value=0x10000053, extractor=Extractor 'Rfloat', factory=IFactory('fmul.s'), stencil = 0x10000053
 |	|	|	[9]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fmul.d', value=0x12000053, extractor=Extractor 'Rfloat', factory=IFactory('fmul.d'), stencil = 0x12000053
+|	|	|	[a]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmul.h', value=0x14000053, extractor=Extractor 'Rfloat', factory=IFactory('fmul.h'), stencil = 0x14000053
+|	|	|	[b]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fmul.q', value=0x16000053, extractor=Extractor 'Rfloat', factory=IFactory('fmul.q'), stencil = 0x16000053
 |	|	|	[c]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fdiv.s', value=0x18000053, extractor=Extractor 'Rfloat', factory=IFactory('fdiv.s'), stencil = 0x18000053
 |	|	|	[d]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fdiv.d', value=0x1a000053, extractor=Extractor 'Rfloat', factory=IFactory('fdiv.d'), stencil = 0x1a000053
+|	|	|	[e]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fdiv.h', value=0x1c000053, extractor=Extractor 'Rfloat', factory=IFactory('fdiv.h'), stencil = 0x1c000053
+|	|	|	[f]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[default]: 'fdiv.q', value=0x1e000053, extractor=Extractor 'Rfloat', factory=IFactory('fdiv.q'), stencil = 0x1e000053
 |	|	|	[10]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fsgnj.s', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnj.s'), stencil = 0x20000053
 |	|	|	|	[1]: 'fsgnjn.s', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjn.s'), stencil = 0x20001053
@@ -3612,6 +3717,14 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: 'fsgnj.d', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnj.d'), stencil = 0x22000053
 |	|	|	|	[1]: 'fsgnjn.d', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjn.d'), stencil = 0x22001053
 |	|	|	|	[2]: 'fsgnjx.d', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjx.d'), stencil = 0x22002053
+|	|	|	[12]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fsgnj.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnj.h'), stencil = 0x24000053
+|	|	|	|	[1]: 'fsgnjn.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjn.h'), stencil = 0x24001053
+|	|	|	|	[2]: 'fsgnjx.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjx.h'), stencil = 0x24002053
+|	|	|	[13]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fsgnj.q', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnj.q'), stencil = 0x26000053
+|	|	|	|	[1]: 'fsgnjn.q', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjn.q'), stencil = 0x26001053
+|	|	|	|	[2]: 'fsgnjx.q', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsgnjx.q'), stencil = 0x26002053
 |	|	|	[14]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmin.s', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.s'), stencil = 0x28000053
 |	|	|	|	[1]: 'fmax.s', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.s'), stencil = 0x28001053
@@ -3622,18 +3735,46 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[1]: 'fmax.d', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.d'), stencil = 0x2a001053
 |	|	|	|	[2]: 'fmaxm.d', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.d'), stencil = 0x2a003053
 |	|	|	|	[3]: 'fminm.d', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.d'), stencil = 0x2a002053
+|	|	|	[16]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fmaxm.h', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.h'), stencil = 0x2c003053
+|	|	|	|	[1]: 'fminm.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.h'), stencil = 0x2c002053
+|	|	|	|	[2]: 'fmin.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.h'), stencil = 0x2c000053
+|	|	|	|	[3]: 'fmax.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.h'), stencil = 0x2c001053
+|	|	|	[17]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fmin.q', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmin.q'), stencil = 0x2e000053
+|	|	|	|	[1]: 'fmax.q', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmax.q'), stencil = 0x2e001053
+|	|	|	|	[2]: 'fmaxm.q', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.q'), stencil = 0x2e003053
+|	|	|	|	[3]: 'fminm.q', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.q'), stencil = 0x2e002053
 |	|	|	[20]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fround.s', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.s'), stencil = 0x40400053
-|	|	|	|	[1]: 'froundnx.s', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.s'), stencil = 0x40500053
-|	|	|	|	[2]: 'fcvt.s.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.d'), stencil = 0x40100053
+|	|	|	|	[0]: 'fcvt.s.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.d'), stencil = 0x40100053
+|	|	|	|	[1]: 'fcvt.s.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.q'), stencil = 0x40300053
+|	|	|	|	[2]: 'fround.s', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.s'), stencil = 0x40400053
+|	|	|	|	[3]: 'froundnx.s', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.s'), stencil = 0x40500053
+|	|	|	|	[4]: 'fcvt.s.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.h'), stencil = 0x40200053
 |	|	|	[21]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.d.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.s'), stencil = 0x42000053
-|	|	|	|	[1]: 'fround.d', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.d'), stencil = 0x42400053
-|	|	|	|	[2]: 'froundnx.d', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.d'), stencil = 0x42500053
+|	|	|	|	[1]: 'fcvt.d.q', mask=0x1f00000, field_set=0x2, value=0x300000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.q'), stencil = 0x42300053
+|	|	|	|	[2]: 'fround.d', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.d'), stencil = 0x42400053
+|	|	|	|	[3]: 'froundnx.d', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.d'), stencil = 0x42500053
+|	|	|	|	[4]: 'fcvt.d.h', mask=0x1f00000, field_set=0x2, value=0x200000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.h'), stencil = 0x42200053
+|	|	|	[22]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fround.h', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.h'), stencil = 0x44400053
+|	|	|	|	[1]: 'froundnx.h', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.h'), stencil = 0x44500053
+|	|	|	|	[2]: 'fcvt.h.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.s'), stencil = 0x44000053
+|	|	|	|	[3]: 'fcvt.h.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.d'), stencil = 0x44100053
+|	|	|	[23]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fcvt.q.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.s'), stencil = 0x46000053
+|	|	|	|	[1]: 'fcvt.q.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.d'), stencil = 0x46100053
+|	|	|	|	[2]: 'fround.q', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.q'), stencil = 0x46400053
+|	|	|	|	[3]: 'froundnx.q', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.q'), stencil = 0x46500053
 |	|	|	[2c]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fsqrt.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsqrt.s'), stencil = 0x58000053
 |	|	|	[2d]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fsqrt.d', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsqrt.d'), stencil = 0x5a000053
+|	|	|	[2e]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fsqrt.h', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsqrt.h'), stencil = 0x5c000053
+|	|	|	[2f]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fsqrt.q', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fsqrt.q'), stencil = 0x5e000053
 |	|	|	[50]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fle.s', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.s'), stencil = 0xa0000053
 |	|	|	|	[1]: 'flt.s', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.s'), stencil = 0xa0001053
@@ -3646,6 +3787,20 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[2]: 'feq.d', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.d'), stencil = 0xa2002053
 |	|	|	|	[3]: 'fleq.d', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.d'), stencil = 0xa2004053
 |	|	|	|	[4]: 'fltq.d', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.d'), stencil = 0xa2005053
+|	|	|	[52]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fleq.h', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.h'), stencil = 0xa4004053
+|	|	|	|	[1]: 'fltq.h', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.h'), stencil = 0xa4005053
+|	|	|	|	[2]: 'fle.h', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.h'), stencil = 0xa4000053
+|	|	|	|	[3]: 'flt.h', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.h'), stencil = 0xa4001053
+|	|	|	|	[4]: 'feq.h', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.h'), stencil = 0xa4002053
+|	|	|	[53]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fle.q', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fle.q'), stencil = 0xa6000053
+|	|	|	|	[1]: 'flt.q', mask=0x7000, field_set=0x8, value=0x1000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('flt.q'), stencil = 0xa6001053
+|	|	|	|	[2]: 'feq.q', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.q'), stencil = 0xa6002053
+|	|	|	|	[3]: 'fleq.q', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.q'), stencil = 0xa6004053
+|	|	|	|	[4]: 'fltq.q', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.q'), stencil = 0xa6005053
+|	|	|	[59]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fmvp.d.x', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmvp.d.x'), stencil = 0xb2000053
 |	|	|	[60]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.w.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.w.s'), stencil = 0xc0000053
 |	|	|	|	[1]: 'fcvt.wu.s', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.wu.s'), stencil = 0xc0100053
@@ -3653,22 +3808,45 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: 'fcvtmod.w.d', mask=0x1f07000, field_set=0xa, value=0x801000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fcvtmod.w.d'), stencil = 0xc2801053
 |	|	|	|	[1]: 'fcvt.w.d', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.w.d'), stencil = 0xc2000053
 |	|	|	|	[2]: 'fcvt.wu.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.wu.d'), stencil = 0xc2100053
+|	|	|	[62]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fcvt.w.h', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.w.h'), stencil = 0xc4000053
+|	|	|	|	[1]: 'fcvt.wu.h', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.wu.h'), stencil = 0xc4100053
+|	|	|	[63]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fcvt.w.q', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.w.q'), stencil = 0xc6000053
+|	|	|	|	[1]: 'fcvt.wu.q', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.wu.q'), stencil = 0xc6100053
 |	|	|	[68]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.s.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.w'), stencil = 0xd0000053
 |	|	|	|	[1]: 'fcvt.s.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.wu'), stencil = 0xd0100053
 |	|	|	[69]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.d.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.w'), stencil = 0xd2000053
 |	|	|	|	[1]: 'fcvt.d.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.wu'), stencil = 0xd2100053
+|	|	|	[6a]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fcvt.h.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.w'), stencil = 0xd4000053
+|	|	|	|	[1]: 'fcvt.h.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.h.wu'), stencil = 0xd4100053
+|	|	|	[6b]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fcvt.q.w', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.w'), stencil = 0xd6000053
+|	|	|	|	[1]: 'fcvt.q.wu', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.q.wu'), stencil = 0xd6100053
 |	|	|	[70]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.x.w', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.x.w'), stencil = 0xe0000053
 |	|	|	|	[1]: 'fclass.s', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.s'), stencil = 0xe0001053
 |	|	|	[71]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fclass.d', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.d'), stencil = 0xe2001053
+|	|	|	|	[1]: 'fmvh.x.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmvh.x.d'), stencil = 0xe2100053
+|	|	|	[72]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fclass.h', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.h'), stencil = 0xe4001053
+|	|	|	|	[1]: 'fmv.x.h', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.x.h'), stencil = 0xe4000053
+|	|	|	[73]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fclass.q', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.q'), stencil = 0xe6001053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
 |	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
 |	|	|	[79]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.d'), stencil = 0xf2100053
+|	|	|	[7a]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.h'), stencil = 0xf4100053
+|	|	|	|	[1]: 'fmv.h.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.h.x'), stencil = 0xf4000053
+|	|	|	[7b]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.q'), stencil = 0xf6100053
 |	|	[63]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'beq', value=0x63, extractor=Extractor 'B', factory=IFactory('beq'), stencil = 0x63
@@ -3719,17 +3897,17 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1118: DASM: 0x003100b3 = add	x1,x2,x3
-line 1124: DASM: 0x03103 = ld	x2,x0, +0x0
-line 1141: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
-line 1146: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
-line 1152: DASM: 0x2867322f = amocas.d	x4,x14,x6, aq/wd=0, rl/vm=0
-line 1157: DASM: 0x2863b22f = amocas.d	x4,x7,x6, aq/wd=0, rl/vm=0
-line 1169: DASM: 0x203023 = sd	x2,x0, +0x0
-line 1182: DASM: 0x2001 = c.jal	x1, +0x0
-line 1187: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
-line 1192: DASM: 0x6008 = c.flw	f10,x8, IMM=0
-line 1198: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
+line 1142: DASM: 0x003100b3 = add	x1,x2,x3
+line 1148: DASM: 0x03103 = ld	x2,x0, +0x0
+line 1165: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1170: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1176: DASM: 0x2867322f = amocas.d	x4,x14,x6, aq/wd=0, rl/vm=0
+line 1181: DASM: 0x2863b22f = amocas.d	x4,x7,x6, aq/wd=0, rl/vm=0
+line 1193: DASM: 0x203023 = sd	x2,x0, +0x0
+line 1206: DASM: 0x2001 = c.jal	x1, +0x0
+line 1211: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
+line 1216: DASM: 0x6008 = c.flw	f10,x8, IMM=0
+line 1222: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
 ====== TESTING RV32 Zclsd =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
@@ -4054,9 +4232,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[2]: 'fmaxm.d', mask=0x7000, field_set=0x8, value=0x3000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmaxm.d'), stencil = 0x2a003053
 |	|	|	|	[3]: 'fminm.d', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fminm.d'), stencil = 0x2a002053
 |	|	|	[20]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fround.s', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.s'), stencil = 0x40400053
-|	|	|	|	[1]: 'froundnx.s', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.s'), stencil = 0x40500053
-|	|	|	|	[2]: 'fcvt.s.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.d'), stencil = 0x40100053
+|	|	|	|	[0]: 'fcvt.s.d', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.s.d'), stencil = 0x40100053
+|	|	|	|	[1]: 'fround.s', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.s'), stencil = 0x40400053
+|	|	|	|	[2]: 'froundnx.s', mask=0x1f00000, field_set=0x2, value=0x500000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('froundnx.s'), stencil = 0x40500053
 |	|	|	[21]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.d.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.d.s'), stencil = 0x42000053
 |	|	|	|	[1]: 'fround.d', mask=0x1f00000, field_set=0x2, value=0x400000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fround.d'), stencil = 0x42400053
@@ -4077,6 +4255,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[2]: 'feq.d', mask=0x7000, field_set=0x8, value=0x2000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('feq.d'), stencil = 0xa2002053
 |	|	|	|	[3]: 'fleq.d', mask=0x7000, field_set=0x8, value=0x4000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fleq.d'), stencil = 0xa2004053
 |	|	|	|	[4]: 'fltq.d', mask=0x7000, field_set=0x8, value=0x5000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fltq.d'), stencil = 0xa2005053
+|	|	|	[59]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	[0]: 'fmvp.d.x', mask=0x7000, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fmvp.d.x'), stencil = 0xb2000053
 |	|	|	[60]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fcvt.w.s', mask=0x1f00000, field_set=0x2, value=0x0, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.w.s'), stencil = 0xc0000053
 |	|	|	|	[1]: 'fcvt.wu.s', mask=0x1f00000, field_set=0x2, value=0x100000, nfixed=1, extractor=Extractor 'Rfloat', factory=IFactory('fcvt.wu.s'), stencil = 0xc0100053
@@ -4095,6 +4275,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[1]: 'fclass.s', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.s'), stencil = 0xe0001053
 |	|	|	[71]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fclass.d', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.d'), stencil = 0xe2001053
+|	|	|	|	[1]: 'fmvh.x.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmvh.x.d'), stencil = 0xe2100053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
 |	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
@@ -4148,5 +4329,5 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1229: DASM: 0x6008 = c.ld	x10,x8, IMM=0
-line 1243: DASM: 0xe008 = c.sd	x10,x8, IMM=0
+line 1256: DASM: 0x6008 = c.ld	x10,x8, IMM=0
+line 1270: DASM: 0xe008 = c.sd	x10,x8, IMM=0

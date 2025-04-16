@@ -1,0 +1,22 @@
+[
+  {
+    "mnemonic" : "fmvh.x.d",
+    "stencil" : "0xe2100053",
+    "fixed" : ["rs2","rm"],
+    "tags" : ["d", "zfa"],
+    "form" : "Rfloat",
+    "q-oper" : ["rs1"],
+    "l-oper" : ["rd"],
+    "type" : ["float", "arith"]
+  },
+  {
+    "mnemonic" : "fmvp.d.x",
+    "stencil" : "0xb2000053",
+    "fixed" : ["rm"],
+    "tags" : ["d", "zfa"],
+    "form" : "Rfloat",
+    "l-oper" : ["rs1"],
+    "q-oper" : ["rd"],
+    "type" : ["float", "arith"]
+  }
+]
