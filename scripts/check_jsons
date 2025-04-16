@@ -3,4 +3,11 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 cd $SCRIPT_DIR/../
-find json -type f -name "*.json" -print0 | xargs -0 -I"{}" bash -c 'err=$(jq -e . "{}" 2>&1 > /dev/null) && exit 0 || echo "JSON error in {}: $err"; exit 1' \;
+
+set -e
+
+# Look for broken symlinks
+find json -type l -print0 | xargs -0 -I"{}" bash -c 'test ! -e {} && { echo "{} is a broken symlink"; exit 1; } || { exit 0; }'
+
+# Check JSON validity
+find json -type f -name "*.json" -print0 | xargs -0 -I"{}" bash -c 'err=$(jq -e . "{}" 2>&1 > /dev/null) && exit 0 || { echo "JSON error in {}: $err"; exit 1; }'
