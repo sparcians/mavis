@@ -41,7 +41,7 @@
       "extension": "zvksc"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "v"
     },
     {
@@ -425,7 +425,7 @@
       "json": "isa_rv64zfbfmin.json"
     },
     {
-      "xlen": [32, 64, 128]
+      "xlen": [32, 64, 128],
       "extension": "zfh",
       "requires": ["f"],
       "enables": "zfhmin",
