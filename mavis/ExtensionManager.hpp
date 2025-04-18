@@ -5,6 +5,15 @@
 #include <string_view>
 #include <unordered_set>
 
+// Uncomment to enable detection of cycles in the dependency graph
+// #define ENABLE_GRAPH_SANITY_CHECKER
+
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/depth_first_search.hpp>
+#endif
+
 #include "DecoderExceptions.h"
 #include "json.hpp"
 #include "mavis/Mavis.h"
@@ -26,8 +35,8 @@ namespace mavis::extension_manager
     {
       public:
         UninitializedISASpecException() :
-            ExtensionManagerException("Attempted to modify extension manager state "
-                                      "without calling setISASpecJSON first")
+            ExtensionManagerException(
+                "Attempted to modify extension manager state without calling setISASpecJSON first")
         {
         }
     };
@@ -36,8 +45,8 @@ namespace mavis::extension_manager
     {
       public:
         UninitializedISAException() :
-            ExtensionManagerException("Attempted to modify extension manager state "
-                                      "without calling setISA first")
+            ExtensionManagerException(
+                "Attempted to modify extension manager state without calling setISA first")
         {
         }
     };
@@ -170,10 +179,17 @@ namespace mavis::extension_manager
     class UnresolvedDependencyException : public ExtensionManagerException
     {
       public:
-        explicit UnresolvedDependencyException(const std::string & ext) :
-            ExtensionManagerException("Attempted to construct an invalid "
-                                      "unresolved dependency for extension "
-                                      + ext)
+        UnresolvedDependencyException(const std::string & ext, const std::string & dep) :
+            ExtensionManagerException("Could not resolve dependency between " + ext + " and " + dep)
+        {
+        }
+    };
+
+    class CyclicDependencyException : public ExtensionManagerException
+    {
+      public:
+        explicit CyclicDependencyException(const std::string & msg) :
+            ExtensionManagerException("Dependency " + msg + " is stuck in an enable loop")
         {
         }
     };
@@ -192,9 +208,7 @@ namespace mavis::extension_manager
         META,
         ALIAS,
         ENABLES,
-        ENABLING,
-        REQUIRED,
-        CONFLICTING
+        ENABLING
     };
 
     template <DependencyType dep_type> struct DependencyTraits
@@ -250,72 +264,10 @@ namespace mavis::extension_manager
       private:
         const std::string extension_;
         const std::string json_;
-        bool enabled_ = false;
-        bool force_enabled_ = false;
-        std::vector<ExtensionInfoBasePtr> enables_extensions_;
-        std::vector<std::vector<ExtensionInfoBasePtr>> enabling_extensions_;
-        std::vector<ExtensionInfoBasePtr> required_extensions_;
-        std::vector<ExtensionInfoBasePtr> conflicting_extensions_;
-
-        static bool allEnabled_(const std::vector<ExtensionInfoBasePtr> & extensions)
-        {
-            return std::all_of(extensions.begin(), extensions.end(),
-                               [](const ExtensionInfoBasePtr & ext) { return ext->isEnabled(); });
-        }
-
-        bool anyEnablingExtensionsEnabled_() const
-        {
-            return enabling_extensions_.empty()
-                   || std::any_of(enabling_extensions_.begin(), enabling_extensions_.end(),
-                                  [](const std::vector<ExtensionInfoBasePtr> & exts)
-                                  { return allEnabled_(exts); });
-        }
-
-        template <bool assert_enabled>
-        void
-        validateConstraints_(const std::vector<ExtensionInfoBasePtr> & constraint_extensions) const
-        {
-            std::vector<ExtensionInfoBasePtr>::const_iterator it;
-
-            using ExceptionType =
-                std::conditional_t<assert_enabled, MissingRequiredExtensionException,
-                                   ConflictingExtensionException>;
-
-            if constexpr (assert_enabled)
-            {
-                it = std::find_if_not(constraint_extensions.begin(), constraint_extensions.end(),
-                                      [](const ExtensionInfoBasePtr & ext)
-                                      { return ext->isEnabled(); });
-            }
-            else
-            {
-                it =
-                    std::find_if(constraint_extensions.begin(), constraint_extensions.end(),
-                                 [](const ExtensionInfoBasePtr & ext) { return ext->isEnabled(); });
-            }
-
-            if (it != constraint_extensions.end())
-            {
-                throw ExceptionType(extension_, (*it)->getExtension());
-            }
-        }
-
-        void assertNotSelfReferential_(const ExtensionInfoBasePtr & ext) const
-        {
-            if (ext.get() == this)
-            {
-                throw SelfReferentialException(extension_);
-            }
-        }
-
-        void assertNotSelfReferential_(const std::vector<ExtensionInfoBasePtr> & exts) const
-        {
-            if (std::any_of(exts.begin(), exts.end(),
-                            [this](const ExtensionInfoBasePtr & ext) { return ext.get() == this; }))
-            {
-                throw SelfReferentialException(extension_);
-            }
-        }
+        bool enabled_ =
+            false; // If true, extension was explicitly enabled by setISA or enableExtension
+        bool implicitly_enabled_ =
+            false; // If true, extension was implicitly enabled via a dependency relationship
 
       public:
         ExtensionInfoBase(const std::string & ext, const std::string & json) :
@@ -328,118 +280,15 @@ namespace mavis::extension_manager
 
         const std::string & getExtension() const { return extension_; }
 
-        void addEnablesExtension(const ExtensionInfoBasePtr & ext)
-        {
-            assertNotSelfReferential_(ext);
-            enables_extensions_.emplace_back(ext);
-        }
+        void setEnabled() { enabled_ = true; }
 
-        void addEnablingExtensions(const std::vector<ExtensionInfoBasePtr> & exts)
-        {
-            assertNotSelfReferential_(exts);
-            enabling_extensions_.emplace_back(exts);
-        }
+        void setImplicitlyEnabled() { implicitly_enabled_ = true; }
 
-        template <typename DerivedExtensionInfo>
-        std::enable_if_t<std::is_base_of_v<ExtensionInfoBase, DerivedExtensionInfo>>
-        addEnablingExtensions(const std::vector<std::shared_ptr<DerivedExtensionInfo>> & exts)
-        {
-            addEnablingExtensions(std::vector<ExtensionInfoBasePtr>(exts.begin(), exts.end()));
-        }
+        void clearImplicitlyEnabled() { implicitly_enabled_ = false; }
 
-        void addRequiredExtension(const ExtensionInfoBasePtr & ext)
-        {
-            assertNotSelfReferential_(ext);
+        bool isEnabled() const { return enabled_ || implicitly_enabled_; }
 
-            required_extensions_.emplace_back(ext);
-        }
-
-        void addConflictingExtension(const ExtensionInfoBasePtr & ext)
-        {
-            assertNotSelfReferential_(ext);
-
-            conflicting_extensions_.emplace_back(ext);
-        }
-
-        template <DependencyType type> void addDependency(const ExtensionInfoBasePtr & ext)
-        {
-            static_assert(type != DependencyType::ENABLING);
-
-            switch (type)
-            {
-                case DependencyType::ENABLES:
-                    addEnablesExtension(ext);
-                    break;
-                case DependencyType::REQUIRED:
-                    addRequiredExtension(ext);
-                    break;
-                case DependencyType::CONFLICTING:
-                    addConflictingExtension(ext);
-                    break;
-            }
-        }
-
-        template <DependencyType type>
-        void addDependency(const std::vector<ExtensionInfoBasePtr> & exts)
-        {
-            if constexpr (type == DependencyType::ENABLING)
-            {
-                addEnablingExtensions(exts);
-            }
-            else
-            {
-                for (const auto & ext : exts)
-                {
-                    addDependency<type>(ext);
-                }
-            }
-        }
-
-        template <DependencyType type, typename DerivedExtensionInfo>
-        std::enable_if_t<std::is_base_of_v<ExtensionInfoBase, DerivedExtensionInfo>>
-        addDependency(const std::vector<std::shared_ptr<DerivedExtensionInfo>> & exts)
-        {
-            addDependency<type>(std::vector<ExtensionInfoBasePtr>(exts.begin(), exts.end()));
-        }
-
-        void forceEnabled()
-        {
-            setEnabled();
-            force_enabled_ = true;
-        }
-
-        void setEnabled()
-        {
-            enabled_ = true;
-            for (const auto & ext : enables_extensions_)
-            {
-                ext->forceEnabled();
-            }
-        }
-
-        bool isEnabled() const
-        {
-            return force_enabled_ || (enabled_ && anyEnablingExtensionsEnabled_());
-        }
-
-        void setDisabled()
-        {
-            enabled_ = false;
-            force_enabled_ = false;
-        }
-
-        void finalize()
-        {
-            if (!enabled_)
-            {
-                return;
-            }
-
-            validateConstraints_<false>(conflicting_extensions_);
-            validateConstraints_<true>(required_extensions_);
-
-            enabled_ = force_enabled_ || (enabled_ && anyEnablingExtensionsEnabled_());
-        }
+        void setDisabled() { enabled_ = false; }
 
         const std::string & getJSON() const { return json_; }
     };
@@ -474,6 +323,54 @@ namespace mavis::extension_manager
 
     using ExtensionMap = std::unordered_map<std::string, std::unique_ptr<ExtensionBase>>;
 
+    enum class RuleType
+    {
+        REQUIRED,
+        CONFLICT
+    };
+
+    class Rule
+    {
+      private:
+        const RuleType type_;
+        const std::string src_;
+        const std::string dest_;
+
+      public:
+        Rule(const RuleType type, const std::string & src, const std::string & dest) :
+            type_(type),
+            src_(src),
+            dest_(dest)
+        {
+            if (src_ == dest_)
+            {
+                throw SelfReferentialException(src_);
+            }
+        }
+
+        void check(const ExtensionMap & enabled_extensions) const
+        {
+            const bool src_is_enabled = enabled_extensions.count(src_) != 0;
+            const bool dest_is_enabled = enabled_extensions.count(dest_) != 0;
+
+            switch (type_)
+            {
+                case RuleType::REQUIRED:
+                    if (src_is_enabled && !dest_is_enabled)
+                    {
+                        throw MissingRequiredExtensionException(src_, dest_);
+                    }
+                    break;
+                case RuleType::CONFLICT:
+                    if (src_is_enabled && dest_is_enabled)
+                    {
+                        throw ConflictingExtensionException(src_, dest_);
+                    }
+                    break;
+            }
+        }
+    };
+
     class MetaExtension : public ExtensionBase
     {
       private:
@@ -496,86 +393,136 @@ namespace mavis::extension_manager
       private:
         using ExtensionInfoPtr = std::shared_ptr<ExtensionInfo>;
 
-        class UnresolvedDependency
+        // Represents a dependency where one extension implicitly enables another extension
+        class EnablesDependency
         {
           private:
-            const DependencyType type_;
-            const ExtensionInfoPtr ext_;
-            std::unordered_set<std::string> dep_ext_;
-
-            UnresolvedDependency(const DependencyType type,
-                                 std::unordered_set<std::string> && dep_ext,
-                                 const ExtensionInfoPtr ext) :
-                type_(type),
-                ext_(ext),
-                dep_ext_(std::move(dep_ext))
-            {
-                if (type != DependencyType::ENABLING && dep_ext.size() > 1)
-                {
-                    throw UnresolvedDependencyException(ext->getExtension());
-                }
-            }
+            const std::string src_;
+            const std::string dest_;
 
           public:
-            UnresolvedDependency(const DependencyType type,
-                                 const std::vector<std::string> & dep_ext,
-                                 const ExtensionInfoPtr ext) :
-                UnresolvedDependency(
-                    type, std::unordered_set<std::string>(dep_ext.begin(), dep_ext.end()), ext)
+            EnablesDependency(const std::string & src, const std::string & dest) :
+                src_(src),
+                dest_(dest)
             {
-            }
-
-            UnresolvedDependency(const DependencyType type, const std::string & dep_ext,
-                                 const ExtensionInfoPtr ext) :
-                UnresolvedDependency(type, std::unordered_set<std::string>{dep_ext}, ext)
-            {
-            }
-
-            DependencyType getType() const { return type_; }
-
-            const std::unordered_set<std::string> & getDependentExtensions() const
-            {
-                return dep_ext_;
-            }
-
-            void removeDependentExtension(const std::string & ext) { dep_ext_.erase(ext); }
-
-            void addDependentExtension(const std::string & ext) { dep_ext_.emplace(ext); }
-
-            void addDependentExtensions(const std::vector<std::string> & exts)
-            {
-                for (const auto & ext : exts)
+                if (src_ == dest_)
                 {
-                    addDependentExtension(ext);
+                    throw SelfReferentialException(src_);
                 }
             }
 
-            const ExtensionInfoPtr & getExtension() const { return ext_; }
+            // Returns true if there was a change to the enabled extensions
+            bool process(const std::unordered_map<std::string, ExtensionInfoPtr> & extensions) const
+            {
+                try
+                {
+                    const auto & ext_ptr = extensions.at(dest_);
+                    const bool already_enabled = ext_ptr->isEnabled();
+
+                    if (extensions.at(src_)->isEnabled())
+                    {
+                        ext_ptr->setImplicitlyEnabled();
+                    }
+
+                    return already_enabled != ext_ptr->isEnabled();
+                }
+                catch (const std::out_of_range &)
+                {
+                    throw UnresolvedDependencyException(src_, dest_);
+                }
+            }
+
+            std::string stringize() const { return "enables: " + src_ + " -> " + dest_; }
         };
 
-        class UnresolvableDependencyException : public ExtensionManagerException
+        // Represents a dependency where one extension is implicitly enabled if a combination of
+        // other extensions are enabled
+        class EnablingDependency
         {
           private:
-            static std::string
-            getDependencyString_(const std::list<UnresolvedDependency> & dependencies)
-            {
-                std::ostringstream ss;
+            const std::vector<std::string> enabling_extensions_;
+            const std::string enabled_extension_;
 
-                for (const auto & dep_info : dependencies)
+            class UnknownDependencyException : public std::exception
+            {
+              private:
+                const std::string unknown_ext_;
+
+              public:
+                explicit UnknownDependencyException(const std::string & unknown_ext) :
+                    unknown_ext_(unknown_ext)
                 {
-                    ss << '\t' << dep_info.getExtension()->getExtension() << " -> "
-                       << iterableToString(dep_info.getDependentExtensions()) << std::endl;
                 }
 
-                return ss.str();
-            }
+                const char* what() const noexcept override { return unknown_ext_.c_str(); }
+
+                const std::string & getExtension() const { return unknown_ext_; }
+            };
 
           public:
-            explicit UnresolvableDependencyException(
-                const std::list<UnresolvedDependency> & dependencies) :
-                ExtensionManagerException("Unresolvable dependencies detected:\n"
-                                          + getDependencyString_(dependencies))
+            EnablingDependency(const std::vector<std::string> & enabling_extensions,
+                               const std::string & enabled_extension) :
+                enabling_extensions_(enabling_extensions),
+                enabled_extension_(enabled_extension)
             {
+                if (std::find(enabling_extensions_.begin(), enabling_extensions_.end(),
+                              enabled_extension_)
+                    != enabling_extensions_.end())
+                {
+                    throw SelfReferentialException(enabled_extension_);
+                }
+            }
+
+            bool process(
+                const std::unordered_map<std::string, std::vector<std::string>> & meta_extensions,
+                const std::unordered_set<std::string> & enabled_meta_extensions,
+                const std::unordered_map<std::string, ExtensionInfoPtr> & extensions) const
+            {
+                const auto & ext_ptr = extensions.at(enabled_extension_);
+                const bool already_enabled = ext_ptr->isEnabled();
+
+                try
+                {
+                    if (std::all_of(enabling_extensions_.begin(), enabling_extensions_.end(),
+                                    [&meta_extensions, &enabled_meta_extensions,
+                                     &extensions](const std::string & enabling_extension)
+                                    {
+                                        if (enabled_meta_extensions.count(enabling_extension) != 0)
+                                        {
+                                            return true;
+                                        }
+
+                                        if (const auto it = extensions.find(enabling_extension);
+                                            it != extensions.end())
+                                        {
+                                            return it->second->isEnabled();
+                                        }
+                                        // If we get here then this must be a disabled meta
+                                        // extension Otherwise we don't know what the extension is
+                                        // and it's an error
+                                        else if (meta_extensions.count(enabling_extension) == 0)
+                                        {
+                                            throw UnknownDependencyException(enabling_extension);
+                                        }
+
+                                        return false;
+                                    }))
+                    {
+                        ext_ptr->setImplicitlyEnabled();
+                    }
+                }
+                catch (const UnknownDependencyException & ex)
+                {
+                    throw UnresolvedDependencyException(ex.getExtension(), enabled_extension_);
+                }
+
+                return already_enabled != ext_ptr->isEnabled();
+            }
+
+            std::string stringize() const
+            {
+                return "enabled_by: " + iterableToString(enabling_extensions_) + " -> "
+                       + enabled_extension_;
             }
         };
 
@@ -617,38 +564,6 @@ namespace mavis::extension_manager
             }
 
             return exts;
-        }
-
-        std::vector<ExtensionInfoPtr>
-        getDependencyOrDefer_(const DependencyType type,
-                              const std::vector<std::string> & dependent_exts,
-                              const ExtensionInfoPtr & ext)
-        {
-            const std::vector<ExtensionInfoPtr> exts = getExtensions_(dependent_exts);
-
-            if (exts.size() != dependent_exts.size())
-            {
-                pending_dependencies_.emplace_back(type, dependent_exts, ext);
-                return {};
-            }
-
-            return exts;
-        }
-
-        const ExtensionInfoPtr & getDependencyOrDefer_(const DependencyType type,
-                                                       const std::string & dependent_ext,
-                                                       const ExtensionInfoPtr & ext)
-        {
-            static const ExtensionInfoPtr NOT_FOUND{nullptr};
-
-            const auto dep_it = extensions_.find(dependent_ext);
-            if (dep_it == extensions_.end())
-            {
-                pending_dependencies_.emplace_back(type, dependent_ext, ext);
-                return NOT_FOUND;
-            }
-
-            return dep_it->second;
         }
 
         bool extensionAllowed_(const std::string & ext) const
@@ -703,16 +618,62 @@ namespace mavis::extension_manager
             return false;
         }
 
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+        using DepGraph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>;
+
+        DepGraph::vertex_descriptor getVertex_(const std::string & ext)
+        {
+            auto it = dep_graph_vertices_.find(ext);
+
+            if (it == dep_graph_vertices_.end())
+            {
+                it = dep_graph_vertices_.emplace(ext, boost::add_vertex(dependency_graph_)).first;
+            }
+
+            return it->second;
+        }
+
+        class cycle_detector : public boost::dfs_visitor<>
+        {
+          private:
+            bool has_cycle_ = false;
+
+          public:
+            template <class Edge, class Graph> void back_edge(Edge, Graph &) { has_cycle_ = true; }
+
+            bool cycleDetected() const { return has_cycle_; }
+        };
+
+        void addDependencyGraphEdge_(const std::string & ext, const std::string & dep)
+        {
+            boost::add_edge(getVertex_(ext), getVertex_(dep), dependency_graph_);
+            cycle_detector vis;
+            boost::depth_first_search(dependency_graph_, visitor(vis));
+            if (vis.cycleDetected())
+            {
+                throw ExtensionManagerException("Cycle detected after adding dependency " + ext
+                                                + " -> " + dep);
+            }
+        }
+#endif
+
         const uint32_t arch_id_;
         const UnknownExtensionAction unknown_extension_action_;
         std::unordered_map<std::string, ExtensionInfoPtr> extensions_;
         std::unordered_map<std::string, std::vector<std::string>> meta_extensions_;
         std::unordered_map<std::string, bool> config_extensions_;
         std::unordered_map<std::string, std::string> aliases_;
-        std::list<UnresolvedDependency> pending_dependencies_;
         std::unordered_set<std::string> enabled_meta_extensions_;
         std::unordered_set<std::string> extension_allowlist_;
         std::unordered_set<std::string> extension_blocklist_;
+        std::vector<Rule> rules_;
+        std::vector<EnablesDependency> enables_dependencies_;
+        std::vector<EnablingDependency> enabling_dependencies_;
+
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+        DepGraph dependency_graph_;
+        std::unordered_map<std::string, DepGraph::vertex_descriptor> dep_graph_vertices_;
+#endif
 
       public:
         ExtensionStateBase(const uint32_t arch_id,
@@ -737,6 +698,9 @@ namespace mavis::extension_manager
             const auto result =
                 extensions_.emplace(extension, std::make_shared<ExtensionInfo>(extension, json));
 
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+            getVertex_(extension);
+#endif
             return *result.first->second;
         }
 
@@ -747,10 +711,18 @@ namespace mavis::extension_manager
         {
             const auto & ext_ptr = getExtensionInfo_(extension);
 
-            if (const auto & dep_ext = getDependencyOrDefer_(type, dep, ext_ptr); dep_ext)
+            static_assert(type == DependencyType::ENABLES || type == DependencyType::ENABLING);
+
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+            if constexpr (type == DependencyType::ENABLES)
             {
-                ext_ptr->template addDependency<type>(dep_ext);
+                addDependencyGraphEdge_(dep, extension);
             }
+            else
+            {
+                addDependencyGraphEdge_(extension, dep);
+            }
+#endif
         }
 
         template <DependencyType type>
@@ -762,6 +734,9 @@ namespace mavis::extension_manager
                 {
                     const auto result = meta_extensions_.try_emplace(meta_extension);
                     result.first->second.emplace_back(extension);
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+                    addDependencyGraphEdge_(extension, meta_extension);
+#endif
                 }
             }
             else if constexpr (type == DependencyType::ALIAS)
@@ -773,12 +748,26 @@ namespace mavis::extension_manager
             }
             else
             {
-                const auto & ext_ptr = getExtensionInfo_(extension);
-
-                if (const auto dep_ext = getDependencyOrDefer_(type, deps, ext_ptr);
-                    !dep_ext.empty())
+                for (const auto & dep_ext : deps)
                 {
-                    ext_ptr->template addDependency<type>(dep_ext);
+                    if constexpr (type == DependencyType::ENABLES)
+                    {
+                        enables_dependencies_.emplace_back(extension, dep_ext);
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+                        addDependencyGraphEdge_(dep_ext, extension);
+#endif
+                    }
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+                    else
+                    {
+                        addDependencyGraphEdge_(extension, dep_ext);
+                    }
+#endif
+                }
+
+                if constexpr (type == DependencyType::ENABLING)
+                {
+                    enabling_dependencies_.emplace_back(deps, extension);
                 }
             }
         }
@@ -792,88 +781,28 @@ namespace mavis::extension_manager
             for (const auto & dep : deps)
             {
                 addDependency<type>(extension, dep);
+
+#ifdef ENABLE_GRAPH_SANITY_CHECKER
+                for (const auto & dep_ext : dep)
+                {
+                    addDependencyGraphEdge_(extension, dep_ext);
+                }
+#endif
             }
         }
 
-        void finalizeDependencies()
+        template <RuleType rule>
+        void addRule(const std::string & extension, const std::string & dep)
         {
-            // Resolve any meta-extensions and aliases first
-            for (auto & dep_info : pending_dependencies_)
+            rules_.emplace_back(rule, extension, dep);
+        }
+
+        template <RuleType rule>
+        void addRule(const std::string & extension, const std::vector<std::string> & deps)
+        {
+            for (const auto & dep : deps)
             {
-                bool retry = false;
-
-                do
-                {
-                    retry = false;
-
-                    for (const auto & dep : dep_info.getDependentExtensions())
-                    {
-                        if (auto meta_it = meta_extensions_.find(dep);
-                            meta_it != meta_extensions_.end())
-                        {
-                            dep_info.removeDependentExtension(dep);
-                            dep_info.addDependentExtensions(meta_it->second);
-                            retry = true;
-                            break;
-                        }
-                        else if (auto alias_it = aliases_.find(dep); alias_it != aliases_.end())
-                        {
-                            dep_info.removeDependentExtension(dep);
-                            dep_info.addDependentExtension(alias_it->second);
-                            retry = true;
-                            break;
-                        }
-                    }
-                } while (retry);
-            }
-
-            while (!pending_dependencies_.empty())
-            {
-                auto it = pending_dependencies_.begin();
-
-                uint32_t num_resolved = 0;
-
-                while (it != pending_dependencies_.end())
-                {
-                    const auto & ext = it->getExtension();
-                    const auto & dep_exts = it->getDependentExtensions();
-
-                    if (std::none_of(dep_exts.begin(), dep_exts.end(),
-                                     [this](const std::string & dep_ext)
-                                     { return extensions_.count(dep_ext) == 0; }))
-                    {
-                        switch (it->getType())
-                        {
-                            case DependencyType::META:
-                            case DependencyType::ALIAS:
-                                throw UnresolvedDependencyException(ext->getExtension());
-                            case DependencyType::ENABLES:
-                                ext->addEnablesExtension(getExtensionInfo_(*dep_exts.begin()));
-                                break;
-                            case DependencyType::ENABLING:
-                                ext->addEnablingExtensions(getExtensions_(dep_exts));
-                                break;
-                            case DependencyType::REQUIRED:
-                                ext->addRequiredExtension(getExtensionInfo_(*dep_exts.begin()));
-                                break;
-                            case DependencyType::CONFLICTING:
-                                ext->addConflictingExtension(getExtensionInfo_(*dep_exts.begin()));
-                                break;
-                        }
-
-                        it = pending_dependencies_.erase(it);
-                        ++num_resolved;
-                    }
-                    else
-                    {
-                        ++it;
-                    }
-                }
-
-                if (num_resolved == 0)
-                {
-                    throw UnresolvableDependencyException(pending_dependencies_);
-                }
+                addRule<rule>(extension, dep);
             }
         }
 
@@ -976,12 +905,59 @@ namespace mavis::extension_manager
 
         void enableExtension(const char ext) { enableExtension(std::string(1, ext)); }
 
+        void clearImplicitlyEnabled()
+        {
+            for (const auto & extension : extensions_)
+            {
+                extension.second->clearImplicitlyEnabled();
+            }
+        }
+
         void finalize(ExtensionMap & enabled_extensions)
         {
-            for (const auto & ext : extensions_)
+            // When finalize() is called, the extension manager has already *explicitly*
+            // enabled/disabled extensions via setISA, enableExtension, or disableExtension Now we
+            // just need to scan for extensions that are *implicitly* enabled by those extensions
+            bool keep_going;
+
+            std::unordered_set<const EnablesDependency*> activated_enables_dependencies;
+            std::unordered_set<const EnablingDependency*> activated_enabling_dependencies;
+
+            do
             {
-                ext.second->finalize();
-            }
+                keep_going = false;
+
+                for (const auto & dep : enables_dependencies_)
+                {
+                    const bool dependency_activated = dep.process(extensions_);
+
+                    // Track every time a dependency is activated for the first time
+                    // Throw an exception if one gets activated twice to avoid an infinite loop
+                    if (dependency_activated
+                        && !activated_enables_dependencies.emplace(&dep).second)
+                    {
+                        throw CyclicDependencyException(dep.stringize());
+                    }
+
+                    keep_going |= dependency_activated;
+                }
+
+                for (const auto & dep : enabling_dependencies_)
+                {
+                    const bool dependency_activated =
+                        dep.process(meta_extensions_, enabled_meta_extensions_, extensions_);
+
+                    // Track every time a dependency is activated for the first time
+                    // Throw an exception if one gets activated twice to avoid an infinite loop
+                    if (dependency_activated
+                        && !activated_enabling_dependencies.emplace(&dep).second)
+                    {
+                        throw CyclicDependencyException(dep.stringize());
+                    }
+
+                    keep_going |= dependency_activated;
+                }
+            } while (keep_going);
 
             for (const auto & ext : extensions_)
             {
@@ -997,12 +973,19 @@ namespace mavis::extension_manager
             {
                 enabled_extensions.emplace(ext, std::make_unique<MetaExtension>(ext));
             }
+
+            // Finally, check for any rule violations
+            for (const auto & rule : rules_)
+            {
+                rule.check(enabled_extensions);
+            }
         }
 
         void reset()
         {
             for (const auto & ext : extensions_)
             {
+                ext.second->clearImplicitlyEnabled();
                 ext.second->setDisabled();
             }
 
@@ -1132,8 +1115,6 @@ namespace mavis::extension_manager
                 case DependencyType::ALIAS:
                 case DependencyType::ENABLES:
                 case DependencyType::ENABLING:
-                case DependencyType::REQUIRED:
-                case DependencyType::CONFLICTING:
                     return is_normal_extension;
             };
         }
@@ -1150,10 +1131,6 @@ namespace mavis::extension_manager
                     return "enables";
                 case DependencyType::ENABLING:
                     return "enabled_by";
-                case DependencyType::REQUIRED:
-                    return "requires";
-                case DependencyType::CONFLICTING:
-                    return "conflicts";
             };
         }
 
@@ -1162,6 +1139,34 @@ namespace mavis::extension_manager
         getDependencyValue_(const nlohmann::json & obj)
         {
             return JSONVectorConverter<typename DependencyTraits<dep_type>::value_type>::get(obj);
+        }
+
+        template <bool is_normal_extension, RuleType rule_type>
+        constexpr static bool isRuleAllowed_()
+        {
+            switch (rule_type)
+            {
+                case RuleType::REQUIRED:
+                case RuleType::CONFLICT:
+                    return is_normal_extension;
+            };
+        }
+
+        template <RuleType rule_type> constexpr static const char* getRuleKey_()
+        {
+            switch (rule_type)
+            {
+                case RuleType::REQUIRED:
+                    return "requires";
+                case RuleType::CONFLICT:
+                    return "conflicts";
+            };
+        }
+
+        template <RuleType rule_type>
+        static std::vector<std::string> getRuleValue_(const nlohmann::json & obj)
+        {
+            return JSONVectorConverter<std::string>::get(obj);
         }
 
         template <bool is_normal_extension, DependencyType dep_type>
@@ -1179,6 +1184,23 @@ namespace mavis::extension_manager
 
                 extensions.template addDependency<dep_type>(ext,
                                                             getDependencyValue_<dep_type>(*it));
+            }
+        }
+
+        template <bool is_normal_extension, RuleType rule_type>
+        static void processRule_(ExtensionState & extensions, const std::string & ext,
+                                 const nlohmann::json & obj)
+        {
+            constexpr const char* key = getRuleKey_<rule_type>();
+
+            if (const auto it = obj.find(key); it != obj.end())
+            {
+                if constexpr (!isRuleAllowed_<is_normal_extension, rule_type>())
+                {
+                    throw MetaExtensionUnexpectedJSONKeyException(key);
+                }
+
+                extensions.template addRule<rule_type>(ext, getRuleValue_<rule_type>(*it));
             }
         }
 
@@ -1253,10 +1275,10 @@ namespace mavis::extension_manager
                     arch_extensions, ext, ext_obj);
                 processOptionalDependency_<is_normal_extension, DependencyType::ENABLING>(
                     arch_extensions, ext, ext_obj);
-                processOptionalDependency_<is_normal_extension, DependencyType::REQUIRED>(
-                    arch_extensions, ext, ext_obj);
-                processOptionalDependency_<is_normal_extension, DependencyType::CONFLICTING>(
-                    arch_extensions, ext, ext_obj);
+                processRule_<is_normal_extension, RuleType::REQUIRED>(arch_extensions, ext,
+                                                                      ext_obj);
+                processRule_<is_normal_extension, RuleType::CONFLICT>(arch_extensions, ext,
+                                                                      ext_obj);
             }
         }
 
@@ -1281,6 +1303,7 @@ namespace mavis::extension_manager
             assertISAInitialized_();
             enabled_extensions_.clear();
             enabled_jsons_.clear();
+            enabled_arch_->second.clearImplicitlyEnabled();
             enabled_arch_->second.finalize(enabled_extensions_);
         }
 
@@ -1389,11 +1412,6 @@ namespace mavis::extension_manager
             {
                 std::cerr << "Error parsing file " << jfile << std::endl;
                 throw;
-            }
-
-            for (auto & ext : extensions_)
-            {
-                ext.second.finalizeDependencies();
             }
         }
 
