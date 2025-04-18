@@ -18,3 +18,17 @@ add_subdirectory(test EXCLUDE_FROM_ALL)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-U_FORTIFY_SOURCE -O0 -g")
 set(CMAKE_CXX_FLAGS_FASTDEBUG "-O3 -g")
+
+if(NOT CLANGFORMAT_EXECUTABLE)
+  set(CLANGFORMAT_EXECUTABLE clang-format)
+endif()
+
+add_custom_target(clangformat
+  git ls-files "*.hpp" "*.cpp" "*.h" "*.tcc" > clang-format-files.out
+  COMMAND
+     ${CLANGFORMAT_EXECUTABLE} -i --files=clang-format-files.out
+  WORKING_DIRECTORY
+     ${CMAKE_SOURCE_DIR}
+  COMMENT
+     "Formatting with ${CLANGFORMAT_EXECUTABLE} ..."
+  )

@@ -4,115 +4,104 @@
 #include "Field.h"
 #include "mavis/DecoderExceptions.h"
 
-namespace mavis {
-
-// Type of immediate declared as part of the encoding
-enum class ImmediateType : uint32_t
+namespace mavis
 {
-    NONE,           // No immediate present in encoding
-    UNSIGNED,       // UNSIGNED immediate (UIMM) in encoding
-    SIGNED          // SIGNED immediate (SIMM) in encoding
-};
 
-typedef const std::vector<Field> FieldsType;
-
-/**
- * Form Base to provide common interface for templated Form class
- */
-class FormBase
-{
-public:
-    virtual std::string getName() const = 0;
-    virtual const Field &getField(const uint32_t fid) const = 0;
-    virtual const Field &getField(const std::string &fname) const = 0;
-    virtual uint32_t getFieldIndex(const std::string &fname) const = 0;
-    virtual const FieldsType& getFields() const = 0;
-    virtual const FieldsType& getOpcodeFields() const = 0;
-    virtual ImmediateType getImmediateType() const = 0;
-    virtual void print(std::ostream &os) const = 0;
-
-    // TODO: Deprecate all uses of fixed_field_set! It's DANGEROUS
-    // The problem with fixed_field_set is that it is generated from the DECODE form, using the
-    // enum definition in that form's class. When we're extracting, we may use an "xform" which likely
-    // has an incompatible field enum (where field id enum values are different between the form and xform)
-    uint64_t getFieldIDSet(const std::vector<std::string>& flist) const
+    // Type of immediate declared as part of the encoding
+    enum class ImmediateType : uint32_t
     {
-        uint64_t fset = 0;
-        for (const auto& f : flist) {
-            fset |= (1u << getFieldIndex(f));
+        NONE,     // No immediate present in encoding
+        UNSIGNED, // UNSIGNED immediate (UIMM) in encoding
+        SIGNED    // SIGNED immediate (SIMM) in encoding
+    };
+
+    typedef const std::vector<Field> FieldsType;
+
+    /**
+     * Form Base to provide common interface for templated Form class
+     */
+    class FormBase
+    {
+      public:
+        virtual std::string getName() const = 0;
+        virtual const Field & getField(const uint32_t fid) const = 0;
+        virtual const Field & getField(const std::string & fname) const = 0;
+        virtual uint32_t getFieldIndex(const std::string & fname) const = 0;
+        virtual const FieldsType & getFields() const = 0;
+        virtual const FieldsType & getOpcodeFields() const = 0;
+        virtual ImmediateType getImmediateType() const = 0;
+        virtual void print(std::ostream & os) const = 0;
+
+        // TODO: Deprecate all uses of fixed_field_set! It's DANGEROUS
+        // The problem with fixed_field_set is that it is generated from the DECODE form, using the
+        // enum definition in that form's class. When we're extracting, we may use an "xform" which
+        // likely has an incompatible field enum (where field id enum values are different between
+        // the form and xform)
+        uint64_t getFieldIDSet(const std::vector<std::string> & flist) const
+        {
+            uint64_t fset = 0;
+            for (const auto & f : flist)
+            {
+                fset |= (1u << getFieldIndex(f));
+            }
+            return fset;
         }
-        return fset;
-    }
-};
+    };
 
-
-/**
- * Form class
- */
-template<class FormType>
-class Form : public FormBase
-{
-public:
-    using idType = typename FormType::idType;
-
-    std::string getName() const override
+    /**
+     * Form class
+     */
+    template <class FormType> class Form : public FormBase
     {
-        return FormType::name;
-    }
+      public:
+        using idType = typename FormType::idType;
 
-    const Field &getField(const uint32_t fid) const override
-    {
-        return FormType::fields[fid];
-    }
+        std::string getName() const override { return FormType::name; }
 
-    const Field &getField(const std::string &fname) const override
-    {
-        const auto itr = FormType::fmap.find(fname);
-        if (itr == FormType::fmap.end()) {
-            throw BuildErrorUnknownFormField(FormType::name, fname);
+        const Field & getField(const uint32_t fid) const override { return FormType::fields[fid]; }
+
+        const Field & getField(const std::string & fname) const override
+        {
+            const auto itr = FormType::fmap.find(fname);
+            if (itr == FormType::fmap.end())
+            {
+                throw BuildErrorUnknownFormField(FormType::name, fname);
+            }
+            return itr->second;
         }
-        return itr->second;
-    }
 
-    uint32_t getFieldIndex(const std::string &fname) const override
-    {
-        const auto itr = FormType::imap.find(fname);
-        if (itr == FormType::imap.end()) {
-            throw BuildErrorUnknownFormField(FormType::name, fname);
+        uint32_t getFieldIndex(const std::string & fname) const override
+        {
+            const auto itr = FormType::imap.find(fname);
+            if (itr == FormType::imap.end())
+            {
+                throw BuildErrorUnknownFormField(FormType::name, fname);
+            }
+            return itr->second;
         }
-        return itr->second;
-    }
 
-    const FieldsType& getFields() const override
-    {
-        return FormType::fields;
-    }
+        const FieldsType & getFields() const override { return FormType::fields; }
 
-    const FieldsType& getOpcodeFields() const override
-    {
-        return FormType::opcode_fields;
-    }
+        const FieldsType & getOpcodeFields() const override { return FormType::opcode_fields; }
 
-    ImmediateType getImmediateType() const override
-    {
-        return FormType::immediate_type;
-    }
+        ImmediateType getImmediateType() const override { return FormType::immediate_type; }
 
-    void print(std::ostream &os) const override
-    {
-        std::ios_base::fmtflags os_state(os.flags());
-        os << "Fields of " << FormType::name << ":" << std::endl;
-        for (const auto &f : FormType::fields) {
-            os << "\t" << f << std::endl;
+        void print(std::ostream & os) const override
+        {
+            std::ios_base::fmtflags os_state(os.flags());
+            os << "Fields of " << FormType::name << ":" << std::endl;
+            for (const auto & f : FormType::fields)
+            {
+                os << "\t" << f << std::endl;
+            }
+            os.flags(os_state);
         }
-        os.flags(os_state);
-    }
-};
+    };
 
-inline std::ostream &operator<<(std::ostream& os, const FormBase& form)
-{
-    form.print(os);
-    return os;
-}
+    inline std::ostream & operator<<(std::ostream & os, const FormBase & form)
+    {
+        form.print(os);
+        return os;
+    }
 
 } // namespace mavis
