@@ -27,6 +27,8 @@ add_custom_target(clangformat
   git ls-files "*.hpp" "*.cpp" "*.h" "*.tcc" > clang-format-files.out
   COMMAND
      ${CLANGFORMAT_EXECUTABLE} -i --files=clang-format-files.out
+  COMMAND
+     rm -f clang-format-files.out
   WORKING_DIRECTORY
      ${CMAKE_SOURCE_DIR}
   COMMENT
