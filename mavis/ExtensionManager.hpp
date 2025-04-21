@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <list>
+#include <numeric>
 #include <string_view>
 #include <unordered_set>
 

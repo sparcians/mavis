@@ -8,10 +8,10 @@
 #include <ostream>
 #include <string>
 #include <memory>
+#include <boost/json.hpp>
 #include "mavis/DecoderTypes.h"
 #include "mavis/DecoderExceptions.h"
 #include "uArchInfoExceptions.hpp"
-#include "json.hpp"
 
 /**
  * uArchInfo: encapsulates "static" u-arch specific information
@@ -77,7 +77,7 @@ class uArchInfo
     };
 
     // TEMPORARY: map unit names to TargetUnit for back-level compatibility
-    static inline std::map<std::string, IssueTarget> issue_target_map_ = {
+    static inline std::map<boost::json::string, IssueTarget> issue_target_map_ = {
         {"int",    IssueTarget::IEX},
         {"float",  IssueTarget::FEX},
         {"branch", IssueTarget::BR },
@@ -92,16 +92,16 @@ class uArchInfo
     /**
      * \brief This object encapsulates all the micro-architectural information that depends on
      *        the instruction type. It is "static" and cached by Mavis in the instruction factories.
-     *        Mavis will pass the nlohmann::json object to this constructor so that the user can
+     *        Mavis will pass the boost::json::object object to this constructor so that the user can
      *        parse any of the desired fields from the u-arch JSON file supplied to Mavis
-     * \param jobj nlohmann::json object for the given instruction
+     * \param jobj boost::json::object object for the given instruction
      */
-    explicit uArchInfo(const nlohmann::json & jobj) { parse_(jobj); }
+    explicit uArchInfo(const boost::json::object & jobj) { parse_(jobj); }
 
     uArchInfo() = default;
     uArchInfo(const uArchInfo &) = delete;
 
-    void update(const nlohmann::json & jobj)
+    void update(const boost::json::object & jobj)
     {
         // TODO: identical to constructor(jobj) for now, but we may want to provide update
         // restrictions
@@ -145,56 +145,56 @@ class uArchInfo
      * \brief Parse the JSON file
      * \param jobj
      */
-    void parse_(const nlohmann::json & jobj)
+    void parse_(const boost::json::object & jobj)
     {
         // Issue target (from IssueTarget)
-        if (jobj.find("issue") != jobj.end())
+        if (const auto iss_it = jobj.find("issue"); iss_it != jobj.end())
         {
-            const auto itr = issue_target_map_.find(jobj["issue"]);
+            const auto itr = issue_target_map_.find(iss_it->value().as_string());
             if (itr == issue_target_map_.end())
             {
-                throw uArchInfoUnknownIssueTarget(jobj["mnemonic"], jobj["issue"]);
+                throw uArchInfoUnknownIssueTarget(boost::json::value_to<std::string>(jobj.at("mnemonic")), boost::json::value_to<std::string>(iss_it->value()));
             }
             issue_target_ = itr->second;
         }
 
         // Target execution unit (from UnitSet) -- bit mask allows multiple targets
-        if (jobj.find("unit") != jobj.end())
+        if (const auto unit_it = jobj.find("unit"); unit_it != jobj.end())
         {
-            mavis::UnitNameListType ulist = jobj["unit"].get<mavis::UnitNameListType>();
+            mavis::UnitNameListType ulist = boost::json::value_to<mavis::UnitNameListType>(unit_it->value());
             for (const auto & u : ulist)
             {
                 const auto itr = umap_.find(u);
                 if (itr == umap_.end())
                 {
-                    throw uArchInfoUnknownUnit(jobj["mnemonic"], u);
+                    throw uArchInfoUnknownUnit(boost::json::value_to<std::string>(jobj.at("mnemonic")), u);
                 }
                 units_ |= static_cast<uint64_t>(itr->second);
             }
         }
 
         // Instruction latency
-        if (jobj.find("latency") != jobj.end())
+        if (const auto it = jobj.find("latency"); it != jobj.end())
         {
-            latency_ = jobj["latency"];
+            latency_ = boost::json::value_to<uint32_t>(it->value());
         }
 
         // Whether the instruction is piplined (non-blocking)
-        if (jobj.find("pipelined") != jobj.end())
+        if (const auto it = jobj.find("pipelined"); it != jobj.end())
         {
-            pipelined_ = jobj["pipelined"];
+            pipelined_ = it->value().as_bool();
         }
 
         // Whether the instruction serializes execution
-        if (jobj.find("serialize") != jobj.end())
+        if (const auto it = jobj.find("serialize"); it != jobj.end())
         {
-            serialize_ = jobj["serialize"];
+            serialize_ = it->value().as_bool();
         }
 
         // Whether the instruction starts a new ROB group
-        if (jobj.find("rob_group") != jobj.end())
+        if (const auto it = jobj.find("rob_group"); it != jobj.end())
         {
-            mavis::StringListType slist = jobj["rob_group"].get<mavis::StringListType>();
+            mavis::StringListType slist = boost::json::value_to<mavis::StringListType>(it->value());
             for (const auto & str : slist)
             {
                 if (str == "begin")
@@ -207,12 +207,12 @@ class uArchInfo
                 }
                 else
                 {
-                    throw uArchInfoROBGroupParseError(jobj["mnemonic"], str);
+                    throw uArchInfoROBGroupParseError(boost::json::value_to<std::string>(jobj.at("mnemonic")), str);
                 }
             }
         }
 
-        std::cout << "uArchInfo: " << jobj["mnemonic"] << std::endl;
+        std::cout << "uArchInfo: " << jobj.at("mnemonic").as_string() << std::endl;
     }
 };
 

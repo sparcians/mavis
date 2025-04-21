@@ -18,59 +18,59 @@ namespace mavis
      */
     template <typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
     void DTable<InstType, AnnotationType, AnnotationTypeAllocator>::parseInstInfo_(
-        const std::string & jfile, const nlohmann::json & inst, const std::string & mnemonic,
+        const std::string & jfile, const boost::json::object & inst, const std::string & mnemonic,
         const MatchSet<Tag> & tags)
     {
         // Convert the instruction stencil to binary
         Opcode istencil = 0;
-        if (inst.find("stencil") != inst.end())
+        if (const auto it = inst.find("stencil"); it != inst.end())
         {
-            istencil = stoll(static_cast<std::string>(inst["stencil"]), nullptr, 16);
+            istencil = strtoll(it->value().as_string().c_str(), nullptr, 16);
         }
 
         // Parse the fixed fields list, if present
         FieldNameListType flist;
-        if (inst.find("fixed") != inst.end())
+        if (const auto it = inst.find("fixed"); it != inst.end())
         {
-            flist = inst["fixed"].get<FieldNameListType>();
+            flist = boost::json::value_to<FieldNameListType>(it->value());
         }
 
         // Parse the ignore fields list, if present
         FieldNameSetType ignore_set;
-        if (inst.find("ignore") != inst.end())
+        if (const auto it = inst.find("ignore"); it != inst.end())
         {
-            ignore_set = inst["ignore"].get<FieldNameSetType>();
+            ignore_set = boost::json::value_to<FieldNameSetType>(it->value());
         }
 
         // Parse the xform (extraction form) override, if present
         // const ExtractorIF::PtrType override_extractor = nullptr;
         ExtractorIF::PtrType override_extractor = nullptr;
-        if (inst.find("xform") != inst.end())
+        if (const auto it = inst.find("xform"); it != inst.end())
         {
-            override_extractor = extractors_.getExtractor(inst["xform"]);
+            override_extractor = extractors_.getExtractor(boost::json::value_to<std::string>(it->value()));
         }
 
         // Parse the factory name override, if present
         // Defaults to being the same as the mnemonic
         // std::string factory_name = inst["mnemonic"];
         std::string factory_name = mnemonic;
-        if (inst.find("factory") != inst.end())
+        if (const auto it = inst.find("factory"); it != inst.end())
         {
-            factory_name = std::string(inst["factory"]);
+            factory_name = boost::json::value_to<std::string>(it->value());
         }
 
         // Parse the expansion factory, if present
         std::string xpand_name;
-        if (inst.find("expand") != inst.end())
+        if (const auto it = inst.find("expand"); it != inst.end())
         {
-            xpand_name = std::string(inst["expand"]);
+            xpand_name = boost::json::value_to<std::string>(it->value());
         }
 
         // Is this an instruction overlay?
-        if (inst.find("overlay") != inst.end())
+        if (const auto it = inst.find("overlay"); it != inst.end())
         {
             typename Overlay<InstType, AnnotationType>::PtrType olay =
-                std::make_shared<Overlay<InstType, AnnotationType>>(mnemonic, inst["overlay"], inst,
+                std::make_shared<Overlay<InstType, AnnotationType>>(mnemonic, it->value().as_object(), inst,
                                                                     override_extractor);
             builder_->buildOverlay(olay, jfile);
             // std::cout << *olay << std::endl;
@@ -85,11 +85,11 @@ namespace mavis
         }
         else
         {
-            const FormBase* form_wrap =
-                forms_.findFormWrapper(static_cast<std::string>(inst["form"]));
+            const std::string form = boost::json::value_to<std::string>(inst.at("form"));
+            const FormBase* form_wrap = forms_.findFormWrapper(form);
             if (form_wrap == nullptr)
             {
-                throw BuildErrorUnknownForm(jfile, mnemonic, inst["form"]);
+                throw BuildErrorUnknownForm(jfile, mnemonic, form);
             }
 
             InstMetaData::PtrType meta =
@@ -102,9 +102,9 @@ namespace mavis
 
                 // Check for encoding aliases for this factory and add them to the tree
                 StringListType alias_stencils;
-                if (inst.find("alias") != inst.end())
+                if (const auto alias_it = inst.find("alias"); alias_it != inst.end())
                 {
-                    alias_stencils = inst["alias"].get<StringListType>();
+                    alias_stencils = boost::json::value_to<StringListType>(alias_it->value());
                     for (const auto & astencil : alias_stencils)
                     {
                         Opcode opc = stoll(astencil, nullptr, 16);
@@ -137,11 +137,11 @@ namespace mavis
         struct parseInstInfoArgs
         {
             const std::string jfile;
-            const nlohmann::json inst;
+            const boost::json::object inst;
             const std::string mnemonic;
             const MatchSet<Tag> tags;
 
-            parseInstInfoArgs(const std::string & jfile, const nlohmann::json & inst,
+            parseInstInfoArgs(const std::string & jfile, const boost::json::object & inst,
                               const std::string & mnemonic, const MatchSet<Tag> & tags) :
                 jfile(jfile),
                 inst(inst),
@@ -157,8 +157,6 @@ namespace mavis
         for (const auto & jfile : isa_files)
         {
             std::ifstream fs;
-            std::ios_base::iostate exceptionMask = fs.exceptions() | std::ios::failbit;
-            fs.exceptions(exceptionMask);
 
             try
             {
@@ -169,21 +167,30 @@ namespace mavis
                 throw BadISAFile(jfile);
             }
 
-            nlohmann::json jobj;
-            fs >> jobj;
+            boost::system::error_code ec;
+            boost::json::value json = boost::json::parse(fs, ec);
+
+            if (json.is_null() || ec)
+            {
+                throw boost::system::system_error(ec);
+            }
+
+            const auto& jobj = json.as_array();
 
             // Read in the instructions JSON file and process fields that pertain to decoding...
-            for (const auto & inst : jobj)
+            for (const auto & inst_value : jobj)
             {
+                const auto& inst = inst_value.as_object();
+
                 std::string mnemonic;
-                if (inst.find("mnemonic") != inst.end())
+                if (const auto it = inst.find("mnemonic"); it != inst.end())
                 {
-                    mnemonic = std::string(inst["mnemonic"]);
+                    mnemonic = boost::json::value_to<std::string>(it->value());
                     // We have an instruction... Look for filtering tag
                     MatchSet<Tag> tags;
-                    if (inst.find("tags") != inst.end())
+                    if (const auto tag_it = inst.find("tags"); tag_it != inst.end())
                     {
-                        tags = MatchSet<Tag>(inst["tags"].get<std::vector<std::string>>());
+                        tags = MatchSet<Tag>(boost::json::value_to<std::vector<std::string>>(tag_it->value()));
                     }
 
                     const bool is_expansion = inst.find("expand") != inst.end();
@@ -235,9 +242,9 @@ namespace mavis
                 {
                     // If there's a stencil clause, provide that as part of the exception
                     // to help the poor user find where he's missing a mnemonic
-                    if (inst.find("stencil") != inst.end())
+                    if (const auto stencil_it = inst.find("stencil"); stencil_it != inst.end())
                     {
-                        throw BuildErrorMissingMnemonic(jfile, inst["stencil"]);
+                        throw BuildErrorMissingMnemonic(jfile, boost::json::value_to<std::string>(stencil_it->value()));
                     }
                     throw BuildErrorMissingMnemonic(jfile);
                 }

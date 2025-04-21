@@ -10,7 +10,6 @@
 #include "uArchInfo.h"
 
 using namespace std;
-using json = nlohmann::json;
 
 struct ExampleTraceInfo
 {

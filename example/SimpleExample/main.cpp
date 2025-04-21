@@ -4,7 +4,6 @@
 #include "uArchInfo.h"
 
 using namespace std;
-using json = nlohmann::json;
 
 using MavisType = Mavis<Instruction<uArchInfo>, uArchInfo>;
 

@@ -17,6 +17,7 @@ add_library(mavis
   impl/forms/CompressedForms.cpp
   impl/forms/VectorForms.cpp
 )
+add_subdirectory(example EXCLUDE_FROM_ALL)
 add_subdirectory(test EXCLUDE_FROM_ALL)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-U_FORTIFY_SOURCE -O0 -g")

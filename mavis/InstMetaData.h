@@ -1,6 +1,6 @@
 #pragma once
 
-#include "json.hpp"
+#include <boost/json.hpp>
 #include "DecoderExceptions.h"
 #include "Form.h"
 #include "Tag.hpp"
@@ -16,7 +16,7 @@ namespace mavis
     class InstMetaData
     {
       private:
-        using json = nlohmann::json;
+        using json = boost::json::object;
         typedef typename std::vector<std::string> FieldNameListType;
         typedef typename std::vector<std::string> ISAExtListType;
 
@@ -280,100 +280,106 @@ namespace mavis
             parseDataSizeStanza_(inst);
 
             // Word operand types
-            if (inst.find("w-oper") != inst.end())
+            if (const auto it = inst.find("w-oper"); it != inst.end())
             {
-                if (inst["w-oper"] == "all")
+                const auto& it_value = it->value();
+                if (it_value == "all")
                 {
                     setAllOperandsType_(OperandTypes::WORD);
                 }
                 else
                 {
                     FieldNameListType flist;
-                    flist = inst["w-oper"].get<FieldNameListType>();
+                    flist = boost::json::value_to<FieldNameListType>(it_value);
                     setOperandsType_(flist, OperandTypes::WORD);
                 }
             }
 
             // Long operand types
-            if (inst.find("l-oper") != inst.end())
+            if (const auto it = inst.find("l-oper"); it != inst.end())
             {
-                if (inst["l-oper"] == "all")
+                const auto& it_value = it->value();
+                if (it_value == "all")
                 {
                     setAllOperandsType_(OperandTypes::LONG);
                 }
                 else
                 {
                     FieldNameListType flist;
-                    flist = inst["l-oper"].get<FieldNameListType>();
+                    flist = boost::json::value_to<FieldNameListType>(it_value);
                     setOperandsType_(flist, OperandTypes::LONG);
                 }
             }
 
             // Single operand types
-            if (inst.find("s-oper") != inst.end())
+            if (const auto it = inst.find("s-oper"); it != inst.end())
             {
-                if (inst["s-oper"] == "all")
+                const auto& it_value = it->value();
+                if (it_value == "all")
                 {
                     setAllOperandsType_(OperandTypes::SINGLE);
                 }
                 else
                 {
                     FieldNameListType flist;
-                    flist = inst["s-oper"].get<FieldNameListType>();
+                    flist = boost::json::value_to<FieldNameListType>(it_value);
                     setOperandsType_(flist, OperandTypes::SINGLE);
                 }
             }
 
             // Double operand types
-            if (inst.find("d-oper") != inst.end())
+            if (const auto it = inst.find("d-oper"); it != inst.end())
             {
-                if (inst["d-oper"] == "all")
+                const auto& it_value = it->value();
+                if (it_value == "all")
                 {
                     setAllOperandsType_(OperandTypes::DOUBLE);
                 }
                 else
                 {
                     FieldNameListType flist;
-                    flist = inst["d-oper"].get<FieldNameListType>();
+                    flist = boost::json::value_to<FieldNameListType>(it_value);
                     setOperandsType_(flist, OperandTypes::DOUBLE);
                 }
             }
 
             // Quad operand types
-            if (inst.find("q-oper") != inst.end())
+            if (const auto it = inst.find("q-oper"); it != inst.end())
             {
-                if (inst["q-oper"] == "all")
+                const auto& it_value = it->value();
+                if (it_value == "all")
                 {
                     setAllOperandsType_(OperandTypes::QUAD);
                 }
                 else
                 {
                     FieldNameListType flist;
-                    flist = inst["q-oper"].get<FieldNameListType>();
+                    flist = boost::json::value_to<FieldNameListType>(it_value);
                     setOperandsType_(flist, OperandTypes::QUAD);
                 }
             }
 
             // Vector operand types
-            if (inst.find("v-oper") != inst.end())
+            if (const auto it = inst.find("v-oper"); it != inst.end())
             {
-                if (inst["v-oper"] == "all")
+                const auto& it_value = it->value();
+                if (it_value == "all")
                 {
                     setAllOperandsType_(OperandTypes::VECTOR);
                 }
                 else
                 {
                     FieldNameListType flist;
-                    flist = inst["v-oper"].get<FieldNameListType>();
+                    flist = boost::json::value_to<FieldNameListType>(it_value);
                     setOperandsType_(flist, OperandTypes::VECTOR);
                 }
             }
 
             // Try to find ISA extensions of the form 'wX' where 'w' is a an optional
             // "width" (e.g. 32, 64, etc.) and 'X' is an extension letter
-            if (inst.find("isa") != inst.end())
+            if (const auto it = inst.find("isa"); it != inst.end())
             {
-                ISAExtListType ilist = inst["isa"].get<ISAExtListType>();
+                ISAExtListType ilist = boost::json::value_to<ISAExtListType>(it->value());
                 if (!ilist.empty())
                 {
                     std::smatch matches;
@@ -394,7 +400,7 @@ namespace mavis
                             else
                             {
                                 // Invalid ISA extension letter
-                                throw BuildErrorInvalidISAExtension(inst["mnemonic"], s,
+                                throw BuildErrorInvalidISAExtension(boost::json::value_to<std::string>(inst.at("mnemonic")), s,
                                                                     matches[2].str());
                             }
                             if (matches[1].length() != 0)
@@ -404,7 +410,7 @@ namespace mavis
                                 if ((n == 0) || ((n & (n - 1)) != 0))
                                 {
                                     // Not a non-zero power of 2
-                                    throw BuildErrorInvalidISAWidth(inst["mnemonic"], s, n);
+                                    throw BuildErrorInvalidISAWidth(boost::json::value_to<std::string>(inst.at("mnemonic")), s, n);
                                 }
                                 setISAWidth(itr->second, n);
                             }
@@ -412,7 +418,7 @@ namespace mavis
                         else
                         {
                             // Malformed ISA extension string
-                            throw BuildErrorMalformedISAExtension(inst["mnemonic"], s);
+                            throw BuildErrorMalformedISAExtension(boost::json::value_to<std::string>(inst.at("mnemonic")), s);
                         }
                     }
                 }
@@ -477,9 +483,9 @@ namespace mavis
             parseDataSizeStanza_(inst);
 
             // Merge tags from the overlay instruction and the base
-            if (inst.find("tags") != inst.end())
+            if (const auto it = inst.find("tags"); it != inst.end())
             {
-                tags_.merge(inst["tags"].get<std::vector<std::string>>());
+                tags_.merge(boost::json::value_to<std::vector<std::string>>(it->value()));
             }
         }
 
@@ -728,15 +734,15 @@ namespace mavis
         void parseTypeStanza_(const json & inst)
         {
             // Merge type information from the overlay instruction and the base
-            if (inst.find("type") != inst.end())
+            if (const auto it = inst.find("type"); it != inst.end())
             {
-                const FieldNameListType tlist = inst["type"].get<FieldNameListType>();
+                const FieldNameListType tlist = boost::json::value_to<FieldNameListType>(it->value());
                 for (const auto & t : tlist)
                 {
                     const auto itr = tmap_.find(t);
                     if (itr == tmap_.end())
                     {
-                        throw BuildErrorUnknownType(inst["mnemonic"], t);
+                        throw BuildErrorUnknownType(boost::json::value_to<std::string>(inst.at("mnemonic")), t);
                     }
                     inst_types_ |=
                         static_cast<std::underlying_type_t<InstructionTypes>>(itr->second);
@@ -747,13 +753,13 @@ namespace mavis
         void parseDataSizeStanza_(const json & inst)
         {
             // Merge data size information from the overlay instruction and the base
-            if (inst.find("data") != inst.end())
+            if (const auto it = inst.find("data"); it != inst.end())
             {
-                data_size_ = inst["data"];
+                data_size_ = boost::json::value_to<uint32_t>(it->value());
                 // Check positive, power-of-2 or zero
                 if ((data_size_ & (data_size_ - 1)) || (int32_t(data_size_) < 0))
                 {
-                    throw BuildErrorInvalidDataSize(inst["mnemonic"], data_size_);
+                    throw BuildErrorInvalidDataSize(boost::json::value_to<std::string>(inst.at("mnemonic")), data_size_);
                 }
             }
         }
