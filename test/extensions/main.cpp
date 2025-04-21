@@ -1,3 +1,5 @@
+// Defining this enables additional circular dependency sanity checking via boost::graph
+#define ENABLE_GRAPH_SANITY_CHECKER
 #include "mavis/extension_managers/RISCVExtensionManager.hpp"
 
 template <typename ExpectedExceptionType, typename Callback>
@@ -77,6 +79,9 @@ int main(int argc, char* argv[])
         assert(rv_generic_man.isEnabled("zba"));
         assert(rv_generic_man.isEnabled("v"));
 
+        // Test enabled_by behavior - c + d (implied by g) should enable zcd
+        assert(rv_generic_man.isEnabled("zcd"));
+
         rv_generic_man.setISA("rv32gcb");
 
         assert(rv_generic_man.getXLEN() == 32);
@@ -148,10 +153,12 @@ int main(int argc, char* argv[])
         const auto orig_jsons = man.getJSONs();
         man.disableExtension("d");
         auto new_jsons = man.getJSONs();
-        assert(orig_jsons.size() == new_jsons.size() + 1);
+        // Disabling d will disable both d and zcd
+        assert(orig_jsons.size() == new_jsons.size() + 2);
         man.enableExtension("d");
         new_jsons = man.getJSONs();
-        assert(orig_jsons == new_jsons);
+        assert(std::set(orig_jsons.begin(), orig_jsons.end())
+               == std::set(new_jsons.begin(), new_jsons.end()));
         man.disableExtensions({"zicsr", "zifencei"});
         new_jsons = man.getJSONs();
         assert(orig_jsons.size() == new_jsons.size() + 2);
