@@ -42,10 +42,19 @@ namespace mavis
         };
 
         static inline const std::map<const std::string, SpecialField> SpecialFieldMap{
-            {"aq", SpecialField::AQ}, {"avl", SpecialField::AVL}, {"csr", SpecialField::CSR},
-            {"fm", SpecialField::FM}, {"nf", SpecialField::NF},   {"pred", SpecialField::PRED},
-            {"rl", SpecialField::RL}, {"rm", SpecialField::RM},   {"succ", SpecialField::SUCC},
-            {"vm", SpecialField::VM}, {"wd", SpecialField::WD},   {"hint", SpecialField::HINT}};
+            {"aq",   SpecialField::AQ  },
+            {"avl",  SpecialField::AVL },
+            {"csr",  SpecialField::CSR },
+            {"fm",   SpecialField::FM  },
+            {"nf",   SpecialField::NF  },
+            {"pred", SpecialField::PRED},
+            {"rl",   SpecialField::RL  },
+            {"rm",   SpecialField::RM  },
+            {"succ", SpecialField::SUCC},
+            {"vm",   SpecialField::VM  },
+            {"wd",   SpecialField::WD  },
+            {"hint", SpecialField::HINT}
+        };
 
       private:
         static inline const std::array<

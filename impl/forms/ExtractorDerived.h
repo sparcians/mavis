@@ -155,6 +155,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -167,6 +168,8 @@ namespace mavis
                << ", IMM=" << std::dec << getImmediate(icode);
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_C0_load>(const uint64_t ffmask, const uint64_t fset) :
@@ -518,6 +521,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -530,6 +534,8 @@ namespace mavis
                << ", IMM=" << std::dec << getImmediate(icode);
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_C0_store>(const uint64_t ffmask, const uint64_t fset) :
@@ -843,6 +849,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -854,6 +861,8 @@ namespace mavis
                        {Form_C1::idType::RS1, InstMetaData::OperandFieldID::RS1}});
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_C1_rsd>(const uint64_t ffmask, const uint64_t fset) :
@@ -1240,6 +1249,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -1251,6 +1261,8 @@ namespace mavis
                << ", SP, IMM=" << std::dec << getImmediate(icode);
             return ss.str();
         }
+
+        // clang-format on
 
       private:
         Extractor<Form_CIW_sp>(const uint64_t ffmask, const uint64_t fset) :
@@ -1454,6 +1466,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -1464,6 +1477,8 @@ namespace mavis
                << ", IMM=" << std::dec << getImmediate(icode);
             return ss.str();
         }
+
+        // clang-format on
 
       private:
         Extractor<Form_CJALR>(const uint64_t ffmask, const uint64_t fset) :
@@ -1553,6 +1568,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -1564,6 +1580,8 @@ namespace mavis
                                       {Form_C2::idType::RS2, InstMetaData::OperandFieldID::RS2}});
             return ss.str();
         }
+
+        // clang-format on
 
       private:
         Extractor<Form_C2_add>(const uint64_t ffmask, const uint64_t fset) :
@@ -1652,6 +1670,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -1664,6 +1683,8 @@ namespace mavis
                                      {{Form_C2::idType::RS2, InstMetaData::OperandFieldID::RS2}});
             return ss.str();
         }
+
+        // clang-format on
 
       private:
         Extractor<Form_C2_mv>(const uint64_t ffmask, const uint64_t fset) :
@@ -1751,6 +1772,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -1762,6 +1784,8 @@ namespace mavis
                << ", IMM=" << std::dec << getImmediate(icode);
             return ss.str();
         }
+
+        // clang-format on
 
       private:
         Extractor<Form_C2_slli>(const uint64_t ffmask, const uint64_t fset) :
@@ -1847,6 +1871,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -1857,6 +1882,8 @@ namespace mavis
                << ", SP, IMM=" << std::dec << getImmediate(icode);
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_C2_sp>(const uint64_t ffmask, const uint64_t fset) :
@@ -2308,6 +2335,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -2319,6 +2347,8 @@ namespace mavis
                << ", +0x" << std::hex << getSignedOffset(icode);
             return ss.str();
         }
+
+        // clang-format on
 
       private:
         Extractor<Form_CI_rD_shifted>(const uint64_t ffmask, const uint64_t fset) :
@@ -2468,6 +2498,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -2488,6 +2519,8 @@ namespace mavis
             }
             return ss.str();
         }
+
+        // clang-format on
 
       private:
         Extractor<Form_V_store>(const uint64_t ffmask, const uint64_t fset) :
@@ -2604,6 +2637,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -2623,6 +2657,8 @@ namespace mavis
             }
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_V_uimm>(const uint64_t ffmask, const uint64_t fset) :
@@ -2676,6 +2712,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -2695,6 +2732,8 @@ namespace mavis
             }
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_V_simm>(const uint64_t ffmask, const uint64_t fset) :
@@ -2736,6 +2775,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -2755,6 +2795,8 @@ namespace mavis
             }
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_V_op>(const uint64_t ffmask, const uint64_t fset) :
@@ -2793,6 +2835,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -2803,6 +2846,8 @@ namespace mavis
                                       {Form_R::idType::RS1, InstMetaData::OperandFieldID::RS1}});
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_HV_load>(const uint64_t ffmask, const uint64_t fset) :
@@ -2893,6 +2938,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -2903,6 +2949,8 @@ namespace mavis
                                       {Form_R::idType::RS1, InstMetaData::OperandFieldID::RS1}});
             return ss.str();
         }
+
+        // clang-format on
 
       private:
         Extractor<Form_HV_store>(const uint64_t ffmask, const uint64_t fset) :
@@ -3211,6 +3259,7 @@ namespace mavis
             return ss.str();
         }
 
+        // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
                                const InstMetaData::PtrType & meta) const override
         {
@@ -3221,6 +3270,8 @@ namespace mavis
                << ", +0x" << std::hex << getSignedOffset(icode);
             return ss.str();
         }
+
+        // clang-format on
 
       protected:
         Extractor<Form_PF_hint>(const uint64_t ffmask, const uint64_t fset) :
