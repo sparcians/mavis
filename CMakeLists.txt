@@ -4,8 +4,11 @@ project(Mavis)
 set(CMAKE_CXX_STANDARD 17)
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+find_package (Boost 1.74.0 REQUIRED COMPONENTS program_options)
+message (STATUS "Using BOOST ${Boost_VERSION_STRING}")
+
 include_directories(.)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/elfio)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/elfio ${Boost_INCLUDE_DIRS})
 
 add_library(mavis
   impl/ExtractorRegistry.cpp
