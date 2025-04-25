@@ -3,6 +3,7 @@
 
 #include <mavis/Overlay.hpp>
 #include "mavis/DTable.h" // Needed for CLION
+#include "mavis/JSONUtils.hpp"
 
 namespace mavis
 {
@@ -167,13 +168,7 @@ namespace mavis
                 throw BadISAFile(jfile);
             }
 
-            boost::system::error_code ec;
-            boost::json::value json = boost::json::parse(fs, ec);
-
-            if (json.is_null() || ec)
-            {
-                throw boost::system::system_error(ec);
-            }
+            const boost::json::value json = parseJSON(fs);
 
             const auto& jobj = json.as_array();
 

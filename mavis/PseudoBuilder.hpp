@@ -2,7 +2,7 @@
 
 #include <map>
 #include <fstream>
-#include <boost/json.hpp>
+#include "JSONUtils.hpp"
 #include "BuilderBase.hpp"
 #include "Extractor.h"
 #include "IFactoryPseudo.hpp"
@@ -54,12 +54,7 @@ public:
                 throw BadISAFile(jfile);
             }
 
-            boost::system::error_code ec;
-            boost::json::value json = boost::json::parse(fs, ec);
-
-            if(json.is_null() || ec) {
-                throw boost::system::system_error(ec);
-            }
+            const boost::json::value json = parseJSON(fs);
 
             const auto& jobj = json.as_array();
 

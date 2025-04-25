@@ -3,8 +3,8 @@
 #include <map>
 #include <set>
 #include <fstream>
-#include <boost/json.hpp>
 
+#include "JSONUtils.hpp"
 #include "DecoderTypes.h"
 #include "Extractor.h"
 #include "DecoderExceptions.h"
@@ -50,19 +50,13 @@ public:
                     throw BadAnnotationFile(afile);
                 }
 
-                boost::system::error_code ec;
                 boost::json::value json;
                 try {
-                    json = boost::json::parse(fs, ec);
+                    json = parseJSON(fs);
                 }
                 catch(std::exception & ex) {
                     std::cerr << __FUNCTION__ << ": ERROR parsing: '" << afile << "' " << ex.what() << std::endl;
                     throw;
-                }
-
-                if(json.is_null() || ec) {
-                    std::cerr << __FUNCTION__ << ": ERROR parsing: '" << afile << "' " << ec.what() << std::endl;
-                    throw boost::system::system_error(ec);
                 }
 
                 auto& jobj = json.as_array();

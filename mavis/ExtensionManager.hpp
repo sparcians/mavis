@@ -6,8 +6,6 @@
 #include <string_view>
 #include <unordered_set>
 
-#include <boost/json.hpp>
-
 // Uncomment to enable detection of cycles in the dependency graph
 // #define ENABLE_GRAPH_SANITY_CHECKER
 
@@ -17,6 +15,7 @@
 #include <boost/graph/depth_first_search.hpp>
 #endif
 
+#include "JSONUtils.hpp"
 #include "DecoderExceptions.h"
 #include "mavis/Mavis.h"
 
@@ -1380,14 +1379,7 @@ namespace mavis::extension_manager
                 throw BadISAFile(jfile);
             }
 
-            boost::system::error_code ec;
-            boost::json::value json = boost::json::parse(fs, ec);
-
-            if (json.is_null() || ec)
-            {
-                std::cerr << "Error parsing file " << jfile << std::endl;
-                throw boost::system::system_error(ec);
-            }
+            const boost::json::value json = parseJSON(fs);
 
             try
             {

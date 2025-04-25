@@ -8,9 +8,9 @@
 #include <ostream>
 #include <string>
 #include <memory>
-#include <boost/json.hpp>
 #include "mavis/DecoderTypes.h"
 #include "mavis/DecoderExceptions.h"
+#include "mavis/JSONUtils.hpp"
 #include "uArchInfoExceptions.hpp"
 
 /**
@@ -77,7 +77,7 @@ class uArchInfo
     };
 
     // TEMPORARY: map unit names to TargetUnit for back-level compatibility
-    static inline std::map<boost::json::string, IssueTarget> issue_target_map_ = {
+    static inline std::map<std::string, IssueTarget, mavis::JSONStringMapCompare> issue_target_map_ = {
         {"int",    IssueTarget::IEX},
         {"float",  IssueTarget::FEX},
         {"branch", IssueTarget::BR },
