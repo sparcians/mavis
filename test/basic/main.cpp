@@ -155,7 +155,10 @@ int main()
     constexpr mavis::InstructionUniqueID NOP_UID = 1;
 
     // UID initialization list for testing NOP and C.NOP UID's against NOP_UID
-    mavis::InstUIDList uid_init{{"nop", NOP_UID}, {"cmov", 2}};
+    mavis::InstUIDList uid_init{
+        {"nop",  NOP_UID},
+        {"cmov", 2      }
+    };
 
     mavis::AnnotationOverrides anno_overrides = {
         std::make_pair("andn", "pipelined:false"),
@@ -980,11 +983,13 @@ int main()
                              {"uarch/uarch_rv64g.json", "uarch/uarch_pseudo.json"});
     mavis_facade.switchContext("PSEUDO");
 
+    // clang-format off
     mavis::ExtractorPseudoInfo pseudo_op(
         "P0",
         {{mavis::InstMetaData::OperandFieldID::RS1, mavis::InstMetaData::OperandTypes::WORD, 1},
          {mavis::InstMetaData::OperandFieldID::RS2, mavis::InstMetaData::OperandTypes::DOUBLE, 2}},
         {{mavis::InstMetaData::OperandFieldID::RD, mavis::InstMetaData::OperandTypes::WORD, 3}});
+    // clang-format on
     inst = mavis_facade.makePseudoInst(pseudo_op, 0);
     cout << "line " << dec << __LINE__ << ": " << "PSEUDO = " << inst->dasmString() << endl;
 
@@ -1042,11 +1047,13 @@ int main()
     assert(inst->getSourceOpInfo().isStoreData(mavis::InstMetaData::OperandFieldID::RS2) == true);
 
     mavis::InstructionUniqueID p0_uid = mavis_facade.lookupPseudoInstUniqueID("P0");
+    // clang-format off
     mavis::ExtractorPseudoInfo pseudo_op_by_uid(
         p0_uid,
         {{mavis::InstMetaData::OperandFieldID::RS1, mavis::InstMetaData::OperandTypes::WORD, 1},
          {mavis::InstMetaData::OperandFieldID::RS2, mavis::InstMetaData::OperandTypes::DOUBLE, 2}},
         {{mavis::InstMetaData::OperandFieldID::RD, mavis::InstMetaData::OperandTypes::WORD, 3}});
+    // clang-format on
     inst = mavis_facade.makePseudoInst(pseudo_op_by_uid, 0);
     cout << "line " << dec << __LINE__ << ": " << "PSEUDO = " << inst->dasmString() << endl;
 

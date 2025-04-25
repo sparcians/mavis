@@ -19,21 +19,28 @@ namespace mavis
         {"func1b", Form_V::fields[Form_V::idType::FUNC1B]},
         {"func3a", Form_V::fields[Form_V::idType::FUNC3A]},
         {"func1c", Form_V::fields[Form_V::idType::FUNC1C]},
-        {"vm", Form_V::fields[Form_V::idType::VM]},
-        {"rs2", Form_V::fields[Form_V::idType::RS2]},
-        {"rs1", Form_V::fields[Form_V::idType::RS1]},
-        {"simm5", Form_V::fields[Form_V::idType::SIMM5]},
+        {"vm",     Form_V::fields[Form_V::idType::VM]    },
+        {"rs2",    Form_V::fields[Form_V::idType::RS2]   },
+        {"rs1",    Form_V::fields[Form_V::idType::RS1]   },
+        {"simm5",  Form_V::fields[Form_V::idType::SIMM5] },
         {"func3b", Form_V::fields[Form_V::idType::FUNC3B]},
-        {"rd", Form_V::fields[Form_V::idType::RD]},
-        {"opcode", Form_V::fields[Form_V::idType::OPCODE]}};
+        {"rd",     Form_V::fields[Form_V::idType::RD]    },
+        {"opcode", Form_V::fields[Form_V::idType::OPCODE]}
+    };
 
     const std::map<std::string, Form_V::idType> Form_V::imap{
-        {"func1a", Form_V::idType::FUNC1A}, {"func1b", Form_V::idType::FUNC1B},
-        {"func3a", Form_V::idType::FUNC3A}, {"func1c", Form_V::idType::FUNC1C},
-        {"vm", Form_V::idType::VM},         {"rs2", Form_V::idType::RS2},
-        {"rs1", Form_V::idType::RS1},       {"simm5", Form_V::idType::SIMM5},
-        {"func3b", Form_V::idType::FUNC3B}, {"rd", Form_V::idType::RD},
-        {"opcode", Form_V::idType::OPCODE}};
+        {"func1a", Form_V::idType::FUNC1A},
+        {"func1b", Form_V::idType::FUNC1B},
+        {"func3a", Form_V::idType::FUNC3A},
+        {"func1c", Form_V::idType::FUNC1C},
+        {"vm",     Form_V::idType::VM    },
+        {"rs2",    Form_V::idType::RS2   },
+        {"rs1",    Form_V::idType::RS1   },
+        {"simm5",  Form_V::idType::SIMM5 },
+        {"func3b", Form_V::idType::FUNC3B},
+        {"rd",     Form_V::idType::RD    },
+        {"opcode", Form_V::idType::OPCODE}
+    };
 
     const FieldsType Form_V::opcode_fields{
         Form_V::fields[Form_V::idType::OPCODE], Form_V::fields[Form_V::idType::FUNC3A],
@@ -53,22 +60,28 @@ namespace mavis
         Field("rd", 7, 5),   Field("rs3", 7, 5),    Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_VF_mem::fmap{
-        {"nf", Form_VF_mem::fields[Form_VF_mem::idType::NF]},
-        {"mewop", Form_VF_mem::fields[Form_VF_mem::idType::MEWOP]},
-        {"vm", Form_VF_mem::fields[Form_VF_mem::idType::VM]},
-        {"rs2", Form_VF_mem::fields[Form_VF_mem::idType::RS2]},
-        {"rs1", Form_VF_mem::fields[Form_VF_mem::idType::RS1]},
-        {"width", Form_VF_mem::fields[Form_VF_mem::idType::WIDTH]},
-        {"rd", Form_VF_mem::fields[Form_VF_mem::idType::RD]},
-        {"rs3", Form_VF_mem::fields[Form_VF_mem::idType::RS3]},
-        {"opcode", Form_VF_mem::fields[Form_VF_mem::idType::OPCODE]}};
+        {"nf",     Form_VF_mem::fields[Form_VF_mem::idType::NF]    },
+        {"mewop",  Form_VF_mem::fields[Form_VF_mem::idType::MEWOP] },
+        {"vm",     Form_VF_mem::fields[Form_VF_mem::idType::VM]    },
+        {"rs2",    Form_VF_mem::fields[Form_VF_mem::idType::RS2]   },
+        {"rs1",    Form_VF_mem::fields[Form_VF_mem::idType::RS1]   },
+        {"width",  Form_VF_mem::fields[Form_VF_mem::idType::WIDTH] },
+        {"rd",     Form_VF_mem::fields[Form_VF_mem::idType::RD]    },
+        {"rs3",    Form_VF_mem::fields[Form_VF_mem::idType::RS3]   },
+        {"opcode", Form_VF_mem::fields[Form_VF_mem::idType::OPCODE]}
+    };
 
     const std::map<std::string, Form_VF_mem::idType> Form_VF_mem::imap{
-        {"nf", Form_VF_mem::idType::NF},        {"mewop", Form_VF_mem::idType::MEWOP},
-        {"vm", Form_VF_mem::idType::VM},        {"rs2", Form_VF_mem::idType::RS2},
-        {"rs1", Form_VF_mem::idType::RS1},      {"width", Form_VF_mem::idType::WIDTH},
-        {"rd", Form_VF_mem::idType::RD},        {"rs3", Form_VF_mem::idType::RS3},
-        {"opcode", Form_VF_mem::idType::OPCODE}};
+        {"nf",     Form_VF_mem::idType::NF    },
+        {"mewop",  Form_VF_mem::idType::MEWOP },
+        {"vm",     Form_VF_mem::idType::VM    },
+        {"rs2",    Form_VF_mem::idType::RS2   },
+        {"rs1",    Form_VF_mem::idType::RS1   },
+        {"width",  Form_VF_mem::idType::WIDTH },
+        {"rd",     Form_VF_mem::idType::RD    },
+        {"rs3",    Form_VF_mem::idType::RS3   },
+        {"opcode", Form_VF_mem::idType::OPCODE}
+    };
 
     const FieldsType Form_VF_mem::opcode_fields{Form_VF_mem::fields[Form_VF_mem::idType::OPCODE],
                                                 Form_VF_mem::fields[Form_VF_mem::idType::WIDTH],
@@ -86,17 +99,22 @@ namespace mavis
                                             Field("rd", 7, 5),     Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_V_vsetvli::fmap{
-        {"func1", Form_V_vsetvli::fields[Form_V_vsetvli::idType::FUNC1]},
-        {"imm11", Form_V_vsetvli::fields[Form_V_vsetvli::idType::IMM11]},
-        {"rs1", Form_V_vsetvli::fields[Form_V_vsetvli::idType::RS1]},
-        {"func3", Form_V_vsetvli::fields[Form_V_vsetvli::idType::FUNC3]},
-        {"rd", Form_V_vsetvli::fields[Form_V_vsetvli::idType::RD]},
-        {"opcode", Form_V_vsetvli::fields[Form_V_vsetvli::idType::OPCODE]}};
+        {"func1",  Form_V_vsetvli::fields[Form_V_vsetvli::idType::FUNC1] },
+        {"imm11",  Form_V_vsetvli::fields[Form_V_vsetvli::idType::IMM11] },
+        {"rs1",    Form_V_vsetvli::fields[Form_V_vsetvli::idType::RS1]   },
+        {"func3",  Form_V_vsetvli::fields[Form_V_vsetvli::idType::FUNC3] },
+        {"rd",     Form_V_vsetvli::fields[Form_V_vsetvli::idType::RD]    },
+        {"opcode", Form_V_vsetvli::fields[Form_V_vsetvli::idType::OPCODE]}
+    };
 
     const std::map<std::string, Form_V_vsetvli::idType> Form_V_vsetvli::imap{
-        {"func1", Form_V_vsetvli::idType::FUNC1}, {"imm11", Form_V_vsetvli::idType::IMM11},
-        {"rs1", Form_V_vsetvli::idType::RS1},     {"func3", Form_V_vsetvli::idType::FUNC3},
-        {"rd", Form_V_vsetvli::idType::RD},       {"opcode", Form_V_vsetvli::idType::OPCODE}};
+        {"func1",  Form_V_vsetvli::idType::FUNC1 },
+        {"imm11",  Form_V_vsetvli::idType::IMM11 },
+        {"rs1",    Form_V_vsetvli::idType::RS1   },
+        {"func3",  Form_V_vsetvli::idType::FUNC3 },
+        {"rd",     Form_V_vsetvli::idType::RD    },
+        {"opcode", Form_V_vsetvli::idType::OPCODE}
+    };
 
     const FieldsType Form_V_vsetvli::opcode_fields{
         Form_V_vsetvli::fields[Form_V_vsetvli::idType::OPCODE],
@@ -115,17 +133,22 @@ namespace mavis
                                              Field("rd", 7, 5),     Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_V_vsetivli::fmap{
-        {"func2", Form_V_vsetivli::fields[Form_V_vsetivli::idType::FUNC2]},
-        {"imm10", Form_V_vsetivli::fields[Form_V_vsetivli::idType::IMM10]},
-        {"avl", Form_V_vsetivli::fields[Form_V_vsetivli::idType::AVL]},
-        {"func3", Form_V_vsetivli::fields[Form_V_vsetivli::idType::FUNC3]},
-        {"rd", Form_V_vsetivli::fields[Form_V_vsetivli::idType::RD]},
-        {"opcode", Form_V_vsetivli::fields[Form_V_vsetivli::idType::OPCODE]}};
+        {"func2",  Form_V_vsetivli::fields[Form_V_vsetivli::idType::FUNC2] },
+        {"imm10",  Form_V_vsetivli::fields[Form_V_vsetivli::idType::IMM10] },
+        {"avl",    Form_V_vsetivli::fields[Form_V_vsetivli::idType::AVL]   },
+        {"func3",  Form_V_vsetivli::fields[Form_V_vsetivli::idType::FUNC3] },
+        {"rd",     Form_V_vsetivli::fields[Form_V_vsetivli::idType::RD]    },
+        {"opcode", Form_V_vsetivli::fields[Form_V_vsetivli::idType::OPCODE]}
+    };
 
     const std::map<std::string, Form_V_vsetivli::idType> Form_V_vsetivli::imap{
-        {"func2", Form_V_vsetivli::idType::FUNC2}, {"imm10", Form_V_vsetivli::idType::IMM10},
-        {"avl", Form_V_vsetivli::idType::AVL},     {"func3", Form_V_vsetivli::idType::FUNC3},
-        {"rd", Form_V_vsetivli::idType::RD},       {"opcode", Form_V_vsetivli::idType::OPCODE}};
+        {"func2",  Form_V_vsetivli::idType::FUNC2 },
+        {"imm10",  Form_V_vsetivli::idType::IMM10 },
+        {"avl",    Form_V_vsetivli::idType::AVL   },
+        {"func3",  Form_V_vsetivli::idType::FUNC3 },
+        {"rd",     Form_V_vsetivli::idType::RD    },
+        {"opcode", Form_V_vsetivli::idType::OPCODE}
+    };
 
     const FieldsType Form_V_vsetivli::opcode_fields{
         Form_V_vsetivli::fields[Form_V_vsetivli::idType::OPCODE],
@@ -144,17 +167,22 @@ namespace mavis
                                            Field("rd", 7, 5),     Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_V_vsetvl::fmap{
-        {"func7", Form_V_vsetvl::fields[Form_V_vsetvl::idType::FUNC7]},
-        {"rs2", Form_V_vsetvl::fields[Form_V_vsetvl::idType::RS2]},
-        {"rs1", Form_V_vsetvl::fields[Form_V_vsetvl::idType::RS1]},
-        {"func3", Form_V_vsetvl::fields[Form_V_vsetvl::idType::FUNC3]},
-        {"rd", Form_V_vsetvl::fields[Form_V_vsetvl::idType::RD]},
-        {"opcode", Form_V_vsetvl::fields[Form_V_vsetvl::idType::OPCODE]}};
+        {"func7",  Form_V_vsetvl::fields[Form_V_vsetvl::idType::FUNC7] },
+        {"rs2",    Form_V_vsetvl::fields[Form_V_vsetvl::idType::RS2]   },
+        {"rs1",    Form_V_vsetvl::fields[Form_V_vsetvl::idType::RS1]   },
+        {"func3",  Form_V_vsetvl::fields[Form_V_vsetvl::idType::FUNC3] },
+        {"rd",     Form_V_vsetvl::fields[Form_V_vsetvl::idType::RD]    },
+        {"opcode", Form_V_vsetvl::fields[Form_V_vsetvl::idType::OPCODE]}
+    };
 
     const std::map<std::string, Form_V_vsetvl::idType> Form_V_vsetvl::imap{
-        {"func7", Form_V_vsetvl::idType::FUNC7}, {"rs2", Form_V_vsetvl::idType::RS2},
-        {"rs1", Form_V_vsetvl::idType::RS1},     {"func3", Form_V_vsetvl::idType::FUNC3},
-        {"rd", Form_V_vsetvl::idType::RD},       {"opcode", Form_V_vsetvl::idType::OPCODE}};
+        {"func7",  Form_V_vsetvl::idType::FUNC7 },
+        {"rs2",    Form_V_vsetvl::idType::RS2   },
+        {"rs1",    Form_V_vsetvl::idType::RS1   },
+        {"func3",  Form_V_vsetvl::idType::FUNC3 },
+        {"rd",     Form_V_vsetvl::idType::RD    },
+        {"opcode", Form_V_vsetvl::idType::OPCODE}
+    };
 
     const FieldsType Form_V_vsetvl::opcode_fields{
         Form_V_vsetvl::fields[Form_V_vsetvl::idType::OPCODE],
@@ -172,20 +200,26 @@ namespace mavis
         Field("uimm5", 15, 5), Field("func3", 12, 3), Field("rd", 7, 5),  Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_V_uimm6::fmap{
-        {"func5", Form_V_uimm6::fields[Form_V_uimm6::idType::FUNC5]},
-        {"i5", Form_V_uimm6::fields[Form_V_uimm6::idType::I5]},
-        {"vm", Form_V_uimm6::fields[Form_V_uimm6::idType::VM]},
-        {"rs2", Form_V_uimm6::fields[Form_V_uimm6::idType::RS2]},
-        {"uimm5", Form_V_uimm6::fields[Form_V_uimm6::idType::UIMM5]},
-        {"func3", Form_V_uimm6::fields[Form_V_uimm6::idType::FUNC3]},
-        {"rd", Form_V_uimm6::fields[Form_V_uimm6::idType::RD]},
-        {"opcode", Form_V_uimm6::fields[Form_V_uimm6::idType::OPCODE]}};
+        {"func5",  Form_V_uimm6::fields[Form_V_uimm6::idType::FUNC5] },
+        {"i5",     Form_V_uimm6::fields[Form_V_uimm6::idType::I5]    },
+        {"vm",     Form_V_uimm6::fields[Form_V_uimm6::idType::VM]    },
+        {"rs2",    Form_V_uimm6::fields[Form_V_uimm6::idType::RS2]   },
+        {"uimm5",  Form_V_uimm6::fields[Form_V_uimm6::idType::UIMM5] },
+        {"func3",  Form_V_uimm6::fields[Form_V_uimm6::idType::FUNC3] },
+        {"rd",     Form_V_uimm6::fields[Form_V_uimm6::idType::RD]    },
+        {"opcode", Form_V_uimm6::fields[Form_V_uimm6::idType::OPCODE]}
+    };
 
     const std::map<std::string, Form_V_uimm6::idType> Form_V_uimm6::imap{
-        {"func5", Form_V_uimm6::idType::FUNC5}, {"i5", Form_V_uimm6::idType::I5},
-        {"vm", Form_V_uimm6::idType::VM},       {"rs2", Form_V_uimm6::idType::RS2},
-        {"uimm5", Form_V_uimm6::idType::UIMM5}, {"func3", Form_V_uimm6::idType::FUNC3},
-        {"rd", Form_V_uimm6::idType::RD},       {"opcode", Form_V_uimm6::idType::OPCODE}};
+        {"func5",  Form_V_uimm6::idType::FUNC5 },
+        {"i5",     Form_V_uimm6::idType::I5    },
+        {"vm",     Form_V_uimm6::idType::VM    },
+        {"rs2",    Form_V_uimm6::idType::RS2   },
+        {"uimm5",  Form_V_uimm6::idType::UIMM5 },
+        {"func3",  Form_V_uimm6::idType::FUNC3 },
+        {"rd",     Form_V_uimm6::idType::RD    },
+        {"opcode", Form_V_uimm6::idType::OPCODE}
+    };
 
     const FieldsType Form_V_uimm6::opcode_fields{Form_V_uimm6::fields[Form_V_uimm6::idType::OPCODE],
                                                  Form_V_uimm6::fields[Form_V_uimm6::idType::FUNC3],

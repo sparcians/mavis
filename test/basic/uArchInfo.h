@@ -64,19 +64,28 @@ class uArchInfo
   private:
     // Map unit names to unit ID's
     static inline std::map<std::string, UnitSet> umap_ = {
-        {"agu", UnitSet::AGU},       {"int", UnitSet::INT},     {"float", UnitSet::FLOAT},
-        {"mul", UnitSet::MULTIPLY},  {"div", UnitSet::DIVIDE},  {"branch", UnitSet::BRANCH},
-        {"load", UnitSet::LOAD},     {"store", UnitSet::STORE}, {"system", UnitSet::SYSTEM},
-        {"vector", UnitSet::VECTOR},
+        {"agu",    UnitSet::AGU     },
+        {"int",    UnitSet::INT     },
+        {"float",  UnitSet::FLOAT   },
+        {"mul",    UnitSet::MULTIPLY},
+        {"div",    UnitSet::DIVIDE  },
+        {"branch", UnitSet::BRANCH  },
+        {"load",   UnitSet::LOAD    },
+        {"store",  UnitSet::STORE   },
+        {"system", UnitSet::SYSTEM  },
+        {"vector", UnitSet::VECTOR  },
     };
 
     // TEMPORARY: map unit names to TargetUnit for back-level compatibility
     static inline std::map<std::string, IssueTarget> issue_target_map_ = {
-        {"int", IssueTarget::IEX},    {"float", IssueTarget::FEX},
-        {"branch", IssueTarget::BR},  {"load", IssueTarget::LSU},
-        {"store", IssueTarget::LSU},  {"system", IssueTarget::ROB}, // TEMPORARY!
-        {"vector", IssueTarget::FEX},                               // TEMPORARY!
-        {"rob", IssueTarget::ROB},                                  // TEMPORARY!
+        {"int",    IssueTarget::IEX},
+        {"float",  IssueTarget::FEX},
+        {"branch", IssueTarget::BR },
+        {"load",   IssueTarget::LSU},
+        {"store",  IssueTarget::LSU},
+        {"system", IssueTarget::ROB}, // TEMPORARY!
+        {"vector", IssueTarget::FEX}, // TEMPORARY!
+        {"rob",    IssueTarget::ROB}, // TEMPORARY!
     };
 
   public:
