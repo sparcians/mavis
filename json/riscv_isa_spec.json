@@ -484,7 +484,7 @@
     {
       "xlen": [32, 64],
       "extension": "zvfbfwma",
-      "requires": ["v"],
+      "requires": ["v", "zfbfmin"],
       "json": "isa_rv64zvfbfwma.json"
     },
     {
