@@ -1368,18 +1368,7 @@ namespace mavis::extension_manager
         {
             mavis_json_dir_ = mavis_json_dir;
 
-            std::ifstream fs;
-
-            try
-            {
-                fs.open(jfile);
-            }
-            catch (const std::ifstream::failure & ex)
-            {
-                throw BadISAFile(jfile);
-            }
-
-            const boost::json::value json = parseJSON(fs);
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
 
             try
             {

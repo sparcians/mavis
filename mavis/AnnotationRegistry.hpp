@@ -42,17 +42,12 @@ public:
         for (const auto &afile : anno_file_list_) {
             if (!afile.empty()) {
                 // Process and store the uarch information...
-                std::ifstream fs;
-
-                try {
-                    fs.open(afile);
-                } catch (const std::ifstream::failure &ex) {
-                    throw BadAnnotationFile(afile);
-                }
-
                 boost::json::value json;
                 try {
-                    json = parseJSON(fs);
+                    json = parseJSON(afile);
+                }
+                catch (const std::ifstream::failure &ex) {
+                    throw BadAnnotationFile(afile);
                 }
                 catch(std::exception & ex) {
                     std::cerr << __FUNCTION__ << ": ERROR parsing: '" << afile << "' " << ex.what() << std::endl;
@@ -108,8 +103,6 @@ public:
                     }
                     processed.insert(mnemonic);
                 }
-
-                fs.close();
             }
         }
     }

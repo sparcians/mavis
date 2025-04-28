@@ -46,15 +46,7 @@ public:
     {
         // Look for pseudo instruction entries in the ISA files
         for (const auto &jfile : isa_files) {
-            std::ifstream fs;
-
-            try {
-                fs.open(jfile);
-            } catch (const std::ifstream::failure &ex) {
-                throw BadISAFile(jfile);
-            }
-
-            const boost::json::value json = parseJSON(fs);
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
 
             const auto& jobj = json.as_array();
 
@@ -72,8 +64,6 @@ public:
                     build_(mnemonic, meta, dasm, form);
                 }
             }
-
-            fs.close();
         }
     }
 

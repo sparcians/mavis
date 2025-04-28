@@ -157,18 +157,7 @@ namespace mavis
         // Now populate the default factories from the provided JSON files...
         for (const auto & jfile : isa_files)
         {
-            std::ifstream fs;
-
-            try
-            {
-                fs.open(jfile);
-            }
-            catch (const std::ifstream::failure & ex)
-            {
-                throw BadISAFile(jfile);
-            }
-
-            const boost::json::value json = parseJSON(fs);
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
 
             const auto& jobj = json.as_array();
 
@@ -244,8 +233,6 @@ namespace mavis
                     throw BuildErrorMissingMnemonic(jfile);
                 }
             }
-
-            fs.close();
         }
 
         // Parse all expansion instructions
