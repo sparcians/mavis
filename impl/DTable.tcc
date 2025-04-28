@@ -132,8 +132,8 @@ namespace mavis
         const FileNameListType & isa_files, const MatchSet<Pattern> & inclusions,
         const MatchSet<Pattern> & exclusions)
     {
-        // Instructions with an "expand" clause must be parsed last since their
-        // factories must already exist for them to be registered successfully.
+        // Instructions with an "expand" or "overlay" clause must be parsed last
+        // since their factories must already exist for them to be registered.
         struct parseInstInfoArgs
         {
             const std::string jfile;
@@ -187,13 +187,14 @@ namespace mavis
                     }
 
                     const bool is_expansion = inst.find("expand") != inst.end();
+                    const bool is_overlay = inst.find("overlay") != inst.end();
 
                     if ((inclusions.isEmpty() && exclusions.isEmpty())
                         || (inclusions.isEmpty() && tags.isEmpty()))
                     {
                         // Inclusions & exclusions are empty, or inclusions empty and tags empty, no
                         // filtering active
-                        if (!is_expansion)
+                        if (!is_expansion && !is_overlay)
                         {
                             parseInstInfo_(jfile, inst, mnemonic, tags);
                         }
