@@ -23,21 +23,21 @@
       "extension": "zce"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvkn",
       "meta_extension": ["zvknc", "zvkng"]
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvknc"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvks",
       "meta_extension": ["zvksc", "zvksg"]
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvksc"
     },
     {
@@ -52,31 +52,31 @@
   ],
   "config_extensions": [
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvl32b"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvl64b"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvl128b"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvl256b"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvl512b"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvl1024b"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvkt"
     },
     {
@@ -306,8 +306,9 @@
       "json": "isa_rv32zfa_h.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "h",
+      "requires": "i",
       "json": "isa_rv64h.json"
     },
     {
@@ -419,7 +420,7 @@
       "json": "isa_rv64zcb.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zfbfmin",
       "requires": ["f"],
       "json": "isa_rv64zfbfmin.json"
@@ -449,70 +450,70 @@
       "json": "isa_rv32zfhmin_d.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zicbom",
       "json": "isa_rv64zicbom.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zicbop",
       "json": "isa_rv64zicbop.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zicboz",
       "json": "isa_rv64zicboz.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zihintntl",
       "json": "isa_rv64zihintntl.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvbb",
       "meta_extension": ["zvkn", "zvks"],
       "json": "isa_rv64zvbb.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvbc",
       "meta_extension": ["zvknc", "zvksc"],
       "json": "isa_rv64zvbc.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvfbfwma",
-      "requires": ["v"],
+      "requires": ["v", "zfbfmin"],
       "json": "isa_rv64zvfbfwma.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvkg",
       "meta_extension": ["zvkng", "zvksg"],
       "json": "isa_rv64zvkg.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvkned",
       "meta_extension": ["zvkn"],
       "json": "isa_rv64zvkned.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvknhb",
       "aliases": ["zvknha"],
       "meta_extension": ["zvkn"],
       "json": "isa_rv64zvknh.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvksed",
       "meta_extension": "zvks",
       "json": "isa_rv64zvksed.json"
     },
     {
-      "xlen": 64,
+      "xlen": [32, 64],
       "extension": "zvksh",
       "meta_extension": "zvks",
       "json": "isa_rv64zvksh.json"
