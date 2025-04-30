@@ -6,6 +6,7 @@
 
 namespace mavis
 {
+    // Parses the JSON file at the given path
     inline boost::json::value parseJSON(const std::string& path)
     {
         std::ifstream fs;
@@ -21,6 +22,7 @@ namespace mavis
         boost::system::error_code ec;
 
 #if (BOOST_VERSION / 100 >= 1081)
+        // Boost v1.81+ has an override for boost::json::parse that takes an std::ifstream
         const boost::json::value json = boost::json::parse(fs, ec);
 
         if (json.is_null() || ec)
@@ -28,6 +30,7 @@ namespace mavis
             throw boost::system::system_error(ec);
         }
 #else
+        // For older versions we have to handle the std::ifstream ourselves
         boost::json::stream_parser parser;
         std::string buf;
         while(std::getline(fs, buf))
@@ -46,6 +49,8 @@ namespace mavis
         return json;
     }
 
+    // Attempts to parse the JSON file at the given path, throwing OpenFailedExceptionType
+    // if there was an error opening the file
     template<typename OpenFailedExceptionType>
     inline boost::json::value parseJSONWithException(const std::string& path)
     {
@@ -59,17 +64,26 @@ namespace mavis
         }
     }
 
+    // Comparer object that allows using a boost::json::string to look up values in an std::map<std::string, T> without any copying overhead
     struct JSONStringMapCompare : public std::less<std::string>
     {
+        // Indicates to the standard library that this comparator is able to perform heterogeneous comparisons without conversion
+        // See "Transparent function objects" at https://en.cppreference.com/w/cpp/utility/functional
+        // When is_transparent is defined to any type, overrides (3) and (4) of std::map::find (https://en.cppreference.com/w/cpp/container/map/find)
+        // become available
         using is_transparent = void;
 
+        // Inherit the existing std::less<std::string> operator so we can still compare an std::string against another std::string
         using std::less<std::string>::operator();
 
+        // Both boost::json::string and std::string can be cheaply wrapped by std::string_view,
+        // which provides the same < operator as std::string
         inline bool operator()(const boost::json::string& lhs, const std::string& rhs) const
         {
             return std::string_view(lhs) < std::string_view(rhs);
         }
 
+        // Same as obove but with left and right hand sides swapped
         inline bool operator()(const std::string& lhs, const boost::json::string& rhs) const
         {
             return std::string_view(lhs) < std::string_view(rhs);
