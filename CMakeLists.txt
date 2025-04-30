@@ -29,7 +29,7 @@ endif()
 
 if(PROJECT_IS_TOP_LEVEL)
   add_custom_target(clangformat
-    git ls-files "*.hpp" "*.cpp" "*.h" "*.tcc" | grep -v json.hpp > clang-format-files.out
+    git ls-files "*.hpp" "*.cpp" "*.h" "*.tcc" > clang-format-files.out
     COMMAND
        ${CLANGFORMAT_EXECUTABLE} -i --files=clang-format-files.out
     COMMAND
