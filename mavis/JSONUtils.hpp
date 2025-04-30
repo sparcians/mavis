@@ -83,7 +83,7 @@ namespace mavis
             return std::string_view(lhs) < std::string_view(rhs);
         }
 
-        // Same as obove but with left and right hand sides swapped
+        // Same as above but with left and right hand sides swapped
         inline bool operator()(const std::string& lhs, const boost::json::string& rhs) const
         {
             return std::string_view(lhs) < std::string_view(rhs);
