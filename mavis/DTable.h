@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <set>
-#include "json.hpp"
+#include <boost/json.hpp>
 #include "FormRegistry.h"
 #include "FormPseudo.h"
 #include "IFactory.h"
@@ -407,7 +407,7 @@ namespace mavis
         std::unique_ptr<InstCache> icache_;
         std::unique_ptr<IFactoryCache> ocache_;
 
-        void parseInstInfo_(const std::string & jfile, const nlohmann::json & inst,
+        void parseInstInfo_(const std::string & jfile, const boost::json::object & inst,
                             const std::string & mnemonic, const MatchSet<Tag> & tags);
 
         typename IFactoryIF<InstType, AnnotationType>::PtrType

@@ -3,7 +3,8 @@
 #include <map>
 #include <set>
 #include <fstream>
-#include "json.hpp"
+
+#include "JSONUtils.hpp"
 #include "DecoderTypes.h"
 #include "Extractor.h"
 #include "DecoderExceptions.h"
@@ -41,27 +42,22 @@ public:
         for (const auto &afile : anno_file_list_) {
             if (!afile.empty()) {
                 // Process and store the uarch information...
-                std::ifstream fs;
-                std::ios_base::iostate exceptionMask = fs.exceptions() | std::ios::failbit;
-                fs.exceptions(exceptionMask);
-
+                boost::json::value json;
                 try {
-                    fs.open(afile);
-                } catch (const std::ifstream::failure &ex) {
-                    throw BadAnnotationFile(afile);
+                    json = parseJSON(afile);
                 }
-
-                nlohmann::json jobj;
-                try {
-                    fs >> jobj;
+                catch (const std::ifstream::failure &ex) {
+                    throw BadAnnotationFile(afile);
                 }
                 catch(std::exception & ex) {
                     std::cerr << __FUNCTION__ << ": ERROR parsing: '" << afile << "' " << ex.what() << std::endl;
                     throw;
                 }
 
+                auto& jobj = json.as_array();
+
                 // Attempt to apply the annotation to the given jobj
-                std::map<std::string, nlohmann::json> jobj_annotations;
+                std::map<std::string, boost::json::object> jobj_annotations;
                 for (auto ann : anno_overrides) {
                     const std::string mnemonic  = string_ws_trim(ann.first);
                     const std::string attribute = string_ws_trim(ann.second);
@@ -77,7 +73,7 @@ public:
                                   << " \n expected name:value" << std::endl;
                         throw;
                     }
-                    jobj_annotations[mnemonic][attr_name] = nlohmann::json::parse(attr_value);
+                    jobj_annotations[mnemonic][attr_name] = boost::json::parse(attr_value);
                 }
 
                 // This is a little set of mnemonics registered within the current afile, so
@@ -87,11 +83,14 @@ public:
 
                 // I'm assuming the json objects are large, so I'll process the information
                 // into the internal form, and throw the json object away
-                for (auto &inst : jobj)
+                for (auto &inst_value : jobj)
                 {
-                    const std::string mnemonic = inst["mnemonic"];
+                    auto& inst = inst_value.as_object();
+                    const std::string mnemonic = boost::json::value_to<std::string>(inst["mnemonic"]);
                     if(const auto it = jobj_annotations.find(mnemonic); it != jobj_annotations.end()) {
-                        inst.update(it->second);
+                        for(const auto& item: it->second) {
+                            inst.insert_or_assign(item.key(), item.value());
+                        }
                     }
                     const typename AnnotationType::PtrType &anno = privateFindAnnotation_(mnemonic);
                     if (anno == not_found_) {
@@ -104,8 +103,6 @@ public:
                     }
                     processed.insert(mnemonic);
                 }
-
-                fs.close();
             }
         }
     }

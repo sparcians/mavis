@@ -2,8 +2,8 @@
 
 #include <map>
 #include <fstream>
+#include "JSONUtils.hpp"
 #include "BuilderBase.hpp"
-#include "json.hpp"
 #include "Extractor.h"
 #include "IFactoryPseudo.hpp"
 #include "FormGeneric.hpp"
@@ -46,24 +46,16 @@ public:
     {
         // Look for pseudo instruction entries in the ISA files
         for (const auto &jfile : isa_files) {
-            std::ifstream fs;
-            std::ios_base::iostate exceptionMask = fs.exceptions() | std::ios::failbit;
-            fs.exceptions(exceptionMask);
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
 
-            try {
-                fs.open(jfile);
-            } catch (const std::ifstream::failure &ex) {
-                throw BadISAFile(jfile);
-            }
-
-            nlohmann::json jobj;
-            fs >> jobj;
+            const auto& jobj = json.as_array();
 
             // Read in the pseudo instructions JSON file and process its fields
-            for (const auto &inst : jobj) {
+            for (const auto &inst_value : jobj) {
+                const auto& inst = inst_value.as_object();
                 std::string mnemonic;
-                if (inst.find("pseudo") != inst.end()) {
-                    mnemonic = std::string(inst["pseudo"]);
+                if (const auto it = inst.find("pseudo"); it != inst.end()) {
+                    mnemonic = boost::json::value_to<std::string>(it->value());
                     InstMetaData::PtrType meta = this->makeInstMetaData(mnemonic, inst);
                     // TODO: Implement a "getDisassembler" method to retrieve the disassembler object
                     // associated with this pseudo-instruction... Maybe this is like makeInstMetaData()?
@@ -72,8 +64,6 @@ public:
                     build_(mnemonic, meta, dasm, form);
                 }
             }
-
-            fs.close();
         }
     }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "json.hpp"
+#include <boost/json.hpp>
 #include "DecoderExceptions.h"
 #include <vector>
 #include "InstMetaData.h"
@@ -36,7 +36,7 @@ public:
     static constexpr uint32_t INVALID_LIST_POS = -1;
 
 private:
-    using json = nlohmann::json;
+    using json = boost::json::object;
     typedef std::vector<std::string> OperandNameListType;
     typedef std::vector<std::string> SpecialFieldNameListType;
 
@@ -95,9 +95,9 @@ public:
         // NOTE: For stores, the list of ID's should put address sources
         // first, then data sources. This is to match the ordering of address
         // then data sources in ExtractorDirectInfo_Stores::getSourceOperandInfo
-        if (inst.find("sources") != inst.end()) {
+        if (const auto it = inst.find("sources"); it != inst.end()) {
             OperandNameListType olist;
-            olist = inst["sources"].get<OperandNameListType>();
+            olist = boost::json::value_to<OperandNameListType>(it->value());
 
             for (const auto& oname : olist) {
                 InstMetaData::OperandFieldID fid = meta->getFieldID(oname);
@@ -110,9 +110,9 @@ public:
             }
         }
 
-        if (inst.find("dests") != inst.end()) {
+        if (const auto it = inst.find("dests"); it != inst.end()) {
             OperandNameListType olist;
-            olist = inst["dests"].get<OperandNameListType>();
+            olist = boost::json::value_to<OperandNameListType>(it->value());
 
             for (const auto& oname : olist) {
                 InstMetaData::OperandFieldID fid = meta->getFieldID(oname);
@@ -126,9 +126,9 @@ public:
         }
 
         // Parse special fields list
-        if (inst.find("specials") != inst.end()) {
+        if (const auto it = inst.find("specials"); it != inst.end()) {
             OperandNameListType slist;
-            slist = inst["specials"].get<SpecialFieldNameListType>();
+            slist = boost::json::value_to<SpecialFieldNameListType>(it->value());
 
             uint32_t pos = 0;
             for (const auto& sname : slist) {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "json.hpp"
+#include <boost/json.hpp>
 #include "DecoderTypes.h"
 #include "DecoderExceptions.h"
 //#include "IFactoryBuilder.h"
@@ -15,7 +15,7 @@ template<typename InstType, typename AnnotationType>
 class Overlay
 {
 private:
-    using json = nlohmann::json;
+    using json = boost::json::object;
     typedef typename std::vector<std::string> FieldNameListType;
     typedef typename std::vector<std::string> MatchMaskValType;
 
@@ -39,14 +39,14 @@ public:
         mnemonic_(mnemonic), json_inst_(inst), xform_extractor_(xform_extractor)
     {
         // Parse the JSON overlay section to set up this object
-        if (olay.find("base") != olay.end()) {
-            base_mnemonic_ = static_cast<std::string>(olay["base"]);
+        if (const auto it = olay.find("base"); it != olay.end()) {
+            base_mnemonic_ = boost::json::value_to<std::string>(it->value());
         } else {
             throw BuildErrorOverlayMissingBase(mnemonic);
         }
 
-        if (olay.find("match") != olay.end()) {
-            MatchMaskValType mlist = olay["match"].get<MatchMaskValType>();
+        if (const auto it = olay.find("match"); it != olay.end()) {
+            MatchMaskValType mlist = boost::json::value_to<MatchMaskValType>(it->value());
             if (mlist.size() != 2) {
                 throw BuildErrorOverlayBadMatchSpec(mnemonic);
             }

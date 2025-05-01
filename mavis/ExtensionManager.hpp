@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <list>
+#include <numeric>
 #include <string_view>
 #include <unordered_set>
 
@@ -14,8 +15,8 @@
 #include <boost/graph/depth_first_search.hpp>
 #endif
 
+#include "JSONUtils.hpp"
 #include "DecoderExceptions.h"
-#include "json.hpp"
 #include "mavis/Mavis.h"
 
 namespace mavis::extension_manager
@@ -29,6 +30,15 @@ namespace mavis::extension_manager
         explicit ExtensionManagerException(const std::string & msg) : msg_(msg) {}
 
         const char* what() const noexcept override { return msg_.c_str(); }
+    };
+
+    class JSONParseError : public ExtensionManagerException
+    {
+        public:
+            JSONParseError(const std::string& path, const boost::system::error_code& ec) :
+                ExtensionManagerException("Error parsing file " + path + ": " + ec.to_string())
+            {
+            }
     };
 
     class UninitializedISASpecException : public ExtensionManagerException
@@ -223,33 +233,33 @@ namespace mavis::extension_manager
 
     template <typename DataT> struct JSONVectorConverter
     {
-        static std::vector<DataT> get(const nlohmann::json & obj)
+        static std::vector<DataT> get(const boost::json::value & obj)
         {
             if (obj.is_array())
             {
-                return obj.get<std::vector<DataT>>();
+                return boost::json::value_to<std::vector<DataT>>(obj);
             }
 
-            return std::vector<DataT>(1, obj.get<DataT>());
+            return std::vector<DataT>(1, boost::json::value_to<DataT>(obj));
         }
     };
 
     template <typename DataT> struct JSONVectorConverter<std::vector<DataT>>
     {
-        static std::vector<std::vector<DataT>> get(const nlohmann::json & obj)
+        static std::vector<std::vector<DataT>> get(const boost::json::value & obj)
         {
             std::vector<std::vector<DataT>> result;
 
             if (obj.is_array())
             {
-                for (const auto & elem : obj)
+                for (const auto & elem : obj.as_array())
                 {
                     result.emplace_back(JSONVectorConverter<DataT>::get(elem));
                 }
             }
             else
             {
-                result.emplace_back(std::vector<DataT>(1, obj.get<DataT>()));
+                result.emplace_back(std::vector<DataT>(1, boost::json::value_to<DataT>(obj)));
             }
 
             return result;
@@ -688,7 +698,7 @@ namespace mavis::extension_manager
             return *getExtensionInfo_(extension);
         }
 
-        ExtensionInfo & addExtension(const std::string & extension, const std::string & json = "")
+        ExtensionInfo & addExtension(const std::string & extension, const boost::json::string & json = "")
         {
             if (const auto it = extensions_.find(extension); it != extensions_.end())
             {
@@ -696,7 +706,7 @@ namespace mavis::extension_manager
             }
 
             const auto result =
-                extensions_.emplace(extension, std::make_shared<ExtensionInfo>(extension, json));
+                extensions_.emplace(extension, std::make_shared<ExtensionInfo>(extension, json.c_str()));
 
 #ifdef ENABLE_GRAPH_SANITY_CHECKER
             getVertex_(extension);
@@ -1018,41 +1028,42 @@ namespace mavis::extension_manager
         };
 
         virtual void processArchSpecificExtensionInfo_(ExtensionState &, const std::string &,
-                                                       const nlohmann::json &,
+                                                       const boost::json::object &,
                                                        const ExtensionType) const
         {
         }
 
-        virtual uint32_t convertMultiArchString_(const std::string & multiarch_str) const = 0;
+        virtual uint32_t convertMultiArchString_(const boost::json::string & multiarch_str) const = 0;
 
         virtual std::vector<uint32_t>
-        convertMultiArchVector_(const std::vector<std::string> & multiarch_str_vec) const
+        convertMultiArchVector_(const boost::json::array & multiarch_str_vec) const
         {
             std::vector<uint32_t> arches;
             arches.resize(multiarch_str_vec.size());
 
             std::transform(multiarch_str_vec.begin(), multiarch_str_vec.end(), arches.begin(),
-                           [this](const std::string & multiarch_str)
-                           { return convertMultiArchString_(multiarch_str); });
+                           [this](const boost::json::value & multiarch_str)
+                           { return convertMultiArchString_(multiarch_str.as_string()); });
 
             return arches;
         }
 
         virtual std::vector<uint32_t>
-        getMultiArchVector_(const nlohmann::json & multiarch_obj) const
+        getMultiArchVector_(const boost::json::value & multiarch_obj) const
         {
             if (multiarch_obj.is_array())
             {
-                if (!multiarch_obj.empty())
+                const auto& multiarch_array = multiarch_obj.as_array();
+
+                if (!multiarch_array.empty())
                 {
-                    if (multiarch_obj.front().is_string())
+                    if (multiarch_array.front().is_string())
                     {
-                        return convertMultiArchVector_(
-                            multiarch_obj.get<std::vector<std::string>>());
+                        return convertMultiArchVector_(multiarch_array);
                     }
-                    else if (multiarch_obj.front().is_number())
+                    else if (multiarch_array.front().is_number())
                     {
-                        return multiarch_obj.get<std::vector<uint32_t>>();
+                        return boost::json::value_to<std::vector<uint32_t>>(multiarch_obj);
                     }
                 }
 
@@ -1060,7 +1071,7 @@ namespace mavis::extension_manager
             }
             else
             {
-                return std::vector<uint32_t>(1, multiarch_obj.get<uint32_t>());
+                return std::vector<uint32_t>(1, boost::json::value_to<uint32_t>(multiarch_obj));
             }
         }
 
@@ -1136,7 +1147,7 @@ namespace mavis::extension_manager
 
         template <DependencyType dep_type>
         static std::vector<typename DependencyTraits<dep_type>::value_type>
-        getDependencyValue_(const nlohmann::json & obj)
+        getDependencyValue_(const boost::json::value & obj)
         {
             return JSONVectorConverter<typename DependencyTraits<dep_type>::value_type>::get(obj);
         }
@@ -1164,14 +1175,14 @@ namespace mavis::extension_manager
         }
 
         template <RuleType rule_type>
-        static std::vector<std::string> getRuleValue_(const nlohmann::json & obj)
+        static std::vector<std::string> getRuleValue_(const boost::json::value & obj)
         {
             return JSONVectorConverter<std::string>::get(obj);
         }
 
         template <bool is_normal_extension, DependencyType dep_type>
         static void processOptionalDependency_(ExtensionState & extensions, const std::string & ext,
-                                               const nlohmann::json & obj)
+                                               const boost::json::object & obj)
         {
             constexpr const char* key = getDependencyKey_<dep_type>();
 
@@ -1183,13 +1194,13 @@ namespace mavis::extension_manager
                 }
 
                 extensions.template addDependency<dep_type>(ext,
-                                                            getDependencyValue_<dep_type>(*it));
+                                                            getDependencyValue_<dep_type>(it->value()));
             }
         }
 
         template <bool is_normal_extension, RuleType rule_type>
         static void processRule_(ExtensionState & extensions, const std::string & ext,
-                                 const nlohmann::json & obj)
+                                 const boost::json::object & obj)
         {
             constexpr const char* key = getRuleKey_<rule_type>();
 
@@ -1200,25 +1211,25 @@ namespace mavis::extension_manager
                     throw MetaExtensionUnexpectedJSONKeyException(key);
                 }
 
-                extensions.template addRule<rule_type>(ext, getRuleValue_<rule_type>(*it));
+                extensions.template addRule<rule_type>(ext, getRuleValue_<rule_type>(it->value()));
             }
         }
 
         template <typename T>
-        static T getRequiredJSONValue_(const nlohmann::json & jobj, const std::string & key)
+        static T getRequiredJSONValue_(const boost::json::value & jobj, const std::string & key)
         {
             try
             {
-                return jobj.at(key);
+                return boost::json::value_to<T>(jobj.at(key));
             }
-            catch (const nlohmann::json::exception &)
+            catch (const boost::system::system_error &)
             {
                 throw MissingRequiredJSONKeyException(key);
             }
         }
 
         template <ExtensionType extension_type>
-        void processExtension_(const nlohmann::json & ext_obj)
+        void processExtension_(const boost::json::object & ext_obj)
         {
             static constexpr bool is_normal_extension = extension_type == ExtensionType::NORMAL;
             static constexpr bool is_config_extension = extension_type == ExtensionType::CONFIG;
@@ -1233,7 +1244,7 @@ namespace mavis::extension_manager
             {
                 if (const auto it = ext_obj.find(multiarch_key); it != ext_obj.end())
                 {
-                    arches = getMultiArchVector_(*it);
+                    arches = getMultiArchVector_(it->value());
                 }
                 else
                 {
@@ -1254,7 +1265,7 @@ namespace mavis::extension_manager
                 {
                     if (auto json_it = ext_obj.find("json"); json_it != ext_obj.end())
                     {
-                        arch_extensions.addExtension(ext, *json_it);
+                        arch_extensions.addExtension(ext, json_it->value().as_string());
                     }
                     else
                     {
@@ -1357,54 +1368,35 @@ namespace mavis::extension_manager
         {
             mavis_json_dir_ = mavis_json_dir;
 
-            std::ifstream fs;
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
 
             try
             {
-                fs.open(jfile);
-            }
-            catch (const std::ifstream::failure & ex)
-            {
-                throw BadISAFile(jfile);
-            }
+                const auto& jobj = json.as_object();
 
-            nlohmann::json jobj;
-
-            try
-            {
-                fs >> jobj;
-            }
-            catch (const nlohmann::json::parse_error &)
-            {
-                std::cerr << "Error parsing file " << jfile << std::endl;
-                throw;
-            }
-
-            try
-            {
                 if (auto meta_extensions_it = jobj.find("meta_extensions");
                     meta_extensions_it != jobj.end())
                 {
-                    for (const auto & meta_ext_obj : *meta_extensions_it)
+                    for (const auto & meta_ext_obj : meta_extensions_it->value().as_array())
                     {
-                        processExtension_<ExtensionType::META>(meta_ext_obj);
+                        processExtension_<ExtensionType::META>(meta_ext_obj.as_object());
                     }
                 }
 
                 if (auto config_extensions_it = jobj.find("config_extensions");
                     config_extensions_it != jobj.end())
                 {
-                    for (const auto & config_ext_obj : *config_extensions_it)
+                    for (const auto & config_ext_obj : config_extensions_it->value().as_array())
                     {
-                        processExtension_<ExtensionType::CONFIG>(config_ext_obj);
+                        processExtension_<ExtensionType::CONFIG>(config_ext_obj.as_object());
                     }
                 }
 
                 if (auto extensions_it = jobj.find("extensions"); extensions_it != jobj.end())
                 {
-                    for (const auto & ext_obj : *extensions_it)
+                    for (const auto & ext_obj : extensions_it->value().as_array())
                     {
-                        processExtension_<ExtensionType::NORMAL>(ext_obj);
+                        processExtension_<ExtensionType::NORMAL>(ext_obj.as_object());
                     }
                 }
             }
