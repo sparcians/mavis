@@ -99,7 +99,7 @@ make
 
 | RVA23S64 Mandatory Extensions | Status |
 | :---------------------------- | :----: |
-| **Zifencei** Instruction-Fetch Fence. | :x: |
+| **Zifencei** Instruction-Fetch Fence. | :white_check_mark: |
 | **Svbare** The satp mode Bare must be supported. | |
 | **Sv39** Page-based 39-bit virtual-Memory system. | |
 | **Svade** Page-fault exceptions are raised when a page is accessed when A bit is clear, or written when D bit is clear. | |
@@ -120,9 +120,9 @@ make
 must be writable. | |
 | **Shvstvala** vstval must be written in all cases described above for stval. | |
 | **Shtvala** htval must be written with the faulting guest physical address in all circumstances permitted by the ISA. | |
-| **Shvstvecd** vstvec.MODE must be capable of holding the value 0 (Direct). When vstvec.MODE=Direct, vstvec.BASE must be capable of holding any valid four-byte-aligned address. | :x: |
-| **Shvsatpa** All translation modes supported in satp must be supported in vsatp. | :x: |
-| **Shgatpa** For each supported virtual memory scheme SvNN supported in satp, the corresponding hgatp SvNNx4 mode must be supported. The hgatp mode Bare must also be supported. | :x: |
+| **Shvstvecd** vstvec.MODE must be capable of holding the value 0 (Direct). When vstvec.MODE=Direct, vstvec.BASE must be capable of holding any valid four-byte-aligned address. | |
+| **Shvsatpa** All translation modes supported in satp must be supported in vsatp. | |
+| **Shgatpa** For each supported virtual memory scheme SvNN supported in satp, the corresponding hgatp SvNNx4 mode must be supported. The hgatp mode Bare must also be supported. | |
 
 | RVA23S64 Optional Extensions | Status |
 | :--------------------------- | :----: |
