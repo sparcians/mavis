@@ -43,14 +43,14 @@ make
 
 | RVA23U64 Mandatory Extensions | Status |
 | :---------------------------- | :----: |
-| M Integer multiplication and division. | &#10004; |
+| M Integer multiplication and division. | :white_check_mark: |
 | A Atomic instructions. | SUPPORTED |
 | F Single-precision floating-point instructions. | SUPPORTED |
 | D Double-precision floating-point instructions. | SUPPORTED |
 | C Compressed instructions. | SUPPORTED |
 | B Bit-manipulation instructions. | SUPPORTED |
 | Zicsr CSR instructions. These are implied by presence of F. | SUPPORTED |
-| Zicntr Base counters and timers. | UNSUPPORTED |
+| Zicntr Base counters and timers. | :x: |
 | Zihpm Hardware performance counters. | UNSUPPORTED |
 | Ziccif Main memory regions with both the cacheability and coherence PMAs must support instruction fetch, and any instruction fetches of naturally aligned power-of-2 sizes up to min(ILEN,XLEN) (i.e., 32 bits for RVA23) are atomic. | UNSUPPORTED |
 | Ziccrse Main memory regions with both the cacheability and coherence PMAs must support RsrvEventual. | UNSUPPORTED |
