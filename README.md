@@ -43,7 +43,7 @@ make
 
 | RVA23U64 Mandatory Extensions | Status |
 | :---------------------------- | :----: |
-| M Integer multiplication and division. | &#2705; |
+| M Integer multiplication and division. | &#10004; |
 | A Atomic instructions. | SUPPORTED |
 | F Single-precision floating-point instructions. | SUPPORTED |
 | D Double-precision floating-point instructions. | SUPPORTED |
