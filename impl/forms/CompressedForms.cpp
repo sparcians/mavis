@@ -415,8 +415,8 @@ namespace mavis
     };
 
     const FieldsType Form_CMPP::opcode_fields{Form_CMPP::fields[Form_CMPP::idType::OPCODE],
-                                              Form_CMPP::fields[Form_CMPP::idType::FUNC5],
-                                              Form_CMPP::fields[Form_CMPP::idType::FUNC3]};
+                                              Form_CMPP::fields[Form_CMPP::idType::FUNC3],
+                                              Form_CMPP::fields[Form_CMPP::idType::FUNC5]};
 
     const ImmediateType Form_CMPP::immediate_type = ImmediateType::SIGNED;
 
