@@ -1,0 +1,10 @@
+[
+  {
+    "mnemonic" : "cm.push",
+    "tags" : ["zcmp"],
+    "form" : "C2",
+    "ignore" : ["func1"],
+    "xform" : "C2_sp_store_double",
+    "stencil" : "0xb802"
+  }
+]

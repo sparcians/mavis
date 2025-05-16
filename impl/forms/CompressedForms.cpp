@@ -389,4 +389,35 @@ namespace mavis
 
     const ImmediateType Form_CJR::immediate_type = ImmediateType::NONE;
 
+    /**
+     * CMPP-Form
+     */
+    const char* Form_CMPP::name{"CMPP"};
+
+    const FieldsType Form_CMPP::fields{Field("func6", 10, 6), Field("func2", 8, 2),
+                                       Field("urlist", 4, 4), Field("spimm", 2, 2),
+                                       Field("opcode", 0, 2)};
+
+    const std::map<std::string, const Field &> Form_CMPP::fmap{
+        {"func6",  Form_CMPP::fields[Form_CMPP::idType::FUNC6] },
+        {"func2",  Form_CMPP::fields[Form_CMPP::idType::FUNC2] },
+        {"urlist", Form_CMPP::fields[Form_CMPP::idType::URLIST]},
+        {"spimm",  Form_CMPP::fields[Form_CMPP::idType::SPIMM] },
+        {"opcode", Form_CMPP::fields[Form_CMPP::idType::OPCODE]}
+    };
+
+    const std::map<std::string, Form_CMPP::idType> Form_CMPP::imap{
+        {"func6",  Form_CMPP::idType::FUNC6 },
+        {"func2",  Form_CMPP::idType::FUNC2 },
+        {"urlist", Form_CMPP::idType::URLIST},
+        {"spimm",  Form_CMPP::idType::SPIMM },
+        {"opcode", Form_CMPP::idType::OPCODE}
+    };
+
+    const FieldsType Form_CMPP::opcode_fields{Form_CMPP::fields[Form_CMPP::idType::OPCODE],
+                                            Form_CMPP::fields[Form_CMPP::idType::FUNC6],
+                                            Form_CMPP::fields[Form_CMPP::idType::FUNC2]};
+
+    const ImmediateType Form_CMPP::immediate_type = ImmediateType::NONE;
+
 } // namespace mavis
