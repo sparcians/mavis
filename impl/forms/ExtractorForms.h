@@ -1811,6 +1811,8 @@ namespace mavis
         {
             const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
 
+            ss << "{";
+
             if(urlist >= 0x4)
             {
                 ss << (enable_prefix ? "x1" : "1");
@@ -1839,6 +1841,8 @@ namespace mavis
                     }
                 }
             }
+
+            ss << "}";
         }
 
         static constexpr uint32_t getAdditionalRlistReg_(const uint64_t urlist)
