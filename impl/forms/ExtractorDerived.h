@@ -2358,6 +2358,199 @@ namespace mavis
     };
 
     /**
+     * Derivative of CMPP Extractor that handles cm.push instructions
+     */
+    template <> class Extractor<Form_CMPP_push> : public Extractor<Form_CMPP>
+    {
+      public:
+        int64_t getSignedOffset(const Opcode icode) const override
+        {
+            return -getImmediate(icode);
+        }
+
+        uint64_t getSourceRegs(const Opcode icode) const override
+        {
+            return (1ull << REGISTER_SP) | decodeRlist_(icode);
+        }
+
+        uint64_t getDestRegs(const Opcode icode) const override
+        {
+            return 1ull << REGISTER_SP;
+        }
+
+        OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                         bool suppress_x0 = false) const override
+        {
+            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RS1);
+
+            OperandInfo olist;
+            olist.addElement(InstMetaData::OperandFieldID::RS1, op_type, REGISTER_SP, false);
+            convertRlistToOpcodeInfo_(olist, icode, op_type, InstMetaData::OperandFieldID::PUSH_RS1);
+            return olist;
+        }
+
+        OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                       bool suppress_x0 = false) const override
+        {
+            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RS1);
+
+            OperandInfo olist;
+            olist.addElement(InstMetaData::OperandFieldID::RD, op_type, REGISTER_SP, false);
+            return olist;
+        }
+    };
+
+    /**
+     * Derivative of CMPP Extractor that handles cm.popretz instructions
+     */
+    template <> class Extractor<Form_CMPP_popretz> : public Extractor<Form_CMPP>
+    {
+      public:
+        uint64_t getDestRegs(const Opcode icode) const override
+        {
+            return Extractor<Form_CMPP>::getDestRegs(icode) | (1ull << 10);
+        }
+    };
+
+    /**
+     * Derivative of CA extractor for cm.mva01s instructions
+     */
+    template <> class Extractor<Form_CMMV_mva01s> : public Extractor<Form_CA>
+    {
+      public:
+        uint64_t getSourceRegs(const Opcode icode) const override
+        {
+            return Extractor<Form_CA>::getSourceRegs(icode);
+        }
+
+        uint64_t getDestRegs(const Opcode icode) const override
+        {
+            // Dests are always a0 and a1
+            return (1ull << 10) | (1ull << 11);
+        }
+
+        uint64_t getSourceOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                       InstMetaData::OperandTypes kind) const override
+        {
+            if (meta->isAllOperandType(kind)
+                || (kind == InstMetaData::OperandTypes::LONG)
+                || (kind == InstMetaData::OperandTypes::WORD))
+            {
+                return getSourceRegs(icode);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        uint64_t getDestOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                     InstMetaData::OperandTypes kind) const override
+        {
+            if (meta->isAllOperandType(kind)
+                || (kind == InstMetaData::OperandTypes::LONG)
+                || (kind == InstMetaData::OperandTypes::WORD))
+            {
+                return getDestRegs(icode);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                       bool suppress_x0 = false) const override
+        {
+            OperandInfo olist;
+            appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
+                                                 InstMetaData::OperandFieldID::RD1,
+                                                 fixed_field_mask_, Form_CA::idType::RS1, false);
+            appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
+                                                 InstMetaData::OperandFieldID::RD2,
+                                                 fixed_field_mask_, Form_CA::idType::RS2, false);
+            return olist;
+        }
+
+        std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic << "\t"
+               << extractCompressedRegister_(Form_CA::idType::RS1, icode & ~fixed_field_mask_)
+               << ", "
+               << extractCompressedRegister_(Form_CA::idType::RS2, icode & ~fixed_field_mask_);
+            return ss.str();
+        }
+
+        // clang-format off
+        std::string dasmString(const std::string & mnemonic, const Opcode icode,
+                               const InstMetaData::PtrType & meta) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic << "\t"
+               << dasmFormatCompressedRegList_(
+                      meta, icode, fixed_field_mask_,
+                      {{Form_CA::idType::RS1, InstMetaData::OperandFieldID::RS1},
+                       {Form_CA::idType::RS2, InstMetaData::OperandFieldID::RS2}});
+            return ss.str();
+        }
+    };
+
+    /**
+     * Derivative of CMMV_mva01s extractor for cm.mvsa01 instructions
+     * The instructions are identical, except the sources and dests are swapped
+     */
+    template <> class Extractor<Form_CMMV_mvsa01> : public Extractor<Form_CMMV_mva01s>
+    {
+      public:
+        uint64_t getSourceRegs(const Opcode icode) const override
+        {
+            return Extractor<Form_CMMV_mva01s>::getDestRegs(icode);
+        }
+
+        uint64_t getDestRegs(const Opcode icode) const override
+        {
+            return Extractor<Form_CMMV_mva01s>::getSourceRegs(icode);
+        }
+
+        uint64_t getSourceOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                       InstMetaData::OperandTypes kind) const override
+        {
+            return Extractor<Form_CMMV_mva01s>::getDestOperTypeRegs(icode, meta, kind);
+        }
+
+        uint64_t getDestOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                     InstMetaData::OperandTypes kind) const override
+        {
+            return Extractor<Form_CMMV_mva01s>::getSourceOperTypeRegs(icode, meta, kind);
+        }
+
+        OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                         bool suppress_x0 = false) const override
+        {
+            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RS1);
+
+            OperandInfo olist;
+            olist.addElement(InstMetaData::OperandFieldID::RS1, op_type, 10, false);
+            olist.addElement(InstMetaData::OperandFieldID::RS2, op_type, 11, false);
+            return olist;
+        }
+
+        OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                       bool suppress_x0 = false) const override
+        {
+            OperandInfo olist;
+            appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
+                                                 InstMetaData::OperandFieldID::RD1,
+                                                 fixed_field_mask_, Form_CA::idType::RS1, false);
+            appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
+                                                 InstMetaData::OperandFieldID::RD2,
+                                                 fixed_field_mask_, Form_CA::idType::RS2, false);
+            return olist;
+        }
+    };
+
+    /**
      * Derivative of Form_VF_mem extractor for vector loads
      */
     template <> class Extractor<Form_V_load> : public Extractor<Form_VF_mem>

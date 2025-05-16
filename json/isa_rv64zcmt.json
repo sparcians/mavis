@@ -1,0 +1,9 @@
+[
+  {
+    "mnemonic" : "cm.jt",
+    "tags" : ["zcmt"],
+    "form" : "CMJT",
+    "stencil" : "0xa002",
+    "type" : ["branch", "jalr"]
+  }
+]

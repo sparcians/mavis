@@ -303,4 +303,48 @@ namespace mavis
         static const ImmediateType immediate_type;
     };
 
+    class Form_CMPP
+    {
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            FUNC1,
+            FUNC2A,
+            FUNC2,
+            URLIST,
+            SPIMM,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
+    };
+
+    class Form_CMJT
+    {
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            FUNC1,
+            FUNC2A,
+            INDEX,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
+    };
+
 } // namespace mavis
