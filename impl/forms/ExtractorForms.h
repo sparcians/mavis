@@ -1928,7 +1928,7 @@ namespace mavis
             };
 
             // urlist value 0xf requires special handling since it adds 2 push/pop registers
-            for(auto i = 4; i < 0xf && i <= urlist; ++i)
+            for(uint64_t i = 4; i < 0xf && i <= urlist; ++i)
             {
                 append_op(getAdditionalRlistReg_(i));
             }
