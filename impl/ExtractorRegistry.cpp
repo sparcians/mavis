@@ -62,6 +62,8 @@ namespace mavis
             {Form_CJAL::name,                    std::make_shared<Extractor<Form_CJAL>>()              },
             {Form_CJR::name,                     std::make_shared<Extractor<Form_CJR>>()               },
             {Form_CJALR::name,                   std::make_shared<Extractor<Form_CJALR>>()             },
+            {Form_CMPP::name,                    std::make_shared<Extractor<Form_CMPP>>()              },
+            {Form_CMPP_popretz::name,            std::make_shared<Extractor<Form_CMPP_popretz>>()      },
             {Form_CSR::name,                     std::make_shared<Extractor<Form_CSR>>()               },
             {Form_CSRI::name,                    std::make_shared<Extractor<Form_CSRI>>()              },
             {Form_FENCE::name,                   std::make_shared<Extractor<Form_FENCE>>()             },

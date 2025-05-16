@@ -2358,6 +2358,17 @@ namespace mavis
     };
 
     /**
+     * CMPP-Form Extractor
+     */
+    template <> class Extractor<Form_CMPP_popretz> : public Extractor<Form_CMPP>
+    {
+        uint64_t getDestRegs(const Opcode icode) const override
+        {
+            return Extractor<Form_CMPP>::getDestRegs(icode) | (1ull << 10);
+        }
+    };
+
+    /**
      * Derivative of Form_VF_mem extractor for vector loads
      */
     template <> class Extractor<Form_V_load> : public Extractor<Form_VF_mem>

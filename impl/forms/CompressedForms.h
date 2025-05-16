@@ -308,8 +308,8 @@ namespace mavis
       public:
         enum idType : uint32_t
         {
-            FUNC6 = 0,
-            FUNC2,
+            FUNC3 = 0,
+            FUNC5,
             URLIST,
             SPIMM,
             OPCODE,

@@ -425,6 +425,13 @@ namespace mavis
         static inline const std::string name{"CIX_andi"};
     };
 
+    class Form_CMPP_popretz
+    {
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{"CMPP_popretz"};
+    };
+
     /**
      * Stub for V_load extractor
      */

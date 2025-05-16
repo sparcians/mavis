@@ -141,6 +141,20 @@ namespace mavis
             TEMP_RS2,   // for temporal RS2 operand
             TEMP_RS3,   // for temporal RS3 operand
 
+            PUSH_RS1,
+            PUSH_RS2,
+            PUSH_RS3,
+            PUSH_RS4,
+            PUSH_RS5,
+            PUSH_RS6,
+            PUSH_RS7,
+            PUSH_RS8,
+            PUSH_RS9,
+            PUSH_RS10,
+            PUSH_RS11,
+            PUSH_RS12,
+            PUSH_RS13,
+
             RD, // NOTE: RD/RD1 thru RD_MAX need to stay contiguous for ExtractorDirectInfo
             RD1 = RD,
             RD2,
@@ -150,6 +164,20 @@ namespace mavis
             FUSED_RD_1, // for fusion: dest reg 1
             TEMP_RD,    // for temporal RD operand
             TEMP_RD2,   // for temporal RD2 operand
+
+            POP_RD1,
+            POP_RD2,
+            POP_RD3,
+            POP_RD4,
+            POP_RD5,
+            POP_RD6,
+            POP_RD7,
+            POP_RD8,
+            POP_RD9,
+            POP_RD10,
+            POP_RD11,
+            POP_RD12,
+            POP_RD13,
 
             NONE,
             __N = NONE

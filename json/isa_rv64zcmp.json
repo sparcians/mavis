@@ -2,9 +2,30 @@
   {
     "mnemonic" : "cm.push",
     "tags" : ["zcmp"],
-    "form" : "C2",
-    "ignore" : ["func1"],
-    "xform" : "C2_sp_store_double",
-    "stencil" : "0xb802"
+    "form" : "CMPP",
+    "stencil" : "0xb802",
+    "type": ["store"]
+  },
+  {
+    "mnemonic" : "cm.pop",
+    "tags" : ["zcmp"],
+    "form" : "CMPP",
+    "stencil" : "0xba02",
+    "type": ["load"]
+  },
+  {
+    "mnemonic" : "cm.popretz",
+    "tags" : ["zcmp"],
+    "form" : "CMPP",
+    "xform": "CMPP_popretz",
+    "stencil" : "0xbc02",
+    "type": ["branch", "jalr", "load"]
+  },
+  {
+    "mnemonic" : "cm.popret",
+    "tags" : ["zcmp"],
+    "form" : "CMPP",
+    "stencil" : "0xbe02",
+    "type": ["branch", "jalr", "load"]
   }
 ]
