@@ -2365,7 +2365,7 @@ namespace mavis
       public:
         int64_t getSignedOffset(const Opcode icode) const override
         {
-            return -getImmediate(icode);
+            return -1 * getImmediate(icode);
         }
 
         uint64_t getSourceRegs(const Opcode icode) const override
@@ -2373,7 +2373,7 @@ namespace mavis
             return (1ull << REGISTER_SP) | decodeRlist_(icode);
         }
 
-        uint64_t getDestRegs(const Opcode icode) const override
+        uint64_t getDestRegs(const Opcode) const override
         {
             return 1ull << REGISTER_SP;
         }
@@ -2402,7 +2402,7 @@ namespace mavis
       protected:
         int64_t getStackAdjBase_(const Opcode icode, const InstMetaData::PtrType & meta) const override
         {
-            return -Extractor<Form_CMPP>::getStackAdjBase_(icode, meta);
+            return -1 * Extractor<Form_CMPP>::getStackAdjBase_(icode, meta);
         }
     };
 
@@ -2429,7 +2429,7 @@ namespace mavis
             return Extractor<Form_CA>::getSourceRegs(icode);
         }
 
-        uint64_t getDestRegs(const Opcode icode) const override
+        uint64_t getDestRegs(const Opcode) const override
         {
             // Dests are always a0 and a1
             return (1ull << 10) | (1ull << 11);
@@ -2500,6 +2500,8 @@ namespace mavis
                        {Form_CA::idType::RS2, InstMetaData::OperandFieldID::RS2}});
             return ss.str();
         }
+
+        // clang-format on
     };
 
     /**

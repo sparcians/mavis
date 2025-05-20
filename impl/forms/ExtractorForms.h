@@ -1684,7 +1684,7 @@ namespace mavis
             return extract_(Form_CMPP::idType::SPIMM, icode) << 4;
         }
 
-        uint64_t getSourceRegs(const Opcode icode) const override
+        uint64_t getSourceRegs(const Opcode) const override
         {
             return 1ull << REGISTER_SP;
         }
@@ -1806,7 +1806,23 @@ namespace mavis
                 ss << *std::prev(getRListRange_(urlist).second);
             };
 
-            const auto format_urlist_range = [&ss, format_urlist](const uint64_t urlist_begin, const uint64_t urlist_end){
+            ss << "{";
+
+            for(const auto& range: RLIST_RANGES_)
+            {
+                const auto urlist_begin = range.first;
+
+                if(urlist < urlist_begin)
+                {
+                    break;
+                }
+                else if(urlist_begin > MIN_URLIST_)
+                {
+                    ss << ", ";
+                }
+
+                const auto urlist_end = std::min(range.second, urlist);
+
                 format_urlist(urlist_begin);
 
                 if(urlist_begin == urlist_end)
@@ -1817,22 +1833,6 @@ namespace mavis
                 ss << '-';
 
                 format_urlist(urlist_end);
-            };
-
-            ss << "{";
-
-            for(const auto& range: RLIST_RANGES_)
-            {
-                if(urlist < range.first)
-                {
-                    break;
-                }
-                else if(range.first > MIN_URLIST_)
-                {
-                    ss << ", ";
-                }
-
-                format_urlist_range(range.first, std::min(range.second, urlist));
             }
 
             ss << "}";
