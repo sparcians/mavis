@@ -11,14 +11,20 @@ namespace mavis
     {
         std::ifstream fs;
 
-        // Enable failbit exceptions so we throw an std::ifstream::failure exception if the open fails
+#ifndef TARGET_OS_MAC
+        // Enable failbit exceptions so we throw an
+        // std::ifstream::failure exception if the open fails (not support on MacOS)
         std::ios_base::iostate exceptionMask = fs.exceptions() | std::ios::failbit;
         fs.exceptions(exceptionMask);
+#endif
+
         fs.open(path);
-        // Turn fail exceptions off now that the open succeeded
+
+#ifndef TARGET_OS_MAC
+        // Turn fail exceptions off now that the open succeeded (not support on MacOS)
         exceptionMask &= ~std::ios::failbit;
         fs.exceptions(exceptionMask);
-
+#endif
         boost::system::error_code ec;
 
 #if (BOOST_VERSION / 100 >= 1081)
