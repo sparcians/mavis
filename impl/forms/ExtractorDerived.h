@@ -2398,6 +2398,12 @@ namespace mavis
             olist.addElement(InstMetaData::OperandFieldID::RD, op_type, REGISTER_SP, false);
             return olist;
         }
+
+      protected:
+        int64_t getStackAdjBase_(const Opcode icode, const InstMetaData::PtrType & meta) const override
+        {
+            return -Extractor<Form_CMPP>::getStackAdjBase_(icode, meta);
+        }
     };
 
     /**

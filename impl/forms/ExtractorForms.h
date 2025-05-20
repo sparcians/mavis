@@ -1676,7 +1676,7 @@ namespace mavis
 
         bool isIllop(Opcode icode) const override
         {
-            return extract_(Form_CMPP::idType::URLIST, icode) < 4;
+            return extract_(Form_CMPP::idType::URLIST, icode) < MIN_URLIST_;
         }
 
         uint64_t getImmediate(const Opcode icode) const override
@@ -1759,12 +1759,12 @@ namespace mavis
 
         // clang-format off
         std::string dasmString(const std::string & mnemonic, const Opcode icode,
-                               const InstMetaData::PtrType &) const override
+                               const InstMetaData::PtrType & meta) const override
         {
             std::stringstream ss;
             ss << mnemonic << '\t';
             formatRlist_<true>(ss, icode);
-            ss << ", " << getSignedOffset(icode);
+            ss << ", " << getStackAdj_(icode, meta);
             return ss.str();
         }
 
@@ -1777,108 +1777,107 @@ namespace mavis
         {
         }
 
+        virtual int64_t getStackAdjBase_(const Opcode icode, const InstMetaData::PtrType & meta) const
+        {
+            const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
+            const auto [begin, end] = getRListRange_(urlist);
+            const auto num_regs = std::distance(begin, end);
+            const auto reg_size_bytes = meta->getDataSize() / 8;
+            // Round up to the nearest multiple of 16
+            return (num_regs * reg_size_bytes + 15) & -16ll;
+        }
+
+        int64_t getStackAdj_(const Opcode icode, const InstMetaData::PtrType & meta) const
+        {
+            return getStackAdjBase_(icode, meta) + getSignedOffset(icode);
+        }
+
         template<bool enable_prefix>
         static void formatRlist_(std::stringstream& ss, const Opcode icode)
         {
             const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
 
+            const auto format_urlist = [&ss](const uint64_t urlist) {
+                if constexpr(enable_prefix)
+                {
+                    ss << 'x';
+                }
+
+                ss << *std::prev(getRListRange_(urlist).second);
+            };
+
+            const auto format_urlist_range = [&ss, format_urlist](const uint64_t urlist_begin, const uint64_t urlist_end){
+                format_urlist(urlist_begin);
+
+                if(urlist_begin == urlist_end)
+                {
+                    return;
+                }
+
+                ss << '-';
+
+                format_urlist(urlist_end);
+            };
+
             ss << "{";
 
-            if(urlist >= 0x4)
+            for(const auto& range: RLIST_RANGES_)
             {
-                ss << (enable_prefix ? "x1" : "1");
-
-                if(urlist >= 0x5)
+                if(urlist < range.first)
                 {
-                    ss << (enable_prefix ? ", x8" : ", 8");
-
-                    if(urlist >= 0x6)
-                    {
-                        ss << (enable_prefix ? "-x9" : "-9");
-
-                        if(urlist >= 0x7)
-                        {
-                            ss << (enable_prefix ? ", x18" : ", 18");
-
-                            if(urlist == 0xf)
-                            {
-                                ss << (enable_prefix ? "-x27" : "-27");
-                            }
-                            else if(urlist > 0x7)
-                            {
-                                ss << (enable_prefix ? "-x" : "-") << getAdditionalRlistReg_(urlist);
-                            }
-                        }
-                    }
+                    break;
                 }
+                else if(range.first > MIN_URLIST_)
+                {
+                    ss << ", ";
+                }
+
+                format_urlist_range(range.first, std::min(range.second, urlist));
             }
 
             ss << "}";
         }
 
-        static constexpr uint32_t getAdditionalRlistReg_(const uint64_t urlist)
+        inline static constexpr uint64_t MIN_URLIST_ = 4;
+        inline static constexpr size_t NUM_RLIST_ENTRIES_ = 13;
+        using RListArray = std::array<uint32_t, NUM_RLIST_ENTRIES_>;
+        inline static constexpr RListArray RLIST_{
+            REGISTER_LINK,  // urlist >= 0x4
+            8,              // urlist >= 0x5
+            9,              // urlist >= 0x6
+            18,             // urlist >= 0x7
+            19,             // urlist >= 0x8
+            20,             // urlist >= 0x9
+            21,             // urlist >= 0xa
+            22,             // urlist >= 0xb
+            23,             // urlist >= 0xc
+            24,             // urlist >= 0xd
+            25,             // urlist >= 0xe
+            // These two entries *both* belong to urlist == 0xf - this special case is handled in getRListRange_
+            26,
+            27
+        };
+
+        inline static constexpr std::array<std::pair<uint64_t, uint64_t>, 3> RLIST_RANGES_{{{MIN_URLIST_, MIN_URLIST_},
+                                                                                            {0x5, 0x6},
+                                                                                            {0x7, 0xf}}};
+
+        static constexpr std::pair<RListArray::const_iterator, RListArray::const_iterator> getRListRange_(const uint64_t urlist)
         {
-            switch(urlist)
-            {
-                case 0xe:
-                    return 25;
-                case 0xd:
-                    return 24;
-                case 0xc:
-                    return 23;
-                case 0xb:
-                    return 22;
-                case 0xa:
-                    return 21;
-                case 0x9:
-                    return 20;
-                case 0x8:
-                    return 19;
-                case 0x7:
-                    return 18;
-                case 0x6:
-                    return 9;
-                case 0x5:
-                    return 8;
-                case 0x4:
-                    return REGISTER_LINK;
-                default:
-                    return 0;
-            }
+            return std::make_pair(RLIST_.begin(), urlist == 0xf ? RLIST_.end() : std::next(RLIST_.begin(), urlist - MIN_URLIST_ + 1));
         }
 
         static uint64_t decodeRlist_(const Opcode icode)
         {
             uint64_t regs = 0;
 
-            switch(extract_(Form_CMPP::idType::URLIST, icode))
+            auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
+
+            const auto [begin, end] = getRListRange_(urlist);
+
+            for(auto it = begin; it != end; ++it)
             {
-                case 0xf:
-                    regs |= (3ull << 26);
-                case 0xe:
-                    regs |= (1ull << 25);
-                case 0xd:
-                    regs |= (1ull << 24);
-                case 0xc:
-                    regs |= (1ull << 23);
-                case 0xb:
-                    regs |= (1ull << 22);
-                case 0xa:
-                    regs |= (1ull << 21);
-                case 0x9:
-                    regs |= (1ull << 20);
-                case 0x8:
-                    regs |= (1ull << 19);
-                case 0x7:
-                    regs |= (1ull << 18);
-                case 0x6:
-                    regs |= (1ull << 9);
-                case 0x5:
-                    regs |= (1ull << 8);
-                case 0x4:
-                    regs |= (1ull << REGISTER_LINK);
-                default:
-                    break;
+                regs |= (1ull << *it);
             }
 
             return regs;
@@ -1896,16 +1895,11 @@ namespace mavis
                 op_id = static_cast<InstMetaData::OperandFieldID>(static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(op_id) + 1);
             };
 
-            // urlist value 0xf requires special handling since it adds 2 push/pop registers
-            for(uint64_t i = 4; i < 0xf && i <= urlist; ++i)
-            {
-                append_op(getAdditionalRlistReg_(i));
-            }
+            const auto [begin, end] = getRListRange_(urlist);
 
-            if(urlist == 0xf)
+            for(auto it = begin; it != end; ++it)
             {
-                append_op(26);
-                append_op(27);
+                append_op(*it);
             }
         }
 

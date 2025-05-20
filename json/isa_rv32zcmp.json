@@ -1,1 +1,60 @@
-isa_rv64zcmp.json
+[
+  {
+    "mnemonic" : "cm.push",
+    "tags" : ["zcmp"],
+    "form" : "CMPP",
+    "xform": "CMPP_push",
+    "stencil" : "0xb802",
+    "type": ["store"],
+    "l-oper" : "all",
+    "data": 32
+  },
+  {
+    "mnemonic" : "cm.pop",
+    "tags" : ["zcmp"],
+    "form" : "CMPP",
+    "stencil" : "0xba02",
+    "type": ["load"],
+    "l-oper" : "all",
+    "data": 32
+  },
+  {
+    "mnemonic" : "cm.popretz",
+    "tags" : ["zcmp"],
+    "form" : "CMPP",
+    "xform": "CMPP_popretz",
+    "stencil" : "0xbc02",
+    "type": ["branch", "jalr", "load"],
+    "l-oper" : "all",
+    "data": 32
+  },
+  {
+    "mnemonic" : "cm.popret",
+    "tags" : ["zcmp"],
+    "form" : "CMPP",
+    "stencil" : "0xbe02",
+    "type": ["branch", "jalr", "load"],
+    "l-oper" : "all",
+    "data": 32
+  },
+  {
+    "mnemonic" : "cm.mvsa01",
+    "tags" : ["zcmp"],
+    "form" : "C1",
+    "stencil": "0xac22",
+    "xform": "CMMV_mvsa01",
+    "ignore": ["rd"],
+    "type": ["int", "arith", "move"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "cm.mva01s",
+    "tags" : ["zcmp"],
+    "form" : "C1",
+    "stencil": "0xac62",
+    "xform": "CMMV_mva01s",
+    "ignore": ["rd"],
+    "type": ["int", "arith", "move"],
+    "l-oper" : "all"
+  }
+]

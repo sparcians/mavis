@@ -5,14 +5,18 @@
     "form" : "CMPP",
     "xform": "CMPP_push",
     "stencil" : "0xb802",
-    "type": ["store"]
+    "type": ["store"],
+    "l-oper" : "all",
+    "data": 64
   },
   {
     "mnemonic" : "cm.pop",
     "tags" : ["zcmp"],
     "form" : "CMPP",
     "stencil" : "0xba02",
-    "type": ["load"]
+    "type": ["load"],
+    "l-oper" : "all",
+    "data": 64
   },
   {
     "mnemonic" : "cm.popretz",
@@ -20,14 +24,18 @@
     "form" : "CMPP",
     "xform": "CMPP_popretz",
     "stencil" : "0xbc02",
-    "type": ["branch", "jalr", "load"]
+    "type": ["branch", "jalr", "load"],
+    "l-oper" : "all",
+    "data": 64
   },
   {
     "mnemonic" : "cm.popret",
     "tags" : ["zcmp"],
     "form" : "CMPP",
     "stencil" : "0xbe02",
-    "type": ["branch", "jalr", "load"]
+    "type": ["branch", "jalr", "load"],
+    "l-oper" : "all",
+    "data": 64
   },
   {
     "mnemonic" : "cm.mvsa01",
@@ -36,7 +44,8 @@
     "stencil": "0xac22",
     "xform": "CMMV_mvsa01",
     "ignore": ["rd"],
-    "type": ["int", "arith", "move"]
+    "type": ["int", "arith", "move"],
+    "l-oper" : "all"
   },
   {
     "mnemonic" : "cm.mva01s",
@@ -45,6 +54,7 @@
     "stencil": "0xac62",
     "xform": "CMMV_mva01s",
     "ignore": ["rd"],
-    "type": ["int", "arith", "move"]
+    "type": ["int", "arith", "move"],
+    "l-oper" : "all"
   }
 ]
