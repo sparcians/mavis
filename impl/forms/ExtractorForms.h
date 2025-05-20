@@ -1827,7 +1827,7 @@ namespace mavis
 
                 if(urlist_begin == urlist_end)
                 {
-                    return;
+                    continue;
                 }
 
                 ss << '-';
