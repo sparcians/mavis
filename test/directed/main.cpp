@@ -7,6 +7,7 @@
 #include <bitset>
 
 #include "mavis/Mavis.h"
+#include "mavis/extension_managers/RISCVExtensionManager.hpp"
 
 #include "Inst.h"
 #include "uArchInfo.h"
@@ -98,90 +99,20 @@ int main(int argc, char** argv)
         rv_isa = vm["isa"].as<std::string>();
     }
 
-    std::unique_ptr<MavisType> mavis_facade;
-    if (rv_isa == "rv32")
-    {
-        mavis::FileNameListType isa_files = {
-            "json/isa_rv32i.json",        // included in "g" spec
-            "json/isa_rv32f.json",        // included in "g" spec
-            "json/isa_rv32m.json",        // included in "g" spec
-            "json/isa_rv32zmmul.json",    // included in "g" spec
-            "json/isa_rv32zaamo.json",    // included in "g" spec
-            "json/isa_rv32zalrsc.json",   // included in "g" spec
-            "json/isa_rv32d.json",        // included in "g" spec
-            "json/isa_rv32zicsr.json",    // included in "g" spec
-            "json/isa_rv32zifencei.json", // included in "g" spec
-            "json/isa_rv32q.json",        "json/isa_rv32zfa.json",
-            "json/isa_rv32zfa_d.json",    "json/isa_rv32zfa_d_addons.json",
-            "json/isa_rv32zfa_q.json",    "json/isa_rv32zfa_h.json",
-            "json/isa_rv32zca.json",      "json/isa_rv32zcd.json",
-            "json/isa_rv32zfh.json",      "json/isa_rv32zfhmin.json",
-            "json/isa_rv32zfhmin_d.json", "json/isa_rv32zawrs.json",
-            "json/isa_rv32zilsd.json",    "json/isa_rv32zacas.json",
-            "json/isa_rv32zabha.json"};
+    mavis::extension_manager::riscv::RISCVExtensionManager extension_manager =
+        mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
+            rv_isa, "json/riscv_isa_spec.json", "json");
 
-        // Zclsd has overlapping encodings with Zcf, so only one can be used at a time
-        if (vm.count("zclsd"))
-        {
-            isa_files.emplace_back("json/isa_rv32zclsd.json");
-        }
-        else
-        {
-            isa_files.emplace_back("json/isa_rv32zcf.json");
-        }
-        mavis_facade.reset(new MavisType(isa_files, {"uarch/uarch_rv32g.json"}));
-    }
-    else if (rv_isa == "rv64")
+    std::string uarch_file = "uarch/uarch_rv32g.json";
+    if (rv_isa == "rv64")
     {
-        mavis_facade.reset(new MavisType({"json/isa_rv64i.json",        // included in "g" spec
-                                          "json/isa_rv64f.json",        // included in "g" spec
-                                          "json/isa_rv64m.json",        // included in "g" spec
-                                          "json/isa_rv64zmmul.json",    // included in "g" spec
-                                          "json/isa_rv64zaamo.json",    // included in "g" spec
-                                          "json/isa_rv64zalrsc.json",   // included in "g" spec
-                                          "json/isa_rv64d.json",        // included in "g" spec
-                                          "json/isa_rv64zicsr.json",    // included in "g" spec
-                                          "json/isa_rv64zifencei.json", // included in "g" spec
-                                          "json/isa_rv64zca.json",
-                                          "json/isa_rv64zcd.json",
-                                          "json/isa_rv64q.json",
-                                          "json/isa_rv64q_addons.json",
-                                          "json/isa_rv64h.json",
-                                          "json/isa_rv64zfa.json",
-                                          "json/isa_rv64zfa_d.json",
-                                          "json/isa_rv64zfa_q.json",
-                                          "json/isa_rv64zfa_q_addons.json",
-                                          "json/isa_rv64zfa_h.json",
-                                          "json/isa_rv64v.json",
-                                          "json/isa_rv64vf.json",
-                                          "json/isa_rv64zvbb.json",
-                                          "json/isa_rv64zvbc.json",
-                                          "json/isa_rv64zvkned.json",
-                                          "json/isa_rv64zvkg.json",
-                                          "json/isa_rv64zvknh.json",
-                                          "json/isa_rv64zvksed.json",
-                                          "json/isa_rv64zvksh.json",
-                                          "json/isa_rv64zfh.json",
-                                          "json/isa_rv64zfh_addons.json",
-                                          "json/isa_rv64zfhmin.json",
-                                          "json/isa_rv64zfhmin_d.json",
-                                          "json/isa_rv64zicbom.json",
-                                          "json/isa_rv64zicbop.json",
-                                          "json/isa_rv64zicboz.json",
-                                          "json/isa_rv64zihintntl.json",
-                                          "json/isa_rv64zihintpause.json",
-                                          "json/isa_rv64zicond.json",
-                                          "json/isa_rv64zawrs.json",
-                                          "json/isa_rv64zfbfmin.json",
-                                          "json/isa_rv64zvfbfwma.json"},
-                                         {"uarch/uarch_rv64g.json"}));
+        uarch_file = "uarch/uarch_rv64g.json";
     }
-    else
-    {
-        std::cerr << "ERROR: rv_isa expected to be either rv32 or rv64" << std::endl;
-        std::cerr << desc << std::endl;
-        return 255;
-    }
+
+    std::unique_ptr<MavisType> mavis_facade
+        = std::make_unique<MavisType>(
+            extension_manager.constructMavis<Instruction<uArchInfo>, uArchInfo>({uarch_file}));
+
     assert(nullptr != mavis_facade);
 
     if (vm.count("opc"))
