@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <map>
+
 #include <boost/json.hpp>
 #include "DecoderExceptions.h"
 #include "Form.h"

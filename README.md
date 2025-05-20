@@ -35,9 +35,9 @@ diff -s test.out golden.out
 cd build/test/directed
 make
 ./mavis_decode --help
-./mavis_decode -a rv32 -o 0x0001a283
-./mavis_decode -a rv64 -o 0x0001b283
-./mavis_decode -a rv32 -z -o 0x6008
+./mavis_decode -a rv32g -o 0x0001a283
+./mavis_decode -a rv64g -o 0x0001b283
+./mavis_decode -a rv32gc -z -o 0x6008
 
 ```
 
@@ -67,7 +67,7 @@ make
 | **V** Vector extension. | :white_check_mark: |
 | **Zvfhmin** Vector minimal half-precision floating-point. | :white_check_mark: |
 | **Zvbb** Vector basic bit-manipulation instructions. | :white_check_mark: |
-| **Zvkt** Vector data-independent execution latency. | |
+| **Zvkt** Vector data-independent execution latency. | :white_check_mark: |
 | **Zihintntl** Non-temporal locality hints. | :white_check_mark: |
 | **Zicond** Integer conditional operations. | :white_check_mark: |
 | **Zimop** may-be-operations. | :x: |
@@ -107,15 +107,15 @@ make
 | **Sstvecd** stvec.MODE must be capable of holding the value 0 (Direct). When stvec.MODE=Direct, stvec.BASE must be capable of holding any valid four-byte-aligned address. | |
 | **Sstvala** stval must be written with the faulting virtual address for load, store, and instruction page-fault, access-fault, and misaligned exceptions, and for breakpoint exceptions other than those caused by execution of the EBREAK or C.EBREAK instructions. For virtual-instruction and illegal-instruction exceptions, stval must be written with the faulting instruction. | |
 | **Sscounterenw** For any hpmcounter that is not read-only zero, the corresponding bit in scounteren must be writable. | |
-| **Svpbmt** Page-based memory types | |
-| **Svinval** Fine-grained address-translation cache invalidation. | :x: |
-| **Svnapot** NAPOT translation contiguity. | |
+| **Svpbmt** Page-based memory types |  :white_check_mark: |
+| **Svinval** Fine-grained address-translation cache invalidation. | :white_check_mark: |
+| **Svnapot** NAPOT translation contiguity. | :white_check_mark: |
 | **Sstc** supervisor-mode timer interrupts. | |
-| **Sscofpmf** count overflow and mode-based filtering. | |
+| **Sscofpmf** count overflow and mode-based filtering. | :white_check_mark: |
 | **Ssnpm** Pointer masking, with senvcfg.PME and henvcfg.PME supporting, at minimum, settings PMLEN=0 and PMLEN=7. | |
 | **Ssu64xl** sstatus.UXL must be capable of holding the value 2 (i.e., UXLEN=64 must be supported). | |
 | **H** The hypervisor extension. | :white_check_mark: |
-| **Ssstateen** Supervisor-mode view of the state-enable extension. The supervisor-mode (sstateen0-3 and hypervisor-mode (hstateen0-3) state-enable registers must be provided. | |
+| **Ssstateen** Supervisor-mode view of the state-enable extension. The supervisor-mode (sstateen0-3 and hypervisor-mode (hstateen0-3) state-enable registers must be provided. |  :white_check_mark: |
 | **Shcounterenw** For any hpmcounter that is not read-only zero, the corresponding bit in hcounteren
 must be writable. | |
 | **Shvstvala** vstval must be written in all cases described above for stval. | |
@@ -135,4 +135,3 @@ must be writable. | |
 | **Svvptc** Transitions from invalid to valid PTEs will be visible in bounded time without an explicit memory-management fence. | |
 | **Sspm** Supervisor-mode pointer masking, with the supervisor execution environment providing a
 means to select PMLEN=0 and PMLEN=7 at minimum. | |
-
