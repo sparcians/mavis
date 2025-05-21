@@ -1691,7 +1691,7 @@ namespace mavis
 
         uint64_t getDestRegs(const Opcode icode) const override
         {
-            return (1ull << REGISTER_SP) | decodeRlist_(icode);
+            return (1ull << REGISTER_SP) | decodeRList_(icode);
         }
 
         uint64_t getSourceOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
@@ -1741,7 +1741,7 @@ namespace mavis
 
             OperandInfo olist;
             olist.addElement(InstMetaData::OperandFieldID::RD, op_type, REGISTER_SP, false);
-            convertRlistToOpcodeInfo_(olist, icode, op_type);
+            convertRListToOpcodeInfo_(olist, icode, op_type);
             return olist;
         }
 
@@ -1752,7 +1752,9 @@ namespace mavis
         {
             std::stringstream ss;
             ss << mnemonic << '\t';
-            formatRlist_<false>(ss, icode);
+            formatRList_(ss, icode, [&ss](const uint64_t urlist) {
+                ss << getRListRangeEnd_(urlist);
+            });
             ss << ", " << getSignedOffset(icode);
             return ss.str();
         }
@@ -1763,7 +1765,10 @@ namespace mavis
         {
             std::stringstream ss;
             ss << mnemonic << '\t';
-            formatRlist_<true>(ss, icode);
+            formatRList_(ss, icode, [&ss, &meta, op_id = getFirstOperandID_()](const uint64_t urlist) mutable {
+                ss << dasmFormatReg_(meta, op_id, getRListRangeEnd_(urlist));
+                op_id = incrementFieldID_(op_id);
+            });
             ss << ", " << getStackAdj_(icode, meta);
             return ss.str();
         }
@@ -1792,19 +1797,10 @@ namespace mavis
             return getStackAdjBase_(icode, meta) + getSignedOffset(icode);
         }
 
-        template<bool enable_prefix>
-        static void formatRlist_(std::stringstream& ss, const Opcode icode)
+        template<typename FormatFunc>
+        static void formatRList_(std::stringstream& ss, const Opcode icode, FormatFunc&& format_func)
         {
             const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
-
-            const auto format_urlist = [&ss](const uint64_t urlist) {
-                if constexpr(enable_prefix)
-                {
-                    ss << 'x';
-                }
-
-                ss << *std::prev(getRListRange_(urlist).second);
-            };
 
             ss << "{";
 
@@ -1823,7 +1819,7 @@ namespace mavis
 
                 const auto urlist_end = std::min(range.second, urlist);
 
-                format_urlist(urlist_begin);
+                format_func(urlist_begin);
 
                 if(urlist_begin == urlist_end)
                 {
@@ -1832,13 +1828,14 @@ namespace mavis
 
                 ss << '-';
 
-                format_urlist(urlist_end);
+                format_func(urlist_end);
             }
 
             ss << "}";
         }
 
-        inline static constexpr uint64_t MIN_URLIST_ = 4;
+        inline static constexpr uint64_t MIN_URLIST_ = 0x4;
+        inline static constexpr uint64_t MAX_URLIST_ = 0xf;
         inline static constexpr size_t NUM_RLIST_ENTRIES_ = 13;
         using RListArray = std::array<uint32_t, NUM_RLIST_ENTRIES_>;
         inline static constexpr RListArray RLIST_{
@@ -1860,14 +1857,19 @@ namespace mavis
 
         inline static constexpr std::array<std::pair<uint64_t, uint64_t>, 3> RLIST_RANGES_{{{MIN_URLIST_, MIN_URLIST_},
                                                                                             {0x5, 0x6},
-                                                                                            {0x7, 0xf}}};
+                                                                                            {0x7, MAX_URLIST_}}};
 
         static constexpr std::pair<RListArray::const_iterator, RListArray::const_iterator> getRListRange_(const uint64_t urlist)
         {
-            return std::make_pair(RLIST_.begin(), urlist == 0xf ? RLIST_.end() : std::next(RLIST_.begin(), urlist - MIN_URLIST_ + 1));
+            return std::make_pair(RLIST_.begin(), urlist == MAX_URLIST_ ? RLIST_.end() : std::next(RLIST_.begin(), urlist - MIN_URLIST_ + 1));
         }
 
-        static uint64_t decodeRlist_(const Opcode icode)
+        static constexpr uint32_t getRListRangeEnd_(const uint64_t urlist)
+        {
+            return *std::prev(getRListRange_(urlist).second);
+        }
+
+        static uint64_t decodeRList_(const Opcode icode)
         {
             uint64_t regs = 0;
 
@@ -1883,23 +1885,30 @@ namespace mavis
             return regs;
         }
 
-        static void convertRlistToOpcodeInfo_(OperandInfo& olist,
-                                              const Opcode icode,
-                                              const InstMetaData::OperandTypes op_type,
-                                              InstMetaData::OperandFieldID op_id = InstMetaData::OperandFieldID::POP_RD1)
+        static constexpr InstMetaData::OperandFieldID incrementFieldID_(const InstMetaData::OperandFieldID op_id)
+        {
+            return static_cast<InstMetaData::OperandFieldID>(static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(op_id) + 1);
+        }
+
+        virtual InstMetaData::OperandFieldID getFirstOperandID_() const
+        {
+            return InstMetaData::OperandFieldID::POP_RD1;
+        }
+
+        void convertRListToOpcodeInfo_(OperandInfo& olist,
+                                       const Opcode icode,
+                                       const InstMetaData::OperandTypes op_type) const
         {
             const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
 
-            const auto append_op = [&olist, &op_id, op_type](const uint32_t reg){
-                olist.addElement(op_id, op_type, reg, true);
-                op_id = static_cast<InstMetaData::OperandFieldID>(static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(op_id) + 1);
-            };
-
             const auto [begin, end] = getRListRange_(urlist);
+
+            InstMetaData::OperandFieldID op_id = getFirstOperandID_();
 
             for(auto it = begin; it != end; ++it)
             {
-                append_op(*it);
+                olist.addElement(op_id, op_type, *it, true);
+                op_id = incrementFieldID_(op_id);
             }
         }
 

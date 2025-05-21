@@ -2370,12 +2370,14 @@ namespace mavis
 
         uint64_t getSourceRegs(const Opcode icode) const override
         {
-            return (1ull << REGISTER_SP) | decodeRlist_(icode);
+            // Form_CMPP handles pop-type instructions. On a push, the source and dest regs are swapped
+            return Extractor<Form_CMPP>::getDestRegs(icode);
         }
 
-        uint64_t getDestRegs(const Opcode) const override
+        uint64_t getDestRegs(const Opcode icode) const override
         {
-            return 1ull << REGISTER_SP;
+            // Form_CMPP handles pop-type instructions. On a push, the source and dest regs are swapped
+            return Extractor<Form_CMPP>::getSourceRegs(icode);
         }
 
         OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
@@ -2385,7 +2387,7 @@ namespace mavis
 
             OperandInfo olist;
             olist.addElement(InstMetaData::OperandFieldID::RS1, op_type, REGISTER_SP, false);
-            convertRlistToOpcodeInfo_(olist, icode, op_type, InstMetaData::OperandFieldID::PUSH_RS1);
+            convertRListToOpcodeInfo_(olist, icode, op_type);
             return olist;
         }
 
@@ -2400,6 +2402,11 @@ namespace mavis
         }
 
       protected:
+        InstMetaData::OperandFieldID getFirstOperandID_() const override
+        {
+            return InstMetaData::OperandFieldID::PUSH_RS1;
+        }
+
         int64_t getStackAdjBase_(const Opcode icode, const InstMetaData::PtrType & meta) const override
         {
             return -1 * Extractor<Form_CMPP>::getStackAdjBase_(icode, meta);
