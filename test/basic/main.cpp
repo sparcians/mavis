@@ -1418,5 +1418,72 @@ int main()
     {
     }
 
+    cout << "====== TESTING RV32 Zcmp/Zcmt =========" << endl;
+
+    // RV32
+    mavis_facade_rv32.makeContext("ZCMP_ZCMT",
+                                  {"json/isa_rv32i.json",        // included in "g" spec
+                                   "json/isa_rv32f.json",        // included in "g" spec
+                                   "json/isa_rv32m.json",        // included in "g" spec
+                                   "json/isa_rv32zmmul.json",    // included in "g" spec
+                                   "json/isa_rv32zaamo.json",    // included in "g" spec
+                                   "json/isa_rv32zalrsc.json",   // included in "g" spec
+                                   "json/isa_rv32d.json",        // included in "g" spec
+                                   "json/isa_rv32zicsr.json",    // included in "g" spec
+                                   "json/isa_rv32zifencei.json", // included in "g" spec
+                                   "json/isa_rv32q.json",           "json/isa_rv32zfa.json",
+                                   "json/isa_rv32zfa_d.json",       "json/isa_rv32zfa_d_addons.json",
+                                   "json/isa_rv32zfa_q.json",       "json/isa_rv32zfa_h.json",
+                                   "json/isa_rv32zca.json",         "json/isa_rv32zcf.json",
+                                   "json/isa_rv32zcmp.json",        "json/isa_rv32zcmt.json",
+                                   "json/isa_rv32zfh.json",         "json/isa_rv32zfhmin.json",
+                                   "json/isa_rv32zfhmin_d.json",    "json/isa_rv32zihintpause.json",
+                                   "json/isa_rv32zawrs.json",       "json/isa_rv32zilsd.json",
+                                   "json/isa_rv32zacas.json",       "json/isa_rv32zabha.json"},
+                                  {"uarch/uarch_rv32g.json"}, uid_init, anno_overrides);
+    mavis_facade_rv32.switchContext("ZCMP_ZCMT");
+    cout << mavis_facade_rv32;
+
+    // 0xb856 should map to cm.push  {x1, x8}, -32
+    inst = mavis_facade_rv32.makeInst(0xb856, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xb856 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "cm.push");
+    assert(inst->getIntDestRegs() == 0x4ull); // 1 dest
+
+    try
+    {
+        // Illegal form of cm.push -- urlist is 0
+        inst = mavis_facade_rv32.makeInst(0xb806, 0);
+        assert(inst == nullptr);
+    }
+    catch (...)
+    {
+    }
+
+    // 0xb856 should map to cm.popret        {x1, x8}, 16
+    inst = mavis_facade_rv32.makeInst(0xbe52, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xbe52 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "cm.popret");
+    assert(inst->getIntDestRegs() == 0x106ull); // 3 dests
+
+    //
+    // Test 32-bit Zcmt extension (cm.jt instruction)
+    //
+    inst = mavis_facade_rv32.makeInst(0xa002, 0);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xa002 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "cm.jt");
+    assert(inst->getImmediate() == 0x0ull);
+
+    //
+    // Test 32-bit Zcmt extension (cm.jalt instruction)
+    //
+    inst = mavis_facade_rv32.makeInst(0xa082, 0);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xa082 = " << inst->dasmString() << endl;
+    assert(inst->getMnemonic() == "cm.jt");
+    assert(inst->getIntDestRegs() == 0x2ull);
+    assert(inst->getImmediate() == 32ull);
+
     return 0;
 }

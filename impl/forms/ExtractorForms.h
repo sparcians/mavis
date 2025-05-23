@@ -1938,7 +1938,7 @@ namespace mavis
         {
             if(isJALT_(icode))
             {
-                return REGISTER_LINK;
+                return 1ull << REGISTER_LINK;
             }
 
             return 0;
@@ -1962,10 +1962,12 @@ namespace mavis
         OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
                                        bool suppress_x0 = false) const override
         {
-            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RD);
-
             OperandInfo olist;
-            olist.addElement(InstMetaData::OperandFieldID::RD, op_type, REGISTER_LINK, false);
+            if(isJALT_(icode))
+            {
+                const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RD);
+                olist.addElement(InstMetaData::OperandFieldID::RD, op_type, REGISTER_LINK, false);
+            }
             return olist;
         }
 
