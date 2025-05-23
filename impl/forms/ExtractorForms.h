@@ -1661,6 +1661,343 @@ namespace mavis
     };
 
     /**
+     * CMPP-Form Extractor
+     */
+    template <> class Extractor<Form_CMPP> : public ExtractorBase<Form_CMPP>
+    {
+      public:
+        Extractor() = default;
+
+        ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
+                                              const uint64_t fset) const override
+        {
+            return ExtractorIF::PtrType(new Extractor<Form_CMPP>(ffmask, fset));
+        }
+
+        bool isIllop(Opcode icode) const override
+        {
+            return extract_(Form_CMPP::idType::URLIST, icode) < MIN_URLIST_;
+        }
+
+        uint64_t getImmediate(const Opcode icode) const override
+        {
+            return extract_(Form_CMPP::idType::SPIMM, icode) << 4;
+        }
+
+        uint64_t getSourceRegs(const Opcode) const override
+        {
+            return 1ull << REGISTER_SP;
+        }
+
+        uint64_t getDestRegs(const Opcode icode) const override
+        {
+            return (1ull << REGISTER_SP) | decodeRList_(icode);
+        }
+
+        uint64_t getSourceOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                       InstMetaData::OperandTypes kind) const override
+        {
+            if (meta->isAllOperandType(kind)
+                || (kind == InstMetaData::OperandTypes::LONG)
+                || (kind == InstMetaData::OperandTypes::WORD))
+            {
+                return getSourceRegs(icode);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        uint64_t getDestOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                     InstMetaData::OperandTypes kind) const override
+        {
+            if (meta->isAllOperandType(kind)
+                || (kind == InstMetaData::OperandTypes::LONG)
+                || (kind == InstMetaData::OperandTypes::WORD))
+            {
+                return getDestRegs(icode);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                         bool suppress_x0 = false) const override
+        {
+            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RS1);
+
+            OperandInfo olist;
+            olist.addElement(InstMetaData::OperandFieldID::RS1, op_type, REGISTER_SP, false);
+            return olist;
+        }
+
+        OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                       bool suppress_x0 = false) const override
+        {
+            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RS1);
+
+            OperandInfo olist;
+            olist.addElement(InstMetaData::OperandFieldID::RD, op_type, REGISTER_SP, false);
+            convertRListToOpcodeInfo_(olist, icode, op_type);
+            return olist;
+        }
+
+        using ExtractorIF::dasmString; // tell the compiler all dasmString
+                                       // overloads are considered
+
+        std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic << '\t';
+            formatRList_(ss, icode, [&ss](const uint64_t urlist) {
+                ss << getRListRangeEnd_(urlist);
+            });
+            ss << ", " << getSignedOffset(icode);
+            return ss.str();
+        }
+
+        // clang-format off
+        std::string dasmString(const std::string & mnemonic, const Opcode icode,
+                               const InstMetaData::PtrType & meta) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic << '\t';
+            formatRList_(ss, icode, [&ss, &meta, op_id = getFirstOperandID_()](const uint64_t urlist) mutable {
+                ss << dasmFormatReg_(meta, op_id, getRListRangeEnd_(urlist));
+                op_id = incrementFieldID_(op_id);
+            });
+            ss << ", " << getStackAdj_(icode, meta);
+            return ss.str();
+        }
+
+        // clang-format on
+
+      protected:
+        Extractor<Form_CMPP>(const uint64_t ffmask, const uint64_t fset) :
+            ExtractorBase(ffmask),
+            fixed_field_set_(fset)
+        {
+        }
+
+        virtual int64_t getStackAdjBase_(const Opcode icode, const InstMetaData::PtrType & meta) const
+        {
+            const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
+            const auto [begin, end] = getRListRange_(urlist);
+            const auto num_regs = std::distance(begin, end);
+            const auto reg_size_bytes = meta->getDataSize() / 8;
+            // Round up to the nearest multiple of 16
+            return (num_regs * reg_size_bytes + 15) & -16ll;
+        }
+
+        int64_t getStackAdj_(const Opcode icode, const InstMetaData::PtrType & meta) const
+        {
+            return getStackAdjBase_(icode, meta) + getSignedOffset(icode);
+        }
+
+        template<typename FormatFunc>
+        static void formatRList_(std::stringstream& ss, const Opcode icode, FormatFunc&& format_func)
+        {
+            const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
+
+            ss << "{";
+
+            for(const auto& range: RLIST_RANGES_)
+            {
+                const auto urlist_begin = range.first;
+
+                if(urlist < urlist_begin)
+                {
+                    break;
+                }
+                else if(urlist_begin > MIN_URLIST_)
+                {
+                    ss << ", ";
+                }
+
+                const auto urlist_end = std::min(range.second, urlist);
+
+                format_func(urlist_begin);
+
+                if(urlist_begin == urlist_end)
+                {
+                    continue;
+                }
+
+                ss << '-';
+
+                format_func(urlist_end);
+            }
+
+            ss << "}";
+        }
+
+        inline static constexpr uint64_t MIN_URLIST_ = 0x4;
+        inline static constexpr uint64_t MAX_URLIST_ = 0xf;
+        inline static constexpr size_t NUM_RLIST_ENTRIES_ = 13;
+        using RListArray = std::array<uint32_t, NUM_RLIST_ENTRIES_>;
+        inline static constexpr RListArray RLIST_{
+            REGISTER_LINK,  // urlist >= 0x4
+            8,              // urlist >= 0x5
+            9,              // urlist >= 0x6
+            18,             // urlist >= 0x7
+            19,             // urlist >= 0x8
+            20,             // urlist >= 0x9
+            21,             // urlist >= 0xa
+            22,             // urlist >= 0xb
+            23,             // urlist >= 0xc
+            24,             // urlist >= 0xd
+            25,             // urlist >= 0xe
+            // These two entries *both* belong to urlist == 0xf - this special case is handled in getRListRange_
+            26,
+            27
+        };
+
+        inline static constexpr std::array<std::pair<uint64_t, uint64_t>, 3> RLIST_RANGES_{{{MIN_URLIST_, MIN_URLIST_},
+                                                                                            {0x5, 0x6},
+                                                                                            {0x7, MAX_URLIST_}}};
+
+        static constexpr std::pair<RListArray::const_iterator, RListArray::const_iterator> getRListRange_(const uint64_t urlist)
+        {
+            return std::make_pair(RLIST_.begin(), urlist == MAX_URLIST_ ? RLIST_.end() : std::next(RLIST_.begin(), urlist - MIN_URLIST_ + 1));
+        }
+
+        static constexpr uint32_t getRListRangeEnd_(const uint64_t urlist)
+        {
+            return *std::prev(getRListRange_(urlist).second);
+        }
+
+        static uint64_t decodeRList_(const Opcode icode)
+        {
+            uint64_t regs = 0;
+
+            auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
+
+            const auto [begin, end] = getRListRange_(urlist);
+
+            for(auto it = begin; it != end; ++it)
+            {
+                regs |= (1ull << *it);
+            }
+
+            return regs;
+        }
+
+        static constexpr InstMetaData::OperandFieldID incrementFieldID_(const InstMetaData::OperandFieldID op_id)
+        {
+            return static_cast<InstMetaData::OperandFieldID>(static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(op_id) + 1);
+        }
+
+        virtual InstMetaData::OperandFieldID getFirstOperandID_() const
+        {
+            return InstMetaData::OperandFieldID::POP_RD1;
+        }
+
+        void convertRListToOpcodeInfo_(OperandInfo& olist,
+                                       const Opcode icode,
+                                       const InstMetaData::OperandTypes op_type) const
+        {
+            const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
+
+            const auto [begin, end] = getRListRange_(urlist);
+
+            InstMetaData::OperandFieldID op_id = getFirstOperandID_();
+
+            for(auto it = begin; it != end; ++it)
+            {
+                olist.addElement(op_id, op_type, *it, true);
+                op_id = incrementFieldID_(op_id);
+            }
+        }
+
+        const uint64_t fixed_field_set_ = 0;
+    };
+
+    /**
+     * CMJT-Form Extractor
+     */
+    template <> class Extractor<Form_CMJT> : public ExtractorBase<Form_CMJT>
+    {
+      public:
+        Extractor() = default;
+
+        ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
+                                              const uint64_t fset) const override
+        {
+            return ExtractorIF::PtrType(new Extractor<Form_CMJT>(ffmask, fset));
+        }
+
+        uint64_t getImmediate(const Opcode icode) const override
+        {
+            return extract_(Form_CMJT::idType::INDEX, icode);
+        }
+
+        uint64_t getDestRegs(const Opcode icode) const override
+        {
+            if(isJALT_(icode))
+            {
+                return 1ull << REGISTER_LINK;
+            }
+
+            return 0;
+        }
+
+        uint64_t getDestOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                     InstMetaData::OperandTypes kind) const override
+        {
+            if (meta->isAllOperandType(kind)
+                || (kind == InstMetaData::OperandTypes::LONG)
+                || (kind == InstMetaData::OperandTypes::WORD))
+            {
+                return getDestRegs(icode);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                       bool suppress_x0 = false) const override
+        {
+            OperandInfo olist;
+            if(isJALT_(icode))
+            {
+                const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RD);
+                olist.addElement(InstMetaData::OperandFieldID::RD, op_type, REGISTER_LINK, false);
+            }
+            return olist;
+        }
+
+        using ExtractorIF::dasmString; // tell the compiler all dasmString
+                                       // overloads are considered
+
+        std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+        {
+            std::stringstream ss;
+            ss << (isJALT_(icode) ? jalt_mnemonic_ : mnemonic) << '\t' << getImmediate(icode);
+            return ss.str();
+        }
+
+      protected:
+        Extractor<Form_CMJT>(const uint64_t ffmask, const uint64_t fset) :
+            ExtractorBase(ffmask),
+            fixed_field_set_(fset)
+        {
+        }
+
+        bool isJALT_(const Opcode icode) const
+        {
+            return getImmediate(icode) >= 32;
+        }
+
+        inline static const std::string jalt_mnemonic_{"cm.jalt"};
+        const uint64_t fixed_field_set_ = 0;
+    };
+
+    /**
      * CSR-Form Extractor
      */
     template <> class Extractor<Form_CSR> : public ExtractorBase<Form_CSR>

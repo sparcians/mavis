@@ -27,32 +27,40 @@ namespace mavis
 #endif
         boost::system::error_code ec;
 
+        try
+        {
 #if (BOOST_VERSION / 100 >= 1081)
-        // Boost v1.81+ has an override for boost::json::parse that takes an std::ifstream
-        const boost::json::value json = boost::json::parse(fs, ec);
+            // Boost v1.81+ has an override for boost::json::parse that takes an std::ifstream
+            const boost::json::value json = boost::json::parse(fs, ec);
 
-        if (json.is_null() || ec)
-        {
-            throw boost::system::system_error(ec);
-        }
+            if (json.is_null() || ec)
+            {
+                throw boost::system::system_error(ec);
+            }
 #else
-        // For older versions we have to handle the std::ifstream ourselves
-        boost::json::stream_parser parser;
-        std::string buf;
-        while(std::getline(fs, buf))
-        {
-            parser.write(buf);
-        }
-        parser.finish(ec);
+            // For older versions we have to handle the std::ifstream ourselves
+            boost::json::stream_parser parser;
+            std::string buf;
+            while(std::getline(fs, buf))
+            {
+                parser.write(buf);
+            }
+            parser.finish(ec);
 
-        if(ec)
-        {
-            throw boost::system::system_error(ec);
-        }
+            if(ec)
+            {
+                throw boost::system::system_error(ec);
+            }
 
-        const boost::json::value json = parser.release();
+            const boost::json::value json = parser.release();
 #endif
-        return json;
+
+            return json;
+        }
+        catch(const boost::system::system_error& ex)
+        {
+            throw boost::system::system_error(ex.code(), "Error parsing JSON " + path);
+        }
     }
 
     // Attempts to parse the JSON file at the given path, throwing OpenFailedExceptionType

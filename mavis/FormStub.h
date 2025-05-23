@@ -425,6 +425,34 @@ namespace mavis
         static inline const std::string name{"CIX_andi"};
     };
 
+    class Form_CMPP_push
+    {
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{"CMPP_push"};
+    };
+
+    class Form_CMPP_popretz
+    {
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{"CMPP_popretz"};
+    };
+
+    class Form_CMMV_mva01s
+    {
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{"CMMV_mva01s"};
+    };
+
+    class Form_CMMV_mvsa01
+    {
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{"CMMV_mvsa01"};
+    };
+
     /**
      * Stub for V_load extractor
      */
