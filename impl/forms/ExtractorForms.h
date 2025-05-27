@@ -1737,8 +1737,9 @@ namespace mavis
         {
             std::stringstream ss;
             ss << mnemonic << '\t';
-            formatRList_(ss, icode,
-                         [&ss](const uint64_t urlist) { ss << getRListRangeEnd_(urlist); });
+            formatRList_(ss, icode, [](std::stringstream& ss, const uint64_t urlist) {
+                ss << getRListRangeEnd_(urlist);
+            });
             ss << ", " << getSignedOffset(icode);
             return ss.str();
         }
@@ -1749,7 +1750,7 @@ namespace mavis
         {
             std::stringstream ss;
             ss << mnemonic << '\t';
-            formatRList_(ss, icode, [&ss, &meta, op_id = getFirstOperandID_()](const uint64_t urlist) mutable {
+            formatRList_(ss, icode, [&meta, op_id = getFirstOperandID_()](std::stringstream& ss, const uint64_t urlist) mutable {
                 ss << dasmFormatReg_(meta, op_id, getRListRangeEnd_(urlist));
                 op_id = incrementFieldID_(op_id);
             });
@@ -1804,7 +1805,7 @@ namespace mavis
 
                 const auto urlist_end = std::min(range.second, urlist);
 
-                format_func(urlist_begin);
+                format_func(ss, urlist_begin);
 
                 if (urlist_begin == urlist_end)
                 {
@@ -1813,7 +1814,7 @@ namespace mavis
 
                 ss << '-';
 
-                format_func(urlist_end);
+                format_func(ss, urlist_end);
             }
 
             ss << "}";
