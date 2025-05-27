@@ -3,6 +3,7 @@
 #include "impl/forms/CommonForms.h"
 #include "impl/forms/CompressedForms.h"
 #include "impl/forms/VectorForms.h"
+#include "impl/forms/AndeStarForms.h"
 #include <iostream>
 
 namespace mavis
@@ -41,7 +42,24 @@ namespace mavis
         {Form_V_vsetvl::name,   new Form<Form_V_vsetvl>()  },
         {Form_V_vsetvli::name,  new Form<Form_V_vsetvli>() },
         {Form_V_vsetivli::name, new Form<Form_V_vsetivli>()},
-        {Form_V_uimm6::name,    new Form<Form_V_uimm6>()   }
+        {Form_V_uimm6::name,    new Form<Form_V_uimm6>()   },
+        {Form_AndeStar_Custom_0::name,       new Form<Form_AndeStar_Custom_0>()},
+        {Form_AndeStar_Custom_0_LBYTE::name, new Form<Form_AndeStar_Custom_0_LBYTE>()},
+        {Form_AndeStar_Custom_0_SBYTE::name, new Form<Form_AndeStar_Custom_0_SBYTE>()},
+        {Form_AndeStar_Custom_1::name,       new Form<Form_AndeStar_Custom_1>()},
+        {Form_AndeStar_Custom_1_LOAD::name,  new Form<Form_AndeStar_Custom_1_LOAD>()},
+        {Form_AndeStar_Custom_1_LHALFGP::name,  new Form<Form_AndeStar_Custom_1_LHALFGP>()},
+        {Form_AndeStar_Custom_1_LWORDGP::name,  new Form<Form_AndeStar_Custom_1_LWORDGP>()},
+        {Form_AndeStar_Custom_1_LDOUBLEGP::name,  new Form<Form_AndeStar_Custom_1_LDOUBLEGP>()},
+        {Form_AndeStar_Custom_1_STORE::name, new Form<Form_AndeStar_Custom_1_STORE>()},
+        {Form_AndeStar_Custom_1_SHALFGP::name, new Form<Form_AndeStar_Custom_1_SHALFGP>()},
+        {Form_AndeStar_Custom_1_SWORDGP::name, new Form<Form_AndeStar_Custom_1_SWORDGP>()},
+        {Form_AndeStar_Custom_1_SDOUBLEGP::name, new Form<Form_AndeStar_Custom_1_SDOUBLEGP>()},
+        {Form_AndeStar_Custom_2::name,       new Form<Form_AndeStar_Custom_2>()},
+        {Form_AndeStar_Custom_2_BBx::name,   new Form<Form_AndeStar_Custom_2_BBx>()},
+        {Form_AndeStar_Custom_2_BxxC::name,  new Form<Form_AndeStar_Custom_2_BxxC>()},
+        {Form_AndeStar_Custom_2_BFOx::name,  new Form<Form_AndeStar_Custom_2_BFOx>()},
+        {Form_AndeStar_Custom_2_XDEF::name,  new Form<Form_AndeStar_Custom_2_XDEF>()},
     };
 
     const FormBase* FormRegistry::findFormWrapper(const std::string & fname)
