@@ -2,6 +2,7 @@
 #include "mavis/ExtractorRegistry.h"
 #include "impl/forms/ExtractorForms.h"
 #include "impl/forms/ExtractorDerived.h"
+#include "impl/forms/AndeStarExtractorForms.h"
 
 namespace mavis
 {
@@ -101,7 +102,24 @@ namespace mavis
             {Form_V_op::name,                    std::make_shared<Extractor<Form_V_op>>()              },
             {Form_V_implied::name,               std::make_shared<Extractor<Form_V_implied>>()         },
             {Form_V_op_implied::name,            std::make_shared<Extractor<Form_V_op_implied>>()      },
-            {Form_V_uimm_implied::name,          std::make_shared<Extractor<Form_V_uimm_implied>>()    }
+            {Form_V_uimm_implied::name,          std::make_shared<Extractor<Form_V_uimm_implied>>()    },
+            {Form_AndeStar_Custom_0::name,       std::make_shared<Extractor<Form_AndeStar_Custom_0>>()},
+            {Form_AndeStar_Custom_0_LBYTE::name, std::make_shared<Extractor<Form_AndeStar_Custom_0_LBYTE>>()},
+            {Form_AndeStar_Custom_0_SBYTE::name, std::make_shared<Extractor<Form_AndeStar_Custom_0_SBYTE>>()},
+            {Form_AndeStar_Custom_1::name,       std::make_shared<Extractor<Form_AndeStar_Custom_1>>()},
+            {Form_AndeStar_Custom_1_LOAD::name,  std::make_shared<Extractor<Form_AndeStar_Custom_1_LOAD>>()},
+            {Form_AndeStar_Custom_1_LHALFGP::name,  std::make_shared<Extractor<Form_AndeStar_Custom_1_LHALFGP>>()},
+            {Form_AndeStar_Custom_1_LWORDGP::name,  std::make_shared<Extractor<Form_AndeStar_Custom_1_LWORDGP>>()},
+            {Form_AndeStar_Custom_1_LDOUBLEGP::name,  std::make_shared<Extractor<Form_AndeStar_Custom_1_LDOUBLEGP>>()},
+            {Form_AndeStar_Custom_1_STORE::name, std::make_shared<Extractor<Form_AndeStar_Custom_1_STORE>>()},
+            {Form_AndeStar_Custom_1_SHALFGP::name, std::make_shared<Extractor<Form_AndeStar_Custom_1_SHALFGP>>()},
+            {Form_AndeStar_Custom_1_SWORDGP::name, std::make_shared<Extractor<Form_AndeStar_Custom_1_SWORDGP>>()},
+            {Form_AndeStar_Custom_1_SDOUBLEGP::name, std::make_shared<Extractor<Form_AndeStar_Custom_1_SDOUBLEGP>>()},
+            {Form_AndeStar_Custom_2::name,       std::make_shared<Extractor<Form_AndeStar_Custom_2>>()},
+            {Form_AndeStar_Custom_2_BBx::name,   std::make_shared<Extractor<Form_AndeStar_Custom_2_BBx>>()},
+            {Form_AndeStar_Custom_2_BxxC::name,  std::make_shared<Extractor<Form_AndeStar_Custom_2_BxxC>>()},
+            {Form_AndeStar_Custom_2_BFOx::name,  std::make_shared<Extractor<Form_AndeStar_Custom_2_BFOx>>()},
+            {Form_AndeStar_Custom_2_XDEF::name,  std::make_shared<Extractor<Form_AndeStar_Custom_2_XDEF>>()},
         };
 
         const auto itr = EXTRACTOR_REGISTRY.find(fname);
