@@ -31,6 +31,13 @@ struct ExampleTraceInfo
 
 using MavisType = Mavis<Instruction<uArchInfo>, uArchInfo>;
 
+void test_andestar_tset(MavisType &mav_andes);
+void test_andestart_details(MavisType &mav_andes,vector<uint32_t> &vec);
+
+void test_andestart_addigp(MavisType &mav_andes);
+void test_andestart_lwgp(MavisType &mav_andes);
+void test_andestart_sdgp(MavisType &mav_andes);
+
 void runTSet(MavisType & mavis_facade, const std::string & tfile,
              const std::vector<mavis::OpcodeInfo::ISAExtension> isa_list = {})
 {
@@ -1485,5 +1492,97 @@ int main()
     assert(inst->getIntDestRegs() == 0x2ull);
     assert(inst->getImmediate() == 32ull);
 
+    MavisType mav_andes({"../../../json/isa_andestar.json"},
+                        {"../../../json/isa_rv64i.json"},
+                           uid_init, anno_overrides);
+
+    cout << mav_andes;
+
+    test_andestart_addigp(mav_andes);
+    test_andestart_lwgp(mav_andes);
+    test_andestart_sdgp(mav_andes);
+    test_andestar_tset(mav_andes);
+
     return 0;
+}
+
+// -----------------------------------------------------------
+void test_andestar_tset(MavisType &mav_andes) {
+    runTSet(mav_andes, "../../basic/andestar.tset");
+}
+// -----------------------------------------------------------
+// -----------------------------------------------------------
+void test_andestart_addigp(MavisType &mav_andes) {
+
+    vector<uint32_t> vec = {
+      0xee87930b,
+      0x849f970b,
+      0xf915180b,
+      0xf5151c8b
+    };
+    test_andestart_details(mav_andes,vec);
+}
+
+// -----------------------------------------------------------
+// -----------------------------------------------------------
+void test_andestart_lwgp(MavisType &mav_andes) {
+
+    vector<uint32_t> vec = {
+      0x813fab2b,
+      0x817fa72b,
+      0x983fa0ab,
+      0x987fa7ab
+    };
+
+    test_andestart_details(mav_andes,vec);
+}
+// -----------------------------------------------------------
+// -----------------------------------------------------------
+void test_andestart_sdgp(MavisType &mav_andes) {
+
+    vector<uint32_t> vec = {
+      0xf4f57bab,
+      0xf5157bab,
+      0xf5557bab
+    };
+
+    test_andestart_details(mav_andes,vec);
+}
+
+// -----------------------------------------------------------
+// -----------------------------------------------------------
+void test_andestart_details(MavisType &mav_andes,vector<uint32_t> &vec) {
+
+    Instruction<uArchInfo>::PtrType astar = nullptr;
+
+    // See swizzle.py 
+    for(size_t i=0;i<vec.size();++i) {
+      astar = mav_andes.makeInst(vec[i], 0);
+      assert(astar != nullptr);
+
+      mavis::OpcodeInfo::PtrType dinfo = astar->getOpInfo();
+
+      cout<<" Input: 0x"<<hex<<setw(8)<<vec[i]<<endl;
+
+      cout << "line " << dec << __LINE__ << ": " 
+           << "DASM: 0x"<<hex<<setw(8)<<vec[i]<<" = " << astar->dasmString() << endl;
+
+      cout << "line " << dec << __LINE__ << ": " 
+           << "Signed-offset: 0x" 
+           << std::hex << astar->getSignedOffset() << endl;
+
+      cout << "line " << dec << __LINE__ << ": " 
+           << "Source regs 0x"<< std::hex << dinfo->getSourceRegs() << endl;
+
+      cout << "line " << dec << __LINE__ << ": " 
+           << "Dest regs   0x"<< std::hex << dinfo->getDestRegs() << endl;
+
+      cout << "line " << dec << __LINE__ << ": " 
+           << "Num src regs "<< std::dec << dinfo->numSourceRegs() << endl;
+
+      cout << "line " << dec << __LINE__ << ": " 
+           << "Num dst regs "<< std::dec << dinfo->numDestRegs() << endl;
+
+      cout << endl;
+    }
 }
