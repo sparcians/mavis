@@ -1,0 +1,42 @@
+[
+  {
+    "mnemonic" : "mul",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2000033",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "mulh",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2001033",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "mulhsu",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2002033",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "mulhu",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x2003033",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "mulw",
+    "tags" : ["m", "g"],
+    "form" : "R",
+    "stencil" : "0x200003b",
+    "type" : ["int", "mul"],
+    "l-oper" : "all"
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "mnemonic" : "prefetch.i",
+    "tags" : ["zicbo"],
+    "overlay" : {
+      "base" : "ori",
+      "match" : ["0x00F00F80", "0x00000000"]
+    },
+    "form" : "I",
+    "xform" : "PF_hint",
+    "fixed" : ["rd", "rs2"],
+    "type" : ["prefetch", "hint"],
+    "l-oper" : ["rs1"]
+  },
+  {
+    "mnemonic" : "prefetch.r",
+    "tags" : ["zicbo"],
+    "overlay" : {
+      "base" : "ori",
+      "match" : ["0x00F00F80", "0x00100000"]
+    },
+    "form" : "I",
+    "xform" : "PF_hint",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x106013",
+    "type" : ["prefetch", "hint"],
+    "l-oper" : ["rs1"],
+    "data" : 8
+  },
+  {
+    "mnemonic" : "prefetch.w",
+    "tags" : ["zicbo"],
+    "overlay" : {
+      "base" : "ori",
+      "match" : ["0x00F00F80", "0x00300000"]
+    },
+    "form" : "I",
+    "xform" : "PF_hint",
+    "fixed" : ["rd", "rs2"],
+    "stencil" : "0x306013",
+    "type" : ["prefetch", "hint"],
+    "l-oper" : ["rs1"]
+  }
+]

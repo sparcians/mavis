@@ -4,7 +4,11 @@ project(Mavis)
 set(CMAKE_CXX_STANDARD 17)
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+find_package (Boost 1.78.0 REQUIRED COMPONENTS program_options json)
+message (STATUS "Using BOOST ${Boost_VERSION_STRING}")
+
 include_directories(.)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/elfio ${Boost_INCLUDE_DIRS})
 
 add_library(mavis
   impl/ExtractorRegistry.cpp
@@ -12,19 +16,28 @@ add_library(mavis
   impl/forms/CommonForms.cpp
   impl/forms/CompressedForms.cpp
   impl/forms/VectorForms.cpp
+  impl/forms/AndeStarForms.cpp
 )
-
+add_subdirectory(example EXCLUDE_FROM_ALL)
 add_subdirectory(test EXCLUDE_FROM_ALL)
 
-#
-# CppCheck
-#
-# Add a custom CMake Modules directory
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
-# Setup for HTML report
-set (CPPCHECK_XML_OUTPUT "${PROJECT_BINARY_DIR}/analysis/cppcheck/cppcheck_analysis.xml")
-set (CPPCHECK_EXCLUDES
-  ${CMAKE_BINARY_DIR}
-  ${SIM_BASE}/test
-)
-find_package (Cppcheck)
+set(CMAKE_CXX_FLAGS_DEBUG "-U_FORTIFY_SOURCE -O0 -g")
+set(CMAKE_CXX_FLAGS_FASTDEBUG "-O3 -g")
+
+if(NOT CLANGFORMAT_EXECUTABLE)
+  set(CLANGFORMAT_EXECUTABLE clang-format)
+endif()
+
+if(PROJECT_IS_TOP_LEVEL)
+  add_custom_target(clangformat
+    git ls-files "*.hpp" "*.cpp" "*.h" "*.tcc" > clang-format-files.out
+    COMMAND
+       ${CLANGFORMAT_EXECUTABLE} -i --files=clang-format-files.out
+    COMMAND
+       rm -f clang-format-files.out
+    WORKING_DIRECTORY
+       ${CMAKE_SOURCE_DIR}
+    COMMENT
+       "Formatting with ${CLANGFORMAT_EXECUTABLE} ..."
+    )
+endif()

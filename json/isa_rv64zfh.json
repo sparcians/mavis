@@ -116,24 +116,6 @@
     "type" : ["float", "compare"]
   },
   {
-    "mnemonic" : "fcvt.h.s",
-    "tags" : ["zfh"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0x44000053",
-    "s-oper" : ["rs1","rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fcvt.s.h",
-    "tags" : ["zfh"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0x40200053",
-    "s-oper" : ["rs1","rd"],
-    "type" : ["float", "convert"]
-  },
-  {
     "mnemonic" : "fcvt.w.h",
     "tags" : ["zfh"],
     "form" : "Rfloat",
@@ -152,56 +134,6 @@
     "s-oper" : ["rs1"],
     "w-oper" : ["rd"],
     "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fcvt.l.h",
-    "tags" : ["zfh"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0xc4200053",
-    "s-oper" : ["rs1"],
-    "l-oper" : ["rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fcvt.lu.h",
-    "tags" : ["zfh"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0xc4300053",
-    "s-oper" : ["rs1"],
-    "l-oper" : ["rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fcvt.h.l",
-    "tags" : ["zfh"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0xd4200053",
-    "l-oper" : ["rs1"],
-    "s-oper" : ["rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fcvt.h.lu",
-    "tags" : ["zfh"],
-    "form" : "Rfloat",
-    "fixed" : [ "rs2" ],
-    "stencil" : "0xd4300053",
-    "l-oper" : ["rs1"],
-    "s-oper" : ["rd"],
-    "type" : ["float", "convert"]
-  },
-  {
-    "mnemonic" : "fmv.x.h",
-    "tags" : ["zfh", "zfbfmin"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm", "rs2" ],
-    "stencil" : "0xe4000053",
-    "s-oper" : ["rs1"],
-    "l-oper" : ["rd"],
-    "type" : ["float", "move"]
   },
   {
     "mnemonic" : "fclass.h",
@@ -234,40 +166,6 @@
     "type" : ["float", "convert"]
   },
   {
-    "mnemonic" : "fmv.h.x",
-    "tags" : ["zfh", "zfbfmin"],
-    "form" : "Rfloat",
-    "fixed" : [ "rm", "rs2" ],
-    "stencil" : "0xf4000053",
-    "l-oper" : ["rs1"],
-    "s-oper" : ["rd"],
-    "type" : ["float", "move"]
-  },
-  {
-    "mnemonic" : "flh",
-    "tags" : ["zfh", "zfbfmin"],
-    "form" : "VF_mem",
-    "xform" : "I_load",
-    "stencil" : "0x1007",
-    "ignore" : ["mewop"],
-    "type" : ["float", "load"],
-    "l-oper" : ["rs1"],
-    "s-oper" : ["rd"],
-    "data" : 16
-  },
-  {
-    "mnemonic" : "fsh",
-    "tags" : ["zfh", "zfbfmin"],
-    "form" : "VF_mem",
-    "xform" : "S",
-    "stencil" : "0x1027",
-    "ignore" : ["mewop"],
-    "type" : ["float", "store"],
-    "l-oper" : ["rs1"],
-    "s-oper" : ["rs2"],
-    "data" : 16
-  },
-  {
     "mnemonic" : "fmadd.h",
     "tags" : ["zfh"],
     "form" : "R4",
@@ -298,68 +196,5 @@
     "stencil" : "0x400004f",
     "type" : ["float", "mac"],
     "s-oper" : "all"
-  },
-  {
-    "mnemonic" : "fleq.h",
-    "stencil" : "0xa4004053",
-    "fixed" : ["rm"],
-    "tags" : ["zfh", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fli.h",
-    "stencil" : "0xf4100053",
-    "fixed" : ["rs2","rm"],
-    "tags" : ["zfh", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fltq.h",
-    "stencil" : "0xa4005053",
-    "fixed" : ["rm"],
-    "tags" : ["zfh", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fmaxm.h",
-    "stencil" : "0x2c003053",
-    "fixed" : ["rm"],
-    "tags" : ["zfh", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fminm.h",
-    "stencil" : "0x2c002053",
-    "fixed" : ["rm"],
-    "tags" : ["zfh", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "fround.h",
-    "stencil" : "0x44400053",
-    "fixed" : ["rs2"],
-    "tags" : ["zfh", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
-  },
-  {
-    "mnemonic" : "froundnx.h",
-    "stencil" : "0x44500053",
-    "fixed" : ["rs2"],
-    "tags" : ["zfh", "zfa"],
-    "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
   }
 ]

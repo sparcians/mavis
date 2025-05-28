@@ -1,0 +1,25 @@
+on:
+  pull_request:
+    branches:
+      - main
+
+name: Check Mavis JSON validity on Ubuntu
+jobs:
+  check_json_job:
+    name: Ubuntu-check-json
+    runs-on: ubuntu-latest
+
+    steps:
+      # Install jq
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      # Get Mavis
+      - name: Clone Mavis
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Run JSON check script
+      - name: Check JSONs
+        run: ./scripts/check_jsons

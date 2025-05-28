@@ -1,6 +1,5 @@
 #pragma once
 
-#include "json.hpp"
 #include <set>
 
 namespace mavis {
@@ -21,10 +20,6 @@ public:
     {}
     MatchSet(const MatchSet<T>&) = default;
     MatchSet<T>& operator=(const MatchSet<T>&) = default;
-
-    //explicit MatchSet(const nlohmann::json& jobj):
-        //MatchSet(jobj.get<const std::vector<std::string>>())
-    //{}
 
     bool isEmpty() const
     {

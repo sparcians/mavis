@@ -4,302 +4,347 @@
 #include <map>
 #include <cinttypes>
 
-namespace mavis {
-
-/**
- * C0-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
- */
-class Form_C0
+namespace mavis
 {
-public:
-    enum idType : uint32_t
+
+    /**
+     * C0-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
+     */
+    class Form_C0
     {
-        FUNC3 = 0,
-        IMM3,
-        RS1,
-        FUNC2A,
-        IMM2,
-        RD,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            IMM3,
+            RS1,
+            FUNC2A,
+            IMM2,
+            RD,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * C1-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
- */
-class Form_C1
-{
-public:
-    enum idType : uint32_t
+    /**
+     * C1-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
+     */
+    class Form_C1
     {
-        FUNC3 = 0,
-        FUNC1,
-        FUNC2,
-        RS1,
-        RD,
-        FUNC2B,
-        RS2,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            FUNC1,
+            FUNC2,
+            RS1,
+            RD,
+            FUNC2B,
+            RS2,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * C2-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
- */
-class Form_C2
-{
-public:
-    enum idType : uint32_t
+    /**
+     * C2-Form: INTENDED FOR DECODING USE -- probably not useful for general extraction
+     */
+    class Form_C2
     {
-        FUNC3 = 0,
-        FUNC1,
-        SHAMT1,
-        RD,
-        RS1,
-        RS,
-        RS2,
-        SHAMT5,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            FUNC1,
+            SHAMT1,
+            RD,
+            RS1,
+            RS,
+            RS2,
+            SHAMT5,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * C2_sp_store-Form: INTENDED FOR EXTRACTION USE ONLY
- */
-class Form_C2_sp_store
-{
-public:
-    enum idType : uint32_t
+    /**
+     * C2_sp_store-Form: INTENDED FOR EXTRACTION USE ONLY
+     */
+    class Form_C2_sp_store
     {
-        FUNC3 = 0,
-        IMM,
-        RS2,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            IMM,
+            RS2,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * CA-Form
- */
-class Form_CA
-{
-public:
-    enum idType : uint32_t
+    /**
+     * CA-Form
+     */
+    class Form_CA
     {
-        FUNC6 = 0,
-        RS1,
-        RD,
-        FUNC2,
-        RS2,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC6 = 0,
+            RS1,
+            RD,
+            FUNC2,
+            RS2,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * CB-Form
- */
-class Form_CB
-{
-public:
-    enum idType : uint32_t
+    /**
+     * CB-Form
+     */
+    class Form_CB
     {
-        FUNC3 = 0,
-        IMM3,
-        RS1,
-        IMM5,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            IMM3,
+            RS1,
+            IMM5,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * CI-Form
- */
-class Form_CI
-{
-public:
-    enum idType : uint32_t
+    /**
+     * CI-Form
+     */
+    class Form_CI
     {
-        FUNC3 = 0,
-        IMM1,
-        RS1,
-        RD,
-        IMM5,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            IMM1,
+            RS1,
+            RD,
+            IMM5,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * CI_rD_only-Form (for c.li and c.lui)
- */
-class Form_CI_rD_only
-{
-public:
-    enum idType : uint32_t
+    /**
+     * CI_rD_only-Form (for c.li and c.lui)
+     */
+    class Form_CI_rD_only
     {
-        FUNC3 = 0,
-        IMM1,
-        RD,
-        IMM5,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            IMM1,
+            RD,
+            IMM5,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * CIW-Form
- */
-class Form_CIW
-{
-public:
-    enum idType : uint32_t
+    /**
+     * CIW-Form
+     */
+    class Form_CIW
     {
-        FUNC3 = 0,
-        IMM8,
-        RD,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            IMM8,
+            RD,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * CIX-Form: Extension from spec for C.SRLI/C.SRAI/C.ANDI
- */
-class Form_CIX
-{
-public:
-    enum idType : uint32_t
+    /**
+     * CIX-Form: Extension from spec for C.SRLI/C.SRAI/C.ANDI
+     */
+    class Form_CIX
     {
-        FUNC3 = 0,
-        SHAMT1,
-        FUNC2,
-        RS1,
-        RD,
-        SHAMT5,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            SHAMT1,
+            FUNC2,
+            RS1,
+            RD,
+            SHAMT5,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * CJ-Form
- */
-class Form_CJ
-{
-public:
-    enum idType : uint32_t
+    /**
+     * CJ-Form
+     */
+    class Form_CJ
     {
-        FUNC3 = 0,
-        IMM11,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            IMM11,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
-
-/**
- * CJR-Form (for extraction only)
- */
-class Form_CJR
-{
-public:
-    enum idType : uint32_t
+    /**
+     * CJR-Form (for extraction only)
+     */
+    class Form_CJR
     {
-        FUNC4 = 0,
-        RS1,
-        RS2,
-        OPCODE,
-        __N
+      public:
+        enum idType : uint32_t
+        {
+            FUNC4 = 0,
+            RS1,
+            RS2,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
     };
 
-    static const char * name;
-    static const FieldsType fields;
-    static const std::map<std::string, const Field &> fmap;
-    static const std::map<std::string, idType> imap;
-    static const FieldsType opcode_fields;
-    static const ImmediateType immediate_type;
-};
+    class Form_CMPP
+    {
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            FUNC1,
+            FUNC2A,
+            FUNC2,
+            URLIST,
+            SPIMM,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
+    };
+
+    class Form_CMJT
+    {
+      public:
+        enum idType : uint32_t
+        {
+            FUNC3 = 0,
+            FUNC1,
+            FUNC2A,
+            INDEX,
+            OPCODE,
+            __N
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const FieldsType opcode_fields;
+        static const ImmediateType immediate_type;
+    };
 
 } // namespace mavis
