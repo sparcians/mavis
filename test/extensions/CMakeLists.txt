@@ -26,4 +26,4 @@ file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/extensions/hello_stripped ${CMAKE_CURR
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 add_executable(ExtensionManager main.cpp)
-target_link_libraries (ExtensionManager mavis boost_json)
+target_link_libraries (ExtensionManager PRIVATE mavis Boost::program_options Boost::json)
