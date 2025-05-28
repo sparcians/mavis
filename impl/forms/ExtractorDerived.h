@@ -2804,21 +2804,9 @@ namespace mavis
                     {
                         return extract_(Form_V::idType::VM, icode);
                     }
-                case SpecialField::AQ:
-                case SpecialField::AVL:
-                case SpecialField::CSR:
-                case SpecialField::FM:
-                case SpecialField::HINT:
-                case SpecialField::NF:
-                case SpecialField::PRED:
-                case SpecialField::RL:
-                case SpecialField::RM:
-                case SpecialField::SUCC:
-                case SpecialField::WD:
-                case SpecialField::__N:
+		default:
                     return ExtractorBase::getSpecialField(sfid, icode);
             }
-            return 0;
         }
 
         uint64_t getImmediate(const Opcode icode) const override
