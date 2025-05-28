@@ -1,0 +1,453 @@
+[
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Add Immediate"
+    ],
+    "mnemonic" : "addigp",
+    "form" : "AndeStar_Custom_0",
+    "l-oper" : "all",
+    "stencil" : "0x100b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int", "arith"],
+    "uid" : "1000"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Branch on Test Bit is Clear/Zero"
+    ],
+    "mnemonic" : "bbc",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_BBx",
+    "l-oper" : "all",
+    "stencil" : "0x705b",
+    "ignore" : ["func1a","func5"],
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["branch","cond"],
+    "uid" : "1001"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Branch on Test Bit is Set/Not Zero"
+    ],
+    "mnemonic" : "bbs",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_BBx",
+    "l-oper" : "all",
+    "stencil" : "0x4000705b",
+    "ignore" : ["func1a","func5"],
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["branch","cond"],
+    "uid" : "1002"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Branch on Equal to Constant"
+    ],
+    "mnemonic" : "beqc",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_BxxC",
+    "l-oper" : "all",
+    "stencil" : "0x505b",
+    "ignore" : ["func1a","func1b","func5"],
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["branch","cond"],
+    "uid" : "1003"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Branch on Not Equal to Constant"
+    ],
+    "mnemonic" : "bnec",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_BxxC",
+    "l-oper" : "all",
+    "stencil" : "0x605b",
+    "ignore" : ["func1a","func1b","func5"],
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["branch","cond"],
+    "uid" : "1006"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Sign-extended Bit Field Operation"
+    ],
+    "mnemonic" : "bfos",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_BFOx",
+    "l-oper" : "all",
+    "stencil" : "0x305b",
+    "ignore" : ["func1a","func1b","func5"],
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1004"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Zero-extended Bit Field Operation"
+    ],
+    "mnemonic" : "bfoz",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_BFOx",
+    "l-oper" : "all",
+    "stencil" : "0x205b",
+    "ignore" : ["func1a","func1b","func5"],
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1005"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Load Effective Half-word Address"
+    ],
+    "mnemonic" : "lea.h",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x0a00005b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1012"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Load Effective Word Address"
+    ],
+    "mnemonic" : "lea.w",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x0c00005b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1014"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Load Effective Double-word Address"
+    ],
+    "mnemonic" : "lea.d",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x0e00005b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1011"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Load Effective Byte Address from Unsigned 32-bit Offset"
+    ],
+    "mnemonic" : "lea.b.ze",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x1000005b",
+    "tags" : ["andestar","v5","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1010"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Load Effective Half-word Address from Unsigned 32-bit Offset"
+    ],
+    "mnemonic" : "lea.h.ze",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x1200005b",
+    "tags" : ["andestar","v5","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1013"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Load Effective Word Address from Unsigned 32-bit Offset"
+    ],
+    "mnemonic" : "lea.w.ze",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x1400005b",
+    "tags" : ["andestar","v5","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1015"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Load Effective Double-word Address from Unsigned 32-bit Offset"
+    ],
+    "mnemonic" : "lea.d.ze",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x1600005b",
+    "tags" : ["andestar","v5","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1024"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Load Byte Signed Immediate"
+    ],
+    "mnemonic" : "lbgp",
+    "data" : 8,
+    "form" : "AndeStar_Custom_0",
+    "xform" : "AndeStar_Custom_0_LBYTE",
+    "l-oper" : "all",
+    "stencil" : "0xb",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","load"],
+    "uid" : "1007"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Load Byte Unsigned Immediate"
+    ],
+    "mnemonic" : "lbugp",
+    "data" : 8,
+    "form" : "AndeStar_Custom_0",
+    "xform" : "AndeStar_Custom_0_LBYTE",
+    "l-oper" : "all",
+    "stencil" : "0x200b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","load"],
+    "uid" : "1008"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Load Double-word Immediate"
+    ],
+    "mnemonic" : "ldgp",
+    "data" : 64,
+    "form" : "AndeStar_Custom_1",
+    "xform" : "AndeStar_Custom_1_LDOUBLEGP",
+    "l-oper" : "all",
+    "stencil" : "0x302b",
+    "tags" : ["andestar","v5","rv64"],
+    "type" : ["int","load"],
+    "uid" : "1009"
+  },
+  {
+    "_comment" : [ 
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Load Half-word Signed Immediate"
+    ],
+    "mnemonic" : "lhgp",
+    "data" : 16,
+    "form" : "AndeStar_Custom_1",
+    "xform" : "AndeStar_Custom_1_LHALFGP",
+    "l-oper" : "all",
+    "stencil" : "0x102b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","load"],
+    "uid" : "1016"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Load Half-word Unsigned Immediate"
+    ],
+    "mnemonic" : "lhugp",
+    "data" : 16,
+    "form" : "AndeStar_Custom_1",
+    "xform" : "AndeStar_Custom_1_LHALFGP",
+    "l-oper" : "all",
+    "stencil" : "0x502b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","load"],
+    "uid" : "1017"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Load Word Signed Immediate"
+    ],
+    "mnemonic" : "lwgp",
+    "data"     : 32,
+    "form" : "AndeStar_Custom_1",
+    "xform"     : "AndeStar_Custom_1_LWORDGP",
+    "l-oper"   : "all",
+    "stencil"  : "0x202b",
+    "tags"     : ["andestar","v5","i", "g","rv32","rv64"],
+    "type"     : ["int", "load"],
+    "uid"      : "1018"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Load Word Unsigned Immediate"
+    ],
+    "mnemonic" : "lwugp",
+    "data" : 32,
+    "form" : "AndeStar_Custom_1",
+    "xform" : "AndeStar_Custom_1_LWORDGP",
+    "l-oper" : "all",
+    "stencil" : "0x602b",
+    "tags" : ["andestar","v5","rv64"],
+    "type" : ["int","load"],
+    "uid" : "1019"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Store Byte Immediate"
+    ],
+    "mnemonic" : "sbgp",
+    "data" : 8,
+    "form" : "AndeStar_Custom_0",
+    "xform" : "AndeStar_Custom_0_SBYTE",
+    "l-oper" : "all",
+    "stencil" : "0x300b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","store"],
+    "uid" : "1020"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Store Double-word Immediate"
+    ],
+    "mnemonic" : "sdgp",
+    "data"     : 64,
+    "form"     : "AndeStar_Custom_1",
+    "xform"     : "AndeStar_Custom_1_SDOUBLEGP",
+    "l-oper"   : "all",
+    "stencil"  : "0x702b",
+    "tags"     : ["andestar","v5","rv64"],
+    "type"     : ["int", "store"],
+    "uid"      : "1021"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Store Half-word Immediate"
+    ],
+    "mnemonic" : "shgp",
+    "data" : 16,
+    "form" : "AndeStar_Custom_1",
+    "xform" : "AndeStar_Custom_1_SHALFGP",
+    "l-oper" : "all",
+    "stencil" : "0x2b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","store"],
+    "uid" : "1022"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "GP-implied Store Word Immediate"
+    ],
+    "mnemonic" : "swgp",
+    "data" : 32,
+    "form" : "AndeStar_Custom_1",
+    "xform" : "AndeStar_Custom_1_SWORDGP",
+    "l-oper" : "all",
+    "stencil" : "0x402b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","store"],
+    "uid" : "1023"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Find First Byte"
+    ],
+    "mnemonic" : "ffb",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x2000005b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1025"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Find First Zero or Mis-Match"
+    ],
+    "mnemonic" : "ffzmism",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x2200005b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1026"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Find First Mis-Match"
+    ],
+    "mnemonic" : "ffmism",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x2400005b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1027"
+  },
+  {
+    "_comment" : [
+       "AndeStar V5 Performance Extension",
+       "UM165-15, 2023-06-29",
+       "Find Last Mis-Match"
+    ],
+    "mnemonic" : "flmism",
+    "form" : "AndeStar_Custom_2",
+    "xform" : "AndeStar_Custom_2_XDEF",
+    "l-oper" : "all",
+    "stencil" : "0x2600005b",
+    "tags" : ["andestar","v5","rv32","rv64"],
+    "type" : ["int","arith"],
+    "uid" : "1028"
+  }
+]
