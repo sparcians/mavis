@@ -531,6 +531,7 @@
     {
       "xlen": 32,
       "extension": "zcmp",
+      "meta_extension": "zce",
       "conflicts": ["zcd"],
       "requires": ["zca"],
       "json": "isa_rv32zcmp.json"
@@ -538,6 +539,7 @@
     {
       "xlen": 64,
       "extension": "zcmp",
+      "meta_extension": "zce",
       "conflicts": ["zcd"],
       "requires": ["zca"],
       "json": "isa_rv64zcmp.json"
@@ -545,6 +547,7 @@
     {
       "xlen": [32, 64],
       "extension": "zcmt",
+      "meta_extension": "zce",
       "conflicts": ["zcd"],
       "requires": ["zca", "zicsr"],
       "json": "isa_rv32zcmt.json"
