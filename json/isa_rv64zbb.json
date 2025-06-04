@@ -211,7 +211,7 @@
     "mnemonic" : "xnor",
     "tags" : ["zbb", "b"],
     "form" : "R",
-    "stencil" : "0x80008063",
+    "stencil" : "0x40004033",
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -219,9 +219,9 @@
   {
     "mnemonic" : "zext.h",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x0800403b",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
