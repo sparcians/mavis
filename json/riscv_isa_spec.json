@@ -130,6 +130,7 @@
     {
       "xlen": [32, 64],
       "extension": "zbc",
+      "meta_extension": "b",
       "json": "isa_rv32zbc.json"
     },
     {
