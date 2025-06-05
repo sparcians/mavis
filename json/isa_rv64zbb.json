@@ -21,9 +21,9 @@
   {
     "mnemonic" : "clzw",
     "tags" : ["zbb", "b"],
-    "form" : "ISHW",
+    "form" : "R",
     "stencil" : "0x6000101b",
-    "fixed" : ["shamtw"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -41,9 +41,9 @@
   {
     "mnemonic" : "ctzw",
     "tags" : ["zbb", "b"],
-    "form" : "ISHW",
+    "form" : "R",
     "stencil" : "0x6010101b",
-    "fixed" : ["shamtw"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -61,9 +61,9 @@
   {
     "mnemonic" : "cpopw",
     "tags" : ["zbb", "b"],
-    "form" : "ISHW",
+    "form" : "R",
     "stencil" : "0x6020101b",
-    "fixed" : ["shamtw"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"

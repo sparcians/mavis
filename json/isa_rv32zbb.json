@@ -11,9 +11,9 @@
   {
     "mnemonic" : "clz",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x60001013",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -21,9 +21,9 @@
   {
     "mnemonic" : "ctz",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x60101013",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -31,9 +31,9 @@
   {
     "mnemonic" : "cpop",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x60201013",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -77,9 +77,9 @@
   {
     "mnemonic" : "orc.b",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x28705013",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -96,9 +96,9 @@
   {
     "mnemonic" : "rev8",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x69805013",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -124,7 +124,7 @@
   {
     "mnemonic" : "rori",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "ISHW",
     "stencil" : "0x60005013",
     "type" : ["int", "arith"],
     "isa" : ["B"],
@@ -133,9 +133,9 @@
   {
     "mnemonic" : "sext.b",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x60401013",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -143,9 +143,9 @@
   {
     "mnemonic" : "sext.h",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x60501013",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -154,7 +154,7 @@
     "mnemonic" : "xnor",
     "tags" : ["zbb", "b"],
     "form" : "R",
-    "stencil" : "0x80008063",
+    "stencil" : "0x40004033",
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
@@ -162,9 +162,9 @@
   {
     "mnemonic" : "zext.h",
     "tags" : ["zbb", "b"],
-    "form" : "ISH",
+    "form" : "R",
     "stencil" : "0x08004033",
-    "fixed" : ["shamt"],
+    "fixed" : ["rs2"],
     "type" : ["int", "arith"],
     "isa" : ["B"],
     "l-oper" : "all"
