@@ -298,6 +298,18 @@ int main()
     runTSet(mavis_facade, "rv64_zcb.tset");
     runTSet(mavis_facade, "rv64_zicond.tset");
 
+    // 0xf2180453 = fli.d
+    inst = mavis_facade.makeInst(0xf2180453, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xf2180453 = " << inst->dasmString()
+         << endl;
+
+    // 0x4247a7d3 = fround.d
+    inst = mavis_facade.makeInst(0x4247a7d3, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x4247a7d3 = " << inst->dasmString()
+         << endl;
+
     // Check implied extraction fields for zcb c.zext.[bhw] instructions
     // c.zext.b should have 0xFF implied immediate
     inst = mavis_facade.makeInst(0x9c61, 0);
@@ -1491,6 +1503,23 @@ int main()
     assert(inst->getMnemonic() == "cm.jt");
     assert(inst->getIntDestRegs() == 0x2ull);
     assert(inst->getImmediate() == 32ull);
+
+    cout << "====== TESTING RV64 Crypto-support ISA's =========" << endl;
+
+    // RV64 Scalar Crypto Support
+    mavis_facade.makeContext("Zbk*", {
+                             "json/isa_rv64zbb.json",
+                             "json/isa_rv64zbkb.json",
+                             }, {});
+    mavis_facade.switchContext("Zbk*");
+    cout << mavis_facade;
+
+    // 0x8d6f6b3 = packh 13, 13, 13
+    inst = mavis_facade.makeInst(0x8d6f6b3, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x8d6f6b3 = " << inst->dasmString()
+         << endl;
+
 
     MavisType mav_andes({"json/isa_rv64xandes.json"},
                         {"json/isa_rv64i.json"},

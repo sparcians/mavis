@@ -1,0 +1,11 @@
+[
+  {
+    "mnemonic" : "packh",
+    "tags" : ["zbkb", "b", "crypto"],
+    "form" : "R",
+    "stencil" : "0x8007033",
+    "type" : ["int", "arith"],
+    "isa" : ["B"],
+    "l-oper" : "all"
+  }
+]
