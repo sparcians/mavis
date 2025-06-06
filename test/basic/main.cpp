@@ -283,6 +283,8 @@ int main()
                               "json/isa_rv64zbb.json",
                               "json/isa_rv64zbc.json",
                               "json/isa_rv64zbs.json",
+                              "json/isa_rv64zbkb.json",
+                              "json/isa_rv64zbkx.json",
                               "json/isa_rv64zicbom.json",
                               "json/isa_rv64zicbop.json",
                               "json/isa_rv64zicboz.json",
@@ -1533,6 +1535,8 @@ int main()
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0x28004033 = " << inst->dasmString()
          << endl;
 
+
+    cout << "====== TESTING AndeStar Extensions =========" << endl;
 
     MavisType mav_andes({"json/isa_rv64xandes.json"},
                         {"json/isa_rv64i.json"},
