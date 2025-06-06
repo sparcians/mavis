@@ -1442,7 +1442,7 @@ int main()
                                    "json/isa_rv32zfa_d.json",       "json/isa_rv32zfa_d_addons.json",
                                    "json/isa_rv32zfa_q.json",       "json/isa_rv32zfa_h.json",
                                    "json/isa_rv32zca.json",         "json/isa_rv32zcf.json",
-                                   "json/isa_rv32zcmp.json",        "json/isa_rv32zcmt.json",
+                                   "json/exclude/isa_rv32zcmp.json",        "json/exclude/isa_rv32zcmt.json",
                                    "json/isa_rv32zfh.json",         "json/isa_rv32zfhmin.json",
                                    "json/isa_rv32zfhmin_d.json",    "json/isa_rv32zihintpause.json",
                                    "json/isa_rv32zawrs.json",       "json/isa_rv32zilsd.json",
@@ -1492,8 +1492,8 @@ int main()
     assert(inst->getIntDestRegs() == 0x2ull);
     assert(inst->getImmediate() == 32ull);
 
-    MavisType mav_andes({"../../../json/isa_andestar.json"},
-                        {"../../../json/isa_rv64i.json"},
+    MavisType mav_andes({"json/isa_rv64xandes.json"},
+                        {"json/isa_rv64i.json"},
                            uid_init, anno_overrides);
 
     cout << mav_andes;
