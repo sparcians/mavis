@@ -1509,7 +1509,8 @@ int main()
     // RV64 Scalar Crypto Support
     mavis_facade.makeContext("Zbk*", {
                              "json/isa_rv64zbb.json",
-                             "json/isa_rv64zbkb.json",
+                             "json/isa_rv64zbkb.json", // NOTE: zbkc is already part of zbc
+                             "json/isa_rv64zbkx.json",
                              }, {});
     mavis_facade.switchContext("Zbk*");
     cout << mavis_facade;
@@ -1518,6 +1519,18 @@ int main()
     inst = mavis_facade.makeInst(0x8d6f6b3, 0);
     assert(inst != nullptr);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0x8d6f6b3 = " << inst->dasmString()
+         << endl;
+
+    // 0x28002033 = xperm4 0, 0, 0
+    inst = mavis_facade.makeInst(0x28002033, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x28002033 = " << inst->dasmString()
+         << endl;
+
+    // 0x28004033 = xperm8 0, 0, 0
+    inst = mavis_facade.makeInst(0x28004033, 0);
+    assert(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x28004033 = " << inst->dasmString()
          << endl;
 
 

@@ -4948,11 +4948,16 @@ IFactoryMatchListComposite::Field family
 |	|	|	[1]: IFactoryDenseComposite::Field func7
 |	|	|	|	[30]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'rol', value=0x60001033, extractor=Extractor 'R', factory=IFactory('rol'), stencil = 0x60001033
+|	|	|	[2]: IFactoryDenseComposite::Field func7
+|	|	|	|	[14]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'xperm4', value=0x28002033, extractor=Extractor 'R', factory=IFactory('xperm4'), stencil = 0x28002033
 |	|	|	[4]: IFactoryDenseComposite::Field func7
 |	|	|	|	[4]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'pack', value=0x8004033, extractor=Extractor 'R', factory=IFactory('pack'), stencil = 0x8004033
 |	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'min', value=0xa004033, extractor=Extractor 'R', factory=IFactory('min'), stencil = 0xa004033
+|	|	|	|	[14]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	[default]: 'xperm8', value=0x28004033, extractor=Extractor 'R', factory=IFactory('xperm8'), stencil = 0x28004033
 |	|	|	|	[20]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'xnor', value=0x40004033, extractor=Extractor 'R', factory=IFactory('xnor'), stencil = 0x40004033
 |	|	|	|	[24]: IFactorySpecialCaseComposite::Field 
@@ -4986,7 +4991,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	[5]: IFactoryDenseComposite::Field func7
 |	|	|	|	[30]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'rorw', value=0x6000503b, extractor=Extractor 'R', factory=IFactory('rorw'), stencil = 0x6000503b
-line 1520: DASM: 0x8d6f6b3 = packh	x13,x13,x13
+line 1521: DASM: 0x8d6f6b3 = packh	x13,x13,x13
+line 1527: DASM: 0x28002033 = xperm4	x0,x0,x0
+line 1533: DASM: 0x28004033 = xperm8	x0,x0,x0
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
 |	|	[b]: IFactoryDenseComposite::Field func2
@@ -5090,90 +5097,90 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	[default]: 'bbs', value=0x4000705b, extractor=Extractor 'AndeStar_Custom_2_BBx', factory=IFactory('bbs'), stencil = 0x4000705b
  Input: 0xee87930b
-line 1596: DASM: 0xee87930b = addigp	x6, +0xffffffffffffb6e8
-line 1599: Signed-offset: 0xffffffffffffb6e8
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000000000000001000000
-line 1609: Num src regs 1
-line 1612: Num dst regs 1
+line 1609: DASM: 0xee87930b = addigp	x6, +0xffffffffffffb6e8
+line 1612: Signed-offset: 0xffffffffffffb6e8
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000000000000001000000
+line 1622: Num src regs 1
+line 1625: Num dst regs 1
 
  Input: 0x849f970b
-line 1596: DASM: 0x849f970b = addigp	x14, +0xfffffffffffff848
-line 1599: Signed-offset: 0xfffffffffffff848
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000000100000000000000
-line 1609: Num src regs 1
-line 1612: Num dst regs 1
+line 1609: DASM: 0x849f970b = addigp	x14, +0xfffffffffffff848
+line 1612: Signed-offset: 0xfffffffffffff848
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000000100000000000000
+line 1622: Num src regs 1
+line 1625: Num dst regs 1
 
  Input: 0xf915180b
-line 1596: DASM: 0xf915180b = addigp	x16, +0xffffffffffff2f90
-line 1599: Signed-offset: 0xffffffffffff2f90
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000010000000000000000
-line 1609: Num src regs 1
-line 1612: Num dst regs 1
+line 1609: DASM: 0xf915180b = addigp	x16, +0xffffffffffff2f90
+line 1612: Signed-offset: 0xffffffffffff2f90
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000010000000000000000
+line 1622: Num src regs 1
+line 1625: Num dst regs 1
 
  Input: 0xf5151c8b
-line 1596: DASM: 0xf5151c8b = addigp	x25, +0xffffffffffff2f50
-line 1599: Signed-offset: 0xffffffffffff2f50
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000010000000000000000000000000
-line 1609: Num src regs 1
-line 1612: Num dst regs 1
+line 1609: DASM: 0xf5151c8b = addigp	x25, +0xffffffffffff2f50
+line 1612: Signed-offset: 0xffffffffffff2f50
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000010000000000000000000000000
+line 1622: Num src regs 1
+line 1625: Num dst regs 1
 
  Input: 0x813fab2b
-line 1596: DASM: 0x813fab2b = lwgp	x22, +0xfffffffffffff810
-line 1599: Signed-offset: 0xfffffffffffff810
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000010000000000000000000000
-line 1609: Num src regs 1
-line 1612: Num dst regs 1
+line 1609: DASM: 0x813fab2b = lwgp	x22, +0xfffffffffffff810
+line 1612: Signed-offset: 0xfffffffffffff810
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000010000000000000000000000
+line 1622: Num src regs 1
+line 1625: Num dst regs 1
 
  Input: 0x817fa72b
-line 1596: DASM: 0x817fa72b = lwgp	x14, +0xfffffffffffff814
-line 1599: Signed-offset: 0xfffffffffffff814
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000000100000000000000
-line 1609: Num src regs 1
-line 1612: Num dst regs 1
+line 1609: DASM: 0x817fa72b = lwgp	x14, +0xfffffffffffff814
+line 1612: Signed-offset: 0xfffffffffffff814
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000000100000000000000
+line 1622: Num src regs 1
+line 1625: Num dst regs 1
 
  Input: 0x983fa0ab
-line 1596: DASM: 0x983fa0ab = lwgp	x1, +0xfffffffffffff980
-line 1599: Signed-offset: 0xfffffffffffff980
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000000000000000000010
-line 1609: Num src regs 1
-line 1612: Num dst regs 1
+line 1609: DASM: 0x983fa0ab = lwgp	x1, +0xfffffffffffff980
+line 1612: Signed-offset: 0xfffffffffffff980
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000000000000000000010
+line 1622: Num src regs 1
+line 1625: Num dst regs 1
 
  Input: 0x987fa7ab
-line 1596: DASM: 0x987fa7ab = lwgp	x15, +0xfffffffffffff984
-line 1599: Signed-offset: 0xfffffffffffff984
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000001000000000000000
-line 1609: Num src regs 1
-line 1612: Num dst regs 1
+line 1609: DASM: 0x987fa7ab = lwgp	x15, +0xfffffffffffff984
+line 1612: Signed-offset: 0xfffffffffffff984
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000001000000000000000
+line 1622: Num src regs 1
+line 1625: Num dst regs 1
 
  Input: 0xf4f57bab
-line 1596: DASM: 0xf4f57bab = sdgp	x15, +0xf2f50
-line 1599: Signed-offset: 0xffffffffffff2f50
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000001000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000000000000000000000
-line 1609: Num src regs 2
-line 1612: Num dst regs 0
+line 1609: DASM: 0xf4f57bab = sdgp	x15, +0xf2f50
+line 1612: Signed-offset: 0xffffffffffff2f50
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000001000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000000000000000000000
+line 1622: Num src regs 2
+line 1625: Num dst regs 0
 
  Input: 0xf5157bab
-line 1596: DASM: 0xf5157bab = sdgp	x17, +0xf2f50
-line 1599: Signed-offset: 0xffffffffffff2f50
-line 1603: Source regs 0x0000000000000000000000000000000000000000000000100000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000000000000000000000
-line 1609: Num src regs 2
-line 1612: Num dst regs 0
+line 1609: DASM: 0xf5157bab = sdgp	x17, +0xf2f50
+line 1612: Signed-offset: 0xffffffffffff2f50
+line 1616: Source regs 0x0000000000000000000000000000000000000000000000100000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000000000000000000000
+line 1622: Num src regs 2
+line 1625: Num dst regs 0
 
  Input: 0xf5557bab
-line 1596: DASM: 0xf5557bab = sdgp	x21, +0xf2f50
-line 1599: Signed-offset: 0xffffffffffff2f50
-line 1603: Source regs 0x0000000000000000000000000000000000000000001000000000000000001000
-line 1606: Dest regs   0x0000000000000000000000000000000000000000000000000000000000000000
-line 1609: Num src regs 2
-line 1612: Num dst regs 0
+line 1609: DASM: 0xf5557bab = sdgp	x21, +0xf2f50
+line 1612: Signed-offset: 0xffffffffffff2f50
+line 1616: Source regs 0x0000000000000000000000000000000000000000001000000000000000001000
+line 1619: Dest regs   0x0000000000000000000000000000000000000000000000000000000000000000
+line 1622: Num src regs 2
+line 1625: Num dst regs 0
 
