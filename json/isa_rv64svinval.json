@@ -1,0 +1,37 @@
+[
+  {
+    "mnemonic" : "sinval.vma",
+    "tags" : ["svinval"],
+    "form" : "R",
+    "stencil" : "0x16000073",
+    "type" : ["cache", "system"],
+    "l-oper" : ["rs2", "rs1"],
+    "ignore" : ["funct3"]
+  },
+  {
+    "mnemonic" : "sfence.w.inval",
+    "tags" : ["svinval"],
+    "form" : "R",
+    "fixed" : ["rs1", "rd"],
+    "stencil" : "0x18000073",
+    "type" : ["cache", "system"]
+  },
+  {
+    "mnemonic" : "hinval.vvma",
+    "tags" : ["svinval"],
+    "form" : "R",
+    "fixed" : ["rs2", "rs1"],
+    "stencil" : "0x26000073",
+    "type" : ["cache", "system"],
+    "l-oper" : ["rs1"]
+  },
+  {
+    "mnemonic" : "hinval.gvma",
+    "tags" : ["svinval"],
+    "form" : "R",
+    "fixed" : ["rs2", "rs1"],
+    "stencil" : "0x36000073",
+    "type" : ["cache", "system"],
+    "l-oper" : ["rs1"]
+  }
+]
