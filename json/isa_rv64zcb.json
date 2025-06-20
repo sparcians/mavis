@@ -69,7 +69,7 @@
     "tags" : ["zcb"],
     "form" : "C1",
     "fixed" : [ "rs2" ],
-    "expand" : "packw",
+    "expand" : "zext.h",
     "xform" : "C1_rsd_zext_I0",
     "stencil" : "0x9c69"
   },
