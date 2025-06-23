@@ -698,6 +698,8 @@ namespace mavis::extension_manager
             return *getExtensionInfo_(extension);
         }
 
+        void addMetaExtension(const std::string & ext) { meta_extensions_.try_emplace(ext); }
+
         ExtensionInfo & addExtension(const std::string & extension, const boost::json::string & json = "")
         {
             if (const auto it = extensions_.find(extension); it != extensions_.end())
@@ -742,8 +744,14 @@ namespace mavis::extension_manager
             {
                 for (const auto & meta_extension : deps)
                 {
-                    const auto result = meta_extensions_.try_emplace(meta_extension);
-                    result.first->second.emplace_back(extension);
+                    try
+                    {
+                        meta_extensions_.at(meta_extension).emplace_back(extension);
+                    }
+                    catch (const std::out_of_range &)
+                    {
+                        throwUnknownExtensionException_(meta_extension);
+                    }
 #ifdef ENABLE_GRAPH_SANITY_CHECKER
                     addDependencyGraphEdge_(extension, meta_extension);
 #endif
@@ -1233,6 +1241,7 @@ namespace mavis::extension_manager
         {
             static constexpr bool is_normal_extension = extension_type == ExtensionType::NORMAL;
             static constexpr bool is_config_extension = extension_type == ExtensionType::CONFIG;
+            static constexpr bool is_meta_extension = extension_type == ExtensionType::META;
 
             const std::string ext = getRequiredJSONValue_<std::string>(ext_obj, "extension");
 
@@ -1275,6 +1284,10 @@ namespace mavis::extension_manager
                 else if constexpr (is_config_extension)
                 {
                     arch_extensions.addConfigExtension(ext);
+                }
+                else if constexpr (is_meta_extension)
+                {
+                    arch_extensions.addMetaExtension(ext);
                 }
 
                 processArchSpecificExtensionInfo_(arch_extensions, ext, ext_obj, extension_type);

@@ -1,6 +1,11 @@
 {
   "meta_extensions": [
     {
+      "xlen": [32, 64, 128],
+      "extension": "g",
+      "is_base_extension": true
+    },
+    {
       "xlen": [32, 64],
       "extension": "a",
       "meta_extension": "g"
@@ -14,13 +19,16 @@
       "extension": "c"
     },
     {
-      "xlen": [32, 64, 128],
-      "extension": "g",
-      "is_base_extension": true
+      "xlen": [32, 64],
+      "extension": "zce"
     },
     {
-      "xlen": 32,
-      "extension": "zce"
+      "xlen": [32, 64],
+      "extension": "zvknc"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvkng"
     },
     {
       "xlen": [32, 64],
@@ -29,16 +37,16 @@
     },
     {
       "xlen": [32, 64],
-      "extension": "zvknc"
+      "extension": "zvksc"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvksg"
     },
     {
       "xlen": [32, 64],
       "extension": "zvks",
       "meta_extension": ["zvksc", "zvksg"]
-    },
-    {
-      "xlen": [32, 64],
-      "extension": "zvksc"
     },
     {
       "xlen": [32, 64],
