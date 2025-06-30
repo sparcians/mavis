@@ -6,6 +6,7 @@ template <typename ExpectedExceptionType, typename Callback>
 void testException(Callback && callback)
 {
     bool saw_exception = false;
+    (void) saw_exception;  // Needed for new compilers
     try
     {
         callback();
