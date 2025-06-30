@@ -3677,14 +3677,7 @@ namespace mavis
             {
                 // TODO: All forms should be using this pattern...
                 case SpecialField::VM:
-                    if (isMaskedField_(Form_V::idType::VM, fixed_field_mask_))
-                    {
-                        throw UnsupportedExtractorSpecialFieldID("VM", icode);
-                    }
-                    else
-                    {
-                        return extract_(Form_V::idType::VM, icode);
-                    }
+                    return extract_(Form_V::idType::VM, icode);
                 case SpecialField::RM:
                 case SpecialField::AQ:
                 case SpecialField::AVL:
