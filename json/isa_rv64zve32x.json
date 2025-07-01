@@ -1890,7 +1890,7 @@
     "v-oper": [ "rd" ]
   },
   {
-    "mnemonic": "vpopc.m",
+    "mnemonic": "vcpop.m",
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x40082057",

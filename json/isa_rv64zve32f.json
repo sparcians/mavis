@@ -695,14 +695,5 @@
     "fixed": [ "rs1" ],
     "type": [ "vector", "float", "maskable" ],
     "v-oper": [ "rs2", "rd" ]
-  },
-  {
-    "mnemonic": "vfdot.vv",
-    "tags" : ["v"],
-    "form": "V",
-    "xform": "V_op",
-    "stencil": "0xe4001057",
-    "type": [ "vector", "float", "maskable" ],
-    "v-oper": "all"
   }
 ]
