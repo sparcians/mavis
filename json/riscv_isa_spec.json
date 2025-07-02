@@ -117,10 +117,6 @@
     },
     {
       "xlen": [32, 64],
-      "extension": "svinval"
-    },
-    {
-      "xlen": [32, 64],
       "extension": "svnapot"
     },
     {
@@ -560,6 +556,11 @@
       "conflicts": ["zcd"],
       "requires": ["zca", "zicsr"],
       "json": "isa_rv32zcmt.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "svinval",
+      "json": "isa_rv64svinval.json"
     }
   ]
 }

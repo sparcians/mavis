@@ -206,7 +206,8 @@ int main()
                             "json/isa_rv64zicond.json",
                             "json/isa_rv64zawrs.json",
                             "json/isa_rv64zfbfmin.json",
-                            "json/isa_rv64zvfbfwma.json"},
+                            "json/isa_rv64zvfbfwma.json",
+                            "json/isa_rv64svinval.json"},
                            {"uarch/uarch_rv64g.json"}, uid_init, anno_overrides);
     cout << mavis_facade;
 
