@@ -140,7 +140,6 @@
     {
       "xlen": [32, 64],
       "extension": "zcd",
-      "enabled_by": [["c", "d"]],
       "requires": ["zca", "d"],
       "json": "isa_rv32zcd.json"
     },
