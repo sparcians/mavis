@@ -72,9 +72,7 @@ int main(int argc, char** argv)
         "mavis_decode -- a program that details how mavis sees a given instruction");
     desc.add_options()("help,h", "Command line options")(
         "opc,o", po::value<std::vector<std::string>>(), "32-bit or 16-bit hex opcode")(
-        "isa,a", po::value<std::string>(), "rv32 or rv64 (all inclusive)")(
-        "zclsd,z", "use rv32_zclsd extension or not (default is not)");
-    //("mnemonic,m", po::value<std::vector<std::string>>(), "Mnemonic to look up");
+        "isa,a", po::value<std::string>(), "ISA string (example: rv32g_zce, rv64imadf_zicond)");
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -104,7 +102,7 @@ int main(int argc, char** argv)
             rv_isa, "json/riscv_isa_spec.json", "json");
 
     std::string uarch_file = "uarch/uarch_rv32g.json";
-    if (rv_isa == "rv64")
+    if (rv_isa.starts_with("rv64"))
     {
         uarch_file = "uarch/uarch_rv64g.json";
     }
@@ -114,6 +112,8 @@ int main(int argc, char** argv)
             extension_manager.constructMavis<Instruction<uArchInfo>, uArchInfo>({uarch_file}));
 
     assert(nullptr != mavis_facade);
+
+    const auto inst_type_strings = mavis::InstMetaData::getInstructionTypeStrings();
 
     if (vm.count("opc"))
     {
@@ -145,6 +145,20 @@ int main(int argc, char** argv)
                 {
                     std::cout << "  immediate    : " << HEX8(inst->getImmediate()) << std::endl;
                 }
+                std::cout << "Inst type      : ";
+                std::string comma;
+                for (uint64_t inst_type = 0; inst_type < sizeof(mavis::InstMetaData::InstructionTypes) * 8; ++inst_type)
+                {
+                    const auto itype = static_cast<mavis::InstMetaData::InstructionTypes>((0x1ull << inst_type));
+                    if (inst->isInstType(itype)) {
+                        std::cout << comma << inst_type_strings.find(itype)->second;
+                        comma = ", ";
+                    }
+                }
+                if (comma.empty()) {
+                    std::cout << "None";
+                }
+                std::cout << std::endl;
                 std::cout << "Src List: " << std::endl;
                 for (const auto & op : inst->getSourceOpInfoList())
                 {
@@ -166,23 +180,6 @@ int main(int argc, char** argv)
             }
         }
     }
-
-    // Not really handy...
-    // if(vm.count("mnemonic")) {
-    //     for(auto mnemonic : vm["mnemonic"].as<std::vector<std::string>>())
-    //     {
-    //         mavis::ExtractorDirectInfo ex_data(mnemonic,
-    //                                            MavisType::RegListType(),
-    //                                            MavisType::RegListType());
-    //         auto inst = mavis_facade->makeInstDirectly(ex_data, 0);
-    //         if(nullptr != inst) {
-    //             std::cout << inst->dasmString() << std::endl;
-    //         }
-    //         else {
-    //             std::cerr << "ERROR: " << mnemonic << " is not decodable" << std::endl;
-    //         }
-    //     }
-    // }
 
     return 0;
 }
