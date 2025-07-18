@@ -522,6 +522,15 @@ namespace mavis
             }
         }
 
+        static std::map<InstructionTypes, std::string> getInstructionTypeStrings()
+        {
+            std::map<InstructionTypes, std::string> reversed;
+            for (auto i = tmap_.begin(); i != tmap_.end(); ++i) {
+                reversed[i->second] = i->first;
+            }
+            return reversed;
+        }
+
         template <typename... ArgTypes> void setInstType(const ArgTypes &&... args)
         {
             const std::vector<InstructionTypes> itypes{args...};
