@@ -45,7 +45,6 @@ namespace mavis
         std::string dasmString() const
         {
             return dasm_->toString(getMnemonic(), icode_, meta_, extractor_);
-            // return extractor_->dasmString(getMnemonic(), icode_, meta_);
         }
 
         bool isHint() const { return info_->is_hint; }
@@ -282,7 +281,7 @@ namespace mavis
         {
             try
             {
-                return extractor_->getSpecialField(sfid, icode_);
+                return extractor_->getSpecialField(sfid, icode_, meta_);
             }
             catch (const UnsupportedExtractorSpecialFieldID & ex)
             {

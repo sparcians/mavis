@@ -4908,6 +4908,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
 line 1451: DASM: 0xb856 = cm.push	{x1, x8}, -32
-line 1468: DASM: 0xbe52 = cm.popret	{x1, x8}, 16
-line 1476: DASM: 0xa002 = cm.jt	0
-line 1484: DASM: 0xa082 = cm.jalt	32
+line 1469: DASM: 0xbe52 = cm.popret	{x1, x8}, 16
+line 1477: DASM: 0xa002 = cm.jt	0
+line 1485: DASM: 0xa082 = cm.jalt	32

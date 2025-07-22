@@ -2405,9 +2405,9 @@ namespace mavis
             return InstMetaData::OperandFieldID::PUSH_RS1;
         }
 
-        int64_t getStackAdjBase_(const Opcode icode, const InstMetaData::PtrType & meta) const override
+        int64_t getStackAdjBase_(const Opcode icode, const uint32_t data_size) const override
         {
-            return -1 * Extractor<Form_CMPP>::getStackAdjBase_(icode, meta);
+            return -1 * Extractor<Form_CMPP>::getStackAdjBase_(icode, data_size);
         }
     };
 
@@ -2786,37 +2786,6 @@ namespace mavis
             appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS2,
                                        fixed_field_mask_, Form_V::idType::RS2, false, suppress_x0);
             return olist;
-        }
-
-        // TODO: add VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode) const override
-        {
-            switch (sfid)
-            {
-                case SpecialField::VM:
-                    if (isMaskedField_(Form_V::idType::VM, fixed_field_mask_))
-                    {
-                        throw UnsupportedExtractorSpecialFieldID("VM", icode);
-                    }
-                    else
-                    {
-                        return extract_(Form_V::idType::VM, icode);
-                    }
-                case SpecialField::AQ:
-                case SpecialField::AVL:
-                case SpecialField::CSR:
-                case SpecialField::FM:
-                case SpecialField::HINT:
-                case SpecialField::NF:
-                case SpecialField::PRED:
-                case SpecialField::RL:
-                case SpecialField::RM:
-                case SpecialField::SUCC:
-                case SpecialField::WD:
-                case SpecialField::__N:
-                    return ExtractorBase::getSpecialField(sfid, icode);
-            }
-            return 0;
         }
 
         uint64_t getImmediate(const Opcode icode) const override

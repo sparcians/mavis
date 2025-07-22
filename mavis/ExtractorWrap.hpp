@@ -136,7 +136,7 @@ public:
         return obj_->getSignedOffset(icode);
     }
 
-    uint64_t getSpecialField(SpecialField sfid, Opcode icode) const override
+    uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType &) const override
     {
         uint32_t index = form_->getSpecialFieldIndex(sfid);
         if (index == FormGeneric::INVALID_LIST_POS) {
