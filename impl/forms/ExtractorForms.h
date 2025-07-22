@@ -135,7 +135,8 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             switch (sfid)
             {
@@ -1679,9 +1680,12 @@ namespace mavis
         uint64_t getSpecialField(SpecialField sfid, Opcode icode,
                                  const InstMetaData::PtrType & meta) const override
         {
-            if (sfid == SpecialField::STACK_ADJ) {
-                if (meta == nullptr) {
-                    throw std::runtime_error("Cannot retrieve SF stack_adj with the original meta data");
+            if (sfid == SpecialField::STACK_ADJ)
+            {
+                if (meta == nullptr)
+                {
+                    throw std::runtime_error(
+                        "Cannot retrieve SF stack_adj with the original meta data");
                 }
                 return getStackAdj_(icode, meta->getDataSize());
             }
@@ -1780,8 +1784,7 @@ namespace mavis
         {
         }
 
-        virtual int64_t getStackAdjBase_(const Opcode icode,
-                                         const uint32_t data_size) const
+        virtual int64_t getStackAdjBase_(const Opcode icode, const uint32_t data_size) const
         {
             const auto urlist = extract_(Form_CMPP::idType::URLIST, icode);
             const auto [begin, end] = getRListRange_(urlist);
@@ -2086,7 +2089,8 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             if (SpecialField::CSR == sfid)
             {
@@ -2189,7 +2193,8 @@ namespace mavis
             return extract_(Form_CSRI::idType::UIMM, icode & ~fixed_field_mask_);
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             if (SpecialField::CSR == sfid)
             {
@@ -2325,7 +2330,8 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             switch (sfid)
             {
@@ -3093,7 +3099,8 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             if (SpecialField::RM == sfid)
             {
@@ -3248,7 +3255,8 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             if (SpecialField::RM == sfid)
             {
@@ -3605,7 +3613,8 @@ namespace mavis
         }
 
         // TODO: add VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             if (SpecialField::VM == sfid)
             {
@@ -3772,7 +3781,8 @@ namespace mavis
         }
 
         // TODO: add NF and VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             switch (sfid)
             {
@@ -4058,9 +4068,11 @@ namespace mavis
         }
 
         // TODO: add VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
-            if (SpecialField::AVL == sfid) {
+            if (SpecialField::AVL == sfid)
+            {
                 return extract_(Form_V_vsetivli::idType::AVL, icode);
             }
             return ExtractorBase::getSpecialField(sfid, icode);
@@ -4308,7 +4320,8 @@ namespace mavis
         }
 
         // TODO: add VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType & = nullptr) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & = nullptr) const override
         {
             if (SpecialField::VM == sfid)
             {

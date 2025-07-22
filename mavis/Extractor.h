@@ -218,7 +218,7 @@ namespace mavis
         uint64_t getSpecialField(SpecialField sfid, Opcode icode,
                                  const InstMetaData::PtrType & meta = nullptr) const override
         {
-            (void) meta;
+            (void)meta;
             switch (sfid)
             {
                 case SpecialField::AQ:
