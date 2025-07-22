@@ -13,6 +13,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/elfio ${Boost_INCLUDE_DIRS})
 add_library(mavis
   impl/ExtractorRegistry.cpp
   impl/FormRegistry.cpp
+  impl/InstMetaData.cpp
   impl/forms/CommonForms.cpp
   impl/forms/CompressedForms.cpp
   impl/forms/VectorForms.cpp

@@ -20,8 +20,7 @@ namespace mavis
         typedef std::bitset<64> BitMask;
         // typedef std::vector<uint8_t>                    OperandArray;
         using OperandArray = ExtractorIF::RegListType;
-        using OpInfoList =
-            OperandInfo::ElementList; // For dabble::Instruction, remove after deprecation
+        using OpInfoList = OperandInfo::ElementList;
 
         // Sub-types for the JAL/JALR instructions
         // See RV ISA Spec, section

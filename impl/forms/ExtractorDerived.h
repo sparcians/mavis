@@ -1594,10 +1594,8 @@ namespace mavis
      * Derivative of Form_C2 extractor with implicit x0 source
      * For c.mv extraction
      *
-     * NOTE: the x0 implicit source insertion is not being used right now, since dabble
-     * rename cannot yet handle a 2-source move. C.MV may be transformed to CMOV in
-     * dabble, so the x0 source needs to be "replaced" in CMOV with the destination
-     * register (to preserve the old value if the condition fails)
+     * NOTE: the x0 implicit source insertion is not being used right
+     * now.
      */
     template <> class Extractor<Form_C2_mv> : public Extractor<Form_C2>
     {

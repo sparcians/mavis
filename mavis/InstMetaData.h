@@ -2,16 +2,16 @@
 
 #include <string>
 #include <map>
-
-#include <boost/json.hpp>
-#include "DecoderExceptions.h"
-#include "Form.h"
-#include "Tag.hpp"
-#include "MatchSet.hpp"
 #include <memory>
 #include <array>
 #include <cinttypes>
 #include <regex>
+#include <boost/json.hpp>
+
+#include "DecoderExceptions.h"
+#include "Form.h"
+#include "Tag.hpp"
+#include "MatchSet.hpp"
 
 namespace mavis
 {
@@ -131,7 +131,6 @@ namespace mavis
         // TODO: Should RS alias to RS1?
         enum class OperandFieldID : uint32_t
         {
-            // RS = 0,
             RS1 = 0, // NOTE: RS1 thru RS_MAX need to stay contiguous for ExtractorDirectInfo
             RS2,
             RS3,
@@ -191,90 +190,7 @@ namespace mavis
         typedef std::shared_ptr<InstMetaData> PtrType;
 
       private:
-        static inline std::map<std::string, InstructionTypes> tmap_{
-            {"int",               InstructionTypes::INT              },
-            {"float",             InstructionTypes::FLOAT            },
-            {"arith",             InstructionTypes::ARITH            },
-            {"mul",               InstructionTypes::MULTIPLY         },
-            {"div",               InstructionTypes::DIVIDE           },
-            {"branch",            InstructionTypes::BRANCH           },
-            {"pc",                InstructionTypes::PC               },
-            {"cond",              InstructionTypes::CONDITIONAL      },
-            {"jal",               InstructionTypes::JAL              },
-            {"jalr",              InstructionTypes::JALR             },
-            {"load",              InstructionTypes::LOAD             },
-            {"store",             InstructionTypes::STORE            },
-            {"mac",               InstructionTypes::MAC              },
-            {"sqrt",              InstructionTypes::SQRT             },
-            {"convert",           InstructionTypes::CONVERT          },
-            {"compare",           InstructionTypes::COMPARE          },
-            {"move",              InstructionTypes::MOVE             },
-            {"classify",          InstructionTypes::CLASSIFY         },
-            {"vector",            InstructionTypes::VECTOR           },
-            {"maskable",          InstructionTypes::MASKABLE         },
-            {"unit_stride",       InstructionTypes::UNIT_STRIDE      },
-            {"stride",            InstructionTypes::STRIDE           },
-            {"ordered_indexed",   InstructionTypes::ORDERED_INDEXED  },
-            {"unordered_indexed", InstructionTypes::UNORDERED_INDEXED},
-            {"segment",           InstructionTypes::SEGMENT          },
-            {"faultfirst",        InstructionTypes::FAULTFIRST       },
-            {"whole",             InstructionTypes::WHOLE            },
-            {"mask",              InstructionTypes::MASK             },
-            {"widening",          InstructionTypes::WIDENING         },
-            {"hypervisor",        InstructionTypes::HYPERVISOR       },
-            {"crypto",            InstructionTypes::CRYPTO           },
-            {"prefetch",          InstructionTypes::PREFETCH         },
-            {"ntl",               InstructionTypes::NTL              },
-            {"hint",              InstructionTypes::HINT             },
-            {"cache",             InstructionTypes::CACHE            },
-            {"atomic",            InstructionTypes::ATOMIC           },
-            {"fence",             InstructionTypes::FENCE            },
-            {"system",            InstructionTypes::SYSTEM           },
-            {"csr",               InstructionTypes::CSR              }
-        };
-
-        static inline std::map<std::string, ISAExtensionIndex> isamap_{
-            {"A", ISAExtensionIndex::A},
-            {"B", ISAExtensionIndex::B},
-            {"C", ISAExtensionIndex::C},
-            {"D", ISAExtensionIndex::D},
-            {"F", ISAExtensionIndex::F},
-            {"G", ISAExtensionIndex::G},
-            {"H", ISAExtensionIndex::H},
-            {"I", ISAExtensionIndex::I},
-            {"M", ISAExtensionIndex::M},
-            {"Q", ISAExtensionIndex::Q},
-            {"V", ISAExtensionIndex::V}
-        };
-
-        static inline const std::regex isa_ext_pattern_ =
-            std::regex("([1-9][0-9]*?)?([A-Z])", std::regex::optimize);
-
-        static inline const std::map<std::string, OperandFieldID> ofimap_{
-            //{"rs",  OperandFieldID::RS},
-            {"rs1",        OperandFieldID::RS1       },
-            {"rs2",        OperandFieldID::RS2       },
-            {"rs3",        OperandFieldID::RS3       },
-            {"rs4",        OperandFieldID::RS4       },
-            {"fused_sd_0", OperandFieldID::FUSED_SD_0},
-            {"fused_sd_1", OperandFieldID::FUSED_SD_1},
-            {"temp_rs1",   OperandFieldID::TEMP_RS1  },
-            {"temp_rs2",   OperandFieldID::TEMP_RS2  },
-            {"temp_rs3",   OperandFieldID::TEMP_RS3  },
-            {"rd",         OperandFieldID::RD        },
-            {"rd2",        OperandFieldID::RD2       },
-            {"fused_rd_0", OperandFieldID::FUSED_RD_0},
-            {"fused_rd_1", OperandFieldID::FUSED_RD_1},
-            {"temp_rd",    OperandFieldID::TEMP_RD   },
-            {"temp_rd2",   OperandFieldID::TEMP_RD2  }
-        };
-
-        static inline const std::array<
-            std::string, static_cast<std::underlying_type_t<OperandFieldID>>(OperandFieldID::__N)>
-            ofinames_{//"rs",
-                      "rs1",        "rs2",        "rs3",        "rd4",      "rs_max",  "fused_sd_0",
-                      "fused_sd_1", "temp_rs1",   "temp_rs2",   "temp_rs3", "rd",      "rd2",
-                      "rd_max",     "fused_rd_0", "fused_rd_1", "temp_rd",  "temp_rd2"};
+        static const std::regex isa_ext_pattern_;
 
         static constexpr std::underlying_type_t<OperandFieldID> source_fields_ =
             //(1ull << static_cast<std::underlying_type_t<OperandFieldID>>(OperandFieldID::RS)) |
@@ -296,167 +212,9 @@ namespace mavis
       public:
         /**
          * Construct from JSON information pertaining to extraction
-         * @param inst
-         * @param form
          */
         InstMetaData(const json & inst, bool compressed = false,
-                     const MatchSet<Tag> & tags = MatchSet<Tag>()) :
-            compressed_(compressed),
-            tags_(tags)
-        {
-            oper_type_.fill(InstMetaData::OperandTypes::NONE);
-
-            // Type
-            parseTypeStanza_(inst);
-
-            // Data size
-            parseDataSizeStanza_(inst);
-
-            // Word operand types
-            if (const auto it = inst.find("w-oper"); it != inst.end())
-            {
-                const auto& it_value = it->value();
-                if (it_value == "all")
-                {
-                    setAllOperandsType_(OperandTypes::WORD);
-                }
-                else
-                {
-                    FieldNameListType flist;
-                    flist = boost::json::value_to<FieldNameListType>(it_value);
-                    setOperandsType_(flist, OperandTypes::WORD);
-                }
-            }
-
-            // Long operand types
-            if (const auto it = inst.find("l-oper"); it != inst.end())
-            {
-                const auto& it_value = it->value();
-                if (it_value == "all")
-                {
-                    setAllOperandsType_(OperandTypes::LONG);
-                }
-                else
-                {
-                    FieldNameListType flist;
-                    flist = boost::json::value_to<FieldNameListType>(it_value);
-                    setOperandsType_(flist, OperandTypes::LONG);
-                }
-            }
-
-            // Single operand types
-            if (const auto it = inst.find("s-oper"); it != inst.end())
-            {
-                const auto& it_value = it->value();
-                if (it_value == "all")
-                {
-                    setAllOperandsType_(OperandTypes::SINGLE);
-                }
-                else
-                {
-                    FieldNameListType flist;
-                    flist = boost::json::value_to<FieldNameListType>(it_value);
-                    setOperandsType_(flist, OperandTypes::SINGLE);
-                }
-            }
-
-            // Double operand types
-            if (const auto it = inst.find("d-oper"); it != inst.end())
-            {
-                const auto& it_value = it->value();
-                if (it_value == "all")
-                {
-                    setAllOperandsType_(OperandTypes::DOUBLE);
-                }
-                else
-                {
-                    FieldNameListType flist;
-                    flist = boost::json::value_to<FieldNameListType>(it_value);
-                    setOperandsType_(flist, OperandTypes::DOUBLE);
-                }
-            }
-
-            // Quad operand types
-            if (const auto it = inst.find("q-oper"); it != inst.end())
-            {
-                const auto& it_value = it->value();
-                if (it_value == "all")
-                {
-                    setAllOperandsType_(OperandTypes::QUAD);
-                }
-                else
-                {
-                    FieldNameListType flist;
-                    flist = boost::json::value_to<FieldNameListType>(it_value);
-                    setOperandsType_(flist, OperandTypes::QUAD);
-                }
-            }
-
-            // Vector operand types
-            if (const auto it = inst.find("v-oper"); it != inst.end())
-            {
-                const auto& it_value = it->value();
-                if (it_value == "all")
-                {
-                    setAllOperandsType_(OperandTypes::VECTOR);
-                }
-                else
-                {
-                    FieldNameListType flist;
-                    flist = boost::json::value_to<FieldNameListType>(it_value);
-                    setOperandsType_(flist, OperandTypes::VECTOR);
-                }
-            }
-
-            // Try to find ISA extensions of the form 'wX' where 'w' is a an optional
-            // "width" (e.g. 32, 64, etc.) and 'X' is an extension letter
-            if (const auto it = inst.find("isa"); it != inst.end())
-            {
-                ISAExtListType ilist = boost::json::value_to<ISAExtListType>(it->value());
-                if (!ilist.empty())
-                {
-                    std::smatch matches;
-                    for (const auto & s : ilist)
-                    {
-                        // matches[0] is the entire string matched,
-                        // matches[1] is the capture group for the optional width (emtpy if not
-                        // provided) matches[2] is the capture group for the ISA extension letter
-                        if (std::regex_search(s, matches, isa_ext_pattern_))
-                        {
-                            const auto itr = isamap_.find(matches[2].str());
-                            if (itr != isamap_.end())
-                            {
-                                isa_ext_ |=
-                                    (1ull << static_cast<std::underlying_type_t<ISAExtensionIndex>>(
-                                         itr->second));
-                            }
-                            else
-                            {
-                                // Invalid ISA extension letter
-                                throw BuildErrorInvalidISAExtension(boost::json::value_to<std::string>(inst.at("mnemonic")), s,
-                                                                    matches[2].str());
-                            }
-                            if (matches[1].length() != 0)
-                            {
-                                const uint32_t n =
-                                    std::strtoull(matches[1].str().c_str(), nullptr, 0);
-                                if ((n == 0) || ((n & (n - 1)) != 0))
-                                {
-                                    // Not a non-zero power of 2
-                                    throw BuildErrorInvalidISAWidth(boost::json::value_to<std::string>(inst.at("mnemonic")), s, n);
-                                }
-                                setISAWidth(itr->second, n);
-                            }
-                        }
-                        else
-                        {
-                            // Malformed ISA extension string
-                            throw BuildErrorMalformedISAExtension(boost::json::value_to<std::string>(inst.at("mnemonic")), s);
-                        }
-                    }
-                }
-            }
-        }
+                     const MatchSet<Tag> & tags = MatchSet<Tag>());
 
         /**
          * \brief Copy constructor
@@ -522,14 +280,7 @@ namespace mavis
             }
         }
 
-        static std::map<InstructionTypes, std::string> getInstructionTypeStrings()
-        {
-            std::map<InstructionTypes, std::string> reversed;
-            for (auto i = tmap_.begin(); i != tmap_.end(); ++i) {
-                reversed[i->second] = i->first;
-            }
-            return reversed;
-        }
+        static std::string getInstructionTypeName(const InstructionTypes & inst_type);
 
         template <typename... ArgTypes> void setInstType(const ArgTypes &&... args)
         {
@@ -739,24 +490,9 @@ namespace mavis
 
         const MatchSet<Tag> getTags() const { return tags_; }
 
-        static inline const std::string & getFieldIDName(OperandFieldID fid)
-        {
-            assert(fid != OperandFieldID::NONE);
-            return ofinames_[static_cast<std::underlying_type_t<OperandFieldID>>(fid)];
-        }
+        static const std::string & getFieldIDName(OperandFieldID fid);
 
-        static inline OperandFieldID getFieldID(const std::string & fname)
-        {
-            const auto itr = ofimap_.find(fname);
-            if (itr == ofimap_.end())
-            {
-                return OperandFieldID::NONE;
-            }
-            else
-            {
-                return itr->second;
-            }
-        }
+        static OperandFieldID getFieldID(const std::string & fname);
 
       private:
         bool compressed_ = false;
@@ -773,49 +509,11 @@ namespace mavis
         uint32_t data_size_ = 0;
         MatchSet<Tag> tags_;
 
-        void parseTypeStanza_(const json & inst)
-        {
-            // Merge type information from the overlay instruction and the base
-            if (const auto it = inst.find("type"); it != inst.end())
-            {
-                const FieldNameListType tlist = boost::json::value_to<FieldNameListType>(it->value());
-                for (const auto & t : tlist)
-                {
-                    const auto itr = tmap_.find(t);
-                    if (itr == tmap_.end())
-                    {
-                        throw BuildErrorUnknownType(boost::json::value_to<std::string>(inst.at("mnemonic")), t);
-                    }
-                    inst_types_ |=
-                        static_cast<std::underlying_type_t<InstructionTypes>>(itr->second);
-                }
-            }
-        }
+        void parseTypeStanza_(const json & inst);
 
-        void parseDataSizeStanza_(const json & inst)
-        {
-            // Merge data size information from the overlay instruction and the base
-            if (const auto it = inst.find("data"); it != inst.end())
-            {
-                data_size_ = boost::json::value_to<uint32_t>(it->value());
-                // Check positive, power-of-2 or zero
-                if ((data_size_ & (data_size_ - 1)) || (int32_t(data_size_) < 0))
-                {
-                    throw BuildErrorInvalidDataSize(boost::json::value_to<std::string>(inst.at("mnemonic")), data_size_);
-                }
-            }
-        }
+        void parseDataSizeStanza_(const json & inst);
 
-        static inline std::underlying_type_t<OperandFieldID>
-        getFieldIndex_(const std::string & fname)
-        {
-            const auto itr = ofimap_.find(fname);
-            if (itr == ofimap_.end())
-            {
-                throw BuildErrorUnknownFormField("InstMetaData", fname);
-            }
-            return static_cast<std::underlying_type_t<OperandFieldID>>(itr->second);
-        }
+        static std::underlying_type_t<OperandFieldID> getFieldIndex_(const std::string & fname);
 
         static inline uint64_t getFieldIDSet_(const std::vector<std::string> & flist)
         {

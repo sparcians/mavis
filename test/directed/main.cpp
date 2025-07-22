@@ -113,8 +113,6 @@ int main(int argc, char** argv)
 
     assert(nullptr != mavis_facade);
 
-    const auto inst_type_strings = mavis::InstMetaData::getInstructionTypeStrings();
-
     if (vm.count("opc"))
     {
         for (auto opcode : vm["opc"].as<std::vector<std::string>>())
@@ -147,11 +145,13 @@ int main(int argc, char** argv)
                 }
                 std::cout << "Inst type      : ";
                 std::string comma;
-                for (uint64_t inst_type = 0; inst_type < sizeof(mavis::InstMetaData::InstructionTypes) * 8; ++inst_type)
+                for (uint64_t inst_type = 0;
+                     inst_type < sizeof(mavis::InstMetaData::InstructionTypes) * 8;
+                     ++inst_type)
                 {
                     const auto itype = static_cast<mavis::InstMetaData::InstructionTypes>((0x1ull << inst_type));
                     if (inst->isInstType(itype)) {
-                        std::cout << comma << inst_type_strings.find(itype)->second;
+                        std::cout << comma << mavis::InstMetaData::getInstructionTypeName(itype);
                         comma = ", ";
                     }
                 }
