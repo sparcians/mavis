@@ -2738,6 +2738,24 @@ namespace mavis
             return olist;
         }
 
+        // TODO: add VM special fields
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & meta) const override
+        {
+            if (SpecialField::VM == sfid)
+            {
+                if (isMaskedField_(Form_V::idType::VM, fixed_field_mask_))
+                {
+                    throw UnsupportedExtractorSpecialFieldID("VM", icode);
+                }
+                else
+                {
+                    return extract_(Form_V::idType::VM, icode);
+                }
+            }
+            return ExtractorBase::getSpecialField(sfid, icode, meta);
+        }
+
         uint64_t getImmediate(const Opcode icode) const override
         {
             return extract_(Form_V::idType::SIMM5, icode & ~fixed_field_mask_);
