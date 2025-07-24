@@ -1685,7 +1685,7 @@ namespace mavis
                 if (meta == nullptr)
                 {
                     throw std::runtime_error(
-                        "Cannot retrieve SF stack_adj with the original meta data");
+                        "Cannot retrieve SF stack_adj without the original meta data");
                 }
                 return getStackAdj_(icode, meta->getDataSize());
             }
