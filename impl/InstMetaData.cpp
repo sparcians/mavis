@@ -343,7 +343,7 @@ namespace mavis
         return static_cast<std::underlying_type_t<OperandFieldID>>(itr->second);
     }
 
-    std::string InstMetaData::getInstructionTypeName(const InstructionTypes & inst_type)
+    const std::string & InstMetaData::getInstructionTypeName(const InstructionTypes & inst_type)
     {
         return tmap.right.at(inst_type);
     }

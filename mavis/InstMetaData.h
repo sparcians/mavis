@@ -280,7 +280,7 @@ namespace mavis
             }
         }
 
-        static std::string getInstructionTypeName(const InstructionTypes & inst_type);
+        static const std::string &  getInstructionTypeName(const InstructionTypes & inst_type);
 
         template <typename... ArgTypes> void setInstType(const ArgTypes &&... args)
         {
