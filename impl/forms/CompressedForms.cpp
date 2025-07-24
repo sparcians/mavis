@@ -394,10 +394,11 @@ namespace mavis
      */
     const char* Form_CMPP::name{"CMPP"};
 
-    const FieldsType Form_CMPP::fields{Field("func3", 13, 3), Field("func1", 12, 1), // func6 is split into func3, func1, and func2A
-                                       Field("func2A", 10, 2), Field("func2", 8, 2),
-                                       Field("urlist", 4, 4), Field("spimm", 2, 2),
-                                       Field("opcode", 0, 2)};
+    const FieldsType Form_CMPP::fields{
+        Field("func3", 13, 3),  Field("func1", 12, 1), // func6 is split into func3, func1, and
+                                                       // func2A
+        Field("func2A", 10, 2), Field("func2", 8, 2),  Field("urlist", 4, 4),
+        Field("spimm", 2, 2),   Field("opcode", 0, 2)};
 
     const std::map<std::string, const Field &> Form_CMPP::fmap{
         {"func3",  Form_CMPP::fields[Form_CMPP::idType::FUNC3] },
@@ -419,11 +420,10 @@ namespace mavis
         {"opcode", Form_CMPP::idType::OPCODE}
     };
 
-    const FieldsType Form_CMPP::opcode_fields{Form_CMPP::fields[Form_CMPP::idType::OPCODE],
-                                              Form_CMPP::fields[Form_CMPP::idType::FUNC3],
-                                              Form_CMPP::fields[Form_CMPP::idType::FUNC2A],
-                                              Form_CMPP::fields[Form_CMPP::idType::FUNC1],
-                                              Form_CMPP::fields[Form_CMPP::idType::FUNC2]};
+    const FieldsType Form_CMPP::opcode_fields{
+        Form_CMPP::fields[Form_CMPP::idType::OPCODE], Form_CMPP::fields[Form_CMPP::idType::FUNC3],
+        Form_CMPP::fields[Form_CMPP::idType::FUNC2A], Form_CMPP::fields[Form_CMPP::idType::FUNC1],
+        Form_CMPP::fields[Form_CMPP::idType::FUNC2]};
 
     const ImmediateType Form_CMPP::immediate_type = ImmediateType::SIGNED;
 
@@ -432,9 +432,10 @@ namespace mavis
      */
     const char* Form_CMJT::name{"CMJT"};
 
-    const FieldsType Form_CMJT::fields{Field("func3", 13, 3), Field("func1", 12, 1), // func6 is split into func3, func1, and func2A
-                                       Field("func2A", 10, 2),Field("index", 2, 8),
-                                       Field("opcode", 0, 2)};
+    const FieldsType Form_CMJT::fields{
+        Field("func3", 13, 3),
+        Field("func1", 12, 1), // func6 is split into func3, func1, and func2A
+        Field("func2A", 10, 2), Field("index", 2, 8), Field("opcode", 0, 2)};
 
     const std::map<std::string, const Field &> Form_CMJT::fmap{
         {"func3",  Form_CMJT::fields[Form_CMJT::idType::FUNC3] },
@@ -452,10 +453,9 @@ namespace mavis
         {"opcode", Form_CMJT::idType::OPCODE}
     };
 
-    const FieldsType Form_CMJT::opcode_fields{Form_CMJT::fields[Form_CMJT::idType::OPCODE],
-                                              Form_CMJT::fields[Form_CMJT::idType::FUNC3],
-                                              Form_CMJT::fields[Form_CMJT::idType::FUNC2A],
-                                              Form_CMJT::fields[Form_CMJT::idType::FUNC1]};
+    const FieldsType Form_CMJT::opcode_fields{
+        Form_CMJT::fields[Form_CMJT::idType::OPCODE], Form_CMJT::fields[Form_CMJT::idType::FUNC3],
+        Form_CMJT::fields[Form_CMJT::idType::FUNC2A], Form_CMJT::fields[Form_CMJT::idType::FUNC1]};
 
     const ImmediateType Form_CMJT::immediate_type = ImmediateType::UNSIGNED;
 

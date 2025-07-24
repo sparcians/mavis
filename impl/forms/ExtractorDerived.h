@@ -27,10 +27,7 @@ namespace mavis
         ImmediateType getImmediateType() const override { return ImmediateType::NONE; }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_I>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_I>(ffmask, fset) {}
     };
 
     /**
@@ -56,10 +53,7 @@ namespace mavis
         }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_I>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_I>(ffmask, fset) {}
 
         friend Extractor<Form_I_load_pair>;
     };
@@ -115,8 +109,7 @@ namespace mavis
         }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_I_load>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_I_load>(ffmask, fset)
         {
         }
     };
@@ -172,10 +165,7 @@ namespace mavis
         // clang-format on
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C0>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C0>(ffmask, fset) {}
     };
 
     /**
@@ -538,10 +528,7 @@ namespace mavis
         // clang-format on
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C0>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C0>(ffmask, fset) {}
     };
 
     /**
@@ -896,8 +883,7 @@ namespace mavis
         uint64_t getImmediate(const Opcode icode) const override { return 0; }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C1_rsd>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C1_rsd>(ffmask, fset)
         {
         }
     };
@@ -964,8 +950,7 @@ namespace mavis
         uint64_t getImmediate(const Opcode icode) const override { return 0; }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C1_rsd>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C1_rsd>(ffmask, fset)
         {
         }
     };
@@ -991,8 +976,7 @@ namespace mavis
         uint64_t getImmediate(const Opcode icode) const override { return -1ull; }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C1_rsd>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C1_rsd>(ffmask, fset)
         {
         }
     };
@@ -1018,8 +1002,7 @@ namespace mavis
         uint64_t getImmediate(const Opcode icode) const override { return 0xFF; }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C1_rsd>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C1_rsd>(ffmask, fset)
         {
         }
     };
@@ -1043,10 +1026,7 @@ namespace mavis
         std::string getName() const override { return Form_CI_addi::name; }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_CI>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_CI>(ffmask, fset) {}
     };
 
     /**
@@ -1071,10 +1051,7 @@ namespace mavis
         std::string getName() const override { return Form_CI_addiw::name; }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_CI>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_CI>(ffmask, fset) {}
     };
 
     /**
@@ -1265,10 +1242,7 @@ namespace mavis
         // clang-format on
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_CIW>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_CIW>(ffmask, fset) {}
     };
 
     /**
@@ -1297,10 +1271,7 @@ namespace mavis
         }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_CIX>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_CIX>(ffmask, fset) {}
     };
 
     /**
@@ -1367,10 +1338,7 @@ namespace mavis
         }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_CJ>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_CJ>(ffmask, fset) {}
     };
 
     /**
@@ -1481,10 +1449,7 @@ namespace mavis
         // clang-format on
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_CJR>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_CJR>(ffmask, fset) {}
     };
 
     /**
@@ -1584,20 +1549,15 @@ namespace mavis
         // clang-format on
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C2>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C2>(ffmask, fset) {}
     };
 
     /**
      * Derivative of Form_C2 extractor with implicit x0 source
      * For c.mv extraction
      *
-     * NOTE: the x0 implicit source insertion is not being used right now, since dabble
-     * rename cannot yet handle a 2-source move. C.MV may be transformed to CMOV in
-     * dabble, so the x0 source needs to be "replaced" in CMOV with the destination
-     * register (to preserve the old value if the condition fails)
+     * NOTE: the x0 implicit source insertion is not being used right
+     * now.
      */
     template <> class Extractor<Form_C2_mv> : public Extractor<Form_C2>
     {
@@ -1687,10 +1647,7 @@ namespace mavis
         // clang-format on
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C2>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C2>(ffmask, fset) {}
     };
 
     /**
@@ -1788,10 +1745,7 @@ namespace mavis
         // clang-format on
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C2>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C2>(ffmask, fset) {}
     };
 
     /**
@@ -1886,10 +1840,7 @@ namespace mavis
         // clang-format on
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C2>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C2>(ffmask, fset) {}
     };
 
     /**
@@ -1936,8 +1887,7 @@ namespace mavis
         ImmediateType getImmediateType() const override { return ImmediateType::UNSIGNED; }
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_C2_sp>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_C2_sp>(ffmask, fset)
         {
         }
     };
@@ -2370,13 +2320,15 @@ namespace mavis
 
         uint64_t getSourceRegs(const Opcode icode) const override
         {
-            // Form_CMPP handles pop-type instructions. On a push, the source and dest regs are swapped
+            // Form_CMPP handles pop-type instructions. On a push, the source and dest regs are
+            // swapped
             return Extractor<Form_CMPP>::getDestRegs(icode);
         }
 
         uint64_t getDestRegs(const Opcode icode) const override
         {
-            // Form_CMPP handles pop-type instructions. On a push, the source and dest regs are swapped
+            // Form_CMPP handles pop-type instructions. On a push, the source and dest regs are
+            // swapped
             return Extractor<Form_CMPP>::getSourceRegs(icode);
         }
 
@@ -2407,9 +2359,9 @@ namespace mavis
             return InstMetaData::OperandFieldID::PUSH_RS1;
         }
 
-        int64_t getStackAdjBase_(const Opcode icode, const InstMetaData::PtrType & meta) const override
+        int64_t getStackAdjBase_(const Opcode icode, const uint32_t data_size) const override
         {
-            return -1 * Extractor<Form_CMPP>::getStackAdjBase_(icode, meta);
+            return -1 * Extractor<Form_CMPP>::getStackAdjBase_(icode, data_size);
         }
     };
 
@@ -2445,8 +2397,7 @@ namespace mavis
         uint64_t getSourceOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
                                        InstMetaData::OperandTypes kind) const override
         {
-            if (meta->isAllOperandType(kind)
-                || (kind == InstMetaData::OperandTypes::LONG)
+            if (meta->isAllOperandType(kind) || (kind == InstMetaData::OperandTypes::LONG)
                 || (kind == InstMetaData::OperandTypes::WORD))
             {
                 return getSourceRegs(icode);
@@ -2460,8 +2411,7 @@ namespace mavis
         uint64_t getDestOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
                                      InstMetaData::OperandTypes kind) const override
         {
-            if (meta->isAllOperandType(kind)
-                || (kind == InstMetaData::OperandTypes::LONG)
+            if (meta->isAllOperandType(kind) || (kind == InstMetaData::OperandTypes::LONG)
                 || (kind == InstMetaData::OperandTypes::WORD))
             {
                 return getDestRegs(icode);
@@ -2582,8 +2532,7 @@ namespace mavis
         std::string getName() const override { return Form_V_load::name; }
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_VF_mem>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_VF_mem>(ffmask, fset)
         {
         }
     };
@@ -2731,8 +2680,7 @@ namespace mavis
         // clang-format on
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_VF_mem>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_VF_mem>(ffmask, fset)
         {
         }
     };
@@ -2791,34 +2739,21 @@ namespace mavis
         }
 
         // TODO: add VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & meta) const override
         {
-            switch (sfid)
+            if (SpecialField::VM == sfid)
             {
-                case SpecialField::VM:
-                    if (isMaskedField_(Form_V::idType::VM, fixed_field_mask_))
-                    {
-                        throw UnsupportedExtractorSpecialFieldID("VM", icode);
-                    }
-                    else
-                    {
-                        return extract_(Form_V::idType::VM, icode);
-                    }
-                case SpecialField::AQ:
-                case SpecialField::AVL:
-                case SpecialField::CSR:
-                case SpecialField::FM:
-                case SpecialField::HINT:
-                case SpecialField::NF:
-                case SpecialField::PRED:
-                case SpecialField::RL:
-                case SpecialField::RM:
-                case SpecialField::SUCC:
-                case SpecialField::WD:
-                case SpecialField::__N:
-                    return ExtractorBase::getSpecialField(sfid, icode);
+                if (isMaskedField_(Form_V::idType::VM, fixed_field_mask_))
+                {
+                    throw UnsupportedExtractorSpecialFieldID("VM", icode);
+                }
+                else
+                {
+                    return extract_(Form_V::idType::VM, icode);
+                }
             }
-            return 0;
+            return ExtractorBase::getSpecialField(sfid, icode, meta);
         }
 
         uint64_t getImmediate(const Opcode icode) const override
@@ -2869,10 +2804,7 @@ namespace mavis
         // clang-format on
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_V>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_V>(ffmask, fset) {}
     };
 
     /**
@@ -2944,8 +2876,7 @@ namespace mavis
         // clang-format on
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_V_uimm>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_V_uimm>(ffmask, fset)
         {
         }
     };
@@ -3007,10 +2938,7 @@ namespace mavis
         // clang-format on
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_V>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_V>(ffmask, fset) {}
     };
 
     /**
@@ -3058,10 +2986,7 @@ namespace mavis
         // clang-format on
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_R>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_R>(ffmask, fset) {}
     };
 
     /**
@@ -3161,10 +3086,7 @@ namespace mavis
         // clang-format on
 
       private:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            fixed_field_mask_(ffmask)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : fixed_field_mask_(ffmask) {}
 
         uint64_t fixed_field_mask_ = 0;
     };
@@ -3219,10 +3141,7 @@ namespace mavis
         }
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_V>(ffmask, fset)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_V>(ffmask, fset) {}
     };
 
     /**
@@ -3276,8 +3195,7 @@ namespace mavis
         }
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_V_op>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_V_op>(ffmask, fset)
         {
         }
     };
@@ -3333,8 +3251,7 @@ namespace mavis
         }
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            Extractor<Form_V_uimm>(ffmask, fset)
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_V_uimm>(ffmask, fset)
         {
         }
     };
@@ -3370,10 +3287,7 @@ namespace mavis
         }
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            fixed_field_mask_(ffmask)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : fixed_field_mask_(ffmask) {}
 
         uint64_t fixed_field_mask_ = 0;
     };
@@ -3482,10 +3396,7 @@ namespace mavis
         // clang-format on
 
       protected:
-        Extractor(const uint64_t ffmask, const uint64_t fset) :
-            fixed_field_mask_(ffmask)
-        {
-        }
+        Extractor(const uint64_t ffmask, const uint64_t fset) : fixed_field_mask_(ffmask) {}
 
         uint64_t fixed_field_mask_ = 0;
     };

@@ -48,7 +48,8 @@ namespace mavis
         ExtractorIF::PtrType override_extractor = nullptr;
         if (const auto it = inst.find("xform"); it != inst.end())
         {
-            override_extractor = extractors_.getExtractor(boost::json::value_to<std::string>(it->value()));
+            override_extractor =
+                extractors_.getExtractor(boost::json::value_to<std::string>(it->value()));
         }
 
         // Parse the factory name override, if present
@@ -71,8 +72,8 @@ namespace mavis
         if (const auto it = inst.find("overlay"); it != inst.end())
         {
             typename Overlay<InstType, AnnotationType>::PtrType olay =
-                std::make_shared<Overlay<InstType, AnnotationType>>(mnemonic, it->value().as_object(), inst,
-                                                                    override_extractor);
+                std::make_shared<Overlay<InstType, AnnotationType>>(
+                    mnemonic, it->value().as_object(), inst, override_extractor);
             builder_->buildOverlay(olay, jfile);
             // std::cout << *olay << std::endl;
             typename IFactory<InstType, AnnotationType>::PtrType ifact =
@@ -159,12 +160,12 @@ namespace mavis
         {
             const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
 
-            const auto& jobj = json.as_array();
+            const auto & jobj = json.as_array();
 
             // Read in the instructions JSON file and process fields that pertain to decoding...
             for (const auto & inst_value : jobj)
             {
-                const auto& inst = inst_value.as_object();
+                const auto & inst = inst_value.as_object();
 
                 std::string mnemonic;
                 if (const auto it = inst.find("mnemonic"); it != inst.end())
@@ -174,7 +175,8 @@ namespace mavis
                     MatchSet<Tag> tags;
                     if (const auto tag_it = inst.find("tags"); tag_it != inst.end())
                     {
-                        tags = MatchSet<Tag>(boost::json::value_to<std::vector<std::string>>(tag_it->value()));
+                        tags = MatchSet<Tag>(
+                            boost::json::value_to<std::vector<std::string>>(tag_it->value()));
                     }
 
                     const bool is_expansion = inst.find("expand") != inst.end();
@@ -228,7 +230,8 @@ namespace mavis
                     // to help the poor user find where he's missing a mnemonic
                     if (const auto stencil_it = inst.find("stencil"); stencil_it != inst.end())
                     {
-                        throw BuildErrorMissingMnemonic(jfile, boost::json::value_to<std::string>(stencil_it->value()));
+                        throw BuildErrorMissingMnemonic(
+                            jfile, boost::json::value_to<std::string>(stencil_it->value()));
                     }
                     throw BuildErrorMissingMnemonic(jfile);
                 }

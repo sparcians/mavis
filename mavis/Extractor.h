@@ -23,37 +23,39 @@ namespace mavis
         typedef std::vector<OpcodeFieldValueType> RegListType;
         typedef std::vector<uint32_t> ValueListType;
 
-        // TODO: Maybe make SpecialField into its own class (for string name <--> enum conversions)
+        // TODO: Make SpecialField a boost::bitmap
         enum class SpecialField : uint32_t
         {
-            AQ = 0, // AQ "acquire" bit in lr.w, sc.w, and atomics
-            AVL,    // AVL "immediate" field in vsetivli
-            CSR,    // CSR field in csr* instructions
-            FM,     // FENCE mode bits
-            NF,     // NF field in vector memory instructions
-            PRED,   // FENCE predecessor bits
-            RL,     // RL "release" bit in lr.w, sc.w, and atomics
-            RM,     // RM "rounding mode" bit in FP instructions
-            SUCC,   // FENCE successor bits
-            VM,     // VM bit in vector insts
-            WD,     // WD in vector atomic insts
-            HINT,   // HINT in prefetch operations
+            AQ = 0,    // AQ "acquire" bit in lr.w, sc.w, and atomics
+            AVL,       // AVL "immediate" field in vsetivli
+            CSR,       // CSR field in csr* instructions
+            FM,        // FENCE mode bits
+            NF,        // NF field in vector memory instructions
+            PRED,      // FENCE predecessor bits
+            RL,        // RL "release" bit in lr.w, sc.w, and atomics
+            RM,        // RM "rounding mode" bit in FP instructions
+            SUCC,      // FENCE successor bits
+            VM,        // VM bit in vector insts
+            WD,        // WD in vector atomic insts
+            HINT,      // HINT in prefetch operations
+            STACK_ADJ, // Stack adjustment for zcmp instructions
             __N
         };
 
         static inline const std::map<const std::string, SpecialField> SpecialFieldMap{
-            {"aq",   SpecialField::AQ  },
-            {"avl",  SpecialField::AVL },
-            {"csr",  SpecialField::CSR },
-            {"fm",   SpecialField::FM  },
-            {"nf",   SpecialField::NF  },
-            {"pred", SpecialField::PRED},
-            {"rl",   SpecialField::RL  },
-            {"rm",   SpecialField::RM  },
-            {"succ", SpecialField::SUCC},
-            {"vm",   SpecialField::VM  },
-            {"wd",   SpecialField::WD  },
-            {"hint", SpecialField::HINT}
+            {"aq",        SpecialField::AQ       },
+            {"avl",       SpecialField::AVL      },
+            {"csr",       SpecialField::CSR      },
+            {"fm",        SpecialField::FM       },
+            {"nf",        SpecialField::NF       },
+            {"pred",      SpecialField::PRED     },
+            {"rl",        SpecialField::RL       },
+            {"rm",        SpecialField::RM       },
+            {"succ",      SpecialField::SUCC     },
+            {"vm",        SpecialField::VM       },
+            {"wd",        SpecialField::WD       },
+            {"hint",      SpecialField::HINT     },
+            {"stack_adj", SpecialField::STACK_ADJ}
         };
 
       private:
@@ -123,7 +125,8 @@ namespace mavis
         // ExtractorTraceInfo. Do we really need separate versions anymore?
         virtual int64_t getSignedOffset(Opcode icode) const = 0;
 
-        virtual uint64_t getSpecialField(SpecialField sfid, Opcode icode) const = 0;
+        virtual uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                         const InstMetaData::PtrType & meta = nullptr) const = 0;
 
         virtual std::string dasmString(const std::string & mnemonic, Opcode icode) const = 0;
 
@@ -212,8 +215,10 @@ namespace mavis
 
         int64_t getSignedOffset(const Opcode icode) const override { return getImmediate(icode); }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode) const override
+        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
+                                 const InstMetaData::PtrType & meta = nullptr) const override
         {
+            (void)meta;
             switch (sfid)
             {
                 case SpecialField::AQ:
@@ -240,6 +245,8 @@ namespace mavis
                     throw UnsupportedExtractorSpecialFieldID("WD", icode);
                 case SpecialField::HINT:
                     throw UnsupportedExtractorSpecialFieldID("HINT", icode);
+                case SpecialField::STACK_ADJ:
+                    throw UnsupportedExtractorSpecialFieldID("STACK_ADJ", icode);
                 case SpecialField::__N:
                     throw InvalidExtractorSpecialFieldID("__N", icode);
             }

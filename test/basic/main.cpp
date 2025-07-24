@@ -1451,6 +1451,7 @@ int main()
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xb856 = " << inst->dasmString() << endl;
     assert(inst->getMnemonic() == "cm.push");
     assert(inst->getIntDestRegs() == 0x4ull); // 1 dest
+    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::STACK_ADJ) == -32); // Should have stack_adj SF
 
     try
     {
