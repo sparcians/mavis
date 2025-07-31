@@ -1,4 +1,5 @@
 #include <iostream>
+#include <bit>
 
 #include "mavis/Mavis.h"
 #include "mavis/MatchSet.hpp"
@@ -10,6 +11,7 @@
 #include "uArchInfo.h"
 
 using namespace std;
+
 
 struct ExampleTraceInfo
 {
@@ -1451,7 +1453,7 @@ int main()
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xb856 = " << inst->dasmString() << endl;
     assert(inst->getMnemonic() == "cm.push");
     assert(inst->getIntDestRegs() == 0x4ull); // 1 dest
-    assert(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::STACK_ADJ) == -32); // Should have stack_adj SF
+    assert(std::bit_cast<int64_t>(inst->getSpecialField(mavis::OpcodeInfo::SpecialField::STACK_ADJ)) == -32); // Should have stack_adj SF
 
     try
     {
@@ -1486,6 +1488,14 @@ int main()
     assert(inst->getMnemonic() == "cm.jt");
     assert(inst->getIntDestRegs() == 0x2ull);
     assert(inst->getImmediate() == 32ull);
+
+    // These opcode variants have caused issues in the past
+    inst = mavis_facade_rv32.makeInst(0xac22, 0);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xac22 = " << inst->dasmString() << endl;
+    inst = mavis_facade_rv32.makeInst(0xad26, 0);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xad26 = " << inst->dasmString() << endl;
+    inst = mavis_facade_rv32.makeInst(0xac62, 0);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xac62 = " << inst->dasmString() << endl;
 
     return 0;
 }

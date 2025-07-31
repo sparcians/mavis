@@ -2400,12 +2400,20 @@ namespace mavis
             if (meta->isAllOperandType(kind) || (kind == InstMetaData::OperandTypes::LONG)
                 || (kind == InstMetaData::OperandTypes::WORD))
             {
-                return getSourceRegs(icode);
+                return Extractor<Form_CMMV_mva01s>::getSourceRegs(icode);
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
+        }
+
+        OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                       bool suppress_x0 = false) const override
+        {
+            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RD1);
+
+            OperandInfo olist;
+            olist.addElement(InstMetaData::OperandFieldID::RD1, op_type, 10, false);
+            olist.addElement(InstMetaData::OperandFieldID::RD2, op_type, 11, false);
+            return olist;
         }
 
         uint64_t getDestOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
@@ -2414,23 +2422,20 @@ namespace mavis
             if (meta->isAllOperandType(kind) || (kind == InstMetaData::OperandTypes::LONG)
                 || (kind == InstMetaData::OperandTypes::WORD))
             {
-                return getDestRegs(icode);
+                return Extractor<Form_CMMV_mva01s>::getDestRegs(icode);
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
 
-        OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
-                                       bool suppress_x0 = false) const override
+        OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                         bool suppress_x0 = false) const override
         {
             OperandInfo olist;
             appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
-                                                 InstMetaData::OperandFieldID::RD1,
+                                                 InstMetaData::OperandFieldID::RS1,
                                                  fixed_field_mask_, Form_CA::idType::RS1, false);
             appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
-                                                 InstMetaData::OperandFieldID::RD2,
+                                                 InstMetaData::OperandFieldID::RS2,
                                                  fixed_field_mask_, Form_CA::idType::RS2, false);
             return olist;
         }
