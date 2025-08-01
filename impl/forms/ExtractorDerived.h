@@ -2383,6 +2383,7 @@ namespace mavis
     template <> class Extractor<Form_CMMV_mva01s> : public Extractor<Form_CA>
     {
       public:
+
         uint64_t getSourceRegs(const Opcode icode) const override
         {
             return Extractor<Form_CA>::getSourceRegs(icode);
@@ -2473,6 +2474,14 @@ namespace mavis
     template <> class Extractor<Form_CMMV_mvsa01> : public Extractor<Form_CMMV_mva01s>
     {
       public:
+        bool isIllop(Opcode icode) const override
+        {
+            // Illegal if r1s` and r2s` are the same
+            const uint32_t r1s = extract_(Form_CA::idType::RS1, icode);
+            const uint32_t r2s = extract_(Form_CA::idType::RS2, icode);
+            return (r1s == r2s);
+        }
+
         uint64_t getSourceRegs(const Opcode icode) const override
         {
             return Extractor<Form_CMMV_mva01s>::getDestRegs(icode);

@@ -1490,8 +1490,14 @@ int main()
     assert(inst->getImmediate() == 32ull);
 
     // These opcode variants have caused issues in the past
-    inst = mavis_facade_rv32.makeInst(0xac22, 0);
-    cout << "line " << dec << __LINE__ << ": " << "DASM: 0xac22 = " << inst->dasmString() << endl;
+    try {
+        inst = mavis_facade_rv32.makeInst(0xac22, 0);
+        assert(inst == nullptr);
+    }
+    catch (...) {
+        cout << "line " << dec << __LINE__ << ": DASM: 0xac22 is illegal " << endl;
+    }
+
     inst = mavis_facade_rv32.makeInst(0xad26, 0);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xad26 = " << inst->dasmString() << endl;
     inst = mavis_facade_rv32.makeInst(0xac62, 0);
