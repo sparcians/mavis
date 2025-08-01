@@ -26,10 +26,11 @@ On initialization of the Mavis decoder, Mavis instantiates the static
 information immediately for each instruction in the ISA.  The dynamic
 information is generated based on the specific opcode encountered.
 
-To instantiate the tree with static information, Mavis uses JSON files
-populated with instruction definitions to build the Trie at
-runtime.  Each instruction definition contains at minimum a stencil
-taht defines how that instruction is decoded:
+To instantiate the tree with static information, Mavis uses [JSON
+files](https://github.com/sparcians/mavis/tree/main/json) populated
+with instruction definitions to build the Trie at runtime.  Each
+instruction definition contains at minimum a stencil that defines how
+that instruction is decoded:
 
 ```
  {
@@ -112,7 +113,7 @@ the instruction is connected to Mavis' detailed/static information.
        typedef typename std::shared_ptr<MyDynamicinstructiontype> PtrType;
 
        MyDynamicInstructionType(const typename mavis::OpcodeInfo::PtrType & opcode_info,
-                                const typename MyStaticInstructionType::PtrType & new_ui,
+                                const typename MyStaticInstructionType::PtrType & my_static_info,
                                 ... other construction arguments pass through by makeInst);
 
    };
@@ -134,7 +135,7 @@ using MavisType = mavis::Mavis<MyDynamicinstructiontype, MyStaticInstructionType
     MavisType mavis_decoder({"mavis_isa_files/isa_rv64i.json",
                              "mavis_isa_files/isa_rv64m.json",
                              "mavis_isa_files/isa_rv64f.json"},
-                             {"my_uarch_extensions_to_rv64imf.json"});
+                             {"my_uarch_extensions.json"});
 
     // Make add 1,2 3
     MyDynamicInstructionType::PtrType inst = mavis_decoder.makeInst(0x003100b3,
@@ -154,7 +155,7 @@ conflict with other extensions, the manager will throw an exception.
 Example:
 ```c++
 
-    const std::string rv_isa = "rv64imac_zicond_zicsr_zifencei_zawrs_zihintpause_zilsd_zabha_zacas_zfa";
+    const std::string rv_isa = "rv64imac_zicond_zicsr_zifencei_zawrs_zihintpause";
 
     mavis::extension_manager::riscv::RISCVExtensionManager extension_manager =
         mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
@@ -163,7 +164,7 @@ Example:
     std::unique_ptr<MavisType> mavis_decoder
         = std::make_unique<MavisType>(
             extension_manager.constructMavis<MyDynamicinstructiontype,
-                                             MyStaticinstructiontype>({"my_uarch_extensions_to_rv64imf.json"}));
+                                             MyStaticinstructiontype>({"my_uarch_extensions.json"}));
 
 ```
 
