@@ -4,9 +4,162 @@ Mavis is a framework that allows decoding of the RISC-V ISA into
 custom instruction class types as well as custom extensions to those
 class types.
 
-## Run regression
+Mavis is not a massive switch-case statement that most RISC-V decoders
+are.  Instead, Mavis intelligently builds a decode table or DTable
+with a digital tree or [Trie](https://en.wikipedia.org/wiki/Trie) to
+decode the instructions.
 
-Mavis is a header-only library. Regression needs to build a tester.
+## Basics of the Design
+
+Mavis' design is based on the notion there are two parts to every
+decoded instruction:
+
+1. Static information like instruction type, execution target units,
+   data width, etc.  This information is the same regardless of an
+   opcode's specifics.  For example, an `lw` is always loading 32-bits
+   of data regardless of the source/destionation registers
+
+1. Dynamic information like which registers are being sourced/written,
+   immediate field information, instruction modes, etc.
+
+On initialization of the Mavis decoder, Mavis instantiates the static
+information immediately for each instruction in the ISA.  The dynamic
+information is generated based on the specific opcode encountered.
+
+To instantiate the tree with static information, Mavis uses JSON files
+populated with instruction definitions to build the Trie at
+runtime.  Each instruction definition contains at minimum a stencil
+taht defines how that instruction is decoded:
+
+```
+ {
+    "mnemonic" : "amoxor.d",
+    "stencil" : "0x2000302f",
+    ...
+ }
+```
+
+The Trie is built using these stencils.  The data structure at each
+node of the tree is a factory or `IFactory` that Mavis uses to build
+the dynamic information or more specifically the modeler's instruction
+type.   This is what's returned to the user.
+
+The user can supply "micro-architectural" information to extend the
+instruction as it is being created using micro-architectural JSON files.
+
+Build the doxygen found in
+[mavis_docs](https://github.com/sparcians/mavis/tree/main/doc) to
+learn more.
+
+## Using Mavis
+
+### Build Mavis/Add to Project
+
+To add Mavis to a project, if using `cmake`, make Mavis a submodule or
+provide a local clone.  Then add the following to the project's CMakeLists.txt:
+
+```
+# Bring in the mavis project/CMakeLists.txt to build Mavis
+add_subdirectory (<path to mavis>)
+
+# Bring in the include path, no warnings from compilers
+include_directories (SYSTEM mavis)
+
+# Needed for Mavis to find the JSON files (to be changed by the user)
+file(CREATE_LINK <path to mavis>/json ${CMAKE_CURRENT_BINARY_DIR}/mavis_isa_files SYMBOLIC)
+
+# Link Mavis with project
+target_link_libraries(<project> mavis)
+```
+
+### Instantiating the Decoder
+
+Mavis needs class definitions for the Static Information and the
+Dynamic Information as described in [Basics of the Design](#Basics-of-the-Design).
+
+Example Static information class [uArchInfo](https://github.com/sparcians/mavis/blob/main/test/basic/uArchInfo.h)
+Example Dynamic information class [Instruction](https://github.com/sparcians/mavis/blob/main/test/basic/Inst.h)
+
+Mavis **requires** that the user classes (both Static and Dynamic classes) define a type called `PtrType`:
+
+```
+   class MyDynamicInstructionType
+   {
+   public:
+       typedef typename std::shared_ptr<MyDynamicinstructiontype> PtrType;
+       // ...
+   };
+```
+Mavis only keeps track of heap-allocated objects.  The
+allocation/deallocation of these objects can be managed/changed via
+the template parameters to Mavis.
+
+In addition, the constructor for the Dynamic instruction is required
+to take Mavis specific opcode information as well as the Static
+information created by the modeler.  This is how the Dynamic part of
+the instruction is connected to Mavis' detailed/static information
+Mavis.
+
+```
+   class MyDynamicInstructionType
+   {
+   public:
+       typedef typename std::shared_ptr<MyDynamicinstructiontype> PtrType;
+
+       MyDynamicInstructionType(const typename mavis::OpcodeInfo::PtrType & opcode_info,
+                                const typename MyStaticInstructionType::PtrType & new_ui,
+                                ... other construction arguments pass through by makeInst);
+
+   };
+```
+
+
+> **_NOTE_** Mavis' allocator works well with GNU allocators as well
+> as Sparta's
+> [SpartaSharedPointerAllocator](https://sparcians.github.io/map/classsparta_1_1SpartaSharedPointerAllocator.html)
+> class.
+
+Instantiate a Mavis instance:
+```
+#include "mavis/Mavis.h"
+
+#include "MyStaticInstructionType.hpp"
+#include "MyDynamicInstructionType.hpp"
+
+using MavisType = mavis::Mavis<MyDynamicinstructiontype, MyStaticInstructionType>;
+
+...
+
+{
+    // Create a mavis decoder that can only decode rv64imf
+    MavisType mavis_decoder({"json/isa_rv64i.json",
+                             "json/isa_rv64m.json",
+                             "json/isa_rv64f.json"},
+                             {"my_uarch_extensions_to_rv64imf.json"});
+
+    // Make add 1,2 3
+    MyDynamicInstructionType::PtrType inst = mavis_decoder.makeInst(0x003100b3,
+                               /* other construction info for MyDynamicInstructionType */);
+
+    // do stuff with the instruction
+}
+```
+
+### Using the Extension Manager
+
+The ExtensionManager is a power set of classes that allow the parsing
+of an ISA string and returning a Mavis instance that adheres to the
+given ISA.
+
+
+
+## Contributing
+
+### Run regression
+
+Regression is mostly manual and entails the developer to build a basic
+tester application, run it, and compare the output against a golden
+reference.
 
 * Build library, output will be `libmavis.a`
 ```
