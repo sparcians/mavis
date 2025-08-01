@@ -17,7 +17,7 @@ decoded instruction:
 1. Static information like instruction type, execution target units,
    data width, etc.  This information is the same regardless of an
    opcode's specifics.  For example, an `lw` is always loading 32-bits
-   of data regardless of the source/destionation registers
+   of data regardless of the source/destination registers
 
 1. Dynamic information like which registers are being sourced/written,
    immediate field information, instruction modes, etc.
@@ -65,7 +65,7 @@ add_subdirectory (<path to mavis>)
 # Bring in the include path, no warnings from compilers
 include_directories (SYSTEM mavis)
 
-# Needed for Mavis to find the JSON files (to be changed by the user)
+# Needed for Mavis to find the JSON files (path to be changed by the user)
 file(CREATE_LINK <path to mavis>/json ${CMAKE_CURRENT_BINARY_DIR}/mavis_isa_files SYMBOLIC)
 
 # Link Mavis with project
@@ -77,8 +77,9 @@ target_link_libraries(<project> mavis)
 Mavis needs class definitions for the Static Information and the
 Dynamic Information as described in [Basics of the Design](#Basics-of-the-Design).
 
-Example Static information class [uArchInfo](https://github.com/sparcians/mavis/blob/main/test/basic/uArchInfo.h)
-Example Dynamic information class [Instruction](https://github.com/sparcians/mavis/blob/main/test/basic/Inst.h)
+Example Static information class: [uArchInfo](https://github.com/sparcians/mavis/blob/main/test/basic/uArchInfo.h)
+
+Example Dynamic information class: [Instruction](https://github.com/sparcians/mavis/blob/main/test/basic/Inst.h)
 
 Mavis **requires** that the user classes (both Static and Dynamic classes) define a type called `PtrType`:
 
@@ -94,11 +95,15 @@ Mavis only keeps track of heap-allocated objects.  The
 allocation/deallocation of these objects can be managed/changed via
 the template parameters to Mavis.
 
+> **_NOTE_** Mavis' allocator works well with GNU allocators as well
+> as Sparta's
+> [SpartaSharedPointerAllocator](https://sparcians.github.io/map/classsparta_1_1SpartaSharedPointerAllocator.html)
+> class.
+
 In addition, the constructor for the Dynamic instruction is required
 to take Mavis specific opcode information as well as the Static
 information created by the modeler.  This is how the Dynamic part of
-the instruction is connected to Mavis' detailed/static information
-Mavis.
+the instruction is connected to Mavis' detailed/static information.
 
 ```c++
    class MyDynamicInstructionType
@@ -113,12 +118,6 @@ Mavis.
    };
 ```
 
-
-> **_NOTE_** Mavis' allocator works well with GNU allocators as well
-> as Sparta's
-> [SpartaSharedPointerAllocator](https://sparcians.github.io/map/classsparta_1_1SpartaSharedPointerAllocator.html)
-> class.
-
 Instantiate a Mavis instance:
 ```c++
 #include "mavis/Mavis.h"
@@ -132,9 +131,9 @@ using MavisType = mavis::Mavis<MyDynamicinstructiontype, MyStaticInstructionType
 
 {
     // Create a mavis decoder that can only decode rv64imf
-    MavisType mavis_decoder({"json/isa_rv64i.json",
-                             "json/isa_rv64m.json",
-                             "json/isa_rv64f.json"},
+    MavisType mavis_decoder({"mavis_isa_files/isa_rv64i.json",
+                             "mavis_isa_files/isa_rv64m.json",
+                             "mavis_isa_files/isa_rv64f.json"},
                              {"my_uarch_extensions_to_rv64imf.json"});
 
     // Make add 1,2 3
@@ -149,9 +148,24 @@ using MavisType = mavis::Mavis<MyDynamicinstructiontype, MyStaticInstructionType
 
 The ExtensionManager is a power set of classes that allow the parsing
 of an ISA string and returning a Mavis instance that adheres to the
-given ISA.
+given ISA.  If there are conflicts in that ISA string (extensions that
+conflict with other extensions, the manager will throw an exception.
 
+Example:
+```c++
 
+    const std::string rv_isa = "rv64imac_zicond_zicsr_zifencei_zawrs_zihintpause_zilsd_zabha_zacas_zfa";
+
+    mavis::extension_manager::riscv::RISCVExtensionManager extension_manager =
+        mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
+            rv_isa, "json/riscv_isa_spec.json", "json");
+
+    std::unique_ptr<MavisType> mavis_decoder
+        = std::make_unique<MavisType>(
+            extension_manager.constructMavis<MyDynamicinstructiontype,
+                                             MyStaticinstructiontype>({"my_uarch_extensions_to_rv64imf.json"}));
+
+```
 
 ## Contributing
 
