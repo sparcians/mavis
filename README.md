@@ -82,7 +82,7 @@ Example Dynamic information class [Instruction](https://github.com/sparcians/mav
 
 Mavis **requires** that the user classes (both Static and Dynamic classes) define a type called `PtrType`:
 
-```
+```c++
    class MyDynamicInstructionType
    {
    public:
@@ -100,7 +100,7 @@ information created by the modeler.  This is how the Dynamic part of
 the instruction is connected to Mavis' detailed/static information
 Mavis.
 
-```
+```c++
    class MyDynamicInstructionType
    {
    public:
@@ -120,7 +120,7 @@ Mavis.
 > class.
 
 Instantiate a Mavis instance:
-```
+```c++
 #include "mavis/Mavis.h"
 
 #include "MyStaticInstructionType.hpp"
