@@ -204,8 +204,6 @@ make
 ./mavis_decode --help
 ./mavis_decode -a rv32g -o 0x0001a283
 ./mavis_decode -a rv64g -o 0x0001b283
-./mavis_decode -a rv32gc -z -o 0x6008
-
 ```
 
 | RVA23U64 Mandatory Extensions | Status |
