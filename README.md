@@ -7,7 +7,7 @@ class types.
 Mavis is not a massive switch-case statement that most RISC-V decoders
 are.  Instead, Mavis intelligently builds a decode table or DTable
 with a digital tree or [Trie](https://en.wikipedia.org/wiki/Trie) to
-decode the instructions.
+decode the instructions _at runtime_.
 
 ## Basics of the Design
 
