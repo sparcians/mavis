@@ -137,7 +137,7 @@ using MavisType = mavis::Mavis<MyDynamicinstructiontype, MyStaticInstructionType
                              "mavis_isa_files/isa_rv64f.json"},
                              {"my_uarch_extensions.json"});
 
-    // Make add 1,2 3
+    // Decode add x1,x2,x3
     MyDynamicInstructionType::PtrType inst = mavis_decoder.makeInst(0x003100b3,
                                /* other construction info for MyDynamicInstructionType */);
 
@@ -147,10 +147,10 @@ using MavisType = mavis::Mavis<MyDynamicinstructiontype, MyStaticInstructionType
 
 ### Using the Extension Manager
 
-The ExtensionManager is a power set of classes that allow the parsing
-of an ISA string and returning a Mavis instance that adheres to the
+The ExtensionManager is a powerful set of classes that allow the parsing
+of an ISA string and helps build a Mavis instance that adheres to the
 given ISA.  If there are conflicts in that ISA string (extensions that
-conflict with other extensions, the manager will throw an exception.
+conflict with other extensions) the manager will throw an exception.
 
 Example:
 ```c++
