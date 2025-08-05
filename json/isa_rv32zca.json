@@ -1,7 +1,7 @@
 [
   {
     "mnemonic" : "c.addi4spn",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "addi",
     "form" : "C0",
     "ignore" : ["func2A"],
@@ -10,7 +10,7 @@
   },
   {
     "mnemonic" : "c.lw",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "lw",
     "form" : "C0",
     "ignore" : ["func2A"],
@@ -19,7 +19,7 @@
   },
   {
     "mnemonic" : "c.sw",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "sw",
     "form" : "C0",
     "ignore" : ["func2A"],
@@ -28,7 +28,7 @@
   },
   {
     "mnemonic" : "c.addi",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "addi",
     "form" : "C1",
     "ignore" : ["func2", "func1", "func2b"],
@@ -37,7 +37,7 @@
   },
   {
     "mnemonic" : "c.nop",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "nop",
     "form" : "C1",
     "ignore" : ["func1", "func2b"],
@@ -47,7 +47,7 @@
   },
   {
     "mnemonic" : "c.addi16sp",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "addi",
     "form" : "C1",
     "ignore" : ["func1", "func2b"],
@@ -57,7 +57,7 @@
   },
   {
     "mnemonic" : "c.jr",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "jalr",
     "form" : "C2",
     "fixed" : ["rs2"],
@@ -66,7 +66,7 @@
   },
   {
     "mnemonic" : "c.jalr",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "jalr",
     "form" : "C2",
     "fixed" : ["rs2"],
@@ -75,7 +75,7 @@
   },
   {
     "mnemonic" : "c.li",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "li",
     "form" : "C1",
     "ignore" : ["func2", "func1", "func2b"],
@@ -84,7 +84,7 @@
   },
   {
     "mnemonic" : "c.lui",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "lui",
     "form" : "C1",
     "ignore" : ["func2", "func1", "func2b"],
@@ -93,7 +93,7 @@
   },
   {
     "mnemonic" : "c.srli",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "srli",
     "form" : "C1",
     "ignore" : ["func1", "func2b"],
@@ -102,7 +102,7 @@
   },
   {
     "mnemonic" : "c.srai",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "srai",
     "form" : "C1",
     "ignore" : ["func1", "func2b"],
@@ -111,7 +111,7 @@
   },
   {
     "mnemonic" : "c.andi",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "andi",
     "form" : "C1",
     "ignore" : ["func1", "func2b"],
@@ -120,7 +120,7 @@
   },
   {
     "mnemonic" : "c.sub",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "sub",
     "form" : "C1",
     "xform" : "CA",
@@ -128,7 +128,7 @@
   },
   {
     "mnemonic" : "c.xor",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "xor",
     "form" : "C1",
     "xform" : "CA",
@@ -136,7 +136,7 @@
   },
   {
     "mnemonic" : "c.or",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "or",
     "form" : "C1",
     "xform" : "CA",
@@ -144,7 +144,7 @@
   },
   {
     "mnemonic" : "c.and",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "and",
     "form" : "C1",
     "xform" : "CA",
@@ -152,7 +152,7 @@
   },
   {
     "mnemonic" : "c.j",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "jal",
     "form" : "C1",
     "ignore" : ["func2", "func1", "func2b"],
@@ -161,7 +161,7 @@
   },
   {
     "mnemonic" : "c.jal",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "jal",
     "form" : "C1",
     "ignore" : ["func2", "func1", "func2b"],
@@ -170,7 +170,7 @@
   },
   {
     "mnemonic" : "c.beqz",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "beq",
     "form" : "C1",
     "ignore" : ["func2", "func1", "func2b"],
@@ -179,7 +179,7 @@
   },
   {
     "mnemonic" : "c.bnez",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "bne",
     "form" : "C1",
     "ignore" : ["func2", "func1", "func2b"],
@@ -188,7 +188,7 @@
   },
   {
     "mnemonic" : "c.slli",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "slli",
     "form" : "C2",
     "ignore" : ["func1"],
@@ -197,7 +197,7 @@
   },
   {
     "mnemonic" : "c.lwsp",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "lw",
     "form" : "C2",
     "ignore" : ["func1"],
@@ -206,7 +206,7 @@
   },
   {
     "mnemonic" : "c.mv",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "add",
     "form" : "C2",
     "type" : ["move"],
@@ -215,7 +215,7 @@
   },
   {
     "mnemonic" : "c.ebreak",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "ebreak",
     "form" : "C2",
     "fixed" : [ "rs1", "rs2" ],
@@ -223,7 +223,7 @@
   },
   {
     "mnemonic" : "c.add",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "add",
     "form" : "C2",
     "xform" : "C2_add",
@@ -231,7 +231,7 @@
   },
   {
     "mnemonic" : "c.swsp",
-    "tags" : ["c"],
+    "tags" : ["c", "zca"],
     "expand" : "sw",
     "form" : "C2",
     "ignore" : ["func1"],
