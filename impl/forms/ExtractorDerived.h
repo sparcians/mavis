@@ -2383,7 +2383,7 @@ namespace mavis
     template <> class Extractor<Form_CMMV_mva01s> : public Extractor<Form_CA>
     {
       protected:
-        std::pair<uint64_t, uint64_t> decodeRegs_(const Opcode icode) const
+        static constexpr std::pair<uint64_t, uint64_t> decodeRegs_(const Opcode icode)
         {
             const auto decode = [icode](const Form_CA::idType id) {
                 const auto encoded = extract_(id, icode);
