@@ -2382,11 +2382,24 @@ namespace mavis
      */
     template <> class Extractor<Form_CMMV_mva01s> : public Extractor<Form_CA>
     {
+      protected:
+        std::pair<uint64_t, uint64_t> decodeRegs_(const Opcode icode) const
+        {
+            const auto decode = [icode](const Form_CA::idType id) {
+                const auto encoded = extract_(id, icode);
+                const auto upper_bits = encoded >> 1;
+                return ((upper_bits > 0) << 4) | ((upper_bits == 0) << 3) | encoded;
+            };
+
+            return {decode(Form_CA::idType::RS1), decode(Form_CA::idType::RS2)};
+        }
+
       public:
 
         uint64_t getSourceRegs(const Opcode icode) const override
         {
-            return Extractor<Form_CA>::getSourceRegs(icode);
+            const auto [rs1, rs2] = decodeRegs_(icode);
+            return (1ull << rs1) | (1ull << rs2);
         }
 
         uint64_t getDestRegs(const Opcode) const override
@@ -2431,23 +2444,19 @@ namespace mavis
         OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
                                          bool suppress_x0 = false) const override
         {
+            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RS1);
+            const auto [rs1, rs2] = decodeRegs_(icode);
             OperandInfo olist;
-            appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
-                                                 InstMetaData::OperandFieldID::RS1,
-                                                 fixed_field_mask_, Form_CA::idType::RS1, false);
-            appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
-                                                 InstMetaData::OperandFieldID::RS2,
-                                                 fixed_field_mask_, Form_CA::idType::RS2, false);
+            olist.addElement(InstMetaData::OperandFieldID::RS1, op_type, rs1, false);
+            olist.addElement(InstMetaData::OperandFieldID::RS2, op_type, rs2, false);
             return olist;
         }
 
         std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
         {
             std::stringstream ss;
-            ss << mnemonic << "\t"
-               << extractCompressedRegister_(Form_CA::idType::RS1, icode & ~fixed_field_mask_)
-               << ", "
-               << extractCompressedRegister_(Form_CA::idType::RS2, icode & ~fixed_field_mask_);
+            const auto [rs1, rs2] = decodeRegs_(icode & ~fixed_field_mask_);
+            ss << mnemonic << "\t" << rs1 << ", " << rs2;
             return ss.str();
         }
 
@@ -2456,11 +2465,11 @@ namespace mavis
                                const InstMetaData::PtrType & meta) const override
         {
             std::stringstream ss;
+            const auto [rs1, rs2] = decodeRegs_(icode);
             ss << mnemonic << "\t"
-               << dasmFormatCompressedRegList_(
-                      meta, icode, fixed_field_mask_,
-                      {{Form_CA::idType::RS1, InstMetaData::OperandFieldID::RS1},
-                       {Form_CA::idType::RS2, InstMetaData::OperandFieldID::RS2}});
+               << dasmFormatReg_(meta, InstMetaData::OperandFieldID::RS1, rs1)
+               << ","
+               << dasmFormatReg_(meta, InstMetaData::OperandFieldID::RS2, rs2);
             return ss.str();
         }
 
@@ -2518,13 +2527,12 @@ namespace mavis
         OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
                                        bool suppress_x0 = false) const override
         {
+            const auto op_type = meta->getOperandType(InstMetaData::OperandFieldID::RD1);
+
             OperandInfo olist;
-            appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
-                                                 InstMetaData::OperandFieldID::RD1,
-                                                 fixed_field_mask_, Form_CA::idType::RS1, false);
-            appendUnmaskedCompressedOperandInfo_(olist, icode, meta,
-                                                 InstMetaData::OperandFieldID::RD2,
-                                                 fixed_field_mask_, Form_CA::idType::RS2, false);
+            const auto [rd1, rd2] = decodeRegs_(icode);
+            olist.addElement(InstMetaData::OperandFieldID::RD1, op_type, rd1, false);
+            olist.addElement(InstMetaData::OperandFieldID::RD2, op_type, rd2, false);
             return olist;
         }
     };
