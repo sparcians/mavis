@@ -4912,5 +4912,5 @@ line 1471: DASM: 0xbe52 = cm.popret	{x1, x8}, 16
 line 1479: DASM: 0xa002 = cm.jt	0
 line 1487: DASM: 0xa082 = cm.jalt	32
 line 1498: DASM: 0xac22 is illegal 
-line 1502: DASM: 0xad26 = cm.mvsa01	x10,x9
+line 1502: DASM: 0xad26 = cm.mvsa01	x18,x9
 line 1504: DASM: 0xac62 = cm.mva01s	x8,x8
