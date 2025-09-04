@@ -224,6 +224,12 @@
     },
     {
       "xlen": 32,
+      "extension": "zbkb",
+      "meta_extension": "b",
+      "json": "isa_rv32zbkb.json"
+    },
+    {
+      "xlen": 32,
       "extension": "zbs",
       "meta_extension": "b",
       "json": "isa_rv32zbs.json"
@@ -404,6 +410,12 @@
       "extension": "zbb",
       "meta_extension": "b",
       "json": "isa_rv64zbb.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zbkb",
+      "meta_extension": "b",
+      "json": "isa_rv64zbkb.json"
     },
     {
       "xlen": 64,
