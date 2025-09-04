@@ -1933,8 +1933,8 @@ namespace mavis::extension_manager
         // ExtensionManager::constructMavis
         template <typename InstType, typename AnnotationType, typename InstTypeAllocator,
                   typename AnnotationTypeAllocator>
-        void switchMavisContext(
-            Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator> & mavis) const
+        void switchMavisContext(Mavis<InstType, AnnotationType, InstTypeAllocator,
+                                      AnnotationTypeAllocator> & mavis) const
         {
             static const std::string BASE_CONTEXT{"BASE"};
 
@@ -1956,7 +1956,8 @@ namespace mavis::extension_manager
             {
                 throw ExtensionManagerException(
                     "Attempted to use the single-argument switchMavisContext with a Mavis instance "
-                    "created outside of the manager. Use the multi-argument switchMavisContext instead.");
+                    "created outside of the manager. Use the multi-argument switchMavisContext "
+                    "instead.");
             }
         }
 
