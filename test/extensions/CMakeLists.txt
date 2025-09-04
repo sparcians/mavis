@@ -2,7 +2,7 @@ PROJECT(MAVIS_TESTS)
 
 cmake_minimum_required (VERSION 3.15)
 
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_compile_options (-g -Werror -fPIC
@@ -22,8 +22,9 @@ endif()
 file(CREATE_LINK ${CMAKE_SOURCE_DIR}/json ${CMAKE_CURRENT_BINARY_DIR}/json SYMBOLIC)
 file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/extensions/hello ${CMAKE_CURRENT_BINARY_DIR}/hello SYMBOLIC)
 file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/extensions/hello_stripped ${CMAKE_CURRENT_BINARY_DIR}/hello_stripped SYMBOLIC)
+file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/basic ${CMAKE_CURRENT_BINARY_DIR}/uarch SYMBOLIC)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../basic)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 add_executable(ExtensionManager main.cpp)
 target_link_libraries (ExtensionManager mavis Boost::json)

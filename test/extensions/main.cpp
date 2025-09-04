@@ -2,11 +2,32 @@
 #define ENABLE_GRAPH_SANITY_CHECKER
 #include "mavis/extension_managers/RISCVExtensionManager.hpp"
 
+#include "Inst.h"
+#include "uArchInfo.h"
+
+struct ExampleTraceInfo
+{
+    std::string mnemonic;
+    uint64_t opcode;
+
+    const std::string & getMnemonic() const { return mnemonic; }
+
+    uint64_t getOpcode() const { return opcode; }
+
+    uint64_t getFunction() const { return 0; }
+
+    uint64_t getSourceRegs() const { return 0; }
+
+    uint64_t getDestRegs() const { return 0; }
+
+    uint64_t getImmediate() const { return 0; }
+};
+
 template <typename ExpectedExceptionType, typename Callback>
 void testException(Callback && callback)
 {
     bool saw_exception = false;
-    (void) saw_exception;  // Needed for new compilers
+    (void)saw_exception; // Needed for new compilers
     try
     {
         callback();
@@ -163,6 +184,85 @@ int main(int argc, char* argv[])
         man.disableExtensions({"zicsr", "zifencei"});
         new_jsons = man.getJSONs();
         assert(orig_jsons.size() == new_jsons.size() + 2);
+    }
+
+    {
+        // Test dependent extension behavior when enabling/disabling
+        auto man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
+            "rv32imafdcv_zicsr", "json/riscv_isa_spec.json", "json");
+        assert(man.isEnabled("f"));
+        assert(man.isEnabled("d"));
+        assert(man.isEnabled("zcf"));
+        assert(man.isEnabled("zcd"));
+        assert(man.isEnabled("zve32f"));
+        assert(man.isEnabled("zve64d"));
+
+        man.disableExtension("f");
+        assert(!man.isEnabled("f"));
+        assert(!man.isEnabled("d"));
+        assert(!man.isEnabled("zcf"));
+        assert(!man.isEnabled("zcd"));
+        assert(!man.isEnabled("zve32f"));
+        assert(!man.isEnabled("zve64d"));
+
+        man.enableExtension("f");
+        assert(man.isEnabled("f"));
+        assert(man.isEnabled("d"));
+        assert(man.isEnabled("zcf"));
+        assert(man.isEnabled("zcd"));
+        assert(man.isEnabled("zve32f"));
+        assert(man.isEnabled("zve64d"));
+
+        man.disableExtension("d");
+        assert(man.isEnabled("f"));
+        assert(!man.isEnabled("d"));
+        assert(man.isEnabled("zcf"));
+        assert(!man.isEnabled("zcd"));
+        assert(man.isEnabled("zve32f"));
+        assert(!man.isEnabled("zve64d"));
+
+        man.disableExtension("f");
+        assert(!man.isEnabled("f"));
+        assert(!man.isEnabled("d"));
+        assert(!man.isEnabled("zcf"));
+        assert(!man.isEnabled("zcd"));
+        assert(!man.isEnabled("zve32f"));
+        assert(!man.isEnabled("zve64d"));
+
+        man.enableExtension("f");
+        assert(man.isEnabled("f"));
+        assert(!man.isEnabled("d"));
+        assert(man.isEnabled("zcf"));
+        assert(!man.isEnabled("zcd"));
+        assert(man.isEnabled("zve32f"));
+        assert(!man.isEnabled("zve64d"));
+    }
+
+    {
+        const std::vector<std::string> uarch{"uarch/uarch_rv64g.json"};
+
+        // Test creating a Mavis object
+        auto man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
+            "rv64gc_zicsr_zifencei", "json/riscv_isa_spec.json", "json");
+
+        auto mavis = man.constructMavis<Instruction<uArchInfo>, uArchInfo>(uarch);
+        const ExampleTraceInfo addi{"addi",0xf0008013};
+        const ExampleTraceInfo fadd{"fadd.s",0x53};
+
+        Instruction<uArchInfo>::PtrType iptr = mavis.makeInstFromTrace(addi, 0);
+        iptr = mavis.makeInstFromTrace(fadd, 0);
+
+        man.disableExtension("f");
+        man.switchMavisContext(mavis);
+
+        iptr = mavis.makeInstFromTrace(addi, 0);
+        testException<mavis::UnknownOpcode>([&mavis, &iptr, &fadd]() { iptr = mavis.makeInstFromTrace(fadd, 0); });
+
+        man.enableExtension("f");
+        man.switchMavisContext(mavis);
+
+        iptr = mavis.makeInstFromTrace(addi, 0);
+        iptr = mavis.makeInstFromTrace(fadd, 0);
     }
 
     return 0;

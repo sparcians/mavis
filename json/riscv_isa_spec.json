@@ -51,11 +51,6 @@
     {
       "xlen": [32, 64],
       "extension": "v"
-    },
-    {
-      "xlen": [32, 64],
-      "extension": "zve64f",
-      "meta_extension": "v"
     }
   ],
   "config_extensions": [
@@ -355,30 +350,39 @@
     },
     {
       "xlen": [32, 64],
+      "extension": "zve64f",
+      "enabled_by": [["v", "f"]],
+      "requires": "f",
+      "enables": ["zve32f", "zve64x"]
+    },
+    {
+      "xlen": [32, 64],
       "extension": "zve32x",
-      "meta_extension": "zve64f",
+      "meta_extension": "v",
       "requires": "zicsr",
       "json": "isa_rv64zve32x.json"
     },
     {
       "xlen": [32, 64],
       "extension": "zve32f",
-      "meta_extension": "zve64f",
-      "requires": ["zve32x", "f"],
+      "enabled_by": [["v", "f"]],
+      "requires": "f",
+      "enables": "zve32x",
       "json": "isa_rv64zve32f.json"
     },
     {
       "xlen": [32, 64],
       "extension": "zve64x",
-      "meta_extension": "zve64f",
-      "requires": "zve32x",
+      "meta_extension": "v",
+      "enables": "zve32x",
       "json": "isa_rv64zve64x.json"
     },
     {
       "xlen": [32, 64],
       "extension": "zve64d",
-      "meta_extension": "v",
-      "requires": ["zve64f", "d"],
+      "enabled_by": [["v", "d"]],
+      "requires": "d",
+      "enables": "zve64f",
       "json": "isa_rv64zve64d.json"
     },
     {
