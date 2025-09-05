@@ -265,5 +265,14 @@ int main(int argc, char* argv[])
         iptr = mavis.makeInstFromTrace(fadd, 0);
     }
 
+    {
+        // Test isExtensionSupported
+        auto man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
+            "rv64gc_zicsr_zifencei", "json/riscv_isa_spec.json", "json");
+        assert(man.isExtensionSupported("i"));
+        assert(man.isExtensionSupported("c"));
+        assert(!man.isExtensionSupported("znotanextension"));
+    }
+
     return 0;
 }

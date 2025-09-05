@@ -1150,7 +1150,7 @@ namespace mavis::extension_manager
 
         bool isDisabled(const std::string & ext) const { return extensions_.at(ext)->isDisabled(); }
 
-        bool isSupported(const std::string & ext) const { return extensions_.count(ext) != 0; }
+        bool isSupported(const std::string & ext) const { return extensions_.count(ext) != 0 || meta_extensions_.count(ext) != 0; }
     };
 
     template <typename ExtensionInfo, typename ExtensionState> class ExtensionManager
