@@ -1,0 +1,26 @@
+[
+  {
+    "mnemonic" : "pack",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08004033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "pack",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08004033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "pack",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08004033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  }
+]
