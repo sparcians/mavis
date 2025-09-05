@@ -224,15 +224,20 @@
     },
     {
       "xlen": 32,
-      "extension": "zbkb",
+      "extension": "zbs",
       "meta_extension": "b",
+      "json": "isa_rv32zbs.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zbkb",
       "json": "isa_rv32zbkb.json"
     },
     {
       "xlen": 32,
-      "extension": "zbs",
-      "meta_extension": "b",
-      "json": "isa_rv32zbs.json"
+      "extension": "zbb_zbkb_common",
+      "enabled_by": ["zbb", "zbkb"],
+      "json": "isa_rv32zbb_zbkb_common.json"
     },
     {
       "xlen": 32,
@@ -413,15 +418,20 @@
     },
     {
       "xlen": 64,
-      "extension": "zbkb",
+      "extension": "zbs",
       "meta_extension": "b",
+      "json": "isa_rv64zbs.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zbkb",
       "json": "isa_rv64zbkb.json"
     },
     {
       "xlen": 64,
-      "extension": "zbs",
-      "meta_extension": "b",
-      "json": "isa_rv64zbs.json"
+      "extension": "zbb_zbkb_common",
+      "enabled_by": ["zbb", "zbkb"],
+      "json": "isa_rv64zbb_zbkb_common.json"
     },
     {
       "xlen": 64,
@@ -536,7 +546,7 @@
       "json": "isa_rv64zvksh.json"
     },
     {
-      "xlen": 32,
+      "xlen": [32, 64],
       "extension": "zabha",
       "json": "isa_rv32zabha.json"
     },
