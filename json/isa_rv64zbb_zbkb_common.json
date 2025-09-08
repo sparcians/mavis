@@ -1,7 +1,7 @@
 [
   {
     "mnemonic" : "andn",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "R",
     "stencil" : "0x40007033",
     "type" : ["int", "arith"],
@@ -10,7 +10,7 @@
   },
   {
     "mnemonic" : "orn",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "R",
     "stencil" : "0x40006033",
     "type" : ["int", "arith"],
@@ -19,7 +19,7 @@
   },
   {
     "mnemonic" : "rev8",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "ISH",
     "stencil" : "0x6b805013",
     "fixed" : ["shamt"],
@@ -29,7 +29,7 @@
   },
   {
     "mnemonic" : "rol",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "R",
     "stencil" : "0x60001033",
     "type" : ["int", "arith"],
@@ -38,7 +38,7 @@
   },
   {
     "mnemonic" : "rolw",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "R",
     "stencil" : "0x6000103b",
     "type" : ["int", "arith"],
@@ -47,7 +47,7 @@
   },
   {
     "mnemonic" : "ror",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "R",
     "stencil" : "0x60005033",
     "type" : ["int", "arith"],
@@ -56,7 +56,7 @@
   },
   {
     "mnemonic" : "rori",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "ISH",
     "stencil" : "0x60005013",
     "type" : ["int", "arith"],
@@ -65,7 +65,7 @@
   },
   {
     "mnemonic" : "roriw",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "ISHW",
     "stencil" : "0x6000501b",
     "type" : ["int", "arith"],
@@ -74,7 +74,7 @@
   },
   {
     "mnemonic" : "rorw",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "R",
     "stencil" : "0x6000503b",
     "type" : ["int", "arith"],
@@ -83,7 +83,7 @@
   },
   {
     "mnemonic" : "xnor",
-    "tags" : ["zbb", "b"],
+    "tags" : ["zbb", "b", "zbkb"],
     "form" : "R",
     "stencil" : "0x40004033",
     "type" : ["int", "arith"],
