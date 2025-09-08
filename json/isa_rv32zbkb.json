@@ -1,7 +1,7 @@
 [
   {
     "mnemonic" : "pack",
-    "tags" : ["zbkb", "b"],
+    "tags" : ["zbkb"],
     "form" : "R",
     "stencil" : "0x08004033",
     "type" : ["int", "arith"],
@@ -10,7 +10,7 @@
   },
   {
     "mnemonic" : "packh",
-    "tags" : ["zbkb", "b"],
+    "tags" : ["zbkb"],
     "form" : "R",
     "stencil" : "0x08007033",
     "type" : ["int", "arith"],
@@ -19,7 +19,7 @@
   },
   {
     "mnemonic" : "brev8",
-    "tags" : ["zbkb", "b"],
+    "tags" : ["zbkb"],
     "form" : "R",
     "stencil" : "0x68705013",
     "fixed" : ["rs2"],
@@ -29,7 +29,7 @@
   },
   {
     "mnemonic" : "unzip",
-    "tags" : ["zbkb", "b"],
+    "tags" : ["zbkb"],
     "form" : "R",
     "stencil" : "0x08f05013",
     "fixed" : ["rs2"],
@@ -39,7 +39,7 @@
   },
   {
     "mnemonic" : "zip",
-    "tags" : ["zbkb", "b"],
+    "tags" : ["zbkb"],
     "form" : "R",
     "stencil" : "0x08f01013",
     "fixed" : ["rs2"],
