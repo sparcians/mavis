@@ -26,9 +26,9 @@
   {
     "mnemonic" : "brev8",
     "tags" : ["zbkb"],
-    "form" : "R",
+    "form" : "ISH",
     "stencil" : "0x68705013",
-    "fixed" : ["rs2"],
+    "fixed" : ["shamt"],
     "type" : ["int", "arith"],
     "l-oper" : "all"
   }
