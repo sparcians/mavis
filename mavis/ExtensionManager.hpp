@@ -1,10 +1,12 @@
 #pragma once
 
-#include <filesystem>
-#include <list>
+#include <algorithm>
 #include <numeric>
-#include <string_view>
+#include <set>
+#include <string>
+#include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 // Uncomment to enable detection of cycles in the dependency graph
 // #define ENABLE_GRAPH_SANITY_CHECKER
@@ -34,11 +36,11 @@ namespace mavis::extension_manager
 
     class JSONParseError : public ExtensionManagerException
     {
-        public:
-            JSONParseError(const std::string& path, const boost::system::error_code& ec) :
-                ExtensionManagerException("Error parsing file " + path + ": " + ec.to_string())
-            {
-            }
+      public:
+        JSONParseError(const std::string & path, const boost::system::error_code & ec) :
+            ExtensionManagerException("Error parsing file " + path + ": " + ec.to_string())
+        {
+        }
     };
 
     class UninitializedISASpecException : public ExtensionManagerException
@@ -272,12 +274,28 @@ namespace mavis::extension_manager
     class ExtensionInfoBase
     {
       private:
+        enum class State
+        {
+            UNSET,             // Extension state has not been set
+            DISABLED,          // Extension was explicitly disabled by disableExtension
+            ENABLED,           // Extension was explicitly enabled by setISA or enableExtension
+            IMPLICITLY_ENABLED // Extension was implicitly enabled via a dependency relationship
+        };
+
         const std::string extension_;
         const std::string json_;
-        bool enabled_ =
-            false; // If true, extension was explicitly enabled by setISA or enableExtension
-        bool implicitly_enabled_ =
-            false; // If true, extension was implicitly enabled via a dependency relationship
+        State state_ = State::UNSET;
+        bool masked_ = false;
+
+        template <State old_state, State new_state> void transitionState_()
+        {
+            if (state_ == old_state)
+            {
+                state_ = new_state;
+            }
+        }
+
+        template <State... states> bool isState_() const { return (... || (state_ == states)); }
 
       public:
         ExtensionInfoBase(const std::string & ext, const std::string & json) :
@@ -290,15 +308,37 @@ namespace mavis::extension_manager
 
         const std::string & getExtension() const { return extension_; }
 
-        void setEnabled() { enabled_ = true; }
+        void setEnabled()
+        {
+            unmask();
+            state_ = State::ENABLED;
+        }
 
-        void setImplicitlyEnabled() { implicitly_enabled_ = true; }
+        void setImplicitlyEnabled() { transitionState_<State::UNSET, State::IMPLICITLY_ENABLED>(); }
 
-        void clearImplicitlyEnabled() { implicitly_enabled_ = false; }
+        void clearImplicitlyEnabled()
+        {
+            transitionState_<State::IMPLICITLY_ENABLED, State::UNSET>();
+        }
 
-        bool isEnabled() const { return enabled_ || implicitly_enabled_; }
+        bool isEnabled() const
+        {
+            return !masked_ && isState_<State::ENABLED, State::IMPLICITLY_ENABLED>();
+        }
 
-        void setDisabled() { enabled_ = false; }
+        bool isDisabled() const { return isState_<State::DISABLED>(); }
+
+        void setDisabled()
+        {
+            unmask();
+            state_ = State::DISABLED;
+        }
+
+        void reset() { state_ = State::UNSET; }
+
+        void mask() { masked_ = true; }
+
+        void unmask() { masked_ = false; }
 
         const std::string & getJSON() const { return json_; }
     };
@@ -331,7 +371,78 @@ namespace mavis::extension_manager
         const std::string & getJSON() const override final { return ext_->getJSON(); }
     };
 
-    using ExtensionMap = std::unordered_map<std::string, std::unique_ptr<ExtensionBase>>;
+    class MetaExtension : public ExtensionBase
+    {
+      private:
+        const std::string ext_;
+
+      public:
+        explicit MetaExtension(const std::string & ext) : ext_(ext) {}
+
+        const std::string & getName() const override final { return ext_; }
+
+        const std::string & getJSON() const override final
+        {
+            static const std::string EMPTY{};
+            return EMPTY;
+        }
+    };
+
+    class ExtensionMap
+    {
+      private:
+        std::unordered_map<std::string, std::unique_ptr<ExtensionBase>> enabled_extensions_;
+        mutable std::set<std::string> sorted_enabled_extensions_set_;
+        mutable std::string sorted_enabled_extensions_str_;
+
+        void enable_(const std::string & extension, std::unique_ptr<ExtensionBase> && ext_ptr)
+        {
+            enabled_extensions_.emplace(extension, std::move(ext_ptr));
+            sorted_enabled_extensions_set_.emplace(extension);
+        }
+
+      public:
+        void enableExtension(const ExtensionInfoBasePtr & ext_info)
+        {
+            enable_(ext_info->getExtension(), std::make_unique<Extension>(ext_info));
+        }
+
+        void enableMetaExtension(const std::string & extension)
+        {
+            enable_(extension, std::make_unique<MetaExtension>(extension));
+        }
+
+        const std::string & getSortedExtensions() const
+        {
+            if (sorted_enabled_extensions_str_.empty())
+            {
+                for (const auto & ext : sorted_enabled_extensions_set_)
+                {
+                    sorted_enabled_extensions_str_ += ext;
+                }
+
+                sorted_enabled_extensions_set_.clear();
+            }
+
+            return sorted_enabled_extensions_str_;
+        }
+
+        bool isEnabled(const std::string & ext) const
+        {
+            return enabled_extensions_.count(ext) != 0;
+        }
+
+        void clear()
+        {
+            enabled_extensions_.clear();
+            sorted_enabled_extensions_set_.clear();
+            sorted_enabled_extensions_str_.clear();
+        }
+
+        auto begin() const { return enabled_extensions_.begin(); }
+
+        auto end() const { return enabled_extensions_.end(); }
+    };
 
     enum class RuleType
     {
@@ -360,8 +471,8 @@ namespace mavis::extension_manager
 
         void check(const ExtensionMap & enabled_extensions) const
         {
-            const bool src_is_enabled = enabled_extensions.count(src_) != 0;
-            const bool dest_is_enabled = enabled_extensions.count(dest_) != 0;
+            const bool src_is_enabled = enabled_extensions.isEnabled(src_);
+            const bool dest_is_enabled = enabled_extensions.isEnabled(dest_);
 
             switch (type_)
             {
@@ -379,23 +490,12 @@ namespace mavis::extension_manager
                     break;
             }
         }
-    };
 
-    class MetaExtension : public ExtensionBase
-    {
-      private:
-        const std::string ext_;
+        RuleType getType() const { return type_; }
 
-      public:
-        explicit MetaExtension(const std::string & ext) : ext_(ext) {}
+        const std::string & getSource() const { return src_; }
 
-        const std::string & getName() const override final { return ext_; }
-
-        const std::string & getJSON() const override final
-        {
-            static const std::string EMPTY{};
-            return EMPTY;
-        }
+        const std::string & getDest() const { return dest_; }
     };
 
     template <typename ExtensionInfo> class ExtensionStateBase
@@ -508,7 +608,7 @@ namespace mavis::extension_manager
                                             return it->second->isEnabled();
                                         }
                                         // If we get here then this must be a disabled meta
-                                        // extension Otherwise we don't know what the extension is
+                                        // extension. Otherwise we don't know what the extension is
                                         // and it's an error
                                         else if (meta_extensions.count(enabling_extension) == 0)
                                         {
@@ -628,6 +728,21 @@ namespace mavis::extension_manager
             return false;
         }
 
+        template <typename UnaryOp>
+        void iterateDependentExtensions_(const std::string & ext, UnaryOp && op)
+        {
+            const auto & required_rules = rules_[RuleType::REQUIRED];
+
+            std::for_each(required_rules.begin(), required_rules.end(),
+                          [this, &ext, &op](const Rule & rule)
+                          {
+                              if (rule.getDest() == ext)
+                              {
+                                  op(getExtensionInfo_(rule.getSource()));
+                              }
+                          });
+        }
+
 #ifdef ENABLE_GRAPH_SANITY_CHECKER
         using DepGraph = boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS>;
 
@@ -676,7 +791,7 @@ namespace mavis::extension_manager
         std::unordered_set<std::string> enabled_meta_extensions_;
         std::unordered_set<std::string> extension_allowlist_;
         std::unordered_set<std::string> extension_blocklist_;
-        std::vector<Rule> rules_;
+        std::unordered_map<RuleType, std::vector<Rule>> rules_;
         std::vector<EnablesDependency> enables_dependencies_;
         std::vector<EnablingDependency> enabling_dependencies_;
 
@@ -700,15 +815,16 @@ namespace mavis::extension_manager
 
         void addMetaExtension(const std::string & ext) { meta_extensions_.try_emplace(ext); }
 
-        ExtensionInfo & addExtension(const std::string & extension, const boost::json::string & json = "")
+        ExtensionInfo & addExtension(const std::string & extension,
+                                     const boost::json::string & json = "")
         {
             if (const auto it = extensions_.find(extension); it != extensions_.end())
             {
                 throw DuplicateExtensionException(extension);
             }
 
-            const auto result =
-                extensions_.emplace(extension, std::make_shared<ExtensionInfo>(extension, json.c_str()));
+            const auto result = extensions_.emplace(
+                extension, std::make_shared<ExtensionInfo>(extension, json.c_str()));
 
 #ifdef ENABLE_GRAPH_SANITY_CHECKER
             getVertex_(extension);
@@ -812,7 +928,7 @@ namespace mavis::extension_manager
         template <RuleType rule>
         void addRule(const std::string & extension, const std::string & dep)
         {
-            rules_.emplace_back(rule, extension, dep);
+            rules_[rule].emplace_back(rule, extension, dep);
         }
 
         template <RuleType rule>
@@ -868,7 +984,18 @@ namespace mavis::extension_manager
             {
                 try
                 {
-                    getExtensionInfo_(ext)->setEnabled();
+                    const auto & ext_info = getExtensionInfo_(ext);
+
+                    // If this extension was explicitly disabled, we need
+                    // to unmask any other extensions that require it
+                    if (ext_info->isDisabled())
+                    {
+                        iterateDependentExtensions_(ext,
+                                                    [](const ExtensionInfoBasePtr & dep_ext_info)
+                                                    { dep_ext_info->unmask(); });
+                    }
+
+                    ext_info->setEnabled();
                     is_meta = false;
                 }
                 catch (const UnknownExtensionExceptionBase &)
@@ -903,6 +1030,11 @@ namespace mavis::extension_manager
             {
                 try
                 {
+                    // If any extensions require this extension to be present,
+                    // they need to be masked
+                    iterateDependentExtensions_(ext, [](const ExtensionInfoBasePtr & dep_ext_info)
+                                                { dep_ext_info->mask(); });
+
                     getExtensionInfo_(ext)->setDisabled();
                     is_meta = false;
                 }
@@ -934,7 +1066,7 @@ namespace mavis::extension_manager
         void finalize(ExtensionMap & enabled_extensions)
         {
             // When finalize() is called, the extension manager has already *explicitly*
-            // enabled/disabled extensions via setISA, enableExtension, or disableExtension Now we
+            // enabled/disabled extensions via setISA, enableExtension, or disableExtension. Now we
             // just need to scan for extensions that are *implicitly* enabled by those extensions
             bool keep_going;
 
@@ -982,20 +1114,22 @@ namespace mavis::extension_manager
                 const auto & ext_info = ext.second;
                 if (ext_info->isEnabled())
                 {
-                    enabled_extensions.emplace(ext_info->getExtension(),
-                                               std::make_unique<Extension>(ext_info));
+                    enabled_extensions.enableExtension(ext_info);
                 }
             }
 
             for (const auto & ext : enabled_meta_extensions_)
             {
-                enabled_extensions.emplace(ext, std::make_unique<MetaExtension>(ext));
+                enabled_extensions.enableMetaExtension(ext);
             }
 
             // Finally, check for any rule violations
-            for (const auto & rule : rules_)
+            for (const auto & rule_vector : rules_)
             {
-                rule.check(enabled_extensions);
+                for (const auto & rule : rule_vector.second)
+                {
+                    rule.check(enabled_extensions);
+                }
             }
         }
 
@@ -1003,8 +1137,7 @@ namespace mavis::extension_manager
         {
             for (const auto & ext : extensions_)
             {
-                ext.second->clearImplicitlyEnabled();
-                ext.second->setDisabled();
+                ext.second->reset();
             }
 
             for (auto & ext : config_extensions_)
@@ -1014,6 +1147,10 @@ namespace mavis::extension_manager
 
             enabled_meta_extensions_.clear();
         }
+
+        bool isDisabled(const std::string & ext) const { return extensions_.at(ext)->isDisabled(); }
+
+        bool isSupported(const std::string & ext) const { return extensions_.count(ext) != 0 || meta_extensions_.count(ext) != 0; }
     };
 
     template <typename ExtensionInfo, typename ExtensionState> class ExtensionManager
@@ -1028,6 +1165,55 @@ namespace mavis::extension_manager
         ExtensionMap enabled_extensions_;
         mutable std::vector<std::string> enabled_jsons_;
 
+        // Stores the initial settings for a Mavis instance so they can be retrieved later
+        // when switching contexts
+        class MavisSettingsRegistry
+        {
+          public:
+            struct MavisSettings
+            {
+                const std::string default_context;
+                const FileNameListType anno_files;
+                const InstUIDList uid_list;
+                const AnnotationOverrides anno_overrides;
+                const MatchSet<Pattern> inclusions;
+                const MatchSet<Pattern> exclusions;
+            };
+
+          private:
+            std::unordered_map<std::type_index, std::unordered_map<uint64_t, MavisSettings>>
+                mavis_settings_;
+
+          public:
+            template <typename InstType, typename AnnotationType, typename InstTypeAllocator,
+                      typename AnnotationTypeAllocator>
+            void emplace(const Mavis<InstType, AnnotationType, InstTypeAllocator,
+                                     AnnotationTypeAllocator> & mavis,
+                         const std::string & default_context, const FileNameListType & anno_files,
+                         const InstUIDList & uid_list, const AnnotationOverrides & anno_overrides,
+                         const MatchSet<Pattern> & inclusions, const MatchSet<Pattern> & exclusions)
+            {
+                mavis_settings_[std::type_index(
+                                    typeid(Mavis<InstType, AnnotationType, InstTypeAllocator,
+                                                 AnnotationTypeAllocator>))]
+                    .emplace(mavis.getUID(), MavisSettings{default_context, anno_files, uid_list,
+                                                           anno_overrides, inclusions, exclusions});
+            }
+
+            template <typename InstType, typename AnnotationType, typename InstTypeAllocator,
+                      typename AnnotationTypeAllocator>
+            const MavisSettings & get(const Mavis<InstType, AnnotationType, InstTypeAllocator,
+                                                  AnnotationTypeAllocator> & mavis) const
+            {
+                return mavis_settings_
+                    .at(std::type_index(typeid(Mavis<InstType, AnnotationType, InstTypeAllocator,
+                                                     AnnotationTypeAllocator>)))
+                    .at(mavis.getUID());
+            }
+        };
+
+        mutable MavisSettingsRegistry mavis_settings_;
+
         enum class ExtensionType
         {
             META,
@@ -1041,7 +1227,8 @@ namespace mavis::extension_manager
         {
         }
 
-        virtual uint32_t convertMultiArchString_(const boost::json::string & multiarch_str) const = 0;
+        virtual uint32_t
+        convertMultiArchString_(const boost::json::string & multiarch_str) const = 0;
 
         virtual std::vector<uint32_t>
         convertMultiArchVector_(const boost::json::array & multiarch_str_vec) const
@@ -1061,7 +1248,7 @@ namespace mavis::extension_manager
         {
             if (multiarch_obj.is_array())
             {
-                const auto& multiarch_array = multiarch_obj.as_array();
+                const auto & multiarch_array = multiarch_obj.as_array();
 
                 if (!multiarch_array.empty())
                 {
@@ -1201,8 +1388,16 @@ namespace mavis::extension_manager
                     throw MetaExtensionUnexpectedJSONKeyException(key);
                 }
 
-                extensions.template addDependency<dep_type>(ext,
-                                                            getDependencyValue_<dep_type>(it->value()));
+                const auto dep_value = getDependencyValue_<dep_type>(it->value());
+                extensions.template addDependency<dep_type>(ext, dep_value);
+
+                // Add an implicit required: rule for any enables: rule. This makes
+                // it possible to track dependencies properly when enabling/disabling
+                // extensions on the fly
+                if constexpr (dep_type == DependencyType::ENABLES)
+                {
+                    extensions.template addRule<RuleType::REQUIRED>(ext, dep_value);
+                }
             }
         }
 
@@ -1346,24 +1541,35 @@ namespace mavis::extension_manager
 
         template <bool refresh = true> void disableExtension_(const std::string & ext)
         {
-            if (isEnabled(ext))
-            {
-                enabled_arch_->second.disableExtension(ext);
+            const bool was_enabled = refresh ? isEnabled(ext) : false;
 
-                if constexpr (refresh)
-                {
-                    refresh_();
-                }
+            enabled_arch_->second.disableExtension(ext);
+
+            if (refresh && was_enabled)
+            {
+                refresh_();
             }
         }
 
         template <typename InstType, typename AnnotationType, typename InstTypeAllocator,
                   typename AnnotationTypeAllocator, typename... MavisArgs>
         Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>
-        constructMavis_(MavisArgs &&... mavis_args) const
+        constructMavis_(const FileNameListType & anno_files, const InstUIDList & uid_list,
+                        const AnnotationOverrides & anno_overrides,
+                        const MatchSet<Pattern> & inclusions, const MatchSet<Pattern> & exclusions,
+                        const InstTypeAllocator & inst_allocator,
+                        const AnnotationTypeAllocator & annotation_allocator) const
         {
-            return Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>(
-                getJSONs(), std::forward<MavisArgs>(mavis_args)...);
+            using MavisType =
+                Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>;
+            MavisType mavis(getJSONs(), anno_files, uid_list, anno_overrides, inclusions,
+                            exclusions, inst_allocator, annotation_allocator);
+
+            // Remember the initial set of settings for this Mavis instance
+            mavis_settings_.emplace(mavis, enabled_extensions_.getSortedExtensions(), anno_files,
+                                    uid_list, anno_overrides, inclusions, exclusions);
+
+            return mavis;
         }
 
       public:
@@ -1385,7 +1591,7 @@ namespace mavis::extension_manager
 
             try
             {
-                const auto& jobj = json.as_object();
+                const auto & jobj = json.as_object();
 
                 if (auto meta_extensions_it = jobj.find("meta_extensions");
                     meta_extensions_it != jobj.end())
@@ -1440,7 +1646,13 @@ namespace mavis::extension_manager
 
         bool isEnabled(const std::string & extension) const
         {
-            return enabled_extensions_.count(extension) != 0;
+            return enabled_extensions_.isEnabled(extension);
+        }
+
+        bool isDisabled(const std::string & extension) const
+        {
+            assertISAInitialized_();
+            return enabled_arch_->second.isDisabled();
         }
 
         const ExtensionMap & getEnabledExtensions() const { return enabled_extensions_; }
@@ -1609,14 +1821,16 @@ namespace mavis::extension_manager
             refresh_();
         }
 
-        // Disables the specified extension for the currently selected arch
+        // Disables the specified extension for the currently selected arch, along with any other
+        // extensions that require it
         void disableExtension(const std::string & ext)
         {
             assertISAInitialized_();
             disableExtension_(ext);
         }
 
-        // Disables the specified extensions for the currently selected arch
+        // Disables the specified extensions for the currently selected arch, along with any other
+        // extensions that require them
         void disableExtensions(const std::vector<std::string> & extensions)
         {
             assertISAInitialized_();
@@ -1628,6 +1842,21 @@ namespace mavis::extension_manager
             refresh_();
         }
 
+        // Returns whether this extension is defined in Mavis
+        bool isExtensionSupported(const std::string & ext)
+        {
+            assertISAInitialized_();
+            return enabled_arch_->second.isSupported(ext);
+        }
+
+        // Returns whether this extension is defined in Mavis
+        bool isExtensionSupported(const uint32_t arch_key, std::string & ext)
+        {
+            assertISASpecInitialized_();
+            return extensions_.at(arch_key).isSupported(ext);
+        }
+
+        // Constructs a Mavis object using the currently enabled extensions
         template <typename InstType, typename AnnotationType,
                   typename InstTypeAllocator = SharedPtrAllocator<InstType>,
                   typename AnnotationTypeAllocator = SharedPtrAllocator<AnnotationType>>
@@ -1645,6 +1874,7 @@ namespace mavis::extension_manager
                                                             annotation_allocator);
         }
 
+        // Constructs a Mavis object using the currently enabled extensions
         template <typename InstType, typename AnnotationType,
                   typename InstTypeAllocator = SharedPtrAllocator<InstType>,
                   typename AnnotationTypeAllocator = SharedPtrAllocator<AnnotationType>>
@@ -1656,10 +1886,11 @@ namespace mavis::extension_manager
                            SharedPtrAllocator<AnnotationType>()) const
         {
             return constructMavis_<InstType, AnnotationType, InstTypeAllocator,
-                                   AnnotationTypeAllocator>(anno_files, uid_list, anno_overrides,
-                                                            inst_allocator, annotation_allocator);
+                                   AnnotationTypeAllocator>(
+                anno_files, uid_list, anno_overrides, {}, {}, inst_allocator, annotation_allocator);
         }
 
+        // Constructs a Mavis object using the currently enabled extensions
         template <typename InstType, typename AnnotationType,
                   typename InstTypeAllocator = SharedPtrAllocator<InstType>,
                   typename AnnotationTypeAllocator = SharedPtrAllocator<AnnotationType>>
@@ -1671,10 +1902,11 @@ namespace mavis::extension_manager
                            SharedPtrAllocator<AnnotationType>()) const
         {
             return constructMavis_<InstType, AnnotationType, InstTypeAllocator,
-                                   AnnotationTypeAllocator>(anno_files, inclusions, exclusions,
-                                                            inst_allocator, annotation_allocator);
+                                   AnnotationTypeAllocator>(
+                anno_files, {}, {}, inclusions, exclusions, inst_allocator, annotation_allocator);
         }
 
+        // Constructs a Mavis object using the currently enabled extensions
         template <typename InstType, typename AnnotationType,
                   typename InstTypeAllocator = SharedPtrAllocator<InstType>,
                   typename AnnotationTypeAllocator = SharedPtrAllocator<AnnotationType>>
@@ -1685,8 +1917,66 @@ namespace mavis::extension_manager
                            SharedPtrAllocator<AnnotationType>()) const
         {
             return constructMavis_<InstType, AnnotationType, InstTypeAllocator,
-                                   AnnotationTypeAllocator>(anno_files, inst_allocator,
-                                                            annotation_allocator);
+                                   AnnotationTypeAllocator>(anno_files, {}, {}, {}, {},
+                                                            inst_allocator, annotation_allocator);
+        }
+
+        // Gets the name that the extension manager would use for a Mavis context based on the
+        // currently enabled extensions
+        const std::string & getContextName() const
+        {
+            return enabled_extensions_.getSortedExtensions();
+        }
+
+        // Switches a Mavis object's context to the currently enabled extensions.
+        // Manages context names internally and should only be used with a Mavis object created with
+        // ExtensionManager::constructMavis
+        template <typename InstType, typename AnnotationType, typename InstTypeAllocator,
+                  typename AnnotationTypeAllocator>
+        void switchMavisContext(Mavis<InstType, AnnotationType, InstTypeAllocator,
+                                      AnnotationTypeAllocator> & mavis) const
+        {
+            static const std::string BASE_CONTEXT{"BASE"};
+
+            try
+            {
+                const auto & mavis_settings = mavis_settings_.get(mavis);
+
+                const auto & sorted_extensions = enabled_extensions_.getSortedExtensions();
+
+                const auto & context_name = sorted_extensions == mavis_settings.default_context
+                                                ? BASE_CONTEXT
+                                                : sorted_extensions;
+
+                return switchMavisContext(mavis, context_name, mavis_settings.anno_files,
+                                          mavis_settings.uid_list, mavis_settings.anno_overrides,
+                                          mavis_settings.inclusions, mavis_settings.exclusions);
+            }
+            catch (const std::out_of_range &)
+            {
+                throw ExtensionManagerException(
+                    "Attempted to use the single-argument switchMavisContext with a Mavis instance "
+                    "created outside of the manager. Use the multi-argument switchMavisContext "
+                    "instead.");
+            }
+        }
+
+        // Switches a Mavis object's context to the currently enabled extensions
+        // Does not manage context names and can be used with any Mavis object
+        template <typename InstType, typename AnnotationType, typename InstTypeAllocator,
+                  typename AnnotationTypeAllocator, typename... ContextArgs>
+        void switchMavisContext(
+            Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator> & mavis,
+            const std::string & context_name, const FileNameListType & anno_files,
+            ContextArgs &&... context_args) const
+        {
+            if (!mavis.hasContext(context_name))
+            {
+                mavis.makeContext(context_name, getJSONs(), anno_files,
+                                  std::forward<ContextArgs>(context_args)...);
+            }
+
+            mavis.switchContext(context_name);
         }
     };
 } // namespace mavis::extension_manager

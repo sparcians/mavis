@@ -278,7 +278,12 @@ class Mavis
 
     void flushCaches() { dtrie_->flushCaches(); }
 
+    uint64_t getUID() const { return uid_; }
+
   private:
+    // Make this atomic in case we're constructing the same Mavis types in different threads
+    static inline std::atomic_uint64_t next_uid_ = 0;
+    const uint64_t uid_{next_uid_++};
     InstTypeAllocator inst_allocator_;
     AnnotationTypeAllocator annotation_allocator_;
     ContextRegistryType context_;
