@@ -225,6 +225,17 @@
     },
     {
       "xlen": 32,
+      "extension": "zbkb",
+      "json": "isa_rv32zbkb.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zbb_zbkb_common",
+      "enabled_by": ["zbb", "zbkb"],
+      "json": "isa_rv32zbb_zbkb_common.json"
+    },
+    {
+      "xlen": 32,
       "extension": "zca",
       "meta_extension": ["c", "zce"],
       "json": "isa_rv32zca.json"
@@ -414,6 +425,17 @@
       "extension": "zbs",
       "meta_extension": "b",
       "json": "isa_rv64zbs.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zbkb",
+      "json": "isa_rv64zbkb.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zbb_zbkb_common",
+      "enabled_by": ["zbb", "zbkb"],
+      "json": "isa_rv64zbb_zbkb_common.json"
     },
     {
       "xlen": 64,
