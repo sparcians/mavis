@@ -1,0 +1,45 @@
+[
+  {
+    "mnemonic" : "pack",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08004033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "packh",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08007033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "brev8",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x68705013",
+    "fixed" : ["rs2"],
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "unzip",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08f05013",
+    "fixed" : ["rs2"],
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "zip",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08f01013",
+    "fixed" : ["rs2"],
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  }
+]

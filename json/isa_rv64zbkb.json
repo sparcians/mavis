@@ -1,0 +1,35 @@
+[
+  {
+    "mnemonic" : "pack",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08004033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "packh",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x08007033",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "packw",
+    "tags" : ["zbkb"],
+    "form" : "R",
+    "stencil" : "0x0800403b",
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  },
+  {
+    "mnemonic" : "brev8",
+    "tags" : ["zbkb"],
+    "form" : "ISH",
+    "stencil" : "0x68705013",
+    "fixed" : ["shamt"],
+    "type" : ["int", "arith"],
+    "l-oper" : "all"
+  }
+]
