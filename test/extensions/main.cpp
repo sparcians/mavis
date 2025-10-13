@@ -284,12 +284,41 @@ int main(int argc, char* argv[])
         assert(man.isEnabled("zbkb"));
         // This method asks without checking if an extension is internal
         assert(man.isEnabled("zbb_zbkb_common"));
+        assert(man.isEnabled("g"));
 
-        // This view will filter out internal extensions
-        const auto & enabled_extensions = man.getEnabledExtensions();
-        assert(enabled_extensions.isEnabled("zbb"));
-        assert(enabled_extensions.isEnabled("zbkb"));
-        assert(!enabled_extensions.isEnabled("zbb_zbkb_common"));
+        {
+            // This view will filter out internal extensions
+            const auto & enabled_extensions = man.getEnabledExtensions();
+            assert(enabled_extensions.isEnabled("zbb"));
+            assert(enabled_extensions.isEnabled("zbkb"));
+            assert(!enabled_extensions.isEnabled("zbb_zbkb_common"));
+            assert(enabled_extensions.isEnabled("g"));
+            assert(enabled_extensions.isEnabled("i"));
+            assert(enabled_extensions.isEnabled("m"));
+            assert(enabled_extensions.isEnabled("a"));
+            assert(enabled_extensions.isEnabled("f"));
+            assert(enabled_extensions.isEnabled("d"));
+            assert(enabled_extensions.isEnabled("zaamo"));
+            assert(enabled_extensions.isEnabled("zalrsc"));
+        }
+
+        {
+            // This view will also filter out meta-extensions
+            const auto & enabled_extensions = man.getEnabledExtensions(false);
+            assert(enabled_extensions.isEnabled("zbb"));
+            assert(enabled_extensions.isEnabled("zbkb"));
+            assert(!enabled_extensions.isEnabled("zbb_zbkb_common"));
+            // g is a meta extension
+            assert(!enabled_extensions.isEnabled("g"));
+            assert(enabled_extensions.isEnabled("i"));
+            assert(enabled_extensions.isEnabled("m"));
+            // a is a meta extension
+            assert(!enabled_extensions.isEnabled("a"));
+            assert(enabled_extensions.isEnabled("f"));
+            assert(enabled_extensions.isEnabled("d"));
+            assert(enabled_extensions.isEnabled("zaamo"));
+            assert(enabled_extensions.isEnabled("zalrsc"));
+        }
     }
     return 0;
 }

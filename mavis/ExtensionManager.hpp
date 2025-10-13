@@ -428,17 +428,26 @@ namespace mavis::extension_manager
             sorted_enabled_extensions_set_.emplace(extension);
         }
 
-        // Returns a lazy view into enabled_extensions_ that filters out internal-only extensions
-        auto getFilteredView_() const
+        // Returns false if an extension is internal-only or (optionally) if it's a meta-extension
+        static bool filterExt_(const EnabledMap::value_type & ext_pair, const bool include_meta)
         {
-            return std::views::filter(enabled_extensions_, [](const auto & ext_pair)
-                                      { return !ext_pair.second->isInternalOnly(); });
+            const auto & ext = ext_pair.second;
+            return !ext->isInternalOnly() && (include_meta || !ext->isMetaExtension());
         }
 
-        bool isEnabledNonInternal_(const std::string & ext) const
+        // Returns a lazy view into enabled_extensions_ that filters out internal-only extensions
+        // Optionally also filters meta-extensions
+        auto getFilteredView_(const bool include_meta) const
+        {
+            return std::views::filter(enabled_extensions_, [include_meta](const auto & ext_pair)
+                                      { return filterExt_(ext_pair, include_meta); });
+        }
+
+        // Returns true if the extension is enabled and not filtered
+        bool isEnabledFiltered_(const std::string & ext, const bool include_meta) const
         {
             const auto it = enabled_extensions_.find(ext);
-            return it != enabled_extensions_.end() && !it->second->isInternalOnly();
+            return it != enabled_extensions_.end() && filterExt_(*it, include_meta);
         }
 
       public:
@@ -486,18 +495,24 @@ namespace mavis::extension_manager
     class ExtensionMapView
     {
       private:
-        using ViewType = decltype(std::declval<ExtensionMap>().getFilteredView_());
+        using ViewType =
+            std::invoke_result_t<decltype(&ExtensionMap::getFilteredView_), ExtensionMap, bool>;
 
         const ExtensionMap & ext_map_;
-        mutable ViewType map_filter_{ext_map_.getFilteredView_()};
+        const bool include_meta_;
+        mutable ViewType map_filter_{ext_map_.getFilteredView_(include_meta_)};
 
       public:
-        explicit ExtensionMapView(const ExtensionMap & ext_map) : ext_map_(ext_map) {}
+        ExtensionMapView(const ExtensionMap & ext_map, const bool include_meta) :
+            ext_map_(ext_map),
+            include_meta_(include_meta)
+        {
+        }
 
         // Returns whether the specified extension is enabled and non-internal
         bool isEnabled(const std::string & ext) const
         {
-            return ext_map_.isEnabledNonInternal_(ext);
+            return ext_map_.isEnabledFiltered_(ext, include_meta_);
         }
 
         auto begin() const { return map_filter_.begin(); }
@@ -1729,9 +1744,9 @@ namespace mavis::extension_manager
             return enabled_arch_->second.isDisabled();
         }
 
-        ExtensionMapView getEnabledExtensions() const
+        ExtensionMapView getEnabledExtensions(const bool include_meta_extensions = true) const
         {
-            return ExtensionMapView(enabled_extensions_);
+            return ExtensionMapView(enabled_extensions_, include_meta_extensions);
         }
 
         const std::vector<std::string> & getJSONs() const
