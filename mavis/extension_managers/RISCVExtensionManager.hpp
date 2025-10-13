@@ -68,12 +68,16 @@ namespace mavis::extension_manager::riscv
         uint32_t minor_ver_ = RISCV_DEFAULT_MINOR_VER;
 
       public:
-        RISCVExtensionInfo(const std::string & ext, const std::string & json) :
-            ExtensionInfoBase(ext, json)
+        RISCVExtensionInfo(const std::string & ext, const std::string & json,
+                           const bool is_internal_extension) :
+            ExtensionInfoBase(ext, json, is_internal_extension)
         {
         }
 
-        explicit RISCVExtensionInfo(const std::string & ext) : ExtensionInfoBase(ext) {}
+        RISCVExtensionInfo(const std::string & ext, const bool is_internal_extension) :
+            ExtensionInfoBase(ext, is_internal_extension)
+        {
+        }
 
         void setVersion(const uint32_t major_ver, const uint32_t minor_ver)
         {
