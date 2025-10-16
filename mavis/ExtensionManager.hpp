@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <numeric>
+#include <ranges>
 #include <set>
 #include <string>
 #include <typeindex>
@@ -285,6 +286,10 @@ namespace mavis::extension_manager
 
         const std::string extension_;
         const std::string json_;
+        // Internal-only extensions are Mavis-specific abstractions that express complex extension
+        // behavior (e.g. an extension whose members are conditionally enabled based on the presence
+        // of other extensions)
+        const bool is_internal_extension_;
         State state_ = State::UNSET;
         bool masked_ = false;
 
@@ -299,13 +304,19 @@ namespace mavis::extension_manager
         template <State... states> bool isState_() const { return (... || (state_ == states)); }
 
       public:
-        ExtensionInfoBase(const std::string & ext, const std::string & json) :
+        ExtensionInfoBase(const std::string & ext, const std::string & json,
+                          const bool is_internal_extension) :
             extension_(ext),
-            json_(json)
+            json_(json),
+            is_internal_extension_(is_internal_extension)
         {
         }
 
-        explicit ExtensionInfoBase(const std::string & ext) : extension_(ext) {}
+        ExtensionInfoBase(const std::string & ext, const bool is_internal_extension) :
+            extension_(ext),
+            is_internal_extension_(is_internal_extension)
+        {
+        }
 
         const std::string & getExtension() const { return extension_; }
 
@@ -342,6 +353,8 @@ namespace mavis::extension_manager
         void unmask() { masked_ = false; }
 
         const std::string & getJSON() const { return json_; }
+
+        bool isInternalExtension() const { return is_internal_extension_; }
     };
 
     enum class UnknownExtensionAction
@@ -357,6 +370,10 @@ namespace mavis::extension_manager
         virtual ~ExtensionBase() = default;
         virtual const std::string & getName() const = 0;
         virtual const std::string & getJSON() const = 0;
+
+        virtual bool isMetaExtension() const { return false; }
+
+        virtual bool isInternalOnly() const { return false; }
     };
 
     class Extension : public ExtensionBase
@@ -370,6 +387,8 @@ namespace mavis::extension_manager
         const std::string & getName() const override final { return ext_->getExtension(); }
 
         const std::string & getJSON() const override final { return ext_->getJSON(); }
+
+        bool isInternalOnly() const override final { return ext_->isInternalExtension(); }
     };
 
     class MetaExtension : public ExtensionBase
@@ -387,12 +406,19 @@ namespace mavis::extension_manager
             static const std::string EMPTY{};
             return EMPTY;
         }
+
+        bool isMetaExtension() const override final { return true; }
     };
+
+    class ExtensionMapView;
 
     class ExtensionMap
     {
       private:
-        std::unordered_map<std::string, std::unique_ptr<ExtensionBase>> enabled_extensions_;
+        friend class ExtensionMapView;
+
+        using EnabledMap = std::unordered_map<std::string, std::unique_ptr<ExtensionBase>>;
+        EnabledMap enabled_extensions_;
         mutable std::set<std::string> sorted_enabled_extensions_set_;
         mutable std::string sorted_enabled_extensions_str_;
 
@@ -400,6 +426,28 @@ namespace mavis::extension_manager
         {
             enabled_extensions_.emplace(extension, std::move(ext_ptr));
             sorted_enabled_extensions_set_.emplace(extension);
+        }
+
+        // Returns false if an extension is internal-only or (optionally) if it's a meta-extension
+        static bool filterExt_(const EnabledMap::value_type & ext_pair, const bool include_meta)
+        {
+            const auto & ext = ext_pair.second;
+            return !ext->isInternalOnly() && (include_meta || !ext->isMetaExtension());
+        }
+
+        // Returns a lazy view into enabled_extensions_ that filters out internal-only extensions
+        // Optionally also filters meta-extensions
+        auto getFilteredView_(const bool include_meta) const
+        {
+            return std::views::filter(enabled_extensions_, [include_meta](const auto & ext_pair)
+                                      { return filterExt_(ext_pair, include_meta); });
+        }
+
+        // Returns true if the extension is enabled and not filtered
+        bool isEnabledFiltered_(const std::string & ext, const bool include_meta) const
+        {
+            const auto it = enabled_extensions_.find(ext);
+            return it != enabled_extensions_.end() && filterExt_(*it, include_meta);
         }
 
       public:
@@ -428,10 +476,7 @@ namespace mavis::extension_manager
             return sorted_enabled_extensions_str_;
         }
 
-        bool isEnabled(const std::string & ext) const
-        {
-            return enabled_extensions_.count(ext) != 0;
-        }
+        bool isEnabled(const std::string & ext) const { return enabled_extensions_.contains(ext); }
 
         void clear()
         {
@@ -443,6 +488,36 @@ namespace mavis::extension_manager
         auto begin() const { return enabled_extensions_.begin(); }
 
         auto end() const { return enabled_extensions_.end(); }
+    };
+
+    // Provides a read-only view into an ExtensionMap that filters out internal-only extensions
+    // Invalidated whenever the underlying ExtensionMap is modified
+    class ExtensionMapView
+    {
+      private:
+        using ViewType =
+            std::invoke_result_t<decltype(&ExtensionMap::getFilteredView_), ExtensionMap, bool>;
+
+        const ExtensionMap & ext_map_;
+        const bool include_meta_;
+        mutable ViewType map_filter_{ext_map_.getFilteredView_(include_meta_)};
+
+      public:
+        ExtensionMapView(const ExtensionMap & ext_map, const bool include_meta) :
+            ext_map_(ext_map),
+            include_meta_(include_meta)
+        {
+        }
+
+        // Returns whether the specified extension is enabled and non-internal
+        bool isEnabled(const std::string & ext) const
+        {
+            return ext_map_.isEnabledFiltered_(ext, include_meta_);
+        }
+
+        auto begin() const { return map_filter_.begin(); }
+
+        auto end() const { return map_filter_.end(); }
     };
 
     enum class RuleType
@@ -816,8 +891,8 @@ namespace mavis::extension_manager
 
         void addMetaExtension(const std::string & ext) { meta_extensions_.try_emplace(ext); }
 
-        ExtensionInfo & addExtension(const std::string & extension,
-                                     const boost::json::string & json = "")
+        template <typename... ExtensionArgs>
+        ExtensionInfo & addExtension(const std::string & extension, ExtensionArgs &&... args)
         {
             if (const auto it = extensions_.find(extension); it != extensions_.end())
             {
@@ -825,7 +900,8 @@ namespace mavis::extension_manager
             }
 
             const auto result = extensions_.emplace(
-                extension, std::make_shared<ExtensionInfo>(extension, json.c_str()));
+                extension,
+                std::make_shared<ExtensionInfo>(extension, std::forward<ExtensionArgs>(args)...));
 
 #ifdef ENABLE_GRAPH_SANITY_CHECKER
             getVertex_(extension);
@@ -1151,7 +1227,10 @@ namespace mavis::extension_manager
 
         bool isDisabled(const std::string & ext) const { return extensions_.at(ext)->isDisabled(); }
 
-        bool isSupported(const std::string & ext) const { return extensions_.count(ext) != 0 || meta_extensions_.count(ext) != 0; }
+        bool isSupported(const std::string & ext) const
+        {
+            return extensions_.count(ext) != 0 || meta_extensions_.count(ext) != 0;
+        }
     };
 
     template <typename ExtensionInfo, typename ExtensionState> class ExtensionManager
@@ -1468,13 +1547,22 @@ namespace mavis::extension_manager
 
                 if constexpr (is_normal_extension)
                 {
+                    bool internal_extension = false;
+
+                    if (auto json_it = ext_obj.find("internal"); json_it != ext_obj.end())
+                    {
+                        internal_extension = json_it->value().as_bool();
+                    }
+
                     if (auto json_it = ext_obj.find("json"); json_it != ext_obj.end())
                     {
-                        arch_extensions.addExtension(ext, json_it->value().as_string());
+                        arch_extensions.addExtension(
+                            ext, std::string(json_it->value().as_string().c_str()),
+                            internal_extension);
                     }
                     else
                     {
-                        arch_extensions.addExtension(ext);
+                        arch_extensions.addExtension(ext, internal_extension);
                     }
                 }
                 else if constexpr (is_config_extension)
@@ -1656,7 +1744,10 @@ namespace mavis::extension_manager
             return enabled_arch_->second.isDisabled();
         }
 
-        const ExtensionMap & getEnabledExtensions() const { return enabled_extensions_; }
+        ExtensionMapView getEnabledExtensions(const bool include_meta_extensions = true) const
+        {
+            return ExtensionMapView(enabled_extensions_, include_meta_extensions);
+        }
 
         const std::vector<std::string> & getJSONs() const
         {

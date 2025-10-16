@@ -246,8 +246,8 @@ int main(int argc, char* argv[])
             "rv64gc_zicsr_zifencei", "json/riscv_isa_spec.json", "json");
 
         auto mavis = man.constructMavis<Instruction<uArchInfo>, uArchInfo>(uarch);
-        const ExampleTraceInfo addi{"addi",0xf0008013};
-        const ExampleTraceInfo fadd{"fadd.s",0x53};
+        const ExampleTraceInfo addi{"addi", 0xf0008013};
+        const ExampleTraceInfo fadd{"fadd.s", 0x53};
 
         Instruction<uArchInfo>::PtrType iptr = mavis.makeInstFromTrace(addi, 0);
         iptr = mavis.makeInstFromTrace(fadd, 0);
@@ -256,7 +256,8 @@ int main(int argc, char* argv[])
         man.switchMavisContext(mavis);
 
         iptr = mavis.makeInstFromTrace(addi, 0);
-        testException<mavis::UnknownOpcode>([&mavis, &iptr, &fadd]() { iptr = mavis.makeInstFromTrace(fadd, 0); });
+        testException<mavis::UnknownOpcode>([&mavis, &iptr, &fadd]()
+                                            { iptr = mavis.makeInstFromTrace(fadd, 0); });
 
         man.enableExtension("f");
         man.switchMavisContext(mavis);
@@ -274,5 +275,50 @@ int main(int argc, char* argv[])
         assert(!man.isExtensionSupported("znotanextension"));
     }
 
+    {
+        // Test internal-only flag functionality
+        auto man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
+            "rv32gc_zbb_zbkb", "json/riscv_isa_spec.json", "json");
+
+        assert(man.isEnabled("zbb"));
+        assert(man.isEnabled("zbkb"));
+        // This method asks without checking if an extension is internal
+        assert(man.isEnabled("zbb_zbkb_common"));
+        assert(man.isEnabled("g"));
+
+        {
+            // This view will filter out internal extensions
+            const auto & enabled_extensions = man.getEnabledExtensions();
+            assert(enabled_extensions.isEnabled("zbb"));
+            assert(enabled_extensions.isEnabled("zbkb"));
+            assert(!enabled_extensions.isEnabled("zbb_zbkb_common"));
+            assert(enabled_extensions.isEnabled("g"));
+            assert(enabled_extensions.isEnabled("i"));
+            assert(enabled_extensions.isEnabled("m"));
+            assert(enabled_extensions.isEnabled("a"));
+            assert(enabled_extensions.isEnabled("f"));
+            assert(enabled_extensions.isEnabled("d"));
+            assert(enabled_extensions.isEnabled("zaamo"));
+            assert(enabled_extensions.isEnabled("zalrsc"));
+        }
+
+        {
+            // This view will also filter out meta-extensions
+            const auto & enabled_extensions = man.getEnabledExtensions(false);
+            assert(enabled_extensions.isEnabled("zbb"));
+            assert(enabled_extensions.isEnabled("zbkb"));
+            assert(!enabled_extensions.isEnabled("zbb_zbkb_common"));
+            // g is a meta extension
+            assert(!enabled_extensions.isEnabled("g"));
+            assert(enabled_extensions.isEnabled("i"));
+            assert(enabled_extensions.isEnabled("m"));
+            // a is a meta extension
+            assert(!enabled_extensions.isEnabled("a"));
+            assert(enabled_extensions.isEnabled("f"));
+            assert(enabled_extensions.isEnabled("d"));
+            assert(enabled_extensions.isEnabled("zaamo"));
+            assert(enabled_extensions.isEnabled("zalrsc"));
+        }
+    }
     return 0;
 }
