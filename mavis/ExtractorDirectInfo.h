@@ -48,9 +48,37 @@ namespace mavis
         {
         }
 
+        explicit ExtractorDirectBase(const std::string & mnemonic, const SpecialFields & specials) :
+            mnemonic_(mnemonic),
+            uid_(INVALID_UID),
+            specials_(specials),
+            immediate_(0),
+            immediate_type_(ImmediateType::NONE)
+        {
+        }
+
+        explicit ExtractorDirectBase(const std::string & mnemonic, const SpecialFields & specials, uint64_t imm,
+                                     ImmediateType itype = ImmediateType::UNSIGNED) :
+            mnemonic_(mnemonic),
+            uid_(INVALID_UID),
+            specials_(specials),
+            immediate_(imm),
+            immediate_type_(itype)
+        {
+        }
+
         explicit ExtractorDirectBase(const InstructionUniqueID uid) :
             mnemonic_("UNSET-in-ExtractorDirectBase"),
             uid_(uid),
+            immediate_(0),
+            immediate_type_(ImmediateType::NONE)
+        {
+        }
+
+        explicit ExtractorDirectBase(const InstructionUniqueID uid, const SpecialFields & specials) :
+            mnemonic_("UNSET-in-ExtractorDirectBase"),
+            uid_(uid),
+            specials_(specials),
             immediate_(0),
             immediate_type_(ImmediateType::NONE)
         {
@@ -60,6 +88,16 @@ namespace mavis
                                      ImmediateType itype = ImmediateType::UNSIGNED) :
             mnemonic_("UNSET-in-ExtractorDirectBase"),
             uid_(uid),
+            immediate_(imm),
+            immediate_type_(itype)
+        {
+        }
+
+        explicit ExtractorDirectBase(const InstructionUniqueID uid, const SpecialFields & specials, uint64_t imm,
+                                     ImmediateType itype = ImmediateType::UNSIGNED) :
+            mnemonic_("UNSET-in-ExtractorDirectBase"),
+            uid_(uid),
+            specials_(specials),
             immediate_(imm),
             immediate_type_(itype)
         {
@@ -103,6 +141,20 @@ namespace mavis
 
         int64_t getSignedOffset(const uint64_t icode) const override { return getImmediate(icode); }
 
+        uint64_t getSpecialField(SpecialField sfid, Opcode, const InstMetaData::PtrType &) const
+        {
+            try
+            {
+                specials_.at(sfid);
+            }
+            catch (const std::out_of_range & ex)
+            {
+                // We can provide the mnemonic here, so we "rethrow"
+                // the original exception with more information
+                throw UnsupportedExtractorSpecialFieldID(ExtractorIF::getSpecialFieldName(sfid), 0);
+            }
+        }
+
         uint64_t getSourceOperTypeRegs(const uint64_t, const InstMetaData::PtrType & meta,
                                        InstMetaData::OperandTypes kind) const override
         {
@@ -129,11 +181,6 @@ namespace mavis
             }
         }
 
-        uint64_t getSpecialField(SpecialField, Opcode, const InstMetaData::PtrType &) const override
-        {
-            throw InvalidExtractorSpecialFieldID(mnemonic_);
-        }
-
         void dasmAnnotate(const std::string & txt) override { annotation_ = txt; }
 
         const std::string & getDasmAnnotation() const override { return annotation_; }
@@ -153,6 +200,7 @@ namespace mavis
       protected:
         const std::string mnemonic_;
         const InstructionUniqueID uid_ = INVALID_UID;
+        const SpecialFields specials_ = {};
         const uint64_t immediate_;
         const ImmediateType immediate_type_;
 
@@ -248,7 +296,7 @@ namespace mavis
         }
 
         ExtractorDirectInfo(const std::string & mnemonic, const RegListType & sources,
-                            const RegListType & dests, const ValueListType & specials) :
+                            const RegListType & dests, const SpecialFields & specials) :
             ExtractorDirectBase(mnemonic),
             sources_(sources),
             dests_(dests),
@@ -257,7 +305,7 @@ namespace mavis
         }
 
         ExtractorDirectInfo(const std::string & mnemonic, const RegListType & sources,
-                            const RegListType & dests, const ValueListType & specials,
+                            const RegListType & dests, const SpecialFields & specials,
                             uint64_t imm) :
             ExtractorDirectBase(mnemonic, imm),
             sources_(sources),
@@ -283,7 +331,7 @@ namespace mavis
         }
 
         ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType & sources,
-                            const RegListType & dests, const ValueListType & specials) :
+                            const RegListType & dests, const SpecialFields & specials) :
             ExtractorDirectBase(uid),
             sources_(sources),
             dests_(dests),
@@ -292,7 +340,7 @@ namespace mavis
         }
 
         ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType & sources,
-                            const RegListType & dests, const ValueListType & specials,
+                            const RegListType & dests, const SpecialFields & specials,
                             uint64_t imm) :
             ExtractorDirectBase(uid, imm),
             sources_(sources),
@@ -450,14 +498,7 @@ namespace mavis
       private:
         const RegListType sources_;
         const RegListType dests_;
-        const ValueListType specials_;
-
-      private:
-        uint64_t getSpecialFieldByIndex_(uint32_t index) const override
-        {
-            // We want bounds checking...
-            return specials_.at(index);
-        }
+        const SpecialFields specials_;
     };
 
     class ExtractorDirectOpInfoList : public ExtractorDirectBase
@@ -483,21 +524,19 @@ namespace mavis
         }
 
         ExtractorDirectOpInfoList(const std::string & mnemonic, const OperandInfo & sources,
-                                  const OperandInfo & dests, const ValueListType & specials) :
-            ExtractorDirectBase(mnemonic),
+                                  const OperandInfo & dests, const SpecialFields & specials) :
+            ExtractorDirectBase(mnemonic, specials),
             sources_(sources),
-            dests_(dests),
-            specials_(specials)
+            dests_(dests)
         {
         }
 
         ExtractorDirectOpInfoList(const std::string & mnemonic, const OperandInfo & sources,
-                                  const OperandInfo & dests, const ValueListType & specials,
+                                  const OperandInfo & dests, const SpecialFields & specials,
                                   uint64_t imm) :
-            ExtractorDirectBase(mnemonic, imm),
+            ExtractorDirectBase(mnemonic, specials, imm),
             sources_(sources),
-            dests_(dests),
-            specials_(specials)
+            dests_(dests)
         {
         }
 
@@ -518,21 +557,19 @@ namespace mavis
         }
 
         ExtractorDirectOpInfoList(const InstructionUniqueID uid, const OperandInfo & sources,
-                                  const OperandInfo & dests, const ValueListType & specials) :
-            ExtractorDirectBase(uid),
+                                  const OperandInfo & dests, const SpecialFields & specials) :
+            ExtractorDirectBase(uid, specials),
             sources_(sources),
-            dests_(dests),
-            specials_(specials)
+            dests_(dests)
         {
         }
 
         ExtractorDirectOpInfoList(const InstructionUniqueID uid, const OperandInfo & sources,
-                                  const OperandInfo & dests, const ValueListType & specials,
+                                  const OperandInfo & dests, const SpecialFields & specials,
                                   uint64_t imm) :
-            ExtractorDirectBase(uid, imm),
+            ExtractorDirectBase(uid, specials, imm),
             sources_(sources),
-            dests_(dests),
-            specials_(specials)
+            dests_(dests)
         {
         }
 
@@ -633,13 +670,5 @@ namespace mavis
       private:
         const OperandInfo sources_;
         const OperandInfo dests_;
-        const ValueListType specials_;
-
-      private:
-        uint64_t getSpecialFieldByIndex_(uint32_t index) const override
-        {
-            // We want bounds checking...
-            return specials_.at(index);
-        }
     };
 } // namespace mavis

@@ -42,6 +42,10 @@ namespace mavis
             __N
         };
 
+        static constexpr uint32_t N_SPECIAL_FIELDS = static_cast<uint32_t>(SpecialField::__N);
+
+        typedef std::map<SpecialField, uint64_t> SpecialFields;
+
         static inline const std::map<const std::string, SpecialField> SpecialFieldMap{
             {"aq",        SpecialField::AQ       },
             {"avl",       SpecialField::AVL      },
@@ -125,6 +129,7 @@ namespace mavis
         // ExtractorTraceInfo. Do we really need separate versions anymore?
         virtual int64_t getSignedOffset(Opcode icode) const = 0;
 
+        // Special fields are cached in DecodedInstInfo
         virtual uint64_t getSpecialField(SpecialField sfid, Opcode icode,
                                          const InstMetaData::PtrType & meta = nullptr) const = 0;
 
@@ -144,13 +149,6 @@ namespace mavis
         virtual const std::string & getDasmAnnotation() const = 0;
 
         virtual void print(std::ostream & os) const = 0;
-
-      protected:
-        virtual uint64_t getSpecialFieldByIndex_(uint32_t) const
-        {
-            assert(false);
-            return 0;
-        }
     };
 
     // TODO: Instructions will need to extract arbitrary fields in the Form
