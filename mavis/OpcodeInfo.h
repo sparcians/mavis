@@ -265,7 +265,7 @@ namespace mavis
         {
             try
             {
-                info_->special_fields.at(sfid);
+                return info_->special_fields.at(sfid);
             }
             catch (const std::out_of_range & ex)
             {

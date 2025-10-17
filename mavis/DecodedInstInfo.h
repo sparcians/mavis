@@ -548,7 +548,6 @@ namespace mavis
                 }
             }
 
-
             // Cache all special field values
             for (const auto& [sf_name, sf_id] : ExtractorIF::SpecialFieldMap)
             {
@@ -556,7 +555,7 @@ namespace mavis
                 {
                     (void)sf_name;
                     const uint64_t sf_val = extractor->getSpecialField(sf_id, icode, meta);
-                    special_fields.emplace(std::make_pair(sf_id, sf_val));
+                    special_fields.emplace(sf_id, sf_val);
                 }
                 catch (const InvalidExtractorSpecialFieldID & ex)
                 {

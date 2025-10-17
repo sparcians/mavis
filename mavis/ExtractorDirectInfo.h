@@ -145,7 +145,7 @@ namespace mavis
         {
             try
             {
-                specials_.at(sfid);
+                return specials_.at(sfid);
             }
             catch (const std::out_of_range & ex)
             {
