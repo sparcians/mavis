@@ -19,6 +19,11 @@
 #include <boost/graph/depth_first_search.hpp>
 #endif
 
+// Clang versions prior to 16 had a bug that broke std::views
+#if(__clang__ && __clang_major__ < 16)
+#define STD_VIEWS_BUG 1
+#endif
+
 #include "JSONUtils.hpp"
 #include "DecoderExceptions.h"
 #include "mavis/Mavis.h"
@@ -435,12 +440,109 @@ namespace mavis::extension_manager
             return !ext->isInternalOnly() && (include_meta || !ext->isMetaExtension());
         }
 
+#ifdef STD_VIEWS_BUG
+        // Mimics the behavior of std::views::filter
+        class FilteredView
+        {
+            public:
+                class iterator
+                {
+                    private:
+                        const bool include_meta_;
+                        const EnabledMap::const_iterator end_it_;
+                        EnabledMap::const_iterator it_;
+
+                        void advance_()
+                        {
+                            while(it_ != end_it_ && !filterExt_(*it_, include_meta_))
+                            {
+                                ++it_;
+                            }
+                        }
+
+                    public:
+                        iterator(const EnabledMap::const_iterator& it, const EnabledMap::const_iterator& end_it, const bool include_meta) :
+                            include_meta_(include_meta),
+                            end_it_(end_it),
+                            it_(it)
+                        {
+                            advance_();
+                        }
+
+                        explicit iterator(const EnabledMap::const_iterator& end_it) :
+                            include_meta_(false),
+                            end_it_(end_it),
+                            it_(end_it)
+                        {
+                        }
+
+                        iterator& operator++()
+                        {
+                            advance_();
+                            return *this;
+                        }
+
+                        iterator operator++(int)
+                        {
+                            const auto temp = *this;
+                            advance_();
+                            return temp;
+                        }
+
+                        const EnabledMap::value_type& operator*() const
+                        {
+                            return *it_;
+                        }
+
+                        const EnabledMap::value_type* operator->() const
+                        {
+                            return it_.operator->();
+                        }
+
+                        bool operator==(const iterator& rhs) const
+                        {
+                            return it_ == rhs.it_;
+                        }
+
+                        bool operator!=(const iterator& rhs) const
+                        {
+                            return it_ != rhs.it_;
+                        }
+                };
+
+            private:
+                const EnabledMap& enabled_extensions_;
+                const bool include_meta_;
+
+            public:
+                explicit FilteredView(const EnabledMap& enabled_extensions, const bool include_meta) :
+                    enabled_extensions_(enabled_extensions),
+                    include_meta_(include_meta)
+                {
+                }
+
+                iterator begin() const
+                {
+                    return iterator(enabled_extensions_.begin(), enabled_extensions_.end(), include_meta_);
+                }
+
+                iterator end() const
+                {
+                    return iterator(enabled_extensions_.end());
+                }
+        };
+#endif
+
         // Returns a lazy view into enabled_extensions_ that filters out internal-only extensions
         // Optionally also filters meta-extensions
         auto getFilteredView_(const bool include_meta) const
         {
+#ifdef STD_VIEWS_BUG
+            return FilteredView(enabled_extensions_, include_meta);
+#else
             return std::views::filter(enabled_extensions_, [include_meta](const auto & ext_pair)
                                       { return filterExt_(ext_pair, include_meta); });
+#endif
         }
 
         // Returns true if the extension is enabled and not filtered
