@@ -722,7 +722,6 @@
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x5c004057",
-    "fixed": [ "vm" ],
     "type": [ "vector" ],
     "l-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rd" ]
@@ -1091,7 +1090,6 @@
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x5c000057",
-    "fixed": [ "vm" ],
     "type": [ "vector" ],
     "v-oper": "all"
   },
@@ -1395,7 +1393,6 @@
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x5c003057",
-    "fixed": [ "vm" ],
     "xform": "V_simm",
     "type": [ "vector" ],
     "v-oper": [ "rs2", "rd" ]

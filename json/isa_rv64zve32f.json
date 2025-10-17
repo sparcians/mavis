@@ -104,7 +104,6 @@
     "tags" : ["v"],
     "form": "V",
     "stencil": "0x5c005057",
-    "fixed": [ "vm" ],
     "type": [ "vector", "float" ],
     "d-oper": [ "rs1" ],
     "v-oper": [ "rs2", "rd" ]
