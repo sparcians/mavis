@@ -138,12 +138,7 @@ public:
 
     uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType &) const override
     {
-        uint32_t index = form_->getSpecialFieldIndex(sfid);
-        if (index == FormGeneric::INVALID_LIST_POS) {
-            throw UnsupportedExtractorSpecialFieldID(getSpecialFieldName(sfid), icode);
-        } else {
-            return obj_->getSpecialFieldByIndex_(index);
-        }
+        return obj_->getSpecialField(sfid, icode);
     }
 
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override
