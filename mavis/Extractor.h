@@ -44,7 +44,7 @@ namespace mavis
 
         static constexpr uint32_t N_SPECIAL_FIELDS = static_cast<uint32_t>(SpecialField::__N);
 
-        typedef std::map<SpecialField, uint64_t> SpecialFields;
+        using SpecialFields = std::map<SpecialField, uint64_t>;
 
         static inline const std::map<const std::string, SpecialField> SpecialFieldMap{
             {"aq",        SpecialField::AQ       },

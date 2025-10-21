@@ -275,7 +275,7 @@ namespace mavis
             }
         }
 
-        const SpecialFields getSpecialFields() const
+        const SpecialFields& getSpecialFields() const
         {
             return info_->special_fields;
         }
