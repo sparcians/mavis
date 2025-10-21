@@ -23,6 +23,7 @@ namespace mavis
         using OperandTypes = InstMetaData::OperandTypes;
         using ExtractedInstTypes = DecodedInstructionInfo::ExtractedInstTypes;
         using SpecialField = ExtractorIF::SpecialField;
+        using SpecialFields = ExtractorIF::SpecialFields;
 
       public:
         OpcodeInfo(const Opcode icode, const DecodedInstructionInfo::PtrType & dii,
@@ -260,35 +261,23 @@ namespace mavis
 
         MatchSet<Tag> getTags() const { return meta_->getTags(); }
 
-        // NOTE: We don't cache the special fields in the decoded
-        // instruction object (i.e. info_). Athena wants exceptions to be thrown
-        // for invalid special field requests, and supporting that makes the
-        // Mavis extraction cacheing expensive.
-        //
-        // There's not much love lost here, since special field requests
-        // should be relatively infrequent (compared to immediate and register
-        // extractions which almost every instruction has).
-        //
-        // If we absolutely must cache the special fields, I would suggest
-        // cacheing "SpecialFieldObjects" as part of the decoded instruction
-        // info (info_). These objects would be provided by the extractors with
-        // either the extracted field data, or constructed to cause an exception
-        // when attempt is made to "get" the data value.
-        //
-        // This getSpecialField() method would then invoke the "SpecialFieldObject::get()"
-        // method to return the value or throw the exception.
         uint64_t getSpecialField(SpecialField sfid)
         {
             try
             {
-                return extractor_->getSpecialField(sfid, icode_, meta_);
+                return info_->special_fields.at(sfid);
             }
-            catch (const UnsupportedExtractorSpecialFieldID & ex)
+            catch (const std::out_of_range & ex)
             {
                 // We can provide the mnemonic here, so we "rethrow"
                 // the original exception with more information
-                throw UnsupportedExtractorSpecialFieldID(getMnemonic(), ex);
+                throw UnsupportedExtractorSpecialFieldID(ExtractorIF::getSpecialFieldName(sfid), icode_);
             }
+        }
+
+        const SpecialFields& getSpecialFields() const
+        {
+            return info_->special_fields;
         }
 
       private:
