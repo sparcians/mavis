@@ -478,6 +478,7 @@ namespace mavis::extension_manager
 
                         iterator& operator++()
                         {
+                            ++it_;
                             advance_();
                             return *this;
                         }
@@ -485,6 +486,7 @@ namespace mavis::extension_manager
                         iterator operator++(int)
                         {
                             const auto temp = *this;
+                            ++it_;
                             advance_();
                             return temp;
                         }
