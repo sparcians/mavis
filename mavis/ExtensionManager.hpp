@@ -1348,6 +1348,7 @@ namespace mavis::extension_manager
         typename ArchMap::iterator enabled_arch_{extensions_.end()};
         ExtensionMap enabled_extensions_;
         mutable std::vector<std::string> enabled_jsons_;
+        std::function<void(const std::string &, bool)> extensions_changed_callback_;
 
         // Stores the initial settings for a Mavis instance so they can be retrieved later
         // when switching contexts
@@ -1729,18 +1730,29 @@ namespace mavis::extension_manager
                 {
                     refresh_();
                 }
+
+                if (extensions_changed_callback_)
+                {
+                    extensions_changed_callback_(ext, true);
+                }
             }
         }
 
         template <bool refresh = true> void disableExtension_(const std::string & ext)
         {
-            const bool was_enabled = refresh ? isEnabled(ext) : false;
+            const bool changed = isEnabled(ext);
+            const bool was_enabled = refresh ? changed : false;
 
             enabled_arch_->second.disableExtension(ext);
 
             if (refresh && was_enabled)
             {
                 refresh_();
+            }
+
+            if (changed && extensions_changed_callback_)
+            {
+                extensions_changed_callback_(ext, false);
             }
         }
 
@@ -1851,6 +1863,11 @@ namespace mavis::extension_manager
         ExtensionMapView getEnabledExtensions(const bool include_meta_extensions = true) const
         {
             return ExtensionMapView(enabled_extensions_, include_meta_extensions);
+        }
+
+        void registerExtensionChangeCallback(std::function<void(const std::string &, bool)> cb)
+        {
+            extensions_changed_callback_ = cb;
         }
 
         const std::vector<std::string> & getJSONs() const
