@@ -1348,7 +1348,7 @@ namespace mavis::extension_manager
         typename ArchMap::iterator enabled_arch_{extensions_.end()};
         ExtensionMap enabled_extensions_;
         mutable std::vector<std::string> enabled_jsons_;
-        std::function<void(const std::string &, bool)> extensions_changed_callback_;
+        std::function<void(const std::vector<std::string> &, bool)> extensions_changed_callback_;
 
         // Stores the initial settings for a Mavis instance so they can be retrieved later
         // when switching contexts
@@ -1729,30 +1729,27 @@ namespace mavis::extension_manager
                 if constexpr (refresh)
                 {
                     refresh_();
-                }
-
-                if (extensions_changed_callback_)
-                {
-                    extensions_changed_callback_(ext, true);
+                    if (extensions_changed_callback_)
+                    {
+                        extensions_changed_callback_({ext}, true);
+                    }
                 }
             }
         }
 
         template <bool refresh = true> void disableExtension_(const std::string & ext)
         {
-            const bool changed = isEnabled(ext);
-            const bool was_enabled = refresh ? changed : false;
+            const bool was_enabled = refresh ? isEnabled(ext) : false;
 
             enabled_arch_->second.disableExtension(ext);
 
             if (refresh && was_enabled)
             {
                 refresh_();
-            }
-
-            if (changed && extensions_changed_callback_)
-            {
-                extensions_changed_callback_(ext, false);
+                if (extensions_changed_callback_)
+                {
+                    extensions_changed_callback_({ext}, false);
+                }
             }
         }
 
@@ -1865,7 +1862,7 @@ namespace mavis::extension_manager
             return ExtensionMapView(enabled_extensions_, include_meta_extensions);
         }
 
-        void registerExtensionChangeCallback(std::function<void(const std::string &, bool)> cb)
+        void registerExtensionChangeCallback(std::function<void(const std::vector<std::string> &, bool)> cb)
         {
             extensions_changed_callback_ = cb;
         }
@@ -2032,6 +2029,10 @@ namespace mavis::extension_manager
             }
 
             refresh_();
+            if (extensions_changed_callback_)
+            {
+                extensions_changed_callback_(extensions, true);
+            }
         }
 
         // Disables the specified extension for the currently selected arch, along with any other
@@ -2053,6 +2054,10 @@ namespace mavis::extension_manager
             }
 
             refresh_();
+            if (extensions_changed_callback_)
+            {
+                extensions_changed_callback_(extensions, false);
+            }
         }
 
         // Returns whether this extension is defined in Mavis
