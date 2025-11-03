@@ -2060,6 +2060,37 @@ namespace mavis::extension_manager
             }
         }
 
+        // Enable and disable extension(s) at once.
+        void changeExtensions(const std::vector<std::string> & enable_extensions,
+                              const std::vector<std::string> & disable_extensions)
+        {
+            assertISAInitialized_();
+
+            for (const auto & ext : enable_extensions)
+            {
+                enableExtension_<false>(ext);
+            }
+
+            for (const auto & ext : disable_extensions)
+            {
+                disableExtension_<false>(ext);
+            }
+
+            refresh_();
+            if (extensions_changed_callback_)
+            {
+                if (!enable_extensions.empty())
+                {
+                    extensions_changed_callback_(enable_extensions, true);
+                }
+
+                if (!disable_extensions.empty())
+                {
+                    extensions_changed_callback_(disable_extensions, false);
+                }
+            }
+        }
+
         // Returns whether this extension is defined in Mavis
         bool isExtensionSupported(const std::string & ext)
         {
