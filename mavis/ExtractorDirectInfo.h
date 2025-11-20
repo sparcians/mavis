@@ -141,7 +141,7 @@ namespace mavis
 
         int64_t getSignedOffset(const uint64_t icode) const override { return getImmediate(icode); }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode, const InstMetaData::PtrType &) const
+        uint64_t getSpecialField(SpecialField sfid, Opcode, const InstMetaData::PtrType &) const override
         {
             try
             {

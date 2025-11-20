@@ -247,7 +247,7 @@ public:
 
     ExtractorDirectInfo_Stores(const std::string &mnemonic, const RegListType &addr_sources,
                                const RegListType &data_sources, const SpecialFields &specials, uint64_t imm = 0) :
-        ExtractorDirectBase(mnemonic, imm), addr_sources_(addr_sources), data_sources_(data_sources), specials_(specials)
+        ExtractorDirectBase(mnemonic, specials, imm), addr_sources_(addr_sources), data_sources_(data_sources)
     {}
 
     ExtractorDirectInfo_Stores(const InstructionUniqueID uid, const RegListType &addr_sources,
@@ -257,7 +257,7 @@ public:
 
     ExtractorDirectInfo_Stores(const InstructionUniqueID uid, const RegListType &addr_sources,
                                const RegListType &data_sources, const SpecialFields &specials, uint64_t imm = 0) :
-        ExtractorDirectBase(uid, imm), addr_sources_(addr_sources), data_sources_(data_sources), specials_(specials)
+        ExtractorDirectBase(uid, specials, imm), addr_sources_(addr_sources), data_sources_(data_sources)
     {}
 
     ExtractorDirectInfo_Stores(const ExtractorDirectInfo_Stores &other) = default;
@@ -339,7 +339,6 @@ public:
 private:
     const RegListType addr_sources_;
     const RegListType data_sources_;
-    const SpecialFields specials_;
 };
 
 /**

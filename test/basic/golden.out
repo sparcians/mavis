@@ -1014,18 +1014,18 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	|	[1]: IFactoryDenseComposite::Field func3b
 |	|	|	|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vmv.v.v', mask=0x3f00000, field_set=0x30, value=0x2000000, nfixed=2, extractor=Extractor 'V', factory=IFactory('vmv.v.v'), stencil = 0x5e000057
-|	|	|	|	|	|	|	|	[1]: 'vmerge.vvm', mask=0x2000000, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'V', factory=IFactory('vmerge.vvm'), stencil = 0x5c000057
+|	|	|	|	|	|	|	|	[default]: 'vmerge.vvm', value=0x5c000057, extractor=Extractor 'V', factory=IFactory('vmerge.vvm'), stencil = 0x5c000057
 |	|	|	|	|	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vcompress.vm', mask=0x2000000, field_set=0x10, value=0x2000000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vcompress.vm'), stencil = 0x5e002057
 |	|	|	|	|	|	|	[3]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vmv.v.i', mask=0x3f00000, field_set=0x30, value=0x2000000, nfixed=2, extractor=Extractor 'V_simm', factory=IFactory('vmv.v.i'), stencil = 0x5e003057
-|	|	|	|	|	|	|	|	[1]: 'vmerge.vim', mask=0x2000000, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'V_simm', factory=IFactory('vmerge.vim'), stencil = 0x5c003057
+|	|	|	|	|	|	|	|	[default]: 'vmerge.vim', value=0x5c003057, extractor=Extractor 'V_simm', factory=IFactory('vmerge.vim'), stencil = 0x5c003057
 |	|	|	|	|	|	|	[4]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vmv.v.x', mask=0x3f00000, field_set=0x30, value=0x2000000, nfixed=2, extractor=Extractor 'V', factory=IFactory('vmv.v.x'), stencil = 0x5e004057
-|	|	|	|	|	|	|	|	[1]: 'vmerge.vxm', mask=0x2000000, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'V', factory=IFactory('vmerge.vxm'), stencil = 0x5c004057
+|	|	|	|	|	|	|	|	[default]: 'vmerge.vxm', value=0x5c004057, extractor=Extractor 'V', factory=IFactory('vmerge.vxm'), stencil = 0x5c004057
 |	|	|	|	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vfmv.v.f', mask=0x3f00000, field_set=0x30, value=0x2000000, nfixed=2, extractor=Extractor 'V', factory=IFactory('vfmv.v.f'), stencil = 0x5e005057
-|	|	|	|	|	|	|	|	[1]: 'vfmerge.vfm', mask=0x2000000, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfmerge.vfm'), stencil = 0x5c005057
+|	|	|	|	|	|	|	|	[default]: 'vfmerge.vfm', value=0x5c005057, extractor=Extractor 'V', factory=IFactory('vfmerge.vfm'), stencil = 0x5c005057
 |	|	|	|	[1]: IFactoryDenseComposite::Field func1b
 |	|	|	|	|	[0]: IFactoryDenseComposite::Field func1c
 |	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func3b
@@ -1864,10 +1864,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'srai', value=0x40005013, extractor=Extractor 'ISH', factory=IFactory('srai'), stencil = 0x40005013
 |	|	|	|	[12]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'bexti', value=0x48005013, extractor=Extractor 'ISH', factory=IFactory('bexti'), stencil = 0x48005013
-|	|	|	|	[18]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'rori', value=0x60005013, extractor=Extractor 'ISH', factory=IFactory('rori'), stencil = 0x60005013
-|	|	|	|	[1a]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'rev8', mask=0x3f00000, field_set=0x2, value=0x3800000, nfixed=1, extractor=Extractor 'ISH', factory=IFactory('rev8'), stencil = 0x6b805013
 |	|	|	[6]: IFactoryDenseComposite::Field func6
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'ori', value=0x6013, extractor=Extractor 'I', factory=IFactory('ori'), stencil = 0x6013
@@ -1896,8 +1892,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'srliw', value=0x501b, extractor=Extractor 'ISHW', factory=IFactory('srliw'), stencil = 0x501b
 |	|	|	|	[20]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'sraiw', value=0x4000501b, extractor=Extractor 'ISHW', factory=IFactory('sraiw'), stencil = 0x4000501b
-|	|	|	|	[30]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'roriw', value=0x6000501b, extractor=Extractor 'ISHW', factory=IFactory('roriw'), stencil = 0x6000501b
 |	|	[23]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'sb', value=0x23, extractor=Extractor 'S', factory=IFactory('sb'), stencil = 0x23
@@ -2031,8 +2025,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'bset', value=0x28001033, extractor=Extractor 'R', factory=IFactory('bset'), stencil = 0x28001033
 |	|	|	|	[24]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'bclr', value=0x48001033, extractor=Extractor 'R', factory=IFactory('bclr'), stencil = 0x48001033
-|	|	|	|	[30]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'rol', value=0x60001033, extractor=Extractor 'R', factory=IFactory('rol'), stencil = 0x60001033
 |	|	|	|	[34]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'binv', value=0x68001033, extractor=Extractor 'R', factory=IFactory('binv'), stencil = 0x68001033
 |	|	|	[2]: IFactoryDenseComposite::Field func7
@@ -2060,8 +2052,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'min', value=0xa004033, extractor=Extractor 'R', factory=IFactory('min'), stencil = 0xa004033
 |	|	|	|	[10]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'sh2add', value=0x20004033, extractor=Extractor 'R', factory=IFactory('sh2add'), stencil = 0x20004033
-|	|	|	|	[20]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'xnor', value=0x40004033, extractor=Extractor 'R', factory=IFactory('xnor'), stencil = 0x40004033
 |	|	|	[5]: IFactoryDenseComposite::Field func7
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'srl', value=0x5033, extractor=Extractor 'R', factory=IFactory('srl'), stencil = 0x5033
@@ -2075,8 +2065,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'sra', value=0x40005033, extractor=Extractor 'R', factory=IFactory('sra'), stencil = 0x40005033
 |	|	|	|	[24]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'bext', value=0x48005033, extractor=Extractor 'R', factory=IFactory('bext'), stencil = 0x48005033
-|	|	|	|	[30]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'ror', value=0x60005033, extractor=Extractor 'R', factory=IFactory('ror'), stencil = 0x60005033
 |	|	|	[6]: IFactoryDenseComposite::Field func7
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'or', value=0x6033, extractor=Extractor 'R', factory=IFactory('or'), stencil = 0x6033
@@ -2086,8 +2074,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'max', value=0xa006033, extractor=Extractor 'R', factory=IFactory('max'), stencil = 0xa006033
 |	|	|	|	[10]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'sh3add', value=0x20006033, extractor=Extractor 'R', factory=IFactory('sh3add'), stencil = 0x20006033
-|	|	|	|	[20]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'orn', value=0x40006033, extractor=Extractor 'R', factory=IFactory('orn'), stencil = 0x40006033
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'and', value=0x7033, extractor=Extractor 'R', factory=IFactory('and'), stencil = 0x7033
@@ -2097,8 +2083,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'maxu', value=0xa007033, extractor=Extractor 'R', factory=IFactory('maxu'), stencil = 0xa007033
 |	|	|	|	[7]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'czero.nez', value=0xe007033, extractor=Extractor 'R', factory=IFactory('czero.nez'), stencil = 0xe007033
-|	|	|	|	[20]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'andn', value=0x40007033, extractor=Extractor 'R', factory=IFactory('andn'), stencil = 0x40007033
 |	|	[37]: IFactorySpecialCaseComposite::Field 
 |	|	|	[default]: 'lui', value=0x37, extractor=Extractor 'U', factory=IFactory('lui'), stencil = 0x37
 |	|	[3b]: IFactoryDenseComposite::Field func3
@@ -2114,8 +2098,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	[1]: IFactoryDenseComposite::Field func7
 |	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'sllw', value=0x103b, extractor=Extractor 'R', factory=IFactory('sllw'), stencil = 0x103b
-|	|	|	|	[30]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'rolw', value=0x6000103b, extractor=Extractor 'R', factory=IFactory('rolw'), stencil = 0x6000103b
 |	|	|	[2]: IFactoryDenseComposite::Field func7
 |	|	|	|	[10]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'sh1add.uw', value=0x2000203b, extractor=Extractor 'R', factory=IFactory('sh1add.uw'), stencil = 0x2000203b
@@ -2133,8 +2115,6 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'divuw', value=0x200503b, extractor=Extractor 'R', factory=IFactory('divuw'), stencil = 0x200503b
 |	|	|	|	[20]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'sraw', value=0x4000503b, extractor=Extractor 'R', factory=IFactory('sraw'), stencil = 0x4000503b
-|	|	|	|	[30]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[default]: 'rorw', value=0x6000503b, extractor=Extractor 'R', factory=IFactory('rorw'), stencil = 0x6000503b
 |	|	|	[6]: IFactoryDenseComposite::Field func7
 |	|	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'remw', value=0x200603b, extractor=Extractor 'R', factory=IFactory('remw'), stencil = 0x200603b
@@ -2668,18 +2648,18 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	|	[1]: IFactoryDenseComposite::Field func3b
 |	|	|	|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vmv.v.v', mask=0x3f00000, field_set=0x30, value=0x2000000, nfixed=2, extractor=Extractor 'V', factory=IFactory('vmv.v.v'), stencil = 0x5e000057
-|	|	|	|	|	|	|	|	[1]: 'vmerge.vvm', mask=0x2000000, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'V', factory=IFactory('vmerge.vvm'), stencil = 0x5c000057
+|	|	|	|	|	|	|	|	[default]: 'vmerge.vvm', value=0x5c000057, extractor=Extractor 'V', factory=IFactory('vmerge.vvm'), stencil = 0x5c000057
 |	|	|	|	|	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vcompress.vm', mask=0x2000000, field_set=0x10, value=0x2000000, nfixed=1, extractor=Extractor 'V', factory=IFactory('vcompress.vm'), stencil = 0x5e002057
 |	|	|	|	|	|	|	[3]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vmv.v.i', mask=0x3f00000, field_set=0x30, value=0x2000000, nfixed=2, extractor=Extractor 'V_simm', factory=IFactory('vmv.v.i'), stencil = 0x5e003057
-|	|	|	|	|	|	|	|	[1]: 'vmerge.vim', mask=0x2000000, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'V_simm', factory=IFactory('vmerge.vim'), stencil = 0x5c003057
+|	|	|	|	|	|	|	|	[default]: 'vmerge.vim', value=0x5c003057, extractor=Extractor 'V_simm', factory=IFactory('vmerge.vim'), stencil = 0x5c003057
 |	|	|	|	|	|	|	[4]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vmv.v.x', mask=0x3f00000, field_set=0x30, value=0x2000000, nfixed=2, extractor=Extractor 'V', factory=IFactory('vmv.v.x'), stencil = 0x5e004057
-|	|	|	|	|	|	|	|	[1]: 'vmerge.vxm', mask=0x2000000, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'V', factory=IFactory('vmerge.vxm'), stencil = 0x5c004057
+|	|	|	|	|	|	|	|	[default]: 'vmerge.vxm', value=0x5c004057, extractor=Extractor 'V', factory=IFactory('vmerge.vxm'), stencil = 0x5c004057
 |	|	|	|	|	|	|	[5]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'vfmv.v.f', mask=0x3f00000, field_set=0x30, value=0x2000000, nfixed=2, extractor=Extractor 'V', factory=IFactory('vfmv.v.f'), stencil = 0x5e005057
-|	|	|	|	|	|	|	|	[1]: 'vfmerge.vfm', mask=0x2000000, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'V', factory=IFactory('vfmerge.vfm'), stencil = 0x5c005057
+|	|	|	|	|	|	|	|	[default]: 'vfmerge.vfm', value=0x5c005057, extractor=Extractor 'V', factory=IFactory('vfmerge.vfm'), stencil = 0x5c005057
 |	|	|	|	[1]: IFactoryDenseComposite::Field func1b
 |	|	|	|	|	[0]: IFactoryDenseComposite::Field func1c
 |	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func3b
