@@ -1017,7 +1017,7 @@ int main()
            == mavis::OpcodeInfo::OperandTypes::WORD);
 
     mavis::ExtractorDirectInfo_Stores di_pseudo_op_p1("P1", {1}, {2},
-                                                      mavis::ExtractorIF::ValueListType({3}));
+                                                      mavis::ExtractorIF::SpecialFields({{mavis::ExtractorIF::SpecialField::VM, 3}}));
     inst = mavis_facade.makePseudoInst(di_pseudo_op_p1, 0);
     cout << "line " << dec << __LINE__ << ": " << "PSEUDO = " << inst->dasmString() << endl;
     cout << "line " << dec << __LINE__ << ": "
