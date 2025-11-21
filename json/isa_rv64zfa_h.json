@@ -5,8 +5,9 @@
     "fixed" : ["rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
+    "s-oper" : ["rs1","rs2"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "compare"]
   },
   {
     "mnemonic" : "fli.h",
@@ -14,7 +15,7 @@
     "fixed" : ["rs2","rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : "all",
+    "s-oper" : ["rd"],
     "type" : ["float", "arith"]
   },
   {
@@ -23,8 +24,9 @@
     "fixed" : ["rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : "all",
-    "type" : ["float", "arith"]
+    "s-oper" : ["rs1","rs2"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "compare"]
   },
   {
     "mnemonic" : "fmaxm.h",
