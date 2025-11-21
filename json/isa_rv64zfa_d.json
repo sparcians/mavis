@@ -5,8 +5,9 @@
     "fixed" : ["rs2", "rm"],
     "tags" : ["d", "zfa"],
     "form" : "Rfloat",
-    "d-oper" : "all",
-    "type" : ["float", "arith"]
+    "d-oper" : ["rs1"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "convert"]
   },
   {
     "mnemonic" : "fleq.d",
@@ -14,8 +15,9 @@
     "fixed" : ["rm"],
     "tags" : ["d", "zfa"],
     "form" : "Rfloat",
-    "d-oper" : "all",
-    "type" : ["float", "arith"]
+    "d-oper" : ["rs1","rs2"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "compare"]
   },
   {
     "mnemonic" : "fli.d",
@@ -23,7 +25,7 @@
     "fixed" : ["rs2","rm"],
     "tags" : ["d", "zfa"],
     "form" : "Rfloat",
-    "d-oper" : "all",
+    "d-oper" : ["rd"],
     "type" : ["float", "arith"]
   },
   {
@@ -32,8 +34,9 @@
     "fixed" : ["rm"],
     "tags" : ["d", "zfa"],
     "form" : "Rfloat",
-    "d-oper" : "all",
-    "type" : ["float", "arith"]
+    "d-oper" : ["rs1","rs2"],
+    "w-oper" : ["rd"],
+    "type" : ["float", "compare"]
   },
   {
     "mnemonic" : "fmaxm.d",
