@@ -8,15 +8,15 @@
   For example:
   \code
   [
-	{
-		"mnemonic" : "addi",
-		"form" : "ISH",
-		"ignore" : ["func6"],
-		"xform" : "I",
-		"stencil" : "0x13",
-		"type" : ["int", "arith"],
-		"l-oper" : "all"
-	},
+    {
+        "mnemonic" : "addi",
+        "form" : "ISH",
+        "ignore" : ["func6"],
+        "xform" : "I",
+        "stencil" : "0x13",
+        "type" : ["int", "arith"],
+        "l-oper" : "all"
+    },
     {
         "mnemonic" : "nop",
         "overlay" : {

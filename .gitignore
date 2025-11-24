@@ -1,3 +1,7 @@
 build
 .cache
 clang-format-files.out
+
+# Backup files
+*~
+*.swp
