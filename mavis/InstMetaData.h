@@ -120,6 +120,7 @@ namespace mavis
             WORD = 0,
             __FIRST = WORD,
             LONG,
+            HALF,
             SINGLE,
             DOUBLE,
             QUAD,

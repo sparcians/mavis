@@ -5,7 +5,7 @@
     "fixed" : ["rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : ["rs1","rs2"],
+    "h-oper" : ["rs1","rs2"],
     "w-oper" : ["rd"],
     "type" : ["float", "compare"]
   },
@@ -15,7 +15,7 @@
     "fixed" : ["rs2","rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : ["rd"],
+    "h-oper" : ["rd"],
     "type" : ["float", "arith"]
   },
   {
@@ -24,7 +24,7 @@
     "fixed" : ["rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : ["rs1","rs2"],
+    "h-oper" : ["rs1","rs2"],
     "w-oper" : ["rd"],
     "type" : ["float", "compare"]
   },
@@ -34,7 +34,7 @@
     "fixed" : ["rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -43,7 +43,7 @@
     "fixed" : ["rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -52,7 +52,7 @@
     "fixed" : ["rs2"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -61,7 +61,7 @@
     "fixed" : ["rs2"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   }
 ]

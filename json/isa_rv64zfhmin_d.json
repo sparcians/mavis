@@ -6,7 +6,7 @@
     "fixed" : [ "rs2" ],
     "stencil" : "0x44100053",
     "d-oper" : ["rs1"],
-    "s-oper" : ["rd"],
+    "h-oper" : ["rd"],
     "type" : ["float", "convert"]
   },
   {
@@ -16,7 +16,7 @@
     "fixed" : [ "rs2" ],
     "stencil" : "0x42200053",
     "d-oper" : ["rd"],
-    "s-oper" : ["rs1"],
+    "h-oper" : ["rs1"],
     "type" : ["float", "convert"]
   }
 ]

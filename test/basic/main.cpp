@@ -980,6 +980,20 @@ int main()
     assert(inst != nullptr);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xa422 = " << inst->dasmString() << endl;
 
+    // Issue #89 - half-precision operands
+    // 0x4310253 = fadd.h  f4,f2,f3, RM=0
+    inst = mavis_facade.makeInst(0x4310253, 0);
+    assert(inst != nullptr);
+    assert(inst->getOpInfo()->numSourceRegsByType(mavis::InstMetaData::OperandTypes::HALF) == 2);
+    assert(inst->getOpInfo()->getDestRegsByType(mavis::InstMetaData::OperandTypes::HALF) != 0);
+    // 0x44010253 = fcvt.h.s   f4,f2, RM=0
+    inst = mavis_facade.makeInst(0x44010253, 0);
+    assert(inst != nullptr);
+    assert(inst->getSourceOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RS1)
+           == mavis::OpcodeInfo::OperandTypes::SINGLE);
+    assert(inst->getDestOpInfo().getFieldType(mavis::InstMetaData::OperandFieldID::RD)
+           == mavis::OpcodeInfo::OperandTypes::HALF);
+
     // Create a new context for testing pseudo instructions
     mavis_facade.makeContext("PSEUDO", {"json/isa_rv64i.json", "uarch/isa_pseudo.json"},
                              {"uarch/uarch_rv64g.json", "uarch/uarch_pseudo.json"});

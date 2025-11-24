@@ -182,6 +182,22 @@ namespace mavis
             }
         }
 
+        // Half operand types
+        if (const auto it = inst.find("h-oper"); it != inst.end())
+        {
+            const auto & it_value = it->value();
+            if (it_value == "all")
+            {
+                setAllOperandsType_(OperandTypes::HALF);
+            }
+            else
+            {
+                FieldNameListType flist;
+                flist = boost::json::value_to<FieldNameListType>(it_value);
+                setOperandsType_(flist, OperandTypes::HALF);
+            }
+        }
+
         // Single operand types
         if (const auto it = inst.find("s-oper"); it != inst.end())
         {
