@@ -3230,25 +3230,25 @@ line 964: Has Immediate? YES
 line 970: DASM: 0x650d = c.lui	x10, +0x3000
 line 975: DASM: 0x12000073 = sfence.vma	x0,x0
 line 981: DASM: 0xa422 = c.fsdsp	f8, SP, IMM=8
-line 996: PSEUDO = P0	3,1,2, 0x0
-line 1000: PSEUDO = P0	3,1,2
-line 1011: PSEUDO = P0	3,1,2 0xdead
-line 1022: PSEUDO = P1	2(D),1(A), 0x0
-line 1023: VM = 3
-line 1043: PSEUDO = P1	 D:2, A:1 0xbeef
-line 1060: PSEUDO = P0	3,1,2, 0x0
-line 1077: DASM: 0x6f8c = c.ld	x11,x15, IMM=24
-line 1081: DASM: 0x01043823 = sd	x16,x8, +0x10
-line 1093: DASM: 0x613 = li	x12, +0x0
-line 1098: DASM: 0x80000613 = li	x12, +0xfffffffffffff800
-line 1104: DASM: 0x13 = nop	x0,x0, +0x0
-line 1109: DASM: 0x8613 = mv	x12,x1, +0x0
-line 1114: DASM: 0x80008613 = addi	x12,x1, +0xfffffffffffff800
-line 1120: DASM: 0x6013 = prefetch.i	x0, +0x0
-line 1127: DASM: 0x6013 = ori	x0,x0, +0x2
-line 1134: DASM: 0x106013 = prefetch.r	x0, +0x0
-line 1141: DASM: 0x306013 = prefetch.w	x0, +0x1
-line 1148: DASM: 0x0100000f = pause	x0,x0, fm=0x0, pred=0x1, succ=0x0
+line 1010: PSEUDO = P0	3,1,2, 0x0
+line 1014: PSEUDO = P0	3,1,2
+line 1025: PSEUDO = P0	3,1,2 0xdead
+line 1036: PSEUDO = P1	2(D),1(A), 0x0
+line 1037: VM = 3
+line 1057: PSEUDO = P1	 D:2, A:1 0xbeef
+line 1074: PSEUDO = P0	3,1,2, 0x0
+line 1091: DASM: 0x6f8c = c.ld	x11,x15, IMM=24
+line 1095: DASM: 0x01043823 = sd	x16,x8, +0x10
+line 1107: DASM: 0x613 = li	x12, +0x0
+line 1112: DASM: 0x80000613 = li	x12, +0xfffffffffffff800
+line 1118: DASM: 0x13 = nop	x0,x0, +0x0
+line 1123: DASM: 0x8613 = mv	x12,x1, +0x0
+line 1128: DASM: 0x80008613 = addi	x12,x1, +0xfffffffffffff800
+line 1134: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 1141: DASM: 0x6013 = ori	x0,x0, +0x2
+line 1148: DASM: 0x106013 = prefetch.r	x0, +0x0
+line 1155: DASM: 0x306013 = prefetch.w	x0, +0x1
+line 1162: DASM: 0x0100000f = pause	x0,x0, fm=0x0, pred=0x1, succ=0x0
 ====== TAG 'pf' EXCLUDED =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3263,7 +3263,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[6]: IFactoryDenseComposite::Field func6
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'ori', value=0x6013, extractor=Extractor 'I', factory=IFactory('ori'), stencil = 0x6013
-line 1171: DASM: 0x6013 = ori	x0,x0, +0x0
+line 1185: DASM: 0x6013 = ori	x0,x0, +0x0
 ====== TAG 'ccf' EXCLUDED =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3271,7 +3271,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[6]: IFactoryDenseComposite::Field func6
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'ori', value=0x6013, extractor=Extractor 'I', factory=IFactory('ori'), stencil = 0x6013
-line 1188: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 1202: DASM: 0x6013 = prefetch.i	x0, +0x0
 ====== TAG 'ccf' INCLUDED (ONLY) =========
 IFactoryMatchListComposite::Field family
 |	[1]: IFactoryDenseComposite::Field opcode
@@ -3282,9 +3282,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[1]: 'cbo.flush', mask=0x1f00f80, field_set=0x12, value=0x200000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.flush'), stencil = 0x20200f
 |	|	|	|	|	[2]: 'cbo.inval', mask=0x1f00f80, field_set=0x12, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.inval'), stencil = 0x200f
 |	|	|	|	|	[3]: 'cbo.zero', mask=0x1f00f80, field_set=0x12, value=0x400000, nfixed=2, extractor=Extractor 'R', factory=IFactory('cbo.zero'), stencil = 0x40200f
-line 1210: DASM: 0x6013 fails to decode. This is expected
-line 1224: Missing ORI definition during build. This is expected
-line 1233: DASM: 0x6013 = prefetch.i	x0, +0x0
+line 1224: DASM: 0x6013 fails to decode. This is expected
+line 1238: Missing ORI definition during build. This is expected
+line 1247: DASM: 0x6013 = prefetch.i	x0, +0x0
 ====== TESTING RV32 =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
@@ -3866,17 +3866,17 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1267: DASM: 0x003100b3 = add	x1,x2,x3
-line 1274: DASM: 0x03103 = ld	x2,x0, +0x0
-line 1294: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
-line 1300: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
-line 1307: DASM: 0x2867322f = amocas.d	x4,x14,x6, aq/wd=0, rl/vm=0
-line 1313: DASM: 0x2863b22f = amocas.d	x4,x7,x6, aq/wd=0, rl/vm=0
-line 1329: DASM: 0x203023 = sd	x2,x0, +0x0
-line 1345: DASM: 0x2001 = c.jal	x1, +0x0
-line 1350: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
-line 1356: DASM: 0x6008 = c.flw	f10,x8, IMM=0
-line 1362: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
+line 1281: DASM: 0x003100b3 = add	x1,x2,x3
+line 1288: DASM: 0x03103 = ld	x2,x0, +0x0
+line 1308: DASM: 0x006382af = amoadd.b	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1314: DASM: 0x006392af = amoadd.h	x5,x7,x6, aq/wd=0, rl/vm=0
+line 1321: DASM: 0x2867322f = amocas.d	x4,x14,x6, aq/wd=0, rl/vm=0
+line 1327: DASM: 0x2863b22f = amocas.d	x4,x7,x6, aq/wd=0, rl/vm=0
+line 1343: DASM: 0x203023 = sd	x2,x0, +0x0
+line 1359: DASM: 0x2001 = c.jal	x1, +0x0
+line 1364: DASM: 0x4041d213 = srai	x4,x3, SHAMTW=4
+line 1370: DASM: 0x6008 = c.flw	f10,x8, IMM=0
+line 1376: DASM: 0xe008 = c.fsw	f10,x8, IMM=0
 ====== TESTING RV32 Zclsd =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
@@ -4295,8 +4295,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1393: DASM: 0x6008 = c.ld	x10,x8, IMM=0
-line 1410: DASM: 0xe008 = c.sd	x10,x8, IMM=0
+line 1407: DASM: 0x6008 = c.ld	x10,x8, IMM=0
+line 1424: DASM: 0xe008 = c.sd	x10,x8, IMM=0
 ====== TESTING RV32 Zcmp/Zcmt =========
 IFactoryMatchListComposite::Field family
 |	[0]: IFactoryDenseComposite::Field opcode
@@ -4887,10 +4887,10 @@ IFactoryMatchListComposite::Field family
 |	|	|	[7]: IFactoryDenseComposite::Field func7
 |	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[default]: 'csrrci', value=0x7073, extractor=Extractor 'CSRI', factory=IFactory('csr'), stencil = 0x1073
-line 1453: DASM: 0xb856 = cm.push	{x1, x8}, -32
-line 1471: DASM: 0xbe52 = cm.popret	{x1, x8}, 16
-line 1479: DASM: 0xa002 = cm.jt	0
-line 1487: DASM: 0xa082 = cm.jalt	32
-line 1498: DASM: 0xac22 is illegal 
-line 1502: DASM: 0xad26 = cm.mvsa01	x18,x9
-line 1504: DASM: 0xac62 = cm.mva01s	x8,x8
+line 1467: DASM: 0xb856 = cm.push	{x1, x8}, -32
+line 1485: DASM: 0xbe52 = cm.popret	{x1, x8}, 16
+line 1493: DASM: 0xa002 = cm.jt	0
+line 1501: DASM: 0xa082 = cm.jalt	32
+line 1512: DASM: 0xac22 is illegal 
+line 1516: DASM: 0xad26 = cm.mvsa01	x18,x9
+line 1518: DASM: 0xac62 = cm.mva01s	x8,x8
