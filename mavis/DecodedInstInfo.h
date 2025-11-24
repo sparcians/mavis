@@ -207,6 +207,16 @@ namespace mavis
         const uint32_t int_n_dests;
         const uint32_t int_n_operands;
 
+        const uint64_t half_sources;
+        const uint64_t half_dests;
+        const uint64_t half_operands;
+        // const OperandArray half_oper_vals;
+        // const OperandArray half_source_vals;
+        // const OperandArray half_dest_vals;
+        const uint32_t half_n_sources;
+        const uint32_t half_n_dests;
+        const uint32_t half_n_operands;
+
         const uint64_t single_sources;
         const uint64_t single_dests;
         const uint64_t single_operands;
@@ -335,6 +345,21 @@ namespace mavis
             int_n_dests(word_n_dests + long_n_dests),
             int_n_operands(int_n_sources + int_n_dests),
 
+            half_sources(
+                extractor->getSourceOperTypeRegs(icode, meta, InstMetaData::OperandTypes::HALF)),
+            half_dests(
+                extractor->getDestOperTypeRegs(icode, meta, InstMetaData::OperandTypes::HALF)),
+            half_operands(half_sources | half_dests),
+            // half_oper_vals(extractor->getOperTypeList(icode, meta,
+            // InstMetaData::OperandTypes::HALF)),
+            // half_source_vals(extractor->getSourceOperTypeList(icode, meta,
+            // InstMetaData::OperandTypes::HALF)),
+            // half_dest_vals(extractor->getDestOperTypeList(icode, meta,
+            // InstMetaData::OperandTypes::HALF)),
+            half_n_sources(source_opinfo.getNTypes(InstMetaData::OperandTypes::HALF)),
+            half_n_dests(dest_opinfo.getNTypes(InstMetaData::OperandTypes::HALF)),
+            half_n_operands(half_n_sources + half_n_dests),
+
             single_sources(
                 extractor->getSourceOperTypeRegs(icode, meta, InstMetaData::OperandTypes::SINGLE)),
             single_dests(
@@ -365,14 +390,14 @@ namespace mavis
             double_n_dests(dest_opinfo.getNTypes(InstMetaData::OperandTypes::DOUBLE)),
             double_n_operands(double_n_sources + double_n_dests),
 
-            float_sources(single_sources | double_sources),
-            float_dests(single_dests | double_dests),
+            float_sources(half_sources | single_sources | double_sources),
+            float_dests(half_dests | single_dests | double_dests),
             float_operands(float_sources | float_dests),
             // float_oper_vals(combineVals_(single_oper_vals, double_oper_vals)),
             // float_source_vals(combineVals_(single_source_vals, double_source_vals)),
             // float_dest_vals(combineVals_(single_dest_vals, double_dest_vals)),
-            float_n_sources(single_n_sources + double_n_sources),
-            float_n_dests(single_n_dests + double_n_dests),
+            float_n_sources(half_n_sources + single_n_sources + double_n_sources),
+            float_n_dests(half_n_dests + single_n_dests + double_n_dests),
             float_n_operands(float_n_sources + float_n_dests),
 
             quad_sources(
@@ -487,6 +512,8 @@ namespace mavis
                                      InstMetaData::OperandTypes::WORD));
                 assert(agree_opinfo_(source_opinfo_list, long_sources, "long_sources", form_name,
                                      InstMetaData::OperandTypes::LONG));
+                assert(agree_opinfo_(source_opinfo_list, half_sources, "half_sources",
+                                     form_name, InstMetaData::OperandTypes::HALF));
                 assert(agree_opinfo_(source_opinfo_list, single_sources, "single_sources",
                                      form_name, InstMetaData::OperandTypes::SINGLE));
                 assert(agree_opinfo_(source_opinfo_list, double_sources, "double_sources",
@@ -501,6 +528,8 @@ namespace mavis
                                      InstMetaData::OperandTypes::WORD));
                 assert(agree_opinfo_(dest_opinfo_list, long_dests, "long_dests", form_name,
                                      InstMetaData::OperandTypes::LONG));
+                assert(agree_opinfo_(dest_opinfo_list, half_dests, "half_dests", form_name,
+                                     InstMetaData::OperandTypes::HALF));
                 assert(agree_opinfo_(dest_opinfo_list, single_dests, "single_dests", form_name,
                                      InstMetaData::OperandTypes::SINGLE));
                 assert(agree_opinfo_(dest_opinfo_list, double_dests, "double_dests", form_name,

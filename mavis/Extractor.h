@@ -438,6 +438,7 @@ namespace mavis
                 case InstMetaData::OperandTypes::LONG:
                     ss << "x" << std::dec << regnum;
                     break;
+                case InstMetaData::OperandTypes::HALF:
                 case InstMetaData::OperandTypes::SINGLE:
                 case InstMetaData::OperandTypes::DOUBLE:
                 case InstMetaData::OperandTypes::QUAD:

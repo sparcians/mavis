@@ -86,6 +86,8 @@ namespace mavis
                     return info_->word_sources;
                 case OperandTypes::LONG:
                     return info_->long_sources;
+                case OperandTypes::HALF:
+                    return info_->half_sources;
                 case OperandTypes::SINGLE:
                     return info_->single_sources;
                 case OperandTypes::DOUBLE:
@@ -116,6 +118,8 @@ namespace mavis
                     return info_->word_n_sources;
                 case OperandTypes::LONG:
                     return info_->long_n_sources;
+                case OperandTypes::HALF:
+                    return info_->half_n_sources;
                 case OperandTypes::SINGLE:
                     return info_->single_n_sources;
                 case OperandTypes::DOUBLE:
@@ -153,6 +157,8 @@ namespace mavis
                     return info_->word_dests;
                 case OperandTypes::LONG:
                     return info_->long_dests;
+                case OperandTypes::HALF:
+                    return info_->half_dests;
                 case OperandTypes::SINGLE:
                     return info_->single_dests;
                 case OperandTypes::DOUBLE:
@@ -183,6 +189,8 @@ namespace mavis
                     return info_->word_n_dests;
                 case OperandTypes::LONG:
                     return info_->long_n_dests;
+                case OperandTypes::HALF:
+                    return info_->half_n_dests;
                 case OperandTypes::SINGLE:
                     return info_->single_n_dests;
                 case OperandTypes::DOUBLE:
