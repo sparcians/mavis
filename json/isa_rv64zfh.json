@@ -4,7 +4,7 @@
     "tags" : ["zfh"],
     "form" : "Rfloat",
     "stencil" : "0x4000053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -12,7 +12,7 @@
     "tags" : ["zfh"],
     "form" : "Rfloat",
     "stencil" : "0xc000053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -20,7 +20,7 @@
     "tags" : ["zfh"],
     "form" : "Rfloat",
     "stencil" : "0x14000053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "mul"]
   },
   {
@@ -28,7 +28,7 @@
     "tags" : ["zfh"],
     "form" : "Rfloat",
     "stencil" : "0x1c000053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "div"]
   },
   {
@@ -37,7 +37,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm" ],
     "stencil" : "0x24000053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -46,7 +46,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm" ],
     "stencil" : "0x24001053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -55,7 +55,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm" ],
     "stencil" : "0x24002053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -64,7 +64,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm" ],
     "stencil" : "0x2c000053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -73,7 +73,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm" ],
     "stencil" : "0x2c001053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "arith"]
   },
   {
@@ -82,7 +82,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rs2" ],
     "stencil" : "0x5c000053",
-    "s-oper" : "all",
+    "h-oper" : "all",
     "type" : ["float", "sqrt"]
   },
   {
@@ -91,7 +91,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm" ],
     "stencil" : "0xa4000053",
-    "s-oper" : ["rs1","rs2"],
+    "h-oper" : ["rs1","rs2"],
     "w-oper" : ["rd"],
     "type" : ["float", "compare"]
   },
@@ -101,7 +101,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm" ],
     "stencil" : "0xa4001053",
-    "s-oper" : ["rs1","rs2"],
+    "h-oper" : ["rs1","rs2"],
     "w-oper" : ["rd"],
     "type" : ["float", "compare"]
   },
@@ -111,7 +111,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm" ],
     "stencil" : "0xa4002053",
-    "s-oper" : ["rs1","rs2"],
+    "h-oper" : ["rs1","rs2"],
     "w-oper" : ["rd"],
     "type" : ["float", "compare"]
   },
@@ -121,7 +121,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rs2" ],
     "stencil" : "0xc4000053",
-    "s-oper" : ["rs1"],
+    "h-oper" : ["rs1"],
     "w-oper" : ["rd"],
     "type" : ["float", "convert"]
   },
@@ -131,7 +131,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rs2" ],
     "stencil" : "0xc4100053",
-    "s-oper" : ["rs1"],
+    "h-oper" : ["rs1"],
     "w-oper" : ["rd"],
     "type" : ["float", "convert"]
   },
@@ -141,7 +141,7 @@
     "form" : "Rfloat",
     "fixed" : [ "rm", "rs2" ],
     "stencil" : "0xe4001053",
-    "s-oper" : ["rs1"],
+    "h-oper" : ["rs1"],
     "l-oper" : ["rd"],
     "type" : ["float", "classify"]
   },
@@ -152,7 +152,7 @@
     "fixed" : [ "rs2" ],
     "stencil" : "0xd4000053",
     "w-oper" : ["rs1"],
-    "s-oper" : ["rd"],
+    "h-oper" : ["rd"],
     "type" : ["float", "convert"]
   },
   {
@@ -162,7 +162,7 @@
     "fixed" : [ "rs2" ],
     "stencil" : "0xd4100053",
     "w-oper" : ["rs1"],
-    "s-oper" : ["rd"],
+    "h-oper" : ["rd"],
     "type" : ["float", "convert"]
   },
   {
@@ -171,7 +171,7 @@
     "form" : "R4",
     "stencil" : "0x4000043",
     "type" : ["float", "mac"],
-    "s-oper" : "all"
+    "h-oper" : "all"
   },
   {
     "mnemonic" : "fmsub.h",
@@ -179,7 +179,7 @@
     "form" : "R4",
     "stencil" : "0x4000047",
     "type" : ["float", "mac"],
-    "s-oper" : "all"
+    "h-oper" : "all"
   },
   {
     "mnemonic" : "fnmsub.h",
@@ -187,7 +187,7 @@
     "form" : "R4",
     "stencil" : "0x400004b",
     "type" : ["float", "mac"],
-    "s-oper" : "all"
+    "h-oper" : "all"
   },
   {
     "mnemonic" : "fnmadd.h",
@@ -195,6 +195,6 @@
     "form" : "R4",
     "stencil" : "0x400004f",
     "type" : ["float", "mac"],
-    "s-oper" : "all"
+    "h-oper" : "all"
   }
 ]
