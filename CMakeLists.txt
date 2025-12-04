@@ -108,6 +108,7 @@ endif()
 add_subdirectory(example EXCLUDE_FROM_ALL)
 add_subdirectory(test EXCLUDE_FROM_ALL)
 
+target_compile_options(mavis PUBLIC -fPIC)
 set(CMAKE_CXX_FLAGS_DEBUG "-U_FORTIFY_SOURCE -O0 -g")
 set(CMAKE_CXX_FLAGS_FASTDEBUG "-O3 -g")
 
