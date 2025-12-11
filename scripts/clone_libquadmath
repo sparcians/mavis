@@ -1,0 +1,16 @@
+#!/bin/bash
+
+GCC_GIT_REPO=https://gcc.gnu.org/git/gcc.git
+GCC_GIT_TAG=releases/gcc-15.2.0
+
+if [ ! -f libquadmath/.checked-out ]; then
+    if [ -d libquadmath ]; then
+        rm -rf libquadmath
+    fi
+    git clone -b ${GCC_GIT_TAG} --depth=1 --filter=blob:none --sparse ${GCC_GIT_REPO} libquadmath && \
+    cd libquadmath && \
+    git sparse-checkout init && \
+    git sparse-checkout set include libquadmath && \
+    git pull && \
+    touch .checked-out
+fi

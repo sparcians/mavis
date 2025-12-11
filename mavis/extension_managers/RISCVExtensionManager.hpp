@@ -2,6 +2,7 @@
 
 #include "elfio/elfio.hpp"
 #include "mavis/ExtensionManager.hpp"
+#include "mavis/Utils.h"
 
 namespace mavis::extension_manager::riscv
 {
@@ -164,19 +165,6 @@ namespace mavis::extension_manager::riscv
 
         uint32_t xlen_ = 0;
 
-        template <typename ValType, typename OtherValType>
-        static bool isOneOf_(const ValType val, const OtherValType other)
-        {
-            return (val == other);
-        }
-
-        template <typename ValType, typename OtherValType, typename... OtherValTypes>
-        static bool isOneOf_(const ValType val, const OtherValType other,
-                             const OtherValTypes... rest)
-        {
-            return (val == other) || isOneOf_(val, rest...);
-        }
-
         static bool getCharIfValid_(const std::string_view & isa_view, char & front_char)
         {
             if (isa_view.empty())
@@ -192,7 +180,7 @@ namespace mavis::extension_manager::riscv
 
         static bool inSingleCharExtRange_(const std::string_view & isa_view, char & front_char)
         {
-            return getCharIfValid_(isa_view, front_char) && !isOneOf_(front_char, 'z', 's', 'x');
+            return getCharIfValid_(isa_view, front_char) && !mavis::utils::isOneOf(front_char, 'z', 's', 'x');
         }
 
         static uint32_t extractNumber_(std::string_view & isa_view)

@@ -1,8 +1,10 @@
 #pragma once
 
+#include <iostream>
 #include "mavis/Extractor.h"
 #include "mavis/DecoderConsts.h"
 #include "mavis/FormStub.h"
+#include "mavis/Utils.h"
 #include "impl/forms/ExtractorForms.h"
 
 namespace mavis
@@ -2385,7 +2387,8 @@ namespace mavis
       protected:
         static constexpr std::pair<uint64_t, uint64_t> decodeRegs_(const Opcode icode)
         {
-            const auto decode = [icode](const Form_CA::idType id) {
+            const auto decode = [icode](const Form_CA::idType id)
+            {
                 const auto encoded = extract_(id, icode);
                 const auto upper_bits = encoded >> 1;
                 return ((upper_bits > 0) << 4) | ((upper_bits == 0) << 3) | encoded;
@@ -2395,7 +2398,6 @@ namespace mavis
         }
 
       public:
-
         uint64_t getSourceRegs(const Opcode icode) const override
         {
             const auto [rs1, rs2] = decodeRegs_(icode);
@@ -3520,6 +3522,226 @@ namespace mavis
                 olist.addElement(rs3_elem);
             }
             return olist;
+        }
+    };
+
+    /**
+     * Derivative of Form_Rfloat extractor for fli
+     */
+    template <ImmediateType ImmType>
+    class Extractor<Form_Rfloat_fli<ImmType>> : public Extractor<Form_Rfloat>
+    {
+      private:
+        using ImmReturnType = ImmediateReturnType<ImmType>::return_type;
+
+        template <typename ReturnType> static constexpr std::array<ReturnType, 32> initTable_()
+        {
+            std::array<ReturnType, 32> values;
+
+            using FloatBits = ReturnType::storage_type;
+
+            FloatBits exponent;
+            FloatBits significand_top_2_bits = 0;
+
+            constexpr std::array<FloatBits, 26> exponent_increments{
+                1, // 4
+                3, // 5
+                1, // 6
+                1, // 7
+                0, // 8
+                0, // 9
+                0, // 10
+                1, // 11
+                0, // 12
+                0, // 13
+                0, // 14
+                1, // 15
+                0, // 16
+                0, // 17
+                0, // 18
+                1, // 19
+                0, // 20
+                0, // 21
+                1, // 22
+                1, // 23
+                1, // 24
+                3, // 25
+                1, // 26
+                7, // 27
+                1, // 28
+                0  // 29
+            };
+
+            constexpr std::array<FloatBits, 26> significand_increments = {
+                0, // 4
+                0, // 5
+                0, // 6
+                0, // 7
+                1, // 8
+                1, // 9
+                1, // 10
+                1, // 11
+                1, // 12
+                1, // 13
+                1, // 14
+                1, // 15
+                1, // 16
+                1, // 17
+                1, // 18
+                1, // 19
+                1, // 20
+                1, // 21
+                2, // 22
+                0, // 23
+                0, // 24
+                0, // 25
+                0, // 26
+                0, // 27
+                0, // 28
+                0  // 29
+            };
+
+            constexpr auto exponent_bias = ReturnType::exponent_bias;
+
+            values[0] = ReturnType(1, exponent_bias, 0);
+            values[1] = ReturnType::min_normal();
+
+            if constexpr (std::is_same_v<ReturnType, Float16>)
+            {
+                values[2] = ReturnType(0, 0, 256);
+                values[3] = ReturnType(0, 0, 512);
+            }
+            else
+            {
+                exponent = exponent_bias - 16U;
+                values[2] = ReturnType(0, exponent, 0);
+
+                exponent = exponent_bias - 15U;
+                values[3] = ReturnType(0, exponent, 0);
+            }
+
+            exponent = exponent_bias - 8U;
+
+            for (int i = 4; i < 30; ++i)
+            {
+                values[i] = ReturnType(0, exponent,
+                                       significand_top_2_bits << (ReturnType::fraction_bits - 2));
+                exponent += exponent_increments[i - 4];
+                significand_top_2_bits =
+                    (significand_top_2_bits + significand_increments[i - 4]) & 0x3U;
+            }
+
+            values[30] = ReturnType::infinity();
+            values[31] = ReturnType::qnan();
+
+            return values;
+        }
+
+        static constexpr std::array<ImmReturnType, 32> TABLE_ = initTable_<ImmReturnType>();
+
+        template <typename ReturnType> static ReturnType getFloatImmediate_(const Opcode icode)
+        {
+            ReturnType result;
+
+            if constexpr (std::is_same_v<ReturnType, ImmReturnType>)
+            {
+                const auto rs1 = extract_(Form_Rfloat::idType::RS1, icode);
+
+                assert(rs1 < 32);
+
+                result = TABLE_[rs1];
+            }
+
+            return result;
+        }
+
+        static ImmReturnType getImmediate_(const Opcode icode)
+        {
+            return getFloatImmediate_<ImmReturnType>(icode);
+        }
+
+      public:
+        Extractor() = default;
+
+        ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
+                                              const uint64_t fset) const override
+        {
+            return ExtractorIF::PtrType(new Extractor<Form_Rfloat_fli<ImmType>>(ffmask, fset));
+        }
+
+        bool isIllop(Opcode icode) const override
+        {
+            const auto rs1 = extract_(Form_Rfloat::idType::RS1, icode);
+            const auto rs2 = extract_(Form_Rfloat::idType::RS2, icode);
+
+            return (rs1 >= 32 || rs2 != 1);
+        }
+
+        uint64_t getSourceRegs(const Opcode) const override { return 0; }
+
+        uint64_t getSourceOperTypeRegs(const Opcode, const InstMetaData::PtrType &,
+                                       InstMetaData::OperandTypes) const override
+        {
+            return 0;
+        }
+
+        OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType &, bool) const override
+        {
+            return OperandInfo{};
+        }
+
+        std::string getName() const override { return Form_Rfloat_fli<ImmType>::name; }
+
+        ImmediateType getImmediateType() const override { return ImmType; }
+
+        Float16 getHalfFloatImmediate(Opcode icode) const override
+        {
+            return getFloatImmediate_<Float16>(icode);
+        }
+
+        Float32 getSingleFloatImmediate(Opcode icode) const override
+        {
+            return getFloatImmediate_<Float32>(icode);
+        }
+
+        Float64 getDoubleFloatImmediate(Opcode icode) const override
+        {
+            return getFloatImmediate_<Float64>(icode);
+        }
+
+        Float128 getQuadFloatImmediate(Opcode icode) const override
+        {
+            return getFloatImmediate_<Float128>(icode);
+        }
+
+        std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic << "\t" << extract_(Form_Rfloat::idType::RD, icode & ~fixed_field_mask_)
+               << ", IMM=";
+            ss << getImmediate_(icode);
+            return ss.str();
+        }
+
+        // clang-format off
+        std::string dasmString(const std::string & mnemonic, const Opcode icode,
+                               const InstMetaData::PtrType & meta) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic << "\t"
+               << dasmFormatRegList_(
+                      meta, icode, fixed_field_mask_,
+                      {{Form_Rfloat::idType::RD, InstMetaData::OperandFieldID::RD}})
+               << ", IMM=";
+            ss << getImmediate_(icode);
+            return ss.str();
+        }
+
+        // clang-format on
+
+      private:
+        Extractor(const uint64_t ffmask, const uint64_t fset) : Extractor<Form_Rfloat>(ffmask, fset)
+        {
         }
     };
 

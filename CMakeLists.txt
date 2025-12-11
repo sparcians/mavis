@@ -1,13 +1,25 @@
 cmake_minimum_required(VERSION 3.15)
 project(Mavis)
 
-set(CMAKE_CXX_STANDARD 20)
+if(NOT DEFINED MAVIS_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 20)
+else()
+    set(CMAKE_CXX_STANDARD ${MAVIS_CXX_STANDARD})
+endif()
+
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+include(CheckIncludeFile)
+include(CMakePushCheckState)
 
 find_package (Boost 1.75.0 REQUIRED COMPONENTS program_options json)
 message (STATUS "Using BOOST ${Boost_VERSION_STRING}")
 
-include_directories(.)
+cmake_push_check_state(RESET)
+    check_include_file(quadmath.h HAVE_QUADMATH)
+cmake_pop_check_state()
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/elfio ${Boost_INCLUDE_DIRS})
 
 add_library(mavis
@@ -18,6 +30,25 @@ add_library(mavis
   impl/forms/CompressedForms.cpp
   impl/forms/VectorForms.cpp
 )
+
+target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/int128/include ${CMAKE_CURRENT_SOURCE_DIR}/simde)
+
+function(mavis_dependencies target)
+    if(NOT HAVE_QUADMATH)
+        add_dependencies(${target} libquadmath)
+    endif()
+endfunction()
+
+if(NOT HAVE_QUADMATH)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/quadmath.cmake)
+    target_include_directories(mavis PUBLIC ${QUADMATH_INCLUDE_DIR})
+    target_link_directories(mavis PUBLIC ${QUADMATH_LIB_DIR})
+    mavis_dependencies(mavis)
+    target_link_libraries(mavis ${QUADMATH_LIB_DIR}/libquadmath.a)
+else()
+    target_link_libraries(mavis PUBLIC quadmath)
+endif()
+
 add_subdirectory(example EXCLUDE_FROM_ALL)
 add_subdirectory(test EXCLUDE_FROM_ALL)
 

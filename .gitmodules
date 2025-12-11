@@ -1,3 +1,9 @@
 [submodule "elfio"]
 	path = elfio
 	url = https://github.com/serge1/ELFIO.git
+[submodule "int128"]
+	path = int128
+	url = https://github.com/cppalliance/int128.git
+[submodule "simde"]
+	path = simde
+	url = https://github.com/simd-everywhere/simde.git

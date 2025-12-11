@@ -19,11 +19,11 @@ if (CMAKE_BUILD_TYPE MATCHES "^[Dd]ebug")
   add_compile_options (-O0)
 endif()
 
-file(CREATE_LINK ${CMAKE_SOURCE_DIR}/json ${CMAKE_CURRENT_BINARY_DIR}/json SYMBOLIC)
-file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/basic ${CMAKE_CURRENT_BINARY_DIR}/uarch SYMBOLIC)
+#file(CREATE_LINK ${CMAKE_SOURCE_DIR}/json ${CMAKE_CURRENT_BINARY_DIR}/json SYMBOLIC)
+#file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/basic ${CMAKE_CURRENT_BINARY_DIR}/uarch SYMBOLIC)
+#file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/basic/golden.out ${CMAKE_CURRENT_BINARY_DIR}/golden.out SYMBOLIC)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../basic)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
-add_executable(mavis_decode main.cpp)
-
-target_link_libraries (mavis_decode mavis quadmath Boost::program_options Boost::json)
+add_executable(fp_test main.cpp)
+target_link_libraries (fp_test mavis quadmath Boost::json)
