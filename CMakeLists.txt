@@ -32,7 +32,7 @@ if(NOT DISABLE_MAVIS_FLOAT128_SUPPORT)
             ]] HAS_NATIVE_STD_FLOAT_128_SUPPORT)
         endif()
 
-        if(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
+        if(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT AND NOT APPLE)
             check_include_file(quadmath.h SYSTEM_HAS_QUADMATH)
 
             if(NOT SYSTEM_HAS_QUADMATH)
