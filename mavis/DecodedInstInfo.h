@@ -283,7 +283,7 @@ namespace mavis
             static_cast<std::underlying_type_t<ExtractedInstTypes>>(ExtractedInstTypes::NONE);
 
         // special fields
-        ExtractorIF::SpecialFields special_fields;
+        InstMetaData::SpecialFieldsMap special_fields;
 
         DecodedInstructionInfo(const std::string & iname, const InstructionUniqueID uid,
                                const ExtractorIF::PtrType & extractor,
@@ -437,7 +437,8 @@ namespace mavis
             has_immediate(extractor->hasImmediate()),
             immediate(extractor->getImmediate(icode)),
             signed_offset(extractor->getSignedOffset(icode)),
-            data_size(meta->getDataSize())
+            data_size(meta->getDataSize()),
+            special_fields(extractor->getSpecialFields(icode, meta))
         // function(extractor->getFunction(icode))
         {
 #if 1
@@ -574,27 +575,6 @@ namespace mavis
                 {
                     ext_itype |= static_cast<std::underlying_type_t<ExtractedInstTypes>>(
                         ExtractedInstTypes::INDIRECT);
-                }
-            }
-
-            // Cache all special field values
-            for (const auto& [sf_name, sf_id] : ExtractorIF::SpecialFieldMap)
-            {
-                try
-                {
-                    (void)sf_name;
-                    const uint64_t sf_val = extractor->getSpecialField(sf_id, icode, meta);
-                    special_fields.emplace(sf_id, sf_val);
-                }
-                catch (const InvalidExtractorSpecialFieldID & ex)
-                {
-                    // Instruction does not have any special fields
-                    break;
-                }
-                catch (const UnsupportedExtractorSpecialFieldID & ex)
-                {
-                    // Instruction has special fields, but not this one
-                    continue;
                 }
             }
         }

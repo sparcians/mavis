@@ -576,7 +576,7 @@ int main()
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0x72a7f543 = " << inst->dasmString()
          << endl;
     cout << "line " << dec << __LINE__ << ": " << "fmadd.d RM field = 0x" << hex
-         << inst->getSpecialField(mavis::ExtractorIF::SpecialField::RM) << dec << endl;
+         << inst->getSpecialField(mavis::OpcodeInfo::SpecialField::RM) << dec << endl;
 
     // Operand types for fcvt.l.d
     mavis::ExtractorDirectInfo ex_info_fcvt("fcvt.l.d", {1}, {4});
@@ -1031,7 +1031,7 @@ int main()
            == mavis::OpcodeInfo::OperandTypes::WORD);
 
     mavis::ExtractorDirectInfo_Stores di_pseudo_op_p1("P1", {1}, {2},
-                                                      mavis::ExtractorIF::SpecialFields({{mavis::ExtractorIF::SpecialField::VM, 3}}));
+                                                      mavis::OpcodeInfo::SpecialFieldsMap({{mavis::OpcodeInfo::SpecialField::VM, 3}}));
     inst = mavis_facade.makePseudoInst(di_pseudo_op_p1, 0);
     cout << "line " << dec << __LINE__ << ": " << "PSEUDO = " << inst->dasmString() << endl;
     cout << "line " << dec << __LINE__ << ": "

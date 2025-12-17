@@ -190,6 +190,46 @@ namespace mavis
 
         typedef std::shared_ptr<InstMetaData> PtrType;
 
+        // Make SpecialField a bitmap
+        enum class SpecialField : uint32_t
+        {
+            AQ,  // AQ "acquire" bit in lr.w, sc.w, and atomics
+            AVL,  // AVL "immediate" field in vsetivli
+            CSR,  // CSR field in csr* instructions
+            FM,  // FENCE mode bits
+            NF,  // NF field in vector memory instructions
+            PRED,  // FENCE predecessor bits
+            RL,  // RL "release" bit in lr.w, sc.w, and atomics
+            RM,  // RM "rounding mode" bit in FP instructions
+            SUCC,  // FENCE successor bits
+            VM,   // VM bit in vector insts
+            WD,   // WD in vector atomic insts
+            HINT, // HINT in prefetch operations
+            STACK_ADJ, // Stack adjustment for zcmp instructions
+            N_SPECIAL_FIELDS
+        };
+        // Map of special field to value
+        using SpecialFieldsMap = std::map<SpecialField, uint32_t>;
+
+        static const inline std::map<InstMetaData::SpecialField, const std::string> sf_to_string_map{
+            {InstMetaData::SpecialField::AQ       , "aq"        },
+            {InstMetaData::SpecialField::AVL      , "avl"       },
+            {InstMetaData::SpecialField::CSR      , "csr"       },
+            {InstMetaData::SpecialField::FM       , "fm"        },
+            {InstMetaData::SpecialField::NF       , "nf"        },
+            {InstMetaData::SpecialField::PRED     , "pred"      },
+            {InstMetaData::SpecialField::RL       , "rl"        },
+            {InstMetaData::SpecialField::RM       , "rm"        },
+            {InstMetaData::SpecialField::SUCC     , "succ"      },
+            {InstMetaData::SpecialField::VM       , "vm"        },
+            {InstMetaData::SpecialField::WD       , "wd"        },
+            {InstMetaData::SpecialField::HINT     , "hint"      },
+            {InstMetaData::SpecialField::STACK_ADJ, "stack_adj" }
+        };
+        static_assert(static_cast<std::underlying_type_t<InstMetaData::SpecialField>>
+                      (InstMetaData::SpecialField::N_SPECIAL_FIELDS) == 13,
+                      "Modified SpecialField?  Need to update the map too");
+
       private:
         static const std::regex isa_ext_pattern_;
 

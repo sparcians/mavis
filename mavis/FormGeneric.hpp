@@ -67,7 +67,7 @@ private:
         {
             std::stringstream ss;
             ss << "Special field ID '" << field_name << "': "
-               << "is not known to the decoder (ExtractorIF::SpecialFieldMap ID lookup in FormGeneric object)";
+               << "is not known to the decoder (InstMetaData::SpecialFieldMap ID lookup in FormGeneric object)";
             why_ = ss.str();
         }
     };
@@ -132,11 +132,19 @@ public:
 
             uint32_t pos = 0;
             for (const auto& sname : slist) {
-                const auto itr = ExtractorIF::SpecialFieldMap.find(sname);
-                if (itr == ExtractorIF::SpecialFieldMap.end()) {
+                const auto itr = std::find_if(InstMetaData::sf_to_string_map.begin(),
+                                              InstMetaData::sf_to_string_map.end(),
+                                              [&sname] (const auto & it)
+                                              {
+                                                  if(it.second == sname) {
+                                                      return true;
+                                                  }
+                                                  return false;
+                                              });
+                if (itr == InstMetaData::sf_to_string_map.end()) {
                     throw UnknownSpecialFieldID(sname);
                 } else {
-                    spec_indices_[static_cast<std::underlying_type_t<ExtractorIF::SpecialField>>(itr->second)] = pos;
+                    spec_indices_[static_cast<std::underlying_type_t<InstMetaData::SpecialField>>(itr->first)] = pos;
                 }
                 ++pos;
             }
@@ -159,15 +167,16 @@ public:
         return fixupOIList_(oi, dest_oper_list_);
     }
 
-    uint32_t getSpecialFieldIndex(ExtractorIF::SpecialField sid) const
+    uint32_t getSpecialFieldIndex(InstMetaData::SpecialField sid) const
     {
-        return spec_indices_[static_cast<std::underlying_type_t<ExtractorIF::SpecialField>>(sid)];
+        return spec_indices_[static_cast<std::underlying_type_t<InstMetaData::SpecialField>>(sid)];
     }
 
 private:
     OperandFormList    src_oper_list_;       // (also address sources for stores)
     OperandFormList    dest_oper_list_;
-    std::array<uint32_t, static_cast<std::underlying_type_t<ExtractorIF::SpecialField>>(ExtractorIF::SpecialField::__N)> spec_indices_;
+    std::array<uint32_t,
+               static_cast<std::underlying_type_t<InstMetaData::SpecialField>>(InstMetaData::SpecialField::N_SPECIAL_FIELDS)> spec_indices_;
 
 private:
     /**

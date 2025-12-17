@@ -135,28 +135,16 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            switch (sfid)
-            {
-                // NOTE: AQ and WD are aliases for each other in the AMO form
-                // RL and VM are also aliases for each other
-                // Technically, we should throw an exception if a vector inst
-                // tries to access AQ or a normal inst tries to access WD
-                // likewise for RL/VM
-                case SpecialField::AQ:
-                    return extract_(Form_AMO::idType::AQ, icode);
-                case SpecialField::RL:
-                    return extract_(Form_AMO::idType::RL, icode);
-                case SpecialField::VM:
-                    return extract_(Form_AMO::idType::VM, icode);
-                case SpecialField::WD:
-                    return extract_(Form_AMO::idType::WD, icode);
-                default:
-                    return ExtractorBase::getSpecialField(sfid, icode);
-            }
-            return 0;
+            const InstMetaData::SpecialFieldsMap sfields =
+                {
+                    {InstMetaData::SpecialField::AQ, extract_(Form_AMO::idType::AQ, icode)},
+                    {InstMetaData::SpecialField::RL, extract_(Form_AMO::idType::RL, icode)},
+                    {InstMetaData::SpecialField::VM, extract_(Form_AMO::idType::VM, icode)},
+                    {InstMetaData::SpecialField::WD, extract_(Form_AMO::idType::WD, icode)}
+                };
+            return sfields;
         }
 
         using ExtractorIF::dasmString; // tell the compiler all dasmString
@@ -168,8 +156,8 @@ namespace mavis
             ss << mnemonic << "\t" << extract_(Form_AMO::idType::RD, icode & ~fixed_field_mask_)
                << "," << extract_(Form_AMO::idType::RS1, icode & ~fixed_field_mask_) << ","
                << extract_(Form_AMO::idType::RS2, icode & ~fixed_field_mask_)
-               << ", aq/wd=" << std::dec << getSpecialField(SpecialField::AQ, icode)
-               << ", rl/vm=" << std::dec << getSpecialField(SpecialField::RL, icode);
+               << ", aq/wd=" << std::dec << extract_(Form_AMO::idType::AQ, icode)
+               << ", rl/vm=" << std::dec << extract_(Form_AMO::idType::RL, icode);
             return ss.str();
         }
 
@@ -183,8 +171,8 @@ namespace mavis
                                      {{Form_AMO::idType::RD, InstMetaData::OperandFieldID::RD},
                                       {Form_AMO::idType::RS1, InstMetaData::OperandFieldID::RS1},
                                       {Form_AMO::idType::RS2, InstMetaData::OperandFieldID::RS2}})
-               << ", aq/wd=" << std::dec << getSpecialField(SpecialField::AQ, icode)
-               << ", rl/vm=" << std::dec << getSpecialField(SpecialField::RL, icode);
+               << ", aq/wd=" << std::dec << extract_(Form_AMO::idType::AQ, icode)
+               << ", rl/vm=" << std::dec << extract_(Form_AMO::idType::RL, icode);
             return ss.str();
         }
 
@@ -1677,19 +1665,13 @@ namespace mavis
             return extract_(Form_CMPP::idType::SPIMM, icode) << 4;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & meta) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType & meta) const override
         {
-            if (sfid == SpecialField::STACK_ADJ)
-            {
-                if (meta == nullptr)
+            const InstMetaData::SpecialFieldsMap sfields =
                 {
-                    throw std::runtime_error(
-                        "Cannot retrieve SF stack_adj without the original meta data");
-                }
-                return getStackAdj_(icode, meta->getDataSize());
-            }
-            return ExtractorBase::getSpecialField(sfid, icode);
+                    {InstMetaData::SpecialField::STACK_ADJ, getStackAdj_(icode, meta->getDataSize())}
+                };
+            return sfields;
         }
 
         uint64_t getSourceRegs(const Opcode) const override { return 1ull << REGISTER_SP; }
@@ -2089,14 +2071,13 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            if (SpecialField::CSR == sfid)
-            {
-                return extract_(Form_CSR::idType::CSR, icode);
-            }
-            return ExtractorBase::getSpecialField(sfid, icode);
+            const InstMetaData::SpecialFieldsMap sfields =
+                {
+                    {InstMetaData::SpecialField::CSR, extract_(Form_CSR::idType::CSR, icode)}
+                };
+            return sfields;
         }
 
         using ExtractorIF::dasmString; // tell the compiler all dasmString
@@ -2107,7 +2088,7 @@ namespace mavis
             std::stringstream ss;
             ss << mnemonic << "\t" << extract_(Form_CSR::idType::RD, icode & ~fixed_field_mask_)
                << "," << extract_(Form_CSR::idType::RS1, icode & ~fixed_field_mask_) << ", CSR=0x"
-               << std::hex << getSpecialField(SpecialField::CSR, icode);
+               << std::hex << extract_(Form_CSR::idType::CSR, icode);
             return ss.str();
         }
 
@@ -2120,7 +2101,7 @@ namespace mavis
                << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                      {{Form_CSR::idType::RD, InstMetaData::OperandFieldID::RD},
                                       {Form_CSR::idType::RS1, InstMetaData::OperandFieldID::RS1}})
-               << ", CSR=0x" << std::hex << getSpecialField(SpecialField::CSR, icode);
+               << ", CSR=0x" << std::hex << extract_(Form_CSR::idType::CSR, icode);
             return ss.str();
         }
 
@@ -2193,14 +2174,13 @@ namespace mavis
             return extract_(Form_CSRI::idType::UIMM, icode & ~fixed_field_mask_);
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            if (SpecialField::CSR == sfid)
-            {
-                return extract_(Form_CSRI::idType::CSR, icode);
-            }
-            return ExtractorBase::getSpecialField(sfid, icode);
+            const InstMetaData::SpecialFieldsMap sfields =
+                {
+                    {InstMetaData::SpecialField::CSR, extract_(Form_CSRI::idType::CSR, icode & ~fixed_field_mask_)}
+                };
+            return sfields;
         }
 
         using ExtractorIF::dasmString; // tell the compiler all dasmString
@@ -2211,7 +2191,7 @@ namespace mavis
             std::stringstream ss;
             ss << mnemonic << "\t" << extract_(Form_CSRI::idType::RD, icode & ~fixed_field_mask_)
                << ", IMM=" << std::dec << getImmediate(icode) << ", CSR=0x" << std::hex
-               << getSpecialField(SpecialField::CSR, icode & ~fixed_field_mask_);
+               << extract_(Form_CSRI::idType::CSR, icode & ~fixed_field_mask_);
             return ss.str();
         }
 
@@ -2224,7 +2204,7 @@ namespace mavis
                << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                      {{Form_CSRI::idType::RD, InstMetaData::OperandFieldID::RD}})
                << ", IMM=" << std::dec << getImmediate(icode) << ", CSR=0x" << std::hex
-               << getSpecialField(SpecialField::CSR, icode & ~fixed_field_mask_);
+               << extract_(Form_CSRI::idType::CSR, icode & ~fixed_field_mask_);
             return ss.str();
         }
 
@@ -2330,22 +2310,16 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            switch (sfid)
-            {
-                case SpecialField::FM:
-                    return extract_(Form_FENCE::idType::FM, icode);
-                case SpecialField::PRED:
-                case SpecialField::HINT:
-                    return extract_(Form_FENCE::idType::PRED, icode);
-                case SpecialField::SUCC:
-                    return extract_(Form_FENCE::idType::SUCC, icode);
-                default:
-                    return ExtractorBase::getSpecialField(sfid, icode);
-            }
-            return 0;
+            const InstMetaData::SpecialFieldsMap sfields =
+                {
+                    {InstMetaData::SpecialField::FM, extract_(Form_FENCE::idType::FM, icode)},
+                    {InstMetaData::SpecialField::PRED, extract_(Form_FENCE::idType::PRED, icode)},
+                    {InstMetaData::SpecialField::HINT, extract_(Form_FENCE::idType::PRED, icode)},
+                    {InstMetaData::SpecialField::SUCC, extract_(Form_FENCE::idType::SUCC, icode)}
+                };
+            return sfields;
         }
 
         using ExtractorIF::dasmString; // tell the compiler all dasmString
@@ -2356,9 +2330,9 @@ namespace mavis
             std::stringstream ss;
             ss << mnemonic << "\t" << extract_(Form_FENCE::idType::RD, icode & ~fixed_field_mask_)
                << "," << extract_(Form_FENCE::idType::RS1, icode & ~fixed_field_mask_) << ", fm=0x"
-               << std::hex << getSpecialField(SpecialField::FM, icode) << ", pred=0x" << std::hex
-               << getSpecialField(SpecialField::PRED, icode) << ", succ=0x" << std::hex
-               << getSpecialField(SpecialField::SUCC, icode);
+               << std::hex << extract_(Form_FENCE::idType::FM, icode) << ", pred=0x" << std::hex
+               << extract_(Form_FENCE::idType::PRED, icode) << ", succ=0x" << std::hex
+               << extract_(Form_FENCE::idType::SUCC, icode);
             return ss.str();
         }
 
@@ -2371,9 +2345,9 @@ namespace mavis
                << dasmFormatRegList_(meta, icode, fixed_field_mask_,
                                      {{Form_FENCE::idType::RD, InstMetaData::OperandFieldID::RD},
                                       {Form_FENCE::idType::RS1, InstMetaData::OperandFieldID::RS1}})
-               << ", fm=0x" << std::hex << getSpecialField(SpecialField::FM, icode) << ", pred=0x"
-               << std::hex << getSpecialField(SpecialField::PRED, icode) << ", succ=0x" << std::hex
-               << getSpecialField(SpecialField::SUCC, icode);
+               << ", fm=0x" << std::hex << extract_(Form_FENCE::idType::FM, icode) << ", pred=0x"
+               << std::hex << extract_(Form_FENCE::idType::PRED, icode) << ", succ=0x" << std::hex
+               << extract_(Form_FENCE::idType::SUCC, icode);
             return ss.str();
         }
 
@@ -3099,14 +3073,13 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            if (SpecialField::RM == sfid)
-            {
-                return extract_(Form_Rfloat::idType::RM, icode);
-            }
-            return ExtractorBase::getSpecialField(sfid, icode);
+            const InstMetaData::SpecialFieldsMap sfields =
+                {
+                    {InstMetaData::SpecialField::RM, extract_(Form_Rfloat::idType::RM, icode)}
+                };
+            return sfields;
         }
 
         using ExtractorIF::dasmString; // tell the compiler all dasmString
@@ -3121,7 +3094,7 @@ namespace mavis
             // Show the rm operand if field is not fixed (part of the encoding)
             if (!isMaskedField_(Form_Rfloat::idType::RM, fixed_field_mask_))
             {
-                ss << ", RM=" << getSpecialField(SpecialField::RM, icode);
+                ss << ", RM=" << extract_(Form_Rfloat::idType::RM, icode);
             }
             return ss.str();
         }
@@ -3140,7 +3113,7 @@ namespace mavis
             // Show the rm operand if field is not fixed (part of the encoding)
             if (!isMaskedField_(Form_Rfloat::idType::RM, fixed_field_mask_))
             {
-                ss << ", RM=" << getSpecialField(SpecialField::RM, icode);
+                ss << ", RM=" << extract_(Form_Rfloat::idType::RM, icode);
             }
             return ss.str();
         }
@@ -3255,14 +3228,13 @@ namespace mavis
             return olist;
         }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            if (SpecialField::RM == sfid)
+            const InstMetaData::SpecialFieldsMap sfields =
             {
-                return extract_(Form_R4::idType::RM, icode);
-            }
-            return ExtractorBase::getSpecialField(sfid, icode);
+                {InstMetaData::SpecialField::RM, extract_(Form_R4::idType::RM, icode)}
+            };
+            return sfields;
         }
 
         using ExtractorIF::dasmString; // tell the compiler all dasmString
@@ -3278,7 +3250,7 @@ namespace mavis
             // Show the rm operand if field is not fixed (part of the encoding)
             if (!isMaskedField_(Form_R4::idType::RM, fixed_field_mask_))
             {
-                ss << ", RM=" << getSpecialField(SpecialField::RM, icode);
+                ss << ", RM=" << extract_(Form_R4::idType::RM, icode);
             }
             return ss.str();
         }
@@ -3297,7 +3269,7 @@ namespace mavis
             // Show the rm operand if field is not fixed (part of the encoding)
             if (!isMaskedField_(Form_R4::idType::RM, fixed_field_mask_))
             {
-                ss << ", RM=" << getSpecialField(SpecialField::RM, icode);
+                ss << ", RM=" << extract_(Form_R4::idType::RM, icode);
             }
             return ss.str();
         }
@@ -3613,22 +3585,18 @@ namespace mavis
         }
 
         // TODO: add VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            if (SpecialField::VM == sfid)
+            // TODO: All forms should be using this pattern...
+            if (false == isMaskedField_(Form_V::idType::VM, fixed_field_mask_))
             {
-                // TODO: All forms should be using this pattern...
-                if (isMaskedField_(Form_V::idType::VM, fixed_field_mask_))
-                {
-                    throw UnsupportedExtractorSpecialFieldID("VM", icode);
-                }
-                else
-                {
-                    return extract_(Form_V::idType::VM, icode);
-                }
+                const InstMetaData::SpecialFieldsMap sfields =
+                    {
+                        {InstMetaData::SpecialField::VM, extract_(Form_V::idType::VM, icode)}
+                    };
+                return sfields;
             }
-            return ExtractorBase::getSpecialField(sfid, icode);
+            return InstMetaData::SpecialFieldsMap();
         }
 
         std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
@@ -3781,27 +3749,18 @@ namespace mavis
         }
 
         // TODO: add NF and VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            switch (sfid)
+            InstMetaData::SpecialFieldsMap sfields =
+                {
+                    {InstMetaData::SpecialField::NF, extract_(Form_VF_mem::idType::NF, icode)}
+                };
+
+            if (false == isMaskedField_(Form_VF_mem::idType::VM, fixed_field_mask_))
             {
-                // TODO: All forms should be using this pattern...
-                case SpecialField::NF:
-                    return extract_(Form_VF_mem::idType::NF, icode);
-                case SpecialField::VM:
-                    if (isMaskedField_(Form_VF_mem::idType::VM, fixed_field_mask_))
-                    {
-                        throw UnsupportedExtractorSpecialFieldID("VM", icode);
-                    }
-                    else
-                    {
-                        return extract_(Form_VF_mem::idType::VM, icode);
-                    }
-                default:
-                    return ExtractorBase::getSpecialField(sfid, icode);
+                sfields[InstMetaData::SpecialField::VM] = extract_(Form_VF_mem::idType::VM, icode);
             }
-            return 0;
+            return sfields;
         }
 
         std::string getVectorMemoryMnemonic(const std::string & mnemonic, const Opcode icode) const
@@ -4068,14 +4027,13 @@ namespace mavis
         }
 
         // TODO: add VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            if (SpecialField::AVL == sfid)
-            {
-                return extract_(Form_V_vsetivli::idType::AVL, icode);
-            }
-            return ExtractorBase::getSpecialField(sfid, icode);
+            const InstMetaData::SpecialFieldsMap sfields =
+                {
+                    {InstMetaData::SpecialField::AVL, extract_(Form_V_vsetivli::idType::AVL, icode)}
+                };
+            return sfields;
         }
 
         uint64_t getImmediate(const Opcode icode) const override
@@ -4091,7 +4049,7 @@ namespace mavis
             std::stringstream ss;
             ss << mnemonic << "\tx"
                << extract_(Form_V_vsetivli::idType::RD, icode & ~fixed_field_mask_)
-               << ",avl=" << std::dec << getSpecialField(SpecialField::AVL, icode) << ", "
+               << ",avl=" << std::dec << extract_(Form_V_vsetivli::idType::AVL, icode) << ", "
                << dasmVsetImmediate(getImmediate(icode));
             return ss.str();
         }
@@ -4320,22 +4278,17 @@ namespace mavis
         }
 
         // TODO: add VM special fields
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            if (SpecialField::VM == sfid)
+            if (false == isMaskedField_(Form_V_uimm6::idType::VM, fixed_field_mask_))
             {
-                // TODO: All forms should be using this pattern...
-                if (isMaskedField_(Form_V_uimm6::idType::VM, fixed_field_mask_))
-                {
-                    throw UnsupportedExtractorSpecialFieldID("VM", icode);
-                }
-                else
-                {
-                    return extract_(Form_V_uimm6::idType::VM, icode);
-                }
+                const InstMetaData::SpecialFieldsMap sfields =
+                    {
+                        {InstMetaData::SpecialField::VM, extract_(Form_V_uimm6::idType::VM, icode)}
+                    };
+                return sfields;
             }
-            return ExtractorBase::getSpecialField(sfid, icode);
+            return InstMetaData::SpecialFieldsMap();
         }
 
         std::string dasmString(const std::string & mnemonic, const Opcode icode) const override

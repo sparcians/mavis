@@ -23,59 +23,11 @@ namespace mavis
         typedef std::vector<OpcodeFieldValueType> RegListType;
         typedef std::vector<uint32_t> ValueListType;
 
-        // TODO: Make SpecialField a boost::bitmap
-        enum class SpecialField : uint32_t
+        static inline const std::string & getSpecialFieldName(InstMetaData::SpecialField sid)
         {
-            AQ = 0,    // AQ "acquire" bit in lr.w, sc.w, and atomics
-            AVL,       // AVL "immediate" field in vsetivli
-            CSR,       // CSR field in csr* instructions
-            FM,        // FENCE mode bits
-            NF,        // NF field in vector memory instructions
-            PRED,      // FENCE predecessor bits
-            RL,        // RL "release" bit in lr.w, sc.w, and atomics
-            RM,        // RM "rounding mode" bit in FP instructions
-            SUCC,      // FENCE successor bits
-            VM,        // VM bit in vector insts
-            WD,        // WD in vector atomic insts
-            HINT,      // HINT in prefetch operations
-            STACK_ADJ, // Stack adjustment for zcmp instructions
-            __N
-        };
-
-        static constexpr uint32_t N_SPECIAL_FIELDS = static_cast<uint32_t>(SpecialField::__N);
-
-        using SpecialFields = std::map<SpecialField, uint64_t>;
-
-        static inline const std::map<const std::string, SpecialField> SpecialFieldMap{
-            {"aq",        SpecialField::AQ       },
-            {"avl",       SpecialField::AVL      },
-            {"csr",       SpecialField::CSR      },
-            {"fm",        SpecialField::FM       },
-            {"nf",        SpecialField::NF       },
-            {"pred",      SpecialField::PRED     },
-            {"rl",        SpecialField::RL       },
-            {"rm",        SpecialField::RM       },
-            {"succ",      SpecialField::SUCC     },
-            {"vm",        SpecialField::VM       },
-            {"wd",        SpecialField::WD       },
-            {"hint",      SpecialField::HINT     },
-            {"stack_adj", SpecialField::STACK_ADJ}
-        };
-
-      private:
-        static inline const std::array<
-            const std::string, static_cast<std::underlying_type_t<SpecialField>>(SpecialField::__N)>
-            spec_field_name_{"aq", "avl", "csr",  "fm", "nf", "pred",
-                             "rl", "rm",  "succ", "vm", "wd", "hint"};
-
-      public:
-        static inline const std::string & getSpecialFieldName(SpecialField sid)
-        {
-            assert(sid != SpecialField::__N);
-            return spec_field_name_[static_cast<std::underlying_type_t<SpecialField>>(sid)];
+            return InstMetaData::sf_to_string_map.at(sid);
         }
 
-      public:
         virtual ~ExtractorIF() = default;
 
         virtual ExtractorIF::PtrType specialCaseClone(uint64_t ffmask, uint64_t fset) const = 0;
@@ -130,8 +82,7 @@ namespace mavis
         virtual int64_t getSignedOffset(Opcode icode) const = 0;
 
         // Special fields are cached in DecodedInstInfo
-        virtual uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                         const InstMetaData::PtrType & meta = nullptr) const = 0;
+        virtual InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType & meta) const = 0;
 
         virtual std::string dasmString(const std::string & mnemonic, Opcode icode) const = 0;
 
@@ -213,42 +164,9 @@ namespace mavis
 
         int64_t getSignedOffset(const Opcode icode) const override { return getImmediate(icode); }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode icode,
-                                 const InstMetaData::PtrType & meta = nullptr) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
         {
-            (void)meta;
-            switch (sfid)
-            {
-                case SpecialField::AQ:
-                    throw UnsupportedExtractorSpecialFieldID("AQ", icode);
-                case SpecialField::AVL:
-                    throw UnsupportedExtractorSpecialFieldID("AVL", icode);
-                case SpecialField::CSR:
-                    throw UnsupportedExtractorSpecialFieldID("CSR", icode);
-                case SpecialField::FM:
-                    throw UnsupportedExtractorSpecialFieldID("FM", icode);
-                case SpecialField::NF:
-                    throw UnsupportedExtractorSpecialFieldID("NF", icode);
-                case SpecialField::PRED:
-                    throw UnsupportedExtractorSpecialFieldID("PRED", icode);
-                case SpecialField::RL:
-                    throw UnsupportedExtractorSpecialFieldID("RL", icode);
-                case SpecialField::RM:
-                    throw UnsupportedExtractorSpecialFieldID("RM", icode);
-                case SpecialField::SUCC:
-                    throw UnsupportedExtractorSpecialFieldID("SUCC", icode);
-                case SpecialField::VM:
-                    throw UnsupportedExtractorSpecialFieldID("VM", icode);
-                case SpecialField::WD:
-                    throw UnsupportedExtractorSpecialFieldID("WD", icode);
-                case SpecialField::HINT:
-                    throw UnsupportedExtractorSpecialFieldID("HINT", icode);
-                case SpecialField::STACK_ADJ:
-                    throw UnsupportedExtractorSpecialFieldID("STACK_ADJ", icode);
-                case SpecialField::__N:
-                    throw InvalidExtractorSpecialFieldID("__N", icode);
-            }
-            return 0;
+            return InstMetaData::SpecialFieldsMap();
         }
 
         ImmediateType getImmediateType() const override { return FormType::immediate_type; }

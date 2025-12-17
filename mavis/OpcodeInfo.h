@@ -22,8 +22,8 @@ namespace mavis
         using ISAExtension = InstMetaData::ISAExtension;
         using OperandTypes = InstMetaData::OperandTypes;
         using ExtractedInstTypes = DecodedInstructionInfo::ExtractedInstTypes;
-        using SpecialField = ExtractorIF::SpecialField;
-        using SpecialFields = ExtractorIF::SpecialFields;
+        using SpecialField = InstMetaData::SpecialField;
+        using SpecialFieldsMap = InstMetaData::SpecialFieldsMap;
 
       public:
         OpcodeInfo(const Opcode icode, const DecodedInstructionInfo::PtrType & dii,
@@ -269,7 +269,7 @@ namespace mavis
 
         MatchSet<Tag> getTags() const { return meta_->getTags(); }
 
-        uint64_t getSpecialField(SpecialField sfid)
+        int32_t getSpecialField(SpecialField sfid)
         {
             try
             {
@@ -283,7 +283,7 @@ namespace mavis
             }
         }
 
-        const SpecialFields& getSpecialFields() const
+        const SpecialFieldsMap& getSpecialFields() const
         {
             return info_->special_fields;
         }

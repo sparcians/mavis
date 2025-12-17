@@ -1,5 +1,6 @@
 #pragma once
 
+#include "InstMetaData.h"
 #include "Extractor.h"
 #include "FormGeneric.hpp"
 #include <sstream>
@@ -136,9 +137,9 @@ public:
         return obj_->getSignedOffset(icode);
     }
 
-    uint64_t getSpecialField(SpecialField sfid, Opcode icode, const InstMetaData::PtrType &) const override
+    InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &meta) const override
     {
-        return obj_->getSpecialField(sfid, icode);
+        return obj_->getSpecialFields(icode, meta);
     }
 
     std::string dasmString(const std::string &mnemonic, const Opcode icode) const override

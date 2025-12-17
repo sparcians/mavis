@@ -48,7 +48,7 @@ namespace mavis
         {
         }
 
-        explicit ExtractorDirectBase(const std::string & mnemonic, const SpecialFields & specials) :
+        explicit ExtractorDirectBase(const std::string & mnemonic, const InstMetaData::SpecialFieldsMap & specials) :
             mnemonic_(mnemonic),
             uid_(INVALID_UID),
             specials_(specials),
@@ -57,7 +57,7 @@ namespace mavis
         {
         }
 
-        explicit ExtractorDirectBase(const std::string & mnemonic, const SpecialFields & specials, uint64_t imm,
+        explicit ExtractorDirectBase(const std::string & mnemonic, const InstMetaData::SpecialFieldsMap & specials, uint64_t imm,
                                      ImmediateType itype = ImmediateType::UNSIGNED) :
             mnemonic_(mnemonic),
             uid_(INVALID_UID),
@@ -75,7 +75,7 @@ namespace mavis
         {
         }
 
-        explicit ExtractorDirectBase(const InstructionUniqueID uid, const SpecialFields & specials) :
+        explicit ExtractorDirectBase(const InstructionUniqueID uid, const InstMetaData::SpecialFieldsMap & specials) :
             mnemonic_("UNSET-in-ExtractorDirectBase"),
             uid_(uid),
             specials_(specials),
@@ -93,7 +93,7 @@ namespace mavis
         {
         }
 
-        explicit ExtractorDirectBase(const InstructionUniqueID uid, const SpecialFields & specials, uint64_t imm,
+        explicit ExtractorDirectBase(const InstructionUniqueID uid, const InstMetaData::SpecialFieldsMap & specials, uint64_t imm,
                                      ImmediateType itype = ImmediateType::UNSIGNED) :
             mnemonic_("UNSET-in-ExtractorDirectBase"),
             uid_(uid),
@@ -141,18 +141,9 @@ namespace mavis
 
         int64_t getSignedOffset(const uint64_t icode) const override { return getImmediate(icode); }
 
-        uint64_t getSpecialField(SpecialField sfid, Opcode, const InstMetaData::PtrType &) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode, const InstMetaData::PtrType &) const override
         {
-            try
-            {
-                return specials_.at(sfid);
-            }
-            catch (const std::out_of_range & ex)
-            {
-                // We can provide the mnemonic here, so we "rethrow"
-                // the original exception with more information
-                throw UnsupportedExtractorSpecialFieldID(ExtractorIF::getSpecialFieldName(sfid), 0);
-            }
+            return specials_;
         }
 
         uint64_t getSourceOperTypeRegs(const uint64_t, const InstMetaData::PtrType & meta,
@@ -200,7 +191,7 @@ namespace mavis
       protected:
         const std::string mnemonic_;
         const InstructionUniqueID uid_ = INVALID_UID;
-        const SpecialFields specials_ = {};
+        const InstMetaData::SpecialFieldsMap specials_ = {};
         const uint64_t immediate_;
         const ImmediateType immediate_type_;
 
@@ -296,7 +287,7 @@ namespace mavis
         }
 
         ExtractorDirectInfo(const std::string & mnemonic, const RegListType & sources,
-                            const RegListType & dests, const SpecialFields & specials) :
+                            const RegListType & dests, const InstMetaData::SpecialFieldsMap & specials) :
             ExtractorDirectBase(mnemonic),
             sources_(sources),
             dests_(dests),
@@ -305,7 +296,7 @@ namespace mavis
         }
 
         ExtractorDirectInfo(const std::string & mnemonic, const RegListType & sources,
-                            const RegListType & dests, const SpecialFields & specials,
+                            const RegListType & dests, const InstMetaData::SpecialFieldsMap & specials,
                             uint64_t imm) :
             ExtractorDirectBase(mnemonic, imm),
             sources_(sources),
@@ -331,7 +322,7 @@ namespace mavis
         }
 
         ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType & sources,
-                            const RegListType & dests, const SpecialFields & specials) :
+                            const RegListType & dests, const InstMetaData::SpecialFieldsMap & specials) :
             ExtractorDirectBase(uid),
             sources_(sources),
             dests_(dests),
@@ -340,7 +331,7 @@ namespace mavis
         }
 
         ExtractorDirectInfo(const InstructionUniqueID uid, const RegListType & sources,
-                            const RegListType & dests, const SpecialFields & specials,
+                            const RegListType & dests, const InstMetaData::SpecialFieldsMap & specials,
                             uint64_t imm) :
             ExtractorDirectBase(uid, imm),
             sources_(sources),
@@ -498,7 +489,7 @@ namespace mavis
       private:
         const RegListType sources_;
         const RegListType dests_;
-        const SpecialFields specials_;
+        const InstMetaData::SpecialFieldsMap specials_;
     };
 
     class ExtractorDirectOpInfoList : public ExtractorDirectBase
@@ -524,7 +515,7 @@ namespace mavis
         }
 
         ExtractorDirectOpInfoList(const std::string & mnemonic, const OperandInfo & sources,
-                                  const OperandInfo & dests, const SpecialFields & specials) :
+                                  const OperandInfo & dests, const InstMetaData::SpecialFieldsMap & specials) :
             ExtractorDirectBase(mnemonic, specials),
             sources_(sources),
             dests_(dests)
@@ -532,7 +523,7 @@ namespace mavis
         }
 
         ExtractorDirectOpInfoList(const std::string & mnemonic, const OperandInfo & sources,
-                                  const OperandInfo & dests, const SpecialFields & specials,
+                                  const OperandInfo & dests, const InstMetaData::SpecialFieldsMap & specials,
                                   uint64_t imm) :
             ExtractorDirectBase(mnemonic, specials, imm),
             sources_(sources),
@@ -557,7 +548,7 @@ namespace mavis
         }
 
         ExtractorDirectOpInfoList(const InstructionUniqueID uid, const OperandInfo & sources,
-                                  const OperandInfo & dests, const SpecialFields & specials) :
+                                  const OperandInfo & dests, const InstMetaData::SpecialFieldsMap & specials) :
             ExtractorDirectBase(uid, specials),
             sources_(sources),
             dests_(dests)
@@ -565,7 +556,7 @@ namespace mavis
         }
 
         ExtractorDirectOpInfoList(const InstructionUniqueID uid, const OperandInfo & sources,
-                                  const OperandInfo & dests, const SpecialFields & specials,
+                                  const OperandInfo & dests, const InstMetaData::SpecialFieldsMap & specials,
                                   uint64_t imm) :
             ExtractorDirectBase(uid, specials, imm),
             sources_(sources),
