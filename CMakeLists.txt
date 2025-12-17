@@ -15,30 +15,32 @@ include(CMakePushCheckState)
 find_package (Boost 1.75.0 REQUIRED COMPONENTS program_options json)
 message (STATUS "Using BOOST ${Boost_VERSION_STRING}")
 
-cmake_push_check_state(RESET)
-    if(CMAKE_CXX_STANDARD GREATER_EQUAL 23)
-        include(CheckSourceCompiles)
-        check_source_compiles(CXX [[
-            #include <format>
-            #include <iostream>
-            #include <stdfloat>
+if(NOT DISABLE_MAVIS_FLOAT128_SUPPORT)
+    cmake_push_check_state(RESET)
+        if(CMAKE_CXX_STANDARD GREATER_EQUAL 23)
+            include(CheckSourceCompiles)
+            check_source_compiles(CXX [[
+                #include <format>
+                #include <iostream>
+                #include <stdfloat>
 
-            int main()
-            {
-                std::float128_t val{1.0};
-                std::cout << std::format("{}", val) << std::endl;
-            }
-        ]] HAS_NATIVE_STD_FLOAT_128_SUPPORT)
-    endif()
-
-    if(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
-        check_include_file(quadmath.h SYSTEM_HAS_QUADMATH)
-
-        if(NOT SYSTEM_HAS_QUADMATH)
-            set(BUILD_QUADMATH_FROM_SOURCE True)
+                int main()
+                {
+                    std::float128_t val{1.0};
+                    std::cout << std::format("{}", val) << std::endl;
+                }
+            ]] HAS_NATIVE_STD_FLOAT_128_SUPPORT)
         endif()
-    endif()
-cmake_pop_check_state()
+
+        if(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
+            check_include_file(quadmath.h SYSTEM_HAS_QUADMATH)
+
+            if(NOT SYSTEM_HAS_QUADMATH)
+                set(BUILD_QUADMATH_FROM_SOURCE True)
+            endif()
+        endif()
+    cmake_pop_check_state()
+endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/elfio ${Boost_INCLUDE_DIRS})
@@ -60,7 +62,10 @@ function(mavis_dependencies target)
     endif()
 endfunction()
 
-if(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
+if(DISABLE_MAVIS_FLOAT128_SUPPORT)
+    message("-- Quad float support explicitly disabled")
+    add_compile_definitions(DISABLE_MAVIS_FLOAT128_SUPPORT)
+elseif(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
     if(BUILD_QUADMATH_FROM_SOURCE)
         include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/quadmath.cmake)
         target_include_directories(mavis PUBLIC ${QUADMATH_INCLUDE_DIR})

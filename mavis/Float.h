@@ -104,6 +104,11 @@
     #endif
 #endif
 
+#ifdef DISABLE_MAVIS_FLOAT128_SUPPORT
+    #undef MAVIS_FLOAT128
+    #undef FORMAT_FLOAT128_WITH_QUADMATH
+#endif
+
 // Use UnsupportedFloat128 if all other attempts failed
 #ifndef MAVIS_FLOAT128
     #define MAVIS_FLOAT128 UnsupportedFloat128
@@ -151,10 +156,8 @@ namespace mavis
         friend inline std::ostream & operator<<(std::ostream & os,
                                                 const UnsupportedFloat128 & value)
         {
-            std::ios state(nullptr);
-            state.copyfmt(os);
-            os << std::hex << value.value_;
-            os.copyfmt(state);
+            os << std::format("0x{:016x}{:016x}", static_cast<uint64_t>(value.value_ >> 64),
+                              static_cast<uint64_t>(value.value_));
             return os;
         }
     };
@@ -162,10 +165,11 @@ namespace mavis
     using Half = MAVIS_FLOAT16;
     using Single = MAVIS_FLOAT32;
     using Double = MAVIS_FLOAT64;
-    using Quad = std::conditional_t<
-        std::is_same_v<MAVIS_FLOAT128, UnsupportedFloat128>,
-        std::conditional_t<sizeof(long double) == 16, long double, UnsupportedFloat128>,
-        MAVIS_FLOAT128>;
+    using Quad =
+        std::conditional_t<std::is_same_v<MAVIS_FLOAT128, UnsupportedFloat128>,
+                           std::conditional_t<std::numeric_limits<long double>::digits == 113,
+                                              long double, UnsupportedFloat128>,
+                           MAVIS_FLOAT128>;
 
     namespace utils
     {
@@ -200,6 +204,13 @@ namespace mavis
             os << buf.data();
         }
 #endif
+
+        template <>
+        inline void formatFloat<UnsupportedFloat128>(std::ostream & os,
+                                                     const UnsupportedFloat128 & value)
+        {
+            os << value;
+        }
 
         template <typename FloatType> inline constexpr size_t sizeof_float = sizeof(FloatType);
 
@@ -490,22 +501,17 @@ namespace mavis
         {
             if constexpr (std::is_same_v<ValueType, float_type>)
             {
-                return std::bit_cast<ValueType>(*this);
+                return std::bit_cast<ValueType>(data_);
             }
             else
             {
-                return static_cast<ValueType>(std::bit_cast<float_type>(*this));
+                return static_cast<ValueType>(static_cast<float_type>(*this));
             }
         }
 
-        constexpr auto operator+() const
-        requires supports_arithmetic_operations
-        {
-            return *this;
-        }
+        constexpr auto operator+() const { return *this; }
 
         constexpr Float operator-() const
-        requires supports_arithmetic_operations
         {
             Float temp(*this);
             temp.setSign(~sign() & 1U);

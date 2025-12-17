@@ -73,209 +73,240 @@ template <typename... Args> void printHeader(Args &&... args)
     std::cout << " ===========" << std::endl;
 }
 
+template <typename Type> const std::string & getTypeName()
+{
+    static const std::string name = boost::core::demangle(typeid(Type).name());
+    return name;
+}
+
 template <typename FloatLHS, typename FloatRHS>
 void testBinary(const std::vector<typename FloatLHS::float_type> & values)
 {
-    using float_lhs_t = typename FloatLHS::float_type;
-    using float_rhs_t = typename FloatRHS::float_type;
-
-    std::vector<std::pair<float_lhs_t, float_rhs_t>> binary_op_values;
-
-    for (const auto lhs : values)
+    if constexpr (FloatLHS::supports_arithmetic_operations
+                  && FloatRHS::supports_arithmetic_operations)
     {
-        for (const auto rhs : values)
+        using float_lhs_t = typename FloatLHS::float_type;
+        using float_rhs_t = typename FloatRHS::float_type;
+
+        std::vector<std::pair<float_lhs_t, float_rhs_t>> binary_op_values;
+
+        for (const auto lhs : values)
         {
-            binary_op_values.emplace_back(std::make_pair(lhs, static_cast<float_rhs_t>(rhs)));
+            for (const auto rhs : values)
+            {
+                binary_op_values.emplace_back(std::make_pair(lhs, static_cast<float_rhs_t>(rhs)));
+            }
         }
-    }
 
-    if constexpr (std::is_same_v<FloatLHS, FloatRHS>)
-    {
-        printHeader("Testing binary operations between ",
-                    boost::core::demangle(typeid(FloatLHS).name()));
+        if constexpr (std::is_same_v<FloatLHS, FloatRHS>)
+        {
+            printHeader("Testing binary operations between ", getTypeName<FloatLHS>());
+        }
+        else
+        {
+            printHeader("Testing binary operations between ", getTypeName<FloatLHS>(), " and ",
+                        getTypeName<FloatRHS>());
+        }
+
+        const auto print_binary_op =
+            [](const FloatLHS & lhs, const FloatRHS & rhs, const char op_char)
+        { std::cout << "Testing " << lhs << ' ' << op_char << ' ' << rhs << ": "; };
+
+        for (const auto [val1, val2] : binary_op_values)
+        {
+            const FloatLHS x(val1);
+            const FloatRHS y(val2);
+
+            {
+                // Test addition
+                print_binary_op(x, y, '+');
+                const auto z = x + y;
+                const auto expected = val1 + val2;
+                checkResult(z, expected);
+            }
+
+            {
+                // Test subtraction
+                print_binary_op(x, y, '-');
+                const auto z = x - y;
+                const auto expected = val1 - val2;
+                checkResult(z, expected);
+            }
+
+            {
+                // Test multiplication
+                print_binary_op(x, y, '*');
+                const auto z = x * y;
+                const auto expected = val1 * val2;
+                checkResult(z, expected);
+            }
+
+            {
+                // Test division
+                print_binary_op(x, y, '/');
+                const auto z = x / y;
+                const auto expected = val1 / val2;
+                checkResult(z, expected);
+            }
+        }
     }
     else
     {
-        printHeader("Testing binary operations between ",
-                    boost::core::demangle(typeid(FloatLHS).name()), " and ",
-                    boost::core::demangle(typeid(FloatRHS).name()));
-    }
-
-    const auto print_binary_op = [](const FloatLHS & lhs, const FloatRHS & rhs, const char op_char)
-    { std::cout << "Testing " << lhs << ' ' << op_char << ' ' << rhs << ": "; };
-
-    for (const auto [val1, val2] : binary_op_values)
-    {
-        const FloatLHS x(val1);
-        const FloatRHS y(val2);
-
-        {
-            // Test addition
-            print_binary_op(x, y, '+');
-            const auto z = x + y;
-            const auto expected = val1 + val2;
-            checkResult(z, expected);
-        }
-
-        {
-            // Test subtraction
-            print_binary_op(x, y, '-');
-            const auto z = x - y;
-            const auto expected = val1 - val2;
-            checkResult(z, expected);
-        }
-
-        {
-            // Test multiplication
-            print_binary_op(x, y, '*');
-            const auto z = x * y;
-            const auto expected = val1 * val2;
-            checkResult(z, expected);
-        }
-
-        {
-            // Test division
-            print_binary_op(x, y, '/');
-            const auto z = x / y;
-            const auto expected = val1 / val2;
-            checkResult(z, expected);
-        }
+        printHeader("Skipping binary tests for ", getTypeName<FloatLHS>(), " and ",
+                    getTypeName<FloatRHS>());
     }
 }
 
 template <typename FloatType> void testType()
 {
-    using float_t = typename FloatType::float_type;
-
-    std::vector<float_t> test_values{float_t(1.0),
-                                     float_t(-1.0),
-                                     float_t(2.0),
-                                     float_t(-2.0),
-                                     float_t(0.5),
-                                     float_t(-0.5),
-                                     float_t(0.1),
-                                     float_t(-0.1),
-                                     float_t(std::numbers::e),
-                                     float_t(std::numbers::phi),
-                                     float_t(std::numbers::pi),
-                                     float_t(std::numbers::sqrt2),
-                                     float_t(FloatType::max_normal()),
-                                     float_t(FloatType::min_normal()),
-                                     float_t(FloatType::lowest()),
-                                     float_t(FloatType::zero()),
-                                     float_t(FloatType::negative_zero()),
-                                     float_t(FloatType::qnan()),
-                                     float_t(FloatType::infinity()),
-                                     float_t(FloatType::negative_infinity())};
-
-    printHeader("Testing unary operations for ", boost::core::demangle(typeid(FloatType).name()));
-
-    const auto print_unary_op = [](const FloatType & val, const char* op_string, const bool prefix)
+    if constexpr (FloatType::supports_arithmetic_operations)
     {
-        std::cout << "Testing ";
+        using float_t = typename FloatType::float_type;
 
-        if (prefix)
+        std::vector<float_t> test_values{float_t(1.0),
+                                         float_t(-1.0),
+                                         float_t(2.0),
+                                         float_t(-2.0),
+                                         float_t(0.5),
+                                         float_t(-0.5),
+                                         float_t(0.1),
+                                         float_t(-0.1),
+                                         float_t(std::numbers::e),
+                                         float_t(std::numbers::phi),
+                                         float_t(std::numbers::pi),
+                                         float_t(std::numbers::sqrt2),
+                                         float_t(FloatType::max_normal()),
+                                         float_t(FloatType::min_normal()),
+                                         float_t(FloatType::lowest()),
+                                         float_t(FloatType::zero()),
+                                         float_t(FloatType::negative_zero()),
+                                         float_t(FloatType::qnan()),
+                                         float_t(FloatType::infinity()),
+                                         float_t(FloatType::negative_infinity())};
+
+        printHeader("Testing unary operations for ", getTypeName<FloatType>());
+
+        const auto print_unary_op =
+            [](const FloatType & val, const char* op_string, const bool prefix)
         {
-            std::cout << op_string;
+            std::cout << "Testing ";
+
+            if (prefix)
+            {
+                std::cout << op_string;
+            }
+
+            std::cout << '(' << val << ')';
+
+            if (!prefix)
+            {
+                std::cout << op_string;
+            }
+
+            std::cout << ": ";
+        };
+
+        for (const auto val : test_values)
+        {
+            {
+                // Test prefix increment
+                FloatType x(val);
+                print_unary_op(x, "++", true);
+                ++x;
+                auto expected = val + 1;
+                checkResult(x, expected);
+            }
+
+            {
+                // Test postfix increment
+                FloatType x(val);
+                print_unary_op(x, "++", false);
+                x++;
+                auto expected = val + 1;
+                checkResult(x, expected);
+            }
+
+            {
+                // Test prefix decrement
+                FloatType x(val);
+                print_unary_op(x, "--", true);
+                --x;
+                auto expected = val - 1;
+                checkResult(x, expected);
+            }
+
+            {
+                // Test postfix decrement
+                FloatType x(val);
+                print_unary_op(x, "--", false);
+                x--;
+                auto expected = val - 1;
+                checkResult(x, expected);
+            }
+
+            {
+                // Test +
+                FloatType x(val);
+                print_unary_op(x, "+", true);
+                auto z = +x;
+                auto expected = +val;
+                checkResult(z, expected);
+            }
+
+            {
+                // Test -
+                FloatType x(val);
+                print_unary_op(x, "-", true);
+                auto z = -x;
+                auto expected = -val;
+                checkResult(z, expected);
+            }
         }
 
-        std::cout << '(' << val << ')';
+        testBinary<FloatType, FloatType>(test_values);
 
-        if (!prefix)
+        if constexpr (!std::is_same_v<typename Cast<FloatType>::upcast1, void>)
         {
-            std::cout << op_string;
+            testBinary<FloatType, typename Cast<FloatType>::upcast1>(test_values);
         }
 
-        std::cout << ": ";
-    };
-
-    for (const auto val : test_values)
-    {
+        if constexpr (!std::is_same_v<typename Cast<FloatType>::upcast2, void>)
         {
-            // Test prefix increment
-            FloatType x(val);
-            print_unary_op(x, "++", true);
-            ++x;
-            auto expected = val + 1;
-            checkResult(x, expected);
+            testBinary<FloatType, typename Cast<FloatType>::upcast2>(test_values);
         }
 
+        if constexpr (!std::is_same_v<typename Cast<FloatType>::upcast3, void>)
         {
-            // Test postfix increment
-            FloatType x(val);
-            print_unary_op(x, "++", false);
-            x++;
-            auto expected = val + 1;
-            checkResult(x, expected);
+            testBinary<FloatType, typename Cast<FloatType>::upcast3>(test_values);
         }
 
+        if constexpr (!std::is_same_v<typename Cast<FloatType>::downcast1, void>)
         {
-            // Test prefix decrement
-            FloatType x(val);
-            print_unary_op(x, "--", true);
-            --x;
-            auto expected = val - 1;
-            checkResult(x, expected);
+            testBinary<FloatType, typename Cast<FloatType>::downcast1>(test_values);
         }
 
+        if constexpr (!std::is_same_v<typename Cast<FloatType>::downcast2, void>)
         {
-            // Test postfix decrement
-            FloatType x(val);
-            print_unary_op(x, "--", false);
-            x--;
-            auto expected = val - 1;
-            checkResult(x, expected);
+            testBinary<FloatType, typename Cast<FloatType>::downcast2>(test_values);
         }
 
+        if constexpr (!std::is_same_v<typename Cast<FloatType>::downcast3, void>)
         {
-            // Test +
-            FloatType x(val);
-            print_unary_op(x, "+", true);
-            auto z = +x;
-            auto expected = +val;
-            checkResult(z, expected);
-        }
-
-        {
-            // Test -
-            FloatType x(val);
-            print_unary_op(x, "-", true);
-            auto z = -x;
-            auto expected = -val;
-            checkResult(z, expected);
+            testBinary<FloatType, typename Cast<FloatType>::downcast3>(test_values);
         }
     }
-
-    testBinary<FloatType, FloatType>(test_values);
-
-    if constexpr (!std::is_same_v<typename Cast<FloatType>::upcast1, void>)
+    else
     {
-        testBinary<FloatType, typename Cast<FloatType>::upcast1>(test_values);
-    }
-
-    if constexpr (!std::is_same_v<typename Cast<FloatType>::upcast2, void>)
-    {
-        testBinary<FloatType, typename Cast<FloatType>::upcast2>(test_values);
-    }
-
-    if constexpr (!std::is_same_v<typename Cast<FloatType>::upcast3, void>)
-    {
-        testBinary<FloatType, typename Cast<FloatType>::upcast3>(test_values);
-    }
-
-    if constexpr (!std::is_same_v<typename Cast<FloatType>::downcast1, void>)
-    {
-        testBinary<FloatType, typename Cast<FloatType>::downcast1>(test_values);
-    }
-
-    if constexpr (!std::is_same_v<typename Cast<FloatType>::downcast2, void>)
-    {
-        testBinary<FloatType, typename Cast<FloatType>::downcast2>(test_values);
-    }
-
-    if constexpr (!std::is_same_v<typename Cast<FloatType>::downcast3, void>)
-    {
-        testBinary<FloatType, typename Cast<FloatType>::downcast3>(test_values);
+        printHeader("Skipping arithmetic tests for ", getTypeName<FloatType>());
+        printHeader("Testing formatter for ", getTypeName<FloatType>());
+        std::cout << FloatType::zero() << std::endl;
+        std::cout << FloatType::negative_zero() << std::endl;
+        std::cout << FloatType::infinity() << std::endl;
+        std::cout << FloatType::negative_infinity() << std::endl;
+        std::cout << FloatType::qnan() << std::endl;
+        std::cout << FloatType::min_normal() << std::endl;
+        std::cout << FloatType::max_normal() << std::endl;
+        std::cout << FloatType::lowest() << std::endl;
     }
 
     std::cout << std::endl;
