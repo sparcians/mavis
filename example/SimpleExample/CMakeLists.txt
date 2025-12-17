@@ -7,4 +7,5 @@ add_executable(SimpleExample
     main.cpp
     )
 
+mavis_dependencies(SimpleExample)
 target_link_libraries(SimpleExample mavis Boost::json)

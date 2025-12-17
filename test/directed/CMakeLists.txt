@@ -25,5 +25,5 @@ file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/basic ${CMAKE_CURRENT_BINARY_DIR}/uarc
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../basic)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 add_executable(mavis_decode main.cpp)
-
-target_link_libraries (mavis_decode mavis quadmath Boost::program_options Boost::json)
+mavis_dependencies(mavis_decode)
+target_link_libraries (mavis_decode mavis Boost::program_options Boost::json)
