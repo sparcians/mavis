@@ -7,7 +7,6 @@
 #include <format>
 #include <functional>
 #include <limits>
-#include <type_traits>
 
 #include <boost/int128.hpp>
 
@@ -21,6 +20,10 @@
 
     #ifdef __STDCPP_FLOAT16_T__
         #define MAVIS_FLOAT16 std::float16_t
+    #endif
+
+    #ifdef __STDCPP_BFLOAT16_T__
+        #define MAVIS_BFLOAT16 std::bfloat16_t
     #endif
 
     #ifdef __STDCPP_FLOAT32_T__
@@ -62,6 +65,19 @@
     #include "simde/simde-f16.h"
     #define MAVIS_FLOAT16 simde_float16
     #define USING_SIMDE_FLOAT16 1
+#endif
+
+#ifndef MAVIS_BFLOAT16
+    #include "simde/simde-bf16.h"
+    #define MAVIS_BFLOAT16 simde_bfloat16
+    #define USING_SIMDE_BFLOAT16 1
+    #if SIMDE_BFLOAT16_API == SIMDE_BFLOAT16_API_PORTABLE
+        #define BFLOAT16_REQUIRES_WRAPPER 1
+    #endif
+#endif
+
+#ifndef BFLOAT16_REQUIRES_WRAPPER
+    #define BFLOAT16_REQUIRES_WRAPPER 0
 #endif
 
 // If we haven't found a guaranteed 32 bit float, just try float
@@ -171,9 +187,212 @@ namespace mavis
                                               long double, UnsupportedFloat128>,
                            MAVIS_FLOAT128>;
 
+#if BFLOAT16_REQUIRES_WRAPPER
+    template <typename Type>
+    concept BFloatAutoPromoted =
+        utils::any_of_v<Type, Single, Double, Quad> || std::is_integral_v<Type>;
+
+    // Wraps the underlying MAVIS_BFLOAT16 type to implement arithmetic operations and conversions
+    class BFloat
+    {
+      private:
+        MAVIS_BFLOAT16 value_;
+
+        void fromFloat_(const float value) { value_ = simde_bfloat16_from_float32(value); }
+
+        inline float toFloat_() const { return simde_bfloat16_to_float32(value_); }
+
+      public:
+        BFloat() = default;
+
+        BFloat(const MAVIS_BFLOAT16 value) : value_(value) {}
+
+        explicit BFloat(const Half value) { fromFloat_(value); }
+
+        template <typename RHS>
+        BFloat(const RHS value)
+        requires std::is_arithmetic_v<RHS>
+        {
+            fromFloat_(value);
+        }
+
+        BFloat(const BFloat & rhs) = default;
+
+        BFloat & operator=(const BFloat & rhs) = default;
+
+        BFloat & operator=(const float rhs)
+        {
+            fromFloat_(rhs);
+            return *this;
+        }
+
+        inline BFloat operator+() const { return *this; }
+
+        inline BFloat operator-() const { return -toFloat_(); }
+
+        inline BFloat operator+(const BFloat & rhs) const { return toFloat_() + rhs.toFloat_(); }
+
+        inline BFloat operator-(const BFloat & rhs) const { return toFloat_() - rhs.toFloat_(); }
+
+        inline BFloat operator*(const BFloat & rhs) const { return toFloat_() * rhs.toFloat_(); }
+
+        inline BFloat operator/(const BFloat & rhs) const { return toFloat_() / rhs.toFloat_(); }
+
+        template <typename RHS>
+        inline auto operator+(const RHS rhs) const
+        requires BFloatAutoPromoted<RHS>
+        {
+            return toFloat_() + rhs;
+        }
+
+        template <typename RHS>
+        inline auto operator-(const RHS rhs) const
+        requires BFloatAutoPromoted<RHS>
+        {
+            return toFloat_() - rhs;
+        }
+
+        template <typename RHS>
+        inline auto operator*(const RHS rhs) const
+        requires BFloatAutoPromoted<RHS>
+        {
+            return toFloat_() * rhs;
+        }
+
+        template <typename RHS>
+        inline auto operator/(const RHS rhs) const
+        requires BFloatAutoPromoted<RHS>
+        {
+            return toFloat_() / rhs;
+        }
+
+        inline BFloat & operator++()
+        {
+            auto temp = toFloat_();
+            ++temp;
+            fromFloat_(temp);
+            return *this;
+        }
+
+        inline BFloat operator++(int)
+        {
+            const auto temp = *this;
+            ++(*this);
+            return temp;
+        }
+
+        inline BFloat & operator--()
+        {
+            auto temp = toFloat_();
+            --temp;
+            fromFloat_(temp);
+            return *this;
+        }
+
+        inline BFloat operator--(int)
+        {
+            const auto temp = *this;
+            --(*this);
+            return temp;
+        }
+
+        inline BFloat & operator+=(const BFloat & rhs)
+        {
+            *this = *this + rhs;
+            return *this;
+        }
+
+        inline BFloat & operator-=(const BFloat & rhs)
+        {
+            *this = *this - rhs;
+            return *this;
+        }
+
+        inline BFloat & operator*=(const BFloat & rhs)
+        {
+            *this = *this * rhs;
+            return *this;
+        }
+
+        inline BFloat & operator/=(const BFloat & rhs)
+        {
+            *this = *this / rhs;
+            return *this;
+        }
+
+        template <typename RHS>
+        inline BFloat & operator+=(const RHS rhs)
+        requires BFloatAutoPromoted<RHS>
+        {
+            *this = *this + rhs;
+            return *this;
+        }
+
+        template <typename RHS>
+        inline BFloat & operator-=(const RHS rhs)
+        requires BFloatAutoPromoted<RHS>
+        {
+            *this = *this - rhs;
+            return *this;
+        }
+
+        template <typename RHS>
+        inline BFloat & operator*=(const RHS rhs)
+        requires BFloatAutoPromoted<RHS>
+        {
+            *this = *this * rhs;
+            return *this;
+        }
+
+        template <typename RHS>
+        inline BFloat & operator/=(const RHS rhs)
+        requires BFloatAutoPromoted<RHS>
+        {
+            *this = *this / rhs;
+            return *this;
+        }
+
+        bool operator==(const BFloat & rhs) const { return toFloat_() == rhs.toFloat_(); }
+
+        template <typename RHS>
+        bool operator==(const RHS rhs) const
+        requires BFloatAutoPromoted<RHS>
+        {
+            return toFloat_() == rhs;
+        }
+
+        auto operator<=>(const BFloat & rhs) const { return toFloat_() <=> rhs.toFloat_(); }
+
+        template <typename RHS>
+        auto operator<=>(const RHS rhs) const
+        requires BFloatAutoPromoted<RHS>
+        {
+            return toFloat_() <=> rhs;
+        }
+
+        operator float() const { return toFloat_(); }
+
+        template <typename CastType>
+        explicit operator CastType() const
+        requires std::is_arithmetic_v<CastType>
+        {
+            return static_cast<CastType>(toFloat_());
+        }
+
+        friend inline std::ostream & operator<<(std::ostream & os, const BFloat & value)
+        {
+            return os << value.toFloat_();
+        }
+    };
+#else
+    using BFloat = MAVIS_BFLOAT16;
+#endif
+
     namespace utils
     {
         template <> inline constexpr size_t num_bits<Half> = 16;
+
+        template <> inline constexpr size_t num_bits<BFloat> = 16;
 
         template <> inline constexpr size_t num_bits<Quad> = 128;
     } // namespace utils
@@ -192,6 +411,15 @@ namespace mavis
         inline void formatFloat<simde_float16>(std::ostream & os, const simde_float16 & value)
         {
             os << simde_float16_to_float32(value);
+        }
+#endif
+
+        // simde_bfloat16 has a special formatter function
+#ifdef USING_SIMDE_BFLOAT16
+        template <>
+        inline void formatFloat<simde_bfloat16>(std::ostream & os, const simde_bfloat16 & value)
+        {
+            os << simde_bfloat16_to_float32(value);
         }
 #endif
 
@@ -216,82 +444,68 @@ namespace mavis
 
         template <> inline constexpr size_t sizeof_float<Half> = 2;
 
+        template <> inline constexpr size_t sizeof_float<BFloat> = 2;
+
         template <> inline constexpr size_t sizeof_float<Quad> = 16;
 
-        template <typename FloatType> struct FloatDefaults
+        template <typename FloatType, typename IntType, size_t ExponentBits, size_t FractionBits>
+        struct FloatSettings
         {
+            static inline constexpr size_t exponent_bits = ExponentBits;
+            static inline constexpr size_t fraction_bits = FractionBits;
+            using int_type = IntType;
             using float_type = FloatType;
         };
 
         template <size_t Bits> struct IEEEFloatDefaults;
 
-        template <> struct IEEEFloatDefaults<16> : FloatDefaults<Half>
-        {
-            static inline constexpr size_t exponent_bits = 5;
-            static inline constexpr size_t fraction_bits = 10;
-            using int_type = uint16_t;
-        };
-
-        template <> struct IEEEFloatDefaults<32> : FloatDefaults<float>
-        {
-            static inline constexpr size_t exponent_bits = 8;
-            static inline constexpr size_t fraction_bits = 23;
-            using int_type = uint32_t;
-        };
-
-        template <> struct IEEEFloatDefaults<64> : FloatDefaults<double>
-        {
-            static inline constexpr size_t exponent_bits = 11;
-            static inline constexpr size_t fraction_bits = 52;
-            using int_type = uint64_t;
-        };
-
-        template <> struct IEEEFloatDefaults<128> : FloatDefaults<Quad>
-        {
-            static inline constexpr size_t exponent_bits = 15;
-            static inline constexpr size_t fraction_bits = 112;
-            using int_type = boost::int128::uint128_t;
-        };
-
-        template <typename Type, typename... OtherTypes>
-        struct any_of : std::disjunction<std::is_same<Type, OtherTypes>...>
+        template <> struct IEEEFloatDefaults<16> : FloatSettings<Half, uint16_t, 5, 10>
         {
         };
 
-        template <typename Type, typename... OtherTypes>
-        inline constexpr bool any_of_v = any_of<Type, OtherTypes...>::value;
+        template <> struct IEEEFloatDefaults<32> : FloatSettings<Single, uint32_t, 8, 23>
+        {
+        };
+
+        template <> struct IEEEFloatDefaults<64> : FloatSettings<Double, uint64_t, 11, 52>
+        {
+        };
+
+        template <>
+        struct IEEEFloatDefaults<128> : FloatSettings<Quad, boost::int128::uint128_t, 15, 112>
+        {
+        };
+
+        using BFloatSettings = FloatSettings<BFloat, uint16_t, 8, 7>;
 
         template <typename Type, size_t... Bits>
         concept SupportedFloatBits =
-            any_of_v<Type, typename IEEEFloatDefaults<Bits>::float_type...>;
+            utils::any_of_v<Type, typename IEEEFloatDefaults<Bits>::float_type..., BFloat>;
 
         template <typename Type>
         concept SupportedFloatType = SupportedFloatBits<Type, 16, 32, 64, 128>;
     } // namespace float_utils
 
-    template <size_t Bits,
-              size_t ExponentBits = float_utils::IEEEFloatDefaults<Bits>::exponent_bits,
-              size_t FractionBits = float_utils::IEEEFloatDefaults<Bits>::fraction_bits,
-              typename FloatType = float_utils::IEEEFloatDefaults<Bits>::float_type,
-              typename StorageType = float_utils::IEEEFloatDefaults<Bits>::int_type>
+    template <size_t Bits, typename FloatSettingsType = float_utils::IEEEFloatDefaults<Bits>>
     class Float
     {
-        static_assert(Bits == 1 + ExponentBits + FractionBits);
-        static_assert(std::is_nothrow_default_constructible_v<StorageType>);
-
       private:
         using IEEEDefaultFormat = float_utils::IEEEFloatDefaults<Bits>;
 
       public:
-        using storage_type = StorageType;
+        using storage_type = FloatSettingsType::int_type;
+        static_assert(std::is_nothrow_default_constructible_v<storage_type>);
         static_assert(utils::num_bits<storage_type> == Bits);
 
-        using float_type = FloatType;
+        using float_type = FloatSettingsType::float_type;
         static_assert(utils::num_bits<float_type> == Bits);
 
         static constexpr size_t bits = Bits;
-        static constexpr size_t exponent_bits = ExponentBits;
-        static constexpr size_t fraction_bits = FractionBits;
+        static constexpr size_t exponent_bits = FloatSettingsType::exponent_bits;
+        static constexpr size_t fraction_bits = FloatSettingsType::fraction_bits;
+
+        static_assert(bits == 1 + exponent_bits + fraction_bits);
+
         static constexpr bool is_ieee_format =
             (IEEEDefaultFormat::exponent_bits == exponent_bits)
             && (IEEEDefaultFormat::fraction_bits == fraction_bits);
@@ -316,10 +530,8 @@ namespace mavis
             }
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr void convertFrom_(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                                OtherFloatType, OtherStorageType> & other)
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr void convertFrom_(const Float<OtherBits, OtherFloatSettingsType> & other)
         {
             using OtherType = std::remove_cvref_t<decltype(other)>;
             static_assert(!((exponent_bits >= OtherType::exponent_bits
@@ -353,36 +565,28 @@ namespace mavis
 
         // Automatically upcasts to the highest common float type for arithmetic operations and
         // comparisons
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr auto upcast_(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                           OtherFloatType, OtherStorageType> & rhs) const
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr auto upcast_(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         {
-            return upcast_floats<Float, Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                              OtherFloatType, OtherStorageType>>::upcast(*this,
-                                                                                         rhs);
+            return upcast_floats<Float, Float<OtherBits, OtherFloatSettingsType>>::upcast(*this,
+                                                                                          rhs);
         }
 
         template <typename ReturnType, template <typename> typename Op, size_t OtherBits,
-                  size_t OtherExponentBits, size_t OtherFractionBits, typename OtherFloatType,
-                  typename OtherStorageType>
+                  typename OtherFloatSettingsType>
         constexpr ReturnType
-        genericBinaryOp_(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                     OtherFloatType, OtherStorageType> & rhs) const
+        genericBinaryOp_(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         {
             const auto [arg1, arg2] = upcast_(rhs);
             constexpr Op<decltype(arg1)> op;
             return op(arg1, arg2);
         }
 
-        template <template <typename> typename Op, size_t OtherBits, size_t OtherExponentBits,
-                  size_t OtherFractionBits, typename OtherFloatType, typename OtherStorageType>
-        constexpr auto binaryArithOp_(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                                  OtherFloatType, OtherStorageType> & rhs) const
+        template <template <typename> typename Op, size_t OtherBits,
+                  typename OtherFloatSettingsType>
+        constexpr auto binaryArithOp_(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         {
-            using UpcastType =
-                upcast_floats<Float, Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                           OtherFloatType, OtherStorageType>>;
+            using UpcastType = upcast_floats<Float, Float<OtherBits, OtherFloatSettingsType>>;
             using ReturnType = typename UpcastType::mavis_float_type;
             constexpr Op<typename UpcastType::cast_type> op;
             const auto [arg1, arg2] = UpcastType::upcast(*this, rhs);
@@ -425,20 +629,16 @@ namespace mavis
 
         constexpr Float(const Float &) = default;
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr Float(const Float<OtherBits, OtherExponentBits, OtherFractionBits, OtherFloatType,
-                                    OtherStorageType> & other)
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr Float(const Float<OtherBits, OtherFloatSettingsType> & other)
         {
             convertFrom_(other);
         }
 
         constexpr Float & operator=(const Float &) = default;
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr Float & operator=(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                                OtherFloatType, OtherStorageType> & other)
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr Float & operator=(const Float<OtherBits, OtherFloatSettingsType> & other)
         {
             convertFrom_(other);
             return *this;
@@ -518,73 +718,57 @@ namespace mavis
             return temp;
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr auto operator+(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                             OtherFloatType, OtherStorageType> & rhs) const
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr auto operator+(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         requires supports_arithmetic_operations
         {
             return binaryArithOp_<std::plus>(rhs);
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr auto operator-(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                             OtherFloatType, OtherStorageType> & rhs) const
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr auto operator-(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         requires supports_arithmetic_operations
         {
             return binaryArithOp_<std::minus>(rhs);
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr auto operator*(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                             OtherFloatType, OtherStorageType> & rhs) const
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr auto operator*(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         requires supports_arithmetic_operations
         {
             return binaryArithOp_<std::multiplies>(rhs);
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr auto operator/(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                             OtherFloatType, OtherStorageType> & rhs) const
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr auto operator/(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         requires supports_arithmetic_operations
         {
             return binaryArithOp_<std::divides>(rhs);
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr Float & operator+=(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                                 OtherFloatType, OtherStorageType> & rhs)
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr Float & operator+=(const Float<OtherBits, OtherFloatSettingsType> & rhs)
         requires supports_arithmetic_operations
         {
             *this = *this + rhs;
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr Float & operator-=(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                                 OtherFloatType, OtherStorageType> & rhs)
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr Float & operator-=(const Float<OtherBits, OtherFloatSettingsType> & rhs)
         requires supports_arithmetic_operations
         {
             *this = *this - rhs;
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr Float & operator*=(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                                 OtherFloatType, OtherStorageType> & rhs)
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr Float & operator*=(const Float<OtherBits, OtherFloatSettingsType> & rhs)
         requires supports_arithmetic_operations
         {
             *this = *this * rhs;
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr Float & operator/=(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                                 OtherFloatType, OtherStorageType> & rhs)
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr Float & operator/=(const Float<OtherBits, OtherFloatSettingsType> & rhs)
         requires supports_arithmetic_operations
         {
             *this = *this / rhs;
@@ -624,10 +808,8 @@ namespace mavis
             return temp;
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr auto operator<=>(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                               OtherFloatType, OtherStorageType> & rhs) const
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr auto operator<=>(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         {
             const auto [arg1, arg2] = upcast_(rhs);
             return arg1 <=> arg2;
@@ -637,23 +819,35 @@ namespace mavis
         constexpr auto operator<=>(const ValueType rhs) const
         requires float_utils::SupportedFloatType<ValueType>
         {
-            return *this <=> Float<utils::num_bits<ValueType>>(rhs);
+            if constexpr (utils::num_bits<ValueType> == bits)
+            {
+                return *this <=> Float(rhs);
+            }
+            else
+            {
+                return *this <=> Float<utils::num_bits<ValueType>>(rhs);
+            }
         }
 
-        template <size_t OtherBits, size_t OtherExponentBits, size_t OtherFractionBits,
-                  typename OtherFloatType, typename OtherStorageType>
-        constexpr auto operator==(const Float<OtherBits, OtherExponentBits, OtherFractionBits,
-                                              OtherFloatType, OtherStorageType> & rhs) const
+        template <size_t OtherBits, typename OtherFloatSettingsType>
+        constexpr bool operator==(const Float<OtherBits, OtherFloatSettingsType> & rhs) const
         {
             const auto [arg1, arg2] = upcast_(rhs);
             return arg1 == arg2;
         }
 
         template <typename ValueType>
-        constexpr auto operator==(const ValueType rhs) const
+        constexpr bool operator==(const ValueType rhs) const
         requires float_utils::SupportedFloatType<ValueType>
         {
-            return *this == Float<utils::num_bits<ValueType>>(rhs);
+            if constexpr (utils::num_bits<ValueType> == bits)
+            {
+                return *this == Float(rhs);
+            }
+            else
+            {
+                return *this == Float<utils::num_bits<ValueType>>(rhs);
+            }
         }
 
         friend inline std::ostream & operator<<(std::ostream & os, const Float & val)
@@ -664,7 +858,38 @@ namespace mavis
     };
 
     using Float16 = Float<16>;
+    using BFloat16 = Float<16, float_utils::BFloatSettings>;
     using Float32 = Float<32>;
     using Float64 = Float<64>;
     using Float128 = Float<128>;
 } // namespace mavis
+
+template <size_t Bits, typename FloatSettingsType>
+struct std::formatter<mavis::Float<Bits, FloatSettingsType>> :
+    std::formatter<typename mavis::Float<Bits, FloatSettingsType>::float_type>
+{
+    constexpr auto parse(std::format_parse_context & ctx)
+    {
+        return std::formatter<typename mavis::Float<Bits, FloatSettingsType>::float_type>::parse(
+            ctx);
+    }
+
+    auto format(const mavis::Float<Bits, FloatSettingsType> & obj, std::format_context & ctx) const
+    {
+        return std::formatter<typename mavis::Float<Bits, FloatSettingsType>::float_type>::format(
+            obj.asFloat(), ctx);
+    }
+};
+
+template <> struct std::formatter<mavis::BFloat> : std::formatter<float>
+{
+    constexpr auto parse(std::format_parse_context & ctx)
+    {
+        return std::formatter<float>::parse(ctx);
+    }
+
+    auto format(const mavis::BFloat & obj, std::format_context & ctx) const
+    {
+        return std::formatter<float>::format(static_cast<float>(obj), ctx);
+    }
+};
