@@ -3534,6 +3534,7 @@ namespace mavis
       private:
         using ImmReturnType = ImmediateReturnType<ImmType>::return_type;
 
+        // Generates the table of immediate values for fli instructions listed in the ISA manual
         template <typename ReturnType> static constexpr std::array<ReturnType, 32> initTable_()
         {
             std::array<ReturnType, 32> values;
