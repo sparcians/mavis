@@ -13,95 +13,103 @@
 
 #include "Utils.h"
 
+// clang-format off
+
 // Try to use STL types if we're in C++23 mode
 #if __cplusplus >= 202302L
-#include <stdfloat>
-#ifdef __STDCPP_FLOAT16_T__
-#define MAVIS_FLOAT16 std::float16_t
-#endif
-#ifdef __STDCPP_FLOAT32_T__
-#define MAVIS_FLOAT32 std::float32_t
-#endif
-#ifdef __STDCPP_FLOAT64_T__
-#define MAVIS_FLOAT64 std::float64_t
-#endif
-#ifdef __STDCPP_FLOAT128_T__
-#define MAVIS_FLOAT128 std::float128_t
-#endif
+    #include <stdfloat>
+
+    #ifdef __STDCPP_FLOAT16_T__
+        #define MAVIS_FLOAT16 std::float16_t
+    #endif
+
+    #ifdef __STDCPP_FLOAT32_T__
+        #define MAVIS_FLOAT32 std::float32_t
+    #endif
+
+    #ifdef __STDCPP_FLOAT64_T__
+        #define MAVIS_FLOAT64 std::float64_t
+    #endif
+
+    #ifdef __STDCPP_FLOAT128_T__
+        #define MAVIS_FLOAT128 std::float128_t
+    #endif
 #endif
 
 // ... if that didn't catch all of them, try boost standard float types
-#if !defined(MAVIS_FLOAT16) || !defined(MAVIS_FLOAT32) || !defined(MAVIS_FLOAT64)                  \
-    || !defined(MAVIS_FLOAT128)
-#include <boost/cstdfloat.hpp>
-#if defined(BOOST_FLOAT16_C) && !defined(MAVIS_FLOAT16)
-#define MAVIS_FLOAT16 boost::float16_t
-#endif
-#if defined(BOOST_FLOAT32_C) && !defined(MAVIS_FLOAT32)
-#define MAVIS_FLOAT32 boost::float32_t
-#endif
-#if defined(BOOST_FLOAT64_C) && !defined(MAVIS_FLOAT64)
-#define MAVIS_FLOAT64 boost::float64_t
-#endif
-#if defined(BOOST_FLOAT128_C) && !defined(MAVIS_FLOAT128)
-#define MAVIS_FLOAT128 boost::float128_t
-#if defined(__clang__) && !defined(__APPLE__)
-#define FORMAT_FLOAT128_WITH_QUADMATH 1
-#endif
-#endif
+#if !defined(MAVIS_FLOAT16) || !defined(MAVIS_FLOAT32) || !defined(MAVIS_FLOAT64) || !defined(MAVIS_FLOAT128)
+    #include <boost/cstdfloat.hpp>
+
+    #if defined(BOOST_FLOAT16_C) && !defined(MAVIS_FLOAT16)
+        #define MAVIS_FLOAT16 boost::float16_t
+    #endif
+    #if defined(BOOST_FLOAT32_C) && !defined(MAVIS_FLOAT32)
+        #define MAVIS_FLOAT32 boost::float32_t
+    #endif
+    #if defined(BOOST_FLOAT64_C) && !defined(MAVIS_FLOAT64)
+        #define MAVIS_FLOAT64 boost::float64_t
+    #endif
+    #if defined(BOOST_FLOAT128_C) && !defined(MAVIS_FLOAT128)
+        #define MAVIS_FLOAT128 boost::float128_t
+        #if defined(__clang__) && !defined(__APPLE__)
+            #define FORMAT_FLOAT128_WITH_QUADMATH 1
+        #endif
+    #endif
 #endif
 
 // Fall back to simde_float16 if neither of the above worked for float16
 #ifndef MAVIS_FLOAT16
-#include "simde/simde-f16.h"
-#define MAVIS_FLOAT16 simde_float16
-#define USING_SIMDE_FLOAT16 1
+    #include "simde/simde-f16.h"
+    #define MAVIS_FLOAT16 simde_float16
+    #define USING_SIMDE_FLOAT16 1
 #endif
 
 // If we haven't found a guaranteed 32 bit float, just try float
 #ifndef MAVIS_FLOAT32
-#define MAVIS_FLOAT32 float
+    #define MAVIS_FLOAT32 float
 #endif
 
 // If we haven't found a guaranteed 64 bit float, just try double
 #ifndef MAVIS_FLOAT64
-#define MAVIS_FLOAT64 double
+    #define MAVIS_FLOAT64 double
 #endif
 
 // Fall back to built-in float128 types if we haven't found one yet
 // These aren't available in Apple clang yet
 #if !defined(MAVIS_FLOAT128) && !(defined(__clang__) && defined(__APPLE__))
-// Clang has __float128
-#if defined(__clang__)
-#define MAVIS_FLOAT128 __float128
-// GCC has _Float128
-#else
-#define __STDC_WANT_IEC_60559_TYPES_EXT__
-#include <cfloat>
+    // Clang has __float128
+    #if defined(__clang__)
+        #define MAVIS_FLOAT128 __float128
+    // GCC has _Float128
+    #else
+        #define __STDC_WANT_IEC_60559_TYPES_EXT__
+        #include <cfloat>
 
-#if !defined(MAVIS_FLOAT128) && defined(FLT128_MAX)
-#define MAVIS_FLOAT128 _Float128
-#endif
-#endif
+        #if !defined(MAVIS_FLOAT128) && defined(FLT128_MAX)
+            #define MAVIS_FLOAT128 _Float128
+        #endif
+    #endif
 
-// If we've gotten this far it's unlikely there are built-in formatters for
-// 128 bit floats, so we'll use libquadmath
-#define FORMAT_FLOAT128_WITH_QUADMATH 1
+    // If we've gotten this far it's unlikely there are built-in formatters for
+    // 128 bit floats, so we'll use libquadmath
+    #define FORMAT_FLOAT128_WITH_QUADMATH 1
 #endif
 
 // Make sure libquadmath is available
 #ifdef FORMAT_FLOAT_128_WITH_QUADMATH
-#if __has_include(<quadmath.h>)
-#include <quadmath.h>
-#else
-#error "Could not find quadmath.h"
-#endif
+    #if __has_include(<quadmath.h>)
+        #include <quadmath.h>
+    #else
+        #error "Could not find quadmath.h"
+    #endif
 #endif
 
 // Use UnsupportedFloat128 if all other attempts failed
 #ifndef MAVIS_FLOAT128
-#define MAVIS_FLOAT128 UnsupportedFloat128
+    #define MAVIS_FLOAT128 UnsupportedFloat128
 #endif
+
+// clang-format on
 
 namespace mavis
 {
@@ -493,7 +501,7 @@ namespace mavis
         constexpr auto operator+() const
         requires supports_arithmetic_operations
         {
-            return +asFloat();
+            return *this;
         }
 
         constexpr Float operator-() const

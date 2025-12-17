@@ -2,7 +2,7 @@ include(ExternalProject)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_subdirectory(stubs)
-    set(QUADMATH_PATCH_COMMAND git am ${CMAKE_CURRENT_SOURCE_DIR}/patches/0001-Patch-to-enable-building-quadmath-with-clang.patch)
+    set(QUADMATH_PATCH_COMMAND git am --whitespace=nowarn ${CMAKE_CURRENT_SOURCE_DIR}/patches/0001-Patch-to-enable-building-quadmath-with-clang.patch)
     set(QUADMATH_CPPFLAGS "-include ${CMAKE_CURRENT_SOURCE_DIR}/stubs/quadmath_stubs.h")
     set(QUADMATH_CFLAGS -Wno-invalid-gnu-asm-cast)
     set(QUADMATH_LDFLAGS -L${CMAKE_CURRENT_BINARY_DIR}/stubs)

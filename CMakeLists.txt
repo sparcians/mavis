@@ -16,7 +16,28 @@ find_package (Boost 1.75.0 REQUIRED COMPONENTS program_options json)
 message (STATUS "Using BOOST ${Boost_VERSION_STRING}")
 
 cmake_push_check_state(RESET)
-    check_include_file(quadmath.h HAVE_QUADMATH)
+    if(CMAKE_CXX_STANDARD GREATER_EQUAL 23)
+        include(CheckSourceCompiles)
+        check_source_compiles(CXX [[
+            #include <format>
+            #include <iostream>
+            #include <stdfloat>
+
+            int main()
+            {
+                std::float128_t val{1.0};
+                std::cout << std::format("{}", val) << std::endl;
+            }
+        ]] HAS_NATIVE_STD_FLOAT_128_SUPPORT)
+    endif()
+
+    if(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
+        check_include_file(quadmath.h SYSTEM_HAS_QUADMATH)
+
+        if(NOT SYSTEM_HAS_QUADMATH)
+            set(BUILD_QUADMATH_FROM_SOURCE True)
+        endif()
+    endif()
 cmake_pop_check_state()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -34,19 +55,21 @@ add_library(mavis
 target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/int128/include ${CMAKE_CURRENT_SOURCE_DIR}/simde)
 
 function(mavis_dependencies target)
-    if(NOT HAVE_QUADMATH)
+    if(BUILD_QUADMATH_FROM_SOURCE)
         add_dependencies(${target} libquadmath)
     endif()
 endfunction()
 
-if(NOT HAVE_QUADMATH)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/quadmath.cmake)
-    target_include_directories(mavis PUBLIC ${QUADMATH_INCLUDE_DIR})
-    target_link_directories(mavis PUBLIC ${QUADMATH_LIB_DIR})
-    mavis_dependencies(mavis)
-    target_link_libraries(mavis ${QUADMATH_LIB_DIR}/libquadmath.a)
-else()
-    target_link_libraries(mavis PUBLIC quadmath)
+if(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
+    if(BUILD_QUADMATH_FROM_SOURCE)
+        include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/quadmath.cmake)
+        target_include_directories(mavis PUBLIC ${QUADMATH_INCLUDE_DIR})
+        target_link_directories(mavis PUBLIC ${QUADMATH_LIB_DIR})
+        mavis_dependencies(mavis)
+        target_link_libraries(mavis ${QUADMATH_LIB_DIR}/libquadmath.a)
+    else()
+        target_link_libraries(mavis PUBLIC quadmath)
+    endif()
 endif()
 
 add_subdirectory(example EXCLUDE_FROM_ALL)
