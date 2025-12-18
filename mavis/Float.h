@@ -543,7 +543,8 @@ namespace mavis
 
         template <typename FloatLHS, typename FloatRHS> struct upcast_floats
         {
-            using mavis_float_type = std::conditional_t<FloatLHS::bits >= FloatRHS::bits, FloatLHS, FloatRHS>;
+            using mavis_float_type =
+                std::conditional_t<FloatLHS::bits >= FloatRHS::bits, FloatLHS, FloatRHS>;
             using cast_type = typename mavis_float_type::float_type;
 
             static constexpr auto upcast(const FloatLHS & lhs, const FloatRHS & rhs)
