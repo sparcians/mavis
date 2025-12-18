@@ -56,6 +56,8 @@ add_library(mavis
 
 target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/int128/include ${CMAKE_CURRENT_SOURCE_DIR}/simde)
 
+# Use this function to set up dependencies on any targets that depend on Mavis
+# headers that use quadmath.h
 function(mavis_dependencies target)
     if(BUILD_QUADMATH_FROM_SOURCE)
         add_dependencies(${target} libquadmath)
