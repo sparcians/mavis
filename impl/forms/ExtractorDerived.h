@@ -3648,8 +3648,6 @@ namespace mavis
             {
                 const auto rs1 = extract_(Form_Rfloat::idType::RS1, icode);
 
-                assert(rs1 < 32);
-
                 result = TABLE_[rs1];
             }
 
