@@ -21,7 +21,8 @@ namespace mavis
     {
         template <typename Type, size_t... Bits>
         concept SupportedFloatBits =
-            utils::any_of_v<Type, typename float_utils::IEEEFloatDefaults<Bits>::float_type..., BFloat>;
+            utils::any_of_v<Type, typename float_utils::IEEEFloatDefaults<Bits>::float_type...,
+                            BFloat>;
 
         template <typename Type>
         concept SupportedFloatType = SupportedFloatBits<Type, 16, 32, 64, 128>;

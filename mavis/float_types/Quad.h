@@ -141,5 +141,5 @@ namespace mavis
         {
             os << value;
         }
-    }
-}
+    } // namespace float_utils
+} // namespace mavis

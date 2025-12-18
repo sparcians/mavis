@@ -38,5 +38,5 @@ namespace mavis
         template <> struct IEEEFloatDefaults<32> : FloatSettings<Single, uint32_t, 8, 23>
         {
         };
-    }
-}
+    } // namespace float_utils
+} // namespace mavis

@@ -21,4 +21,4 @@ namespace mavis::float_utils
     {
         os << std::format("{}", value);
     }
-}
+} // namespace mavis::float_utils

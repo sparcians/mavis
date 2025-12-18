@@ -48,5 +48,5 @@ namespace mavis
         template <> struct IEEEFloatDefaults<16> : FloatSettings<Half, uint16_t, 5, 10>
         {
         };
-    }
-}
+    } // namespace float_utils
+} // namespace mavis

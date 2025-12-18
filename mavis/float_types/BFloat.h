@@ -239,7 +239,7 @@ namespace mavis
     {
         using BFloatSettings = FloatSettings<BFloat, uint16_t, 8, 7>;
 
-    // simde_bfloat16 has a special formatter function
+        // simde_bfloat16 has a special formatter function
 #ifdef USING_SIMDE_BFLOAT16
         template <>
         inline void formatFloat<simde_bfloat16>(std::ostream & os, const simde_bfloat16 & value)
@@ -247,8 +247,8 @@ namespace mavis
             os << simde_bfloat16_to_float32(value);
         }
 #endif
-    }
-}
+    } // namespace float_utils
+} // namespace mavis
 
 template <> struct std::formatter<mavis::BFloat> : std::formatter<float>
 {

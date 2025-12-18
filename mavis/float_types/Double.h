@@ -38,5 +38,5 @@ namespace mavis
         template <> struct IEEEFloatDefaults<64> : FloatSettings<Double, uint64_t, 11, 52>
         {
         };
-    }
-}
+    } // namespace float_utils
+} // namespace mavis
