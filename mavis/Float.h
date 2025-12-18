@@ -39,6 +39,10 @@
     #endif
 #endif
 
+#if !defined(MAVIS_FLOAT128) && LDBL_MANT_DIG == 113
+    #define MAVIS_FLOAT128 long double
+#endif
+
 // ... if that didn't catch all of them, try boost standard float types
 #if !defined(MAVIS_FLOAT16) || !defined(MAVIS_FLOAT32) || !defined(MAVIS_FLOAT64) || !defined(MAVIS_FLOAT128)
     #include <boost/cstdfloat.hpp>
@@ -181,11 +185,7 @@ namespace mavis
     using Half = MAVIS_FLOAT16;
     using Single = MAVIS_FLOAT32;
     using Double = MAVIS_FLOAT64;
-    using Quad =
-        std::conditional_t<std::is_same_v<MAVIS_FLOAT128, UnsupportedFloat128>,
-                           std::conditional_t<std::numeric_limits<long double>::digits == 113,
-                                              long double, UnsupportedFloat128>,
-                           MAVIS_FLOAT128>;
+    using Quad = MAVIS_FLOAT128;
 
 #if BFLOAT16_REQUIRES_WRAPPER
     template <typename Type>
@@ -440,14 +440,6 @@ namespace mavis
             os << value;
         }
 
-        template <typename FloatType> inline constexpr size_t sizeof_float = sizeof(FloatType);
-
-        template <> inline constexpr size_t sizeof_float<Half> = 2;
-
-        template <> inline constexpr size_t sizeof_float<BFloat> = 2;
-
-        template <> inline constexpr size_t sizeof_float<Quad> = 16;
-
         template <typename FloatType, typename IntType, size_t ExponentBits, size_t FractionBits>
         struct FloatSettings
         {
@@ -551,10 +543,7 @@ namespace mavis
 
         template <typename FloatLHS, typename FloatRHS> struct upcast_floats
         {
-            using mavis_float_type =
-                std::conditional_t<(float_utils::sizeof_float<typename FloatLHS::float_type>
-                                    >= float_utils::sizeof_float<typename FloatRHS::float_type>),
-                                   FloatLHS, FloatRHS>;
+            using mavis_float_type = std::conditional_t<FloatLHS::bits >= FloatRHS::bits, FloatLHS, FloatRHS>;
             using cast_type = typename mavis_float_type::float_type;
 
             static constexpr auto upcast(const FloatLHS & lhs, const FloatRHS & rhs)
