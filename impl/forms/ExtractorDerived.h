@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "mavis/Extractor.h"
 #include "mavis/DecoderConsts.h"
 #include "mavis/FormStub.h"
