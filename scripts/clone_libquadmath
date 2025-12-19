@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# libquadmath is distributed as part of GCC. However, we don't need to clone and build the entirety of
+# GCC in order to use it. This script takes care of only cloning the parts of the GCC git repository
+# that are actually needed to build libquadmath.
+
+GCC_GIT_REPO=https://gcc.gnu.org/git/gcc.git
+GCC_GIT_TAG=releases/gcc-15.2.0
+
+if [ ! -f libquadmath/.checked-out ]; then
+    if [ -d libquadmath ]; then
+        rm -rf libquadmath
+    fi
+    git clone -b ${GCC_GIT_TAG} --depth=1 --filter=blob:none --sparse ${GCC_GIT_REPO} libquadmath && \
+    cd libquadmath && \
+    git sparse-checkout init && \
+    git sparse-checkout set include libquadmath && \
+    git pull && \
+    touch .checked-out
+fi

@@ -1,0 +1,119 @@
+From d23b021ac09620a2808a0737fc821395e72cd2ee Mon Sep 17 00:00:00 2001
+From: Brett Dutro <bdutro@mips.com>
+Date: Mon, 15 Dec 2025 10:20:59 -0800
+Subject: [PATCH] Patch to enable building quadmath with clang
+
+---
+ libquadmath/printf/printf_fp.c | 89 ++++++++++++++++++----------------
+ 1 file changed, 46 insertions(+), 43 deletions(-)
+
+diff --git a/libquadmath/printf/printf_fp.c b/libquadmath/printf/printf_fp.c
+index 9968aa5307c..7a0f280b844 100644
+--- a/libquadmath/printf/printf_fp.c
++++ b/libquadmath/printf/printf_fp.c
+@@ -123,6 +123,52 @@ static wchar_t *group_number (wchar_t *buf, wchar_t *bufend,
+ 			      wchar_t thousands_sep, int ngroups);
+ 
+ 
++wchar_t hack_digit_impl (const int expsign, const int type, int exponent, mp_limb_t* scale, const mp_size_t scalesize, mp_limb_t* frac, mp_size_t fracsize, mp_limb_t* tmp, int* exponent_out, mp_size_t* fracsize_out)
++{
++  mp_limb_t hi;
++
++  if (expsign != 0 && type == 'f' && exponent-- > 0)
++    hi = 0;
++  else if (scalesize == 0)
++    {
++      hi = frac[fracsize - 1];
++      frac[fracsize - 1] = mpn_mul_1 (frac, frac, fracsize - 1, 10);
++    }
++  else
++    {
++      if (fracsize < scalesize)
++        hi = 0;
++      else
++        {
++          hi = mpn_divmod (tmp, frac, fracsize, scale, scalesize);
++          tmp[fracsize - scalesize] = hi;
++          hi = tmp[0];
++
++          fracsize = scalesize;
++          while (fracsize != 0 && frac[fracsize - 1] == 0)
++    	--fracsize;
++          if (fracsize == 0)
++    	{
++    	  /* We're not prepared for an mpn variable with zero
++    	     limbs.  */
++    	  *exponent_out = exponent;
++    	  *fracsize_out = 1;
++    	  return L_('0') + hi;
++    	}
++        }
++
++      mp_limb_t _cy = mpn_mul_1 (frac, frac, fracsize, 10);
++      if (_cy != 0)
++        frac[fracsize++] = _cy;
++    }
++
++  *exponent_out = exponent;
++  *fracsize_out = fracsize;
++  return L_('0') + hi;
++}
++
++#define hack_digit() hack_digit_impl (expsign, type, exponent, scale, scalesize, frac, fracsize, tmp, &exponent, &fracsize)
++
+ int
+ __quadmath_printf_fp (struct __quadmath_printf_file *fp,
+ 		      const struct printf_info *info,
+@@ -186,49 +232,6 @@ __quadmath_printf_fp (struct __quadmath_printf_file *fp,
+   /* Flag whether wbuffer is malloc'ed or not.  */
+   int buffer_malloced = 0;
+ 
+-  auto wchar_t hack_digit (void);
+-
+-  wchar_t hack_digit (void)
+-    {
+-      mp_limb_t hi;
+-
+-      if (expsign != 0 && type == 'f' && exponent-- > 0)
+-	hi = 0;
+-      else if (scalesize == 0)
+-	{
+-	  hi = frac[fracsize - 1];
+-	  frac[fracsize - 1] = mpn_mul_1 (frac, frac, fracsize - 1, 10);
+-	}
+-      else
+-	{
+-	  if (fracsize < scalesize)
+-	    hi = 0;
+-	  else
+-	    {
+-	      hi = mpn_divmod (tmp, frac, fracsize, scale, scalesize);
+-	      tmp[fracsize - scalesize] = hi;
+-	      hi = tmp[0];
+-
+-	      fracsize = scalesize;
+-	      while (fracsize != 0 && frac[fracsize - 1] == 0)
+-		--fracsize;
+-	      if (fracsize == 0)
+-		{
+-		  /* We're not prepared for an mpn variable with zero
+-		     limbs.  */
+-		  fracsize = 1;
+-		  return L_('0') + hi;
+-		}
+-	    }
+-
+-	  mp_limb_t _cy = mpn_mul_1 (frac, frac, fracsize, 10);
+-	  if (_cy != 0)
+-	    frac[fracsize++] = _cy;
+-	}
+-
+-      return L_('0') + hi;
+-    }
+-
+   /* Figure out the decimal point character.  */
+ #ifdef USE_NL_LANGINFO
+   if (info->extra == 0)
+-- 
+2.43.5
+

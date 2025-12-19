@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Form.h"
+#include "Utils.h"
 
 namespace mavis
 {
@@ -582,5 +583,63 @@ namespace mavis
         using idType = uint32_t;
         static inline const std::string name{"AMO_pair"};
     };
+
+    /**
+     * Stub for Rfloat_fli extractor
+     */
+    template<ImmediateType ImmType>
+    class Form_Rfloat_fli
+    {
+      static_assert(utils::isOneOf(ImmType, ImmediateType::HALF_FLOAT, ImmediateType::SINGLE_FLOAT, ImmediateType::DOUBLE_FLOAT, ImmediateType::QUAD_FLOAT));
+
+      private:
+        static const std::string getName_()
+        {
+            char suffix;
+
+            if constexpr(ImmType == ImmediateType::HALF_FLOAT)
+            {
+                suffix = 'h';
+            }
+            else if constexpr(ImmType == ImmediateType::SINGLE_FLOAT)
+            {
+                suffix = 's';
+            }
+            else if constexpr(ImmType == ImmediateType::DOUBLE_FLOAT)
+            {
+                suffix = 'd';
+            }
+            else if constexpr(ImmType == ImmediateType::QUAD_FLOAT)
+            {
+                suffix = 'q';
+            }
+
+            return std::string("Rfloat_fli_") + suffix;
+        }
+
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{getName_()};
+    };
+
+    /**
+     * Stub for Rfloat_fli_h extractor
+     */
+    using Form_Rfloat_fli_h = Form_Rfloat_fli<ImmediateType::HALF_FLOAT>;
+
+    /**
+     * Stub for Rfloat_fli_s extractor
+     */
+    using Form_Rfloat_fli_s = Form_Rfloat_fli<ImmediateType::SINGLE_FLOAT>;
+
+    /**
+     * Stub for Rfloat_fli_d extractor
+     */
+    using Form_Rfloat_fli_d = Form_Rfloat_fli<ImmediateType::DOUBLE_FLOAT>;
+
+    /**
+     * Stub for Rfloat_fli_q extractor
+     */
+    using Form_Rfloat_fli_q = Form_Rfloat_fli<ImmediateType::QUAD_FLOAT>;
 
 } // namespace mavis
