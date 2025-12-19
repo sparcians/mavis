@@ -69,8 +69,9 @@ file(CREATE_LINK <path to mavis>/json ${CMAKE_CURRENT_BINARY_DIR}/mavis_isa_file
 # Link Mavis with project
 target_link_libraries(<project> mavis)
 
-# Setup additional Mavis dependencies
-mavis_dependencies(<project>)
+# Setup Mavis include paths
+get_target_property(MAVIS_INCLUDES mavis INCLUDE_DIRECTORIES)
+include_directories(${MAVIS_INCLUDES})
 ```
 
 ### Instantiating the Decoder

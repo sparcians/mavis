@@ -16,20 +16,32 @@ if (CMAKE_BUILD_TYPE MATCHES "^[Dd]ebug")
     set(QUADMATH_LDFLAGS "${QUADMATH_LDFLAGS} -Wl,-O0")
 endif()
 
+# This sets up all of the paths we need to clone, build, and use libquadmath, but doesn't actually do
+# anything until we run make
 ExternalProject_Add(
     libquadmath
-    DOWNLOAD_COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/clone_libquadmath
+    DOWNLOAD_COMMAND ""
     UPDATE_DISCONNECTED True
     PATCH_COMMAND ${QUADMATH_PATCH_COMMAND}
     CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} CPPFLAGS=${QUADMATH_CPPFLAGS} CFLAGS=${QUADMATH_CFLAGS} LDFLAGS=${QUADMATH_LDFLAGS} LIBS=${QUADMATH_LIBS} <SOURCE_DIR>/libquadmath/configure --disable-multilib --prefix <INSTALL_DIR>
     BUILD_COMMAND $(MAKE) libquadmath.la
-    INSTALL_COMMAND $(MAKE) install-exec install-nodist_libsubincludeHEADERS
+    INSTALL_COMMAND $(MAKE) install-exec
     DEPENDS ${QUADMATH_DEPENDS}
 )
 
-ExternalProject_Get_Property(libquadmath INSTALL_DIR)
-
+ExternalProject_Get_Property(libquadmath SOURCE_DIR INSTALL_DIR)
+set(QUADMATH_SOURCE_DIR ${SOURCE_DIR})
 set(QUADMATH_LIB_DIR ${INSTALL_DIR}/lib)
-set(QUADMATH_INCLUDE_DIR ${QUADMATH_LIB_DIR}/gcc/include)
+set(QUADMATH_INCLUDE_DIR ${QUADMATH_SOURCE_DIR}/libquadmath)
 
+unset(SOURCE_DIR)
 unset(INSTALL_DIR)
+
+# This clones the libquadmath sources when we run CMake so that the includes are guaranteed to be available
+# at build time. This will be re-run every time we run CMake, but the clone_libquadmath script will do
+# nothing if the repo has already been cloned successfully
+execute_process(
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/scripts/clone_libquadmath
+    WORKING_DIRECTORY ${QUADMATH_SOURCE_DIR}/../
+    COMMAND_ERROR_IS_FATAL ANY
+)

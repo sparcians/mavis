@@ -27,5 +27,4 @@ file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/basic ${CMAKE_CURRENT_BINARY_DIR}/uarc
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../basic)
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 add_executable(ExtensionManager main.cpp)
-mavis_dependencies(ExtensionManager)
 target_link_libraries (ExtensionManager mavis Boost::json)

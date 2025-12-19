@@ -88,14 +88,6 @@ add_library(mavis
 
 target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/int128/include ${CMAKE_CURRENT_SOURCE_DIR}/simde)
 
-# Use this function to set up dependencies on any targets that depend on Mavis
-# headers that use quadmath.h
-function(mavis_dependencies target)
-    if(BUILD_QUADMATH_FROM_SOURCE)
-        add_dependencies(${target} libquadmath)
-    endif()
-endfunction()
-
 if(DISABLE_MAVIS_FLOAT128_SUPPORT)
     message("-- Quad float support explicitly disabled")
     add_compile_definitions(DISABLE_MAVIS_FLOAT128_SUPPORT)
@@ -106,7 +98,7 @@ elseif(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
         include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/quadmath.cmake)
         target_include_directories(mavis PUBLIC ${QUADMATH_INCLUDE_DIR})
         target_link_directories(mavis PUBLIC ${QUADMATH_LIB_DIR})
-        mavis_dependencies(mavis)
+        add_dependencies(mavis libquadmath)
         target_link_libraries(mavis ${QUADMATH_LIB_DIR}/libquadmath.a)
     else()
         target_link_libraries(mavis PUBLIC quadmath)
