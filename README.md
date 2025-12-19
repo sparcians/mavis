@@ -60,6 +60,9 @@ To add Mavis to a project, if using `cmake`, make Mavis a submodule or
 provide a local clone.  Then add the following to the project's CMakeLists.txt:
 
 ```
+# (OPTIONAL) Build mavis with C++23 instead of C++20
+set(MAVIS_CXX_STANDARD 23)
+
 # Bring in the mavis project/CMakeLists.txt to build Mavis
 add_subdirectory (<path to mavis>)
 
@@ -181,7 +184,10 @@ reference.
 ```
 mkdir build
 cd build
+# To build in C++20 mode:
 cmake ..
+# To build in C++23 mode:
+cmake .. -DMAVIS_CXX_STANDARD=23
 make -j8
 ```
 * Build the basic tester; output program is `Mavis`
