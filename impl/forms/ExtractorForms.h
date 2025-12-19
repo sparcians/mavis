@@ -3120,7 +3120,7 @@ namespace mavis
 
         // clang-format on
 
-      private:
+      protected:
         Extractor(const uint64_t ffmask, const uint64_t fset) : ExtractorBase(ffmask) {}
     };
 

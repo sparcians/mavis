@@ -678,15 +678,15 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[1]: 'fmvh.x.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmvh.x.q'), stencil = 0xe6100053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
-|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
+|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_s', factory=IFactory('fli.s'), stencil = 0xf0100053
 |	|	|	[79]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.d.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.d.x'), stencil = 0xf2000053
-|	|	|	|	[1]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.d'), stencil = 0xf2100053
+|	|	|	|	[1]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_d', factory=IFactory('fli.d'), stencil = 0xf2100053
 |	|	|	[7a]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.h'), stencil = 0xf4100053
+|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_h', factory=IFactory('fli.h'), stencil = 0xf4100053
 |	|	|	|	[1]: 'fmv.h.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.h.x'), stencil = 0xf4000053
 |	|	|	[7b]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.q'), stencil = 0xf6100053
+|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_q', factory=IFactory('fli.q'), stencil = 0xf6100053
 |	|	[57]: IFactoryDenseComposite::Field func3a
 |	|	|	[0]: IFactoryDenseComposite::Field func1a
 |	|	|	|	[0]: IFactoryDenseComposite::Field func1b
@@ -2341,15 +2341,15 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[1]: 'fmvh.x.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmvh.x.q'), stencil = 0xe6100053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
-|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
+|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_s', factory=IFactory('fli.s'), stencil = 0xf0100053
 |	|	|	[79]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.d.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.d.x'), stencil = 0xf2000053
-|	|	|	|	[1]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.d'), stencil = 0xf2100053
+|	|	|	|	[1]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_d', factory=IFactory('fli.d'), stencil = 0xf2100053
 |	|	|	[7a]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.h'), stencil = 0xf4100053
+|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_h', factory=IFactory('fli.h'), stencil = 0xf4100053
 |	|	|	|	[1]: 'fmv.h.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.h.x'), stencil = 0xf4000053
 |	|	|	[7b]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.q'), stencil = 0xf6100053
+|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_q', factory=IFactory('fli.q'), stencil = 0xf6100053
 |	|	[57]: IFactoryDenseComposite::Field func3a
 |	|	|	[0]: IFactoryDenseComposite::Field func1a
 |	|	|	|	[0]: IFactoryDenseComposite::Field func1b
@@ -3811,14 +3811,14 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: 'fclass.q', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.q'), stencil = 0xe6001053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
-|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
+|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_s', factory=IFactory('fli.s'), stencil = 0xf0100053
 |	|	|	[79]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.d'), stencil = 0xf2100053
+|	|	|	|	[0]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_d', factory=IFactory('fli.d'), stencil = 0xf2100053
 |	|	|	[7a]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.h'), stencil = 0xf4100053
+|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_h', factory=IFactory('fli.h'), stencil = 0xf4100053
 |	|	|	|	[1]: 'fmv.h.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.h.x'), stencil = 0xf4000053
 |	|	|	[7b]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.q'), stencil = 0xf6100053
+|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_q', factory=IFactory('fli.q'), stencil = 0xf6100053
 |	|	[63]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'beq', value=0x63, extractor=Extractor 'B', factory=IFactory('beq'), stencil = 0x63
@@ -4248,9 +4248,9 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[1]: 'fmvh.x.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmvh.x.d'), stencil = 0xe2100053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
-|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
+|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_s', factory=IFactory('fli.s'), stencil = 0xf0100053
 |	|	|	[79]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.d'), stencil = 0xf2100053
+|	|	|	|	[0]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_d', factory=IFactory('fli.d'), stencil = 0xf2100053
 |	|	[63]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'beq', value=0x63, extractor=Extractor 'B', factory=IFactory('beq'), stencil = 0x63
@@ -4834,14 +4834,14 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	[0]: 'fclass.q', mask=0x1f07000, field_set=0xa, value=0x1000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fclass.q'), stencil = 0xe6001053
 |	|	|	[78]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[0]: 'fmv.w.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.w.x'), stencil = 0xf0000053
-|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.s'), stencil = 0xf0100053
+|	|	|	|	[1]: 'fli.s', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_s', factory=IFactory('fli.s'), stencil = 0xf0100053
 |	|	|	[79]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.d'), stencil = 0xf2100053
+|	|	|	|	[0]: 'fli.d', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_d', factory=IFactory('fli.d'), stencil = 0xf2100053
 |	|	|	[7a]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.h'), stencil = 0xf4100053
+|	|	|	|	[0]: 'fli.h', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_h', factory=IFactory('fli.h'), stencil = 0xf4100053
 |	|	|	|	[1]: 'fmv.h.x', mask=0x1f07000, field_set=0xa, value=0x0, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fmv.h.x'), stencil = 0xf4000053
 |	|	|	[7b]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat', factory=IFactory('fli.q'), stencil = 0xf6100053
+|	|	|	|	[0]: 'fli.q', mask=0x1f07000, field_set=0xa, value=0x100000, nfixed=2, extractor=Extractor 'Rfloat_fli_q', factory=IFactory('fli.q'), stencil = 0xf6100053
 |	|	[63]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'beq', value=0x63, extractor=Extractor 'B', factory=IFactory('beq'), stencil = 0x63

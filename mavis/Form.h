@@ -3,6 +3,7 @@
 #include <vector>
 #include "Field.h"
 #include "mavis/DecoderExceptions.h"
+#include "Float.h"
 
 namespace mavis
 {
@@ -12,7 +13,47 @@ namespace mavis
     {
         NONE,     // No immediate present in encoding
         UNSIGNED, // UNSIGNED immediate (UIMM) in encoding
-        SIGNED    // SIGNED immediate (SIMM) in encoding
+        SIGNED,   // SIGNED immediate (SIMM) in encoding
+        HALF_FLOAT,
+        SINGLE_FLOAT,
+        DOUBLE_FLOAT,
+        QUAD_FLOAT
+    };
+
+    template<ImmediateType ImmType>
+    struct ImmediateReturnType
+    {
+        using return_type = uint64_t;
+    };
+
+    template<>
+    struct ImmediateReturnType<ImmediateType::SIGNED>
+    {
+        using return_type = int64_t;
+    };
+
+    template<>
+    struct ImmediateReturnType<ImmediateType::HALF_FLOAT>
+    {
+        using return_type = Float16;
+    };
+
+    template<>
+    struct ImmediateReturnType<ImmediateType::SINGLE_FLOAT>
+    {
+        using return_type = Float32;
+    };
+
+    template<>
+    struct ImmediateReturnType<ImmediateType::DOUBLE_FLOAT>
+    {
+        using return_type = Float64;
+    };
+
+    template<>
+    struct ImmediateReturnType<ImmediateType::QUAD_FLOAT>
+    {
+        using return_type = Float128;
     };
 
     typedef const std::vector<Field> FieldsType;

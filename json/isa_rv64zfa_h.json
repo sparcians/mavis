@@ -15,6 +15,7 @@
     "fixed" : ["rs2","rm"],
     "tags" : ["zfh", "zfa"],
     "form" : "Rfloat",
+    "xform" : "Rfloat_fli_h",
     "h-oper" : ["rd"],
     "type" : ["float", "arith"]
   },

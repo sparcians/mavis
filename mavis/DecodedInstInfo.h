@@ -277,6 +277,10 @@ namespace mavis
         const bool has_immediate;
         const uint64_t immediate;
         const int64_t signed_offset;
+        const Float16 half_float_immediate;
+        const Float32 single_float_immediate;
+        const Float64 double_float_immediate;
+        const Float128 quad_float_immediate;
         const uint32_t data_size;
         // const uint64_t function;
         uint64_t ext_itype =
@@ -437,6 +441,10 @@ namespace mavis
             has_immediate(extractor->hasImmediate()),
             immediate(extractor->getImmediate(icode)),
             signed_offset(extractor->getSignedOffset(icode)),
+            half_float_immediate(extractor->getHalfFloatImmediate(icode)),
+            single_float_immediate(extractor->getSingleFloatImmediate(icode)),
+            double_float_immediate(extractor->getDoubleFloatImmediate(icode)),
+            quad_float_immediate(extractor->getQuadFloatImmediate(icode)),
             data_size(meta->getDataSize()),
             special_fields(extractor->getSpecialFields(icode, meta))
         // function(extractor->getFunction(icode))

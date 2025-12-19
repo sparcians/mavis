@@ -81,6 +81,14 @@ namespace mavis
         // ExtractorTraceInfo. Do we really need separate versions anymore?
         virtual int64_t getSignedOffset(Opcode icode) const = 0;
 
+        virtual Float16 getHalfFloatImmediate(Opcode icode) const { return Float16::zero(); }
+
+        virtual Float32 getSingleFloatImmediate(Opcode icode) const { return Float32::zero(); }
+
+        virtual Float64 getDoubleFloatImmediate(Opcode icode) const { return Float64::zero(); }
+
+        virtual Float128 getQuadFloatImmediate(Opcode icode) const { return Float128::zero(); }
+
         // Special fields are cached in DecodedInstInfo
         virtual InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType & meta) const = 0;
 
