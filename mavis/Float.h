@@ -200,6 +200,21 @@ namespace mavis
             setFraction(fraction);
         }
 
+        // Creates a Float object from the binary representation of a floating point value
+        static constexpr Float fromBits(const storage_type bits)
+        {
+            Float value;
+            value.data_ = bits;
+            return value;
+        }
+
+        // Creates a Float object from the binary representation of the high and low halves of
+        // a floating point value
+        static constexpr Float fromBits(const uint64_t high, const uint64_t low)
+        {
+            return fromBits((storage_type(high) << (bits / 2)) | storage_type(low));
+        }
+
         constexpr void setSign(const storage_type sign)
         {
             constexpr storage_type CLEAR_SIGN_MASK =
@@ -395,6 +410,9 @@ namespace mavis
             float_utils::formatFloat(os, val.asFloat());
             return os;
         }
+
+        // Writes the binary representation of the floating point value to a stream
+        void formatHex(std::ostream & os) const { os << std::format("{:x}", data_); }
     };
 
     using Float16 = Float<16>;
