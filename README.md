@@ -63,15 +63,15 @@ provide a local clone.  Then add the following to the project's CMakeLists.txt:
 # Bring in the mavis project/CMakeLists.txt to build Mavis
 add_subdirectory (<path to mavis>)
 
+# Setup Mavis include paths
+get_target_property(MAVIS_INCLUDES mavis INCLUDE_DIRECTORIES)
+include_directories(${MAVIS_INCLUDES})
+
 # Needed for Mavis to find the JSON files (path to be changed by the user)
 file(CREATE_LINK <path to mavis>/json ${CMAKE_CURRENT_BINARY_DIR}/mavis_isa_files SYMBOLIC)
 
 # Link Mavis with project
 target_link_libraries(<project> mavis)
-
-# Setup Mavis include paths
-get_target_property(MAVIS_INCLUDES mavis INCLUDE_DIRECTORIES)
-include_directories(${MAVIS_INCLUDES})
 ```
 
 ### Instantiating the Decoder
