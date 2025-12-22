@@ -593,7 +593,7 @@ namespace mavis
       static_assert(utils::isOneOf(ImmType, ImmediateType::HALF_FLOAT, ImmediateType::SINGLE_FLOAT, ImmediateType::DOUBLE_FLOAT, ImmediateType::QUAD_FLOAT));
 
       private:
-        static const std::string getName_()
+        static std::string getName_()
         {
             char suffix;
 

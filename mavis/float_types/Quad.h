@@ -9,21 +9,21 @@
     // Try to use STL types if we're in C++23 mode
     #if __cplusplus >= 202302L
         #include <stdfloat>
-    
+
         #ifdef __STDCPP_FLOAT128_T__
             #define MAVIS_FLOAT128 std::float128_t
         #endif
     #endif
-    
+
     // Use long double if the platform defines it as 128-bit
     #if !defined(MAVIS_FLOAT128) && LDBL_MANT_DIG == 113
         #define MAVIS_FLOAT128 long double
     #endif
-    
+
     // If that didn't catch it, try boost standard float type
     #ifndef MAVIS_FLOAT128
         #include <boost/cstdfloat.hpp>
-    
+
         #if defined(BOOST_FLOAT128_C) && !defined(MAVIS_FLOAT128)
             #define MAVIS_FLOAT128 boost::float128_t
             #if defined(__clang__) && !defined(__APPLE__)
@@ -31,7 +31,7 @@
             #endif
         #endif
     #endif
-    
+
     // Fall back to built-in float128 types if we haven't found one yet
     // These aren't available in Apple clang yet
     #if !defined(MAVIS_FLOAT128) && !(defined(__clang__) && defined(__APPLE__))
@@ -42,17 +42,22 @@
         #else
             #define __STDC_WANT_IEC_60559_TYPES_EXT__
             #include <cfloat>
-    
+
             #if !defined(MAVIS_FLOAT128) && defined(FLT128_MAX)
                 #define MAVIS_FLOAT128 _Float128
             #endif
         #endif
-    
+
         // If we've gotten this far it's unlikely there are built-in formatters for
         // 128 bit floats, so we'll use libquadmath
         #define FORMAT_FLOAT128_WITH_QUADMATH 1
     #endif
-    
+
+    // libstdc++ defines _GLIBCXX_FORMAT_F128 if std::format works with float128 types
+    #if !defined(_GLIBCXX_FORMAT_F128) && !defined(FORMAT_FLOAT128_WITH_QUADMATH)
+        #define FORMAT_FLOAT128_WITH_QUADMATH 1
+    #endif
+
     // Make sure libquadmath is available
     #ifdef FORMAT_FLOAT_128_WITH_QUADMATH
         #if __has_include(<quadmath.h>)
