@@ -77,7 +77,7 @@ template <typename... FloatTypes> struct FloatTester
                 [](const FloatLHS & lhs, const FloatRHS & rhs, const char op_char)
             { std::cout << "Testing " << lhs << ' ' << op_char << ' ' << rhs << ": "; };
 
-            for (const auto [val1, val2] : binary_op_values)
+            for (const auto& [val1, val2] : binary_op_values)
             {
                 const FloatLHS x(val1);
                 const FloatRHS y(val2);
