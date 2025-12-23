@@ -22,12 +22,13 @@
 
     // If that didn't catch it, try boost standard float type
     #ifndef MAVIS_FLOAT128
-        #include <boost/cstdfloat.hpp>
+        // Boost versions < 1.84 have a definition conflict with libstdc++ 14 and newer
+        #include <boost/version.hpp>
+        #if BOOST_VERSION >= 108400
+            #include <boost/cstdfloat.hpp>
 
-        #if defined(BOOST_FLOAT128_C) && !defined(MAVIS_FLOAT128)
-            #define MAVIS_FLOAT128 boost::float128_t
-            #if defined(__clang__) && !defined(__APPLE__)
-                #define FORMAT_FLOAT128_WITH_QUADMATH 1
+            #if defined(BOOST_FLOAT128_C) && !defined(MAVIS_FLOAT128)
+                #define MAVIS_FLOAT128 boost::float128_t
             #endif
         #endif
     #endif
@@ -47,19 +48,15 @@
                 #define MAVIS_FLOAT128 _Float128
             #endif
         #endif
-
-        // If we've gotten this far it's unlikely there are built-in formatters for
-        // 128 bit floats, so we'll use libquadmath
-        #define FORMAT_FLOAT128_WITH_QUADMATH 1
     #endif
 
     // libstdc++ defines _GLIBCXX_FORMAT_F128 if std::format works with float128 types
-    #if !defined(_GLIBCXX_FORMAT_F128) && !defined(FORMAT_FLOAT128_WITH_QUADMATH)
+    #if !defined(_GLIBCXX_FORMAT_F128) && !(defined(__clang__) && defined(__APPLE__))
         #define FORMAT_FLOAT128_WITH_QUADMATH 1
     #endif
 
     // Make sure libquadmath is available
-    #ifdef FORMAT_FLOAT_128_WITH_QUADMATH
+    #ifdef FORMAT_FLOAT128_WITH_QUADMATH
         #if __has_include(<quadmath.h>)
             #include <quadmath.h>
         #else
