@@ -172,9 +172,9 @@ namespace mavis
         // return icode;
         //}
 
-        uint64_t getSpecialField(SpecialField, Opcode, const InstMetaData::PtrType &) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode, const InstMetaData::PtrType &) const override
         {
-            throw InvalidExtractorSpecialFieldID(tinfo_.getMnemonic());
+            return InstMetaData::SpecialFieldsMap();
         }
 
         using ExtractorIF::dasmString; // tell the compiler all dasmString
