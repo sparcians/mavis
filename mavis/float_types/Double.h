@@ -15,10 +15,14 @@
 
 // If that didn't catch it, try boost standard float type
 #ifndef MAVIS_FLOAT64
-    #include <boost/cstdfloat.hpp>
+    // Boost versions < 1.84 have a definition conflict with libstdc++ 14 and newer
+    #include <boost/version.hpp>
+    #if BOOST_VERSION >= 108400
+        #include <boost/cstdfloat.hpp>
 
-    #if defined(BOOST_FLOAT64_C) && !defined(MAVIS_FLOAT64)
-        #define MAVIS_FLOAT64 boost::float64_t
+        #if defined(BOOST_FLOAT64_C) && !defined(MAVIS_FLOAT64)
+            #define MAVIS_FLOAT64 boost::float64_t
+        #endif
     #endif
 #endif
 
