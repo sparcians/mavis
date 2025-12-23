@@ -5,6 +5,16 @@
 #include "Inst.h"
 #include "uArchInfo.h"
 
+#include <iostream>
+#include <cstdlib> // for std::abort
+
+#define ASSERT_ALWAYS(condition) \
+    if (!(condition)) { \
+        std::cerr << "Assertion failed: " << #condition << ", file " << __FILE__ \
+                  << ", line " << __LINE__ << std::endl; \
+        std::abort(); \
+    }
+
 struct ExampleTraceInfo
 {
     std::string mnemonic;
@@ -36,7 +46,7 @@ void testException(Callback && callback)
     {
         saw_exception = true;
     }
-    assert(saw_exception);
+    ASSERT_ALWAYS(saw_exception);
 }
 
 template <bool is_elf>
@@ -66,20 +76,20 @@ int main(int argc, char* argv[])
         const auto rv32g_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
             "rv32gcb", "json/riscv_isa_spec.json", "json");
 
-        assert(rv32g_man.isEnabled("i"));
+        ASSERT_ALWAYS(rv32g_man.isEnabled("i"));
 
-        assert(rv32g_man.isEnabled("zba"));
-        assert(!rv32g_man.isEnabled("v"));
+        ASSERT_ALWAYS(rv32g_man.isEnabled("zba"));
+        ASSERT_ALWAYS(!rv32g_man.isEnabled("v"));
     }
 
     {
         const auto rv64g_man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
             "rv64gcbv", "json/riscv_isa_spec.json", "json");
 
-        assert(rv64g_man.isEnabled("i"));
+        ASSERT_ALWAYS(rv64g_man.isEnabled("i"));
 
-        assert(rv64g_man.isEnabled("zba"));
-        assert(rv64g_man.isEnabled("v"));
+        ASSERT_ALWAYS(rv64g_man.isEnabled("zba"));
+        ASSERT_ALWAYS(rv64g_man.isEnabled("v"));
     }
 
     {
@@ -95,22 +105,22 @@ int main(int argc, char* argv[])
                 "json/riscv_isa_spec.json", "json");
         rv_generic_man.setISA("rv64gcbv");
 
-        assert(rv_generic_man.getXLEN() == 64);
-        assert(rv_generic_man.isEnabled("i"));
+        ASSERT_ALWAYS(rv_generic_man.getXLEN() == 64);
+        ASSERT_ALWAYS(rv_generic_man.isEnabled("i"));
 
-        assert(rv_generic_man.isEnabled("zba"));
-        assert(rv_generic_man.isEnabled("v"));
+        ASSERT_ALWAYS(rv_generic_man.isEnabled("zba"));
+        ASSERT_ALWAYS(rv_generic_man.isEnabled("v"));
 
         // Test enabled_by behavior - c + d (implied by g) should enable zcd
-        assert(rv_generic_man.isEnabled("zcd"));
+        ASSERT_ALWAYS(rv_generic_man.isEnabled("zcd"));
 
         rv_generic_man.setISA("rv32gcb");
 
-        assert(rv_generic_man.getXLEN() == 32);
-        assert(rv_generic_man.isEnabled("i"));
+        ASSERT_ALWAYS(rv_generic_man.getXLEN() == 32);
+        ASSERT_ALWAYS(rv_generic_man.isEnabled("i"));
 
-        assert(rv_generic_man.isEnabled("zba"));
-        assert(!rv_generic_man.isEnabled("v"));
+        ASSERT_ALWAYS(rv_generic_man.isEnabled("zba"));
+        ASSERT_ALWAYS(!rv_generic_man.isEnabled("v"));
     }
 
     testFailingISAString<mavis::extension_manager::InvalidISAStringException>("rv16gc");
@@ -176,66 +186,66 @@ int main(int argc, char* argv[])
         man.disableExtension("d");
         auto new_jsons = man.getJSONs();
         // Disabling d will disable both d and zcd
-        assert(orig_jsons.size() == new_jsons.size() + 2);
+        ASSERT_ALWAYS(orig_jsons.size() == new_jsons.size() + 2);
         man.enableExtension("d");
         new_jsons = man.getJSONs();
-        assert(std::set(orig_jsons.begin(), orig_jsons.end())
+        ASSERT_ALWAYS(std::set(orig_jsons.begin(), orig_jsons.end())
                == std::set(new_jsons.begin(), new_jsons.end()));
         man.disableExtensions({"zicsr", "zifencei"});
         new_jsons = man.getJSONs();
-        assert(orig_jsons.size() == new_jsons.size() + 2);
+        ASSERT_ALWAYS(orig_jsons.size() == new_jsons.size() + 2);
     }
 
     {
         // Test dependent extension behavior when enabling/disabling
         auto man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
             "rv32imafdcv_zicsr", "json/riscv_isa_spec.json", "json");
-        assert(man.isEnabled("f"));
-        assert(man.isEnabled("d"));
-        assert(man.isEnabled("zcf"));
-        assert(man.isEnabled("zcd"));
-        assert(man.isEnabled("zve32f"));
-        assert(man.isEnabled("zve64d"));
+        ASSERT_ALWAYS(man.isEnabled("f"));
+        ASSERT_ALWAYS(man.isEnabled("d"));
+        ASSERT_ALWAYS(man.isEnabled("zcf"));
+        ASSERT_ALWAYS(man.isEnabled("zcd"));
+        ASSERT_ALWAYS(man.isEnabled("zve32f"));
+        ASSERT_ALWAYS(man.isEnabled("zve64d"));
 
         man.disableExtension("f");
-        assert(!man.isEnabled("f"));
-        assert(!man.isEnabled("d"));
-        assert(!man.isEnabled("zcf"));
-        assert(!man.isEnabled("zcd"));
-        assert(!man.isEnabled("zve32f"));
-        assert(!man.isEnabled("zve64d"));
+        ASSERT_ALWAYS(!man.isEnabled("f"));
+        ASSERT_ALWAYS(!man.isEnabled("d"));
+        ASSERT_ALWAYS(!man.isEnabled("zcf"));
+        ASSERT_ALWAYS(!man.isEnabled("zcd"));
+        ASSERT_ALWAYS(!man.isEnabled("zve32f"));
+        ASSERT_ALWAYS(!man.isEnabled("zve64d"));
 
         man.enableExtension("f");
-        assert(man.isEnabled("f"));
-        assert(man.isEnabled("d"));
-        assert(man.isEnabled("zcf"));
-        assert(man.isEnabled("zcd"));
-        assert(man.isEnabled("zve32f"));
-        assert(man.isEnabled("zve64d"));
+        ASSERT_ALWAYS(man.isEnabled("f"));
+        ASSERT_ALWAYS(man.isEnabled("d"));
+        ASSERT_ALWAYS(man.isEnabled("zcf"));
+        ASSERT_ALWAYS(man.isEnabled("zcd"));
+        ASSERT_ALWAYS(man.isEnabled("zve32f"));
+        ASSERT_ALWAYS(man.isEnabled("zve64d"));
 
         man.disableExtension("d");
-        assert(man.isEnabled("f"));
-        assert(!man.isEnabled("d"));
-        assert(man.isEnabled("zcf"));
-        assert(!man.isEnabled("zcd"));
-        assert(man.isEnabled("zve32f"));
-        assert(!man.isEnabled("zve64d"));
+        ASSERT_ALWAYS(man.isEnabled("f"));
+        ASSERT_ALWAYS(!man.isEnabled("d"));
+        ASSERT_ALWAYS(man.isEnabled("zcf"));
+        ASSERT_ALWAYS(!man.isEnabled("zcd"));
+        ASSERT_ALWAYS(man.isEnabled("zve32f"));
+        ASSERT_ALWAYS(!man.isEnabled("zve64d"));
 
         man.disableExtension("f");
-        assert(!man.isEnabled("f"));
-        assert(!man.isEnabled("d"));
-        assert(!man.isEnabled("zcf"));
-        assert(!man.isEnabled("zcd"));
-        assert(!man.isEnabled("zve32f"));
-        assert(!man.isEnabled("zve64d"));
+        ASSERT_ALWAYS(!man.isEnabled("f"));
+        ASSERT_ALWAYS(!man.isEnabled("d"));
+        ASSERT_ALWAYS(!man.isEnabled("zcf"));
+        ASSERT_ALWAYS(!man.isEnabled("zcd"));
+        ASSERT_ALWAYS(!man.isEnabled("zve32f"));
+        ASSERT_ALWAYS(!man.isEnabled("zve64d"));
 
         man.enableExtension("f");
-        assert(man.isEnabled("f"));
-        assert(!man.isEnabled("d"));
-        assert(man.isEnabled("zcf"));
-        assert(!man.isEnabled("zcd"));
-        assert(man.isEnabled("zve32f"));
-        assert(!man.isEnabled("zve64d"));
+        ASSERT_ALWAYS(man.isEnabled("f"));
+        ASSERT_ALWAYS(!man.isEnabled("d"));
+        ASSERT_ALWAYS(man.isEnabled("zcf"));
+        ASSERT_ALWAYS(!man.isEnabled("zcd"));
+        ASSERT_ALWAYS(man.isEnabled("zve32f"));
+        ASSERT_ALWAYS(!man.isEnabled("zve64d"));
     }
 
     {
@@ -270,9 +280,9 @@ int main(int argc, char* argv[])
         // Test isExtensionSupported
         auto man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
             "rv64gc_zicsr_zifencei", "json/riscv_isa_spec.json", "json");
-        assert(man.isExtensionSupported("i"));
-        assert(man.isExtensionSupported("c"));
-        assert(!man.isExtensionSupported("znotanextension"));
+        ASSERT_ALWAYS(man.isExtensionSupported("i"));
+        ASSERT_ALWAYS(man.isExtensionSupported("c"));
+        ASSERT_ALWAYS(!man.isExtensionSupported("znotanextension"));
     }
 
     {
@@ -280,44 +290,44 @@ int main(int argc, char* argv[])
         auto man = mavis::extension_manager::riscv::RISCVExtensionManager::fromISA(
             "rv32gc_zbb_zbkb", "json/riscv_isa_spec.json", "json");
 
-        assert(man.isEnabled("zbb"));
-        assert(man.isEnabled("zbkb"));
+        ASSERT_ALWAYS(man.isEnabled("zbb"));
+        ASSERT_ALWAYS(man.isEnabled("zbkb"));
         // This method asks without checking if an extension is internal
-        assert(man.isEnabled("zbb_zbkb_common"));
-        assert(man.isEnabled("g"));
+        ASSERT_ALWAYS(man.isEnabled("zbb_zbkb_common"));
+        ASSERT_ALWAYS(man.isEnabled("g"));
 
         {
             // This view will filter out internal extensions
             const auto & enabled_extensions = man.getEnabledExtensions();
-            assert(enabled_extensions.isEnabled("zbb"));
-            assert(enabled_extensions.isEnabled("zbkb"));
-            assert(!enabled_extensions.isEnabled("zbb_zbkb_common"));
-            assert(enabled_extensions.isEnabled("g"));
-            assert(enabled_extensions.isEnabled("i"));
-            assert(enabled_extensions.isEnabled("m"));
-            assert(enabled_extensions.isEnabled("a"));
-            assert(enabled_extensions.isEnabled("f"));
-            assert(enabled_extensions.isEnabled("d"));
-            assert(enabled_extensions.isEnabled("zaamo"));
-            assert(enabled_extensions.isEnabled("zalrsc"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("zbb"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("zbkb"));
+            ASSERT_ALWAYS(!enabled_extensions.isEnabled("zbb_zbkb_common"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("g"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("i"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("m"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("a"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("f"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("d"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("zaamo"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("zalrsc"));
         }
 
         {
             // This view will also filter out meta-extensions
             const auto & enabled_extensions = man.getEnabledExtensions(false);
-            assert(enabled_extensions.isEnabled("zbb"));
-            assert(enabled_extensions.isEnabled("zbkb"));
-            assert(!enabled_extensions.isEnabled("zbb_zbkb_common"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("zbb"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("zbkb"));
+            ASSERT_ALWAYS(!enabled_extensions.isEnabled("zbb_zbkb_common"));
             // g is a meta extension
-            assert(!enabled_extensions.isEnabled("g"));
-            assert(enabled_extensions.isEnabled("i"));
-            assert(enabled_extensions.isEnabled("m"));
+            ASSERT_ALWAYS(!enabled_extensions.isEnabled("g"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("i"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("m"));
             // a is a meta extension
-            assert(!enabled_extensions.isEnabled("a"));
-            assert(enabled_extensions.isEnabled("f"));
-            assert(enabled_extensions.isEnabled("d"));
-            assert(enabled_extensions.isEnabled("zaamo"));
-            assert(enabled_extensions.isEnabled("zalrsc"));
+            ASSERT_ALWAYS(!enabled_extensions.isEnabled("a"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("f"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("d"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("zaamo"));
+            ASSERT_ALWAYS(enabled_extensions.isEnabled("zalrsc"));
         }
     }
     return 0;
