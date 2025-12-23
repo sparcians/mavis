@@ -23,7 +23,10 @@ template <typename... FloatTypes> struct FloatTester
             result = lhs == rhs;
         }
         std::cout << (result ? "PASSED" : "FAILED") << std::endl;
-        assert(result);
+        if(!result) {
+            throw std::runtime_error("result failed, expected " + std::to_string(rhs) +
+                                     " got " + std::to_string(float_t(lhs)));
+        }
     };
 
     template <typename... Args> static void printHeader(Args &&... args)
