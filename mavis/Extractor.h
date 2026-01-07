@@ -81,13 +81,13 @@ namespace mavis
         // ExtractorTraceInfo. Do we really need separate versions anymore?
         virtual int64_t getSignedOffset(Opcode icode) const = 0;
 
-        virtual Float16 getHalfFloatImmediate(Opcode icode) const { return Float16::zero(); }
+        virtual Float16 getHalfFloatImmediate(Opcode) const { return Float16::zero(); }
 
-        virtual Float32 getSingleFloatImmediate(Opcode icode) const { return Float32::zero(); }
+        virtual Float32 getSingleFloatImmediate(Opcode) const { return Float32::zero(); }
 
-        virtual Float64 getDoubleFloatImmediate(Opcode icode) const { return Float64::zero(); }
+        virtual Float64 getDoubleFloatImmediate(Opcode) const { return Float64::zero(); }
 
-        virtual Float128 getQuadFloatImmediate(Opcode icode) const { return Float128::zero(); }
+        virtual Float128 getQuadFloatImmediate(Opcode) const { return Float128::zero(); }
 
         // Special fields are cached in DecodedInstInfo
         virtual InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType & meta) const = 0;
@@ -157,6 +157,7 @@ namespace mavis
         OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType &,
                                          bool suppress_x0 = false) const override
         {
+            (void)suppress_x0;
             return {};
         }
 
@@ -164,15 +165,16 @@ namespace mavis
         OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType &,
                                        bool suppress_x0 = false) const override
         {
+            (void)suppress_x0;
             return {};
         }
 
         // Default implementation returns 0
-        uint64_t getImmediate(const Opcode icode) const override { return 0; }
+        uint64_t getImmediate(const Opcode) const override { return 0; }
 
         int64_t getSignedOffset(const Opcode icode) const override { return getImmediate(icode); }
 
-        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode icode, const InstMetaData::PtrType &) const override
+        InstMetaData::SpecialFieldsMap getSpecialFields(Opcode, const InstMetaData::PtrType &) const override
         {
             return InstMetaData::SpecialFieldsMap();
         }

@@ -33,12 +33,14 @@ namespace mavis
         static inline const Field & getField(const idType fid)
         {
             assert(fid == idType::FAMILY);
+            (void)fid;
             return family_;
         }
 
         static inline uint64_t extract(const idType fid, const uint64_t icode)
         {
             assert(fid == idType::FAMILY);
+            (void)fid;
             return family_.extract(icode);
         }
 

@@ -110,7 +110,7 @@ namespace mavis
         InstructionUniqueID getUID() const override { return uid_; }
 
         // Default implementation returns 0 bitset
-        uint64_t getSourceRegs(const Opcode icode) const override { return 0; }
+        uint64_t getSourceRegs(const Opcode) const override { return 0; }
 
         // Default implementation returns 0 bitset
         uint64_t getSourceAddressRegs(const Opcode) const override { return 0; }
@@ -125,6 +125,7 @@ namespace mavis
         OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType &,
                                          bool suppress_x0 = false) const override
         {
+            (void)suppress_x0;
             return {};
         }
 
@@ -132,6 +133,7 @@ namespace mavis
         OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType &,
                                        bool suppress_x0 = false) const override
         {
+            (void)suppress_x0;
             return {};
         }
 
@@ -176,7 +178,7 @@ namespace mavis
 
         const std::string & getDasmAnnotation() const override { return annotation_; }
 
-        void print(std::ostream & os) const override
+        void print(std::ostream &) const override
         {
             // TODO: Need a print function
         }
@@ -386,6 +388,7 @@ namespace mavis
         OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType & meta,
                                          bool suppress_x0 = false) const override
         {
+            (void)suppress_x0;
             OperandInfo olist;
             std::underlying_type_t<InstMetaData::OperandFieldID> field_id =
                 static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(
@@ -419,6 +422,7 @@ namespace mavis
         OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType & meta,
                                        bool suppress_x0 = false) const override
         {
+            (void)suppress_x0;
             OperandInfo olist;
             std::underlying_type_t<InstMetaData::OperandFieldID> field_id =
                 static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(
@@ -607,15 +611,17 @@ namespace mavis
             return dst_bits;
         }
 
-        OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType & meta,
+        OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType &,
                                          bool suppress_x0 = false) const override
         {
+            (void)suppress_x0;
             return sources_;
         }
 
-        OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType & meta,
+        OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType &,
                                        bool suppress_x0 = false) const override
         {
+            (void)suppress_x0;
             return dests_;
         }
 

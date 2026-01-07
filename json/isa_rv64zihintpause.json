@@ -4,7 +4,7 @@
     "tags" : ["zihintpause"],
     "form" : "FENCE",
     "xform" : "I",
-    "fixed" : ["rs1", "rd"],
+    "fixed" : ["rs1", "rd", "fm", "pred", "succ"],
     "stencil" : "0x0100000f",
     "type" : ["fence"]
   }
