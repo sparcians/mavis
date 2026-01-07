@@ -1031,7 +1031,10 @@ namespace mavis::extension_manager
             {
                 addDependencyGraphEdge_(extension, dep);
             }
+#else
+            (void)dep;
 #endif
+
         }
 
         template <DependencyType type>
@@ -1854,7 +1857,7 @@ namespace mavis::extension_manager
         bool isDisabled(const std::string & extension) const
         {
             assertISAInitialized_();
-            return enabled_arch_->second.isDisabled();
+            return enabled_arch_->second.isDisabled(extension);
         }
 
         ExtensionMapView getEnabledExtensions(const bool include_meta_extensions = true) const

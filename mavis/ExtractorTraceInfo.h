@@ -78,8 +78,8 @@ namespace mavis
         // }
 
         // TODO: Finish this
-        uint64_t getSourceOperTypeRegs(const Opcode, const InstMetaData::PtrType & meta,
-                                       InstMetaData::OperandTypes kind) const override
+        uint64_t getSourceOperTypeRegs(const Opcode, const InstMetaData::PtrType &,
+                                       InstMetaData::OperandTypes) const override
         {
             return 0;
         }
@@ -93,8 +93,8 @@ namespace mavis
         //}
 
         // TODO: Finish this
-        uint64_t getDestOperTypeRegs(const Opcode, const InstMetaData::PtrType & meta,
-                                     InstMetaData::OperandTypes kind) const override
+        uint64_t getDestOperTypeRegs(const Opcode, const InstMetaData::PtrType &,
+                                     InstMetaData::OperandTypes) const override
         {
             return 0;
         }
@@ -188,7 +188,7 @@ namespace mavis
         // TODO: If we need annotations for disassembly for trace extractors, we
         // can add it here. See the implementation in ExtractorDirectInfoBase as a
         // reference
-        void dasmAnnotate(const std::string & txt) override { assert(false); }
+        void dasmAnnotate(const std::string &) override { assert(false); }
 
         const std::string & getDasmAnnotation() const override
         {
@@ -197,7 +197,7 @@ namespace mavis
             return empty;
         }
 
-        void print(std::ostream & os) const override
+        void print(std::ostream &) const override
         {
             // TODO: Need a print function
         }

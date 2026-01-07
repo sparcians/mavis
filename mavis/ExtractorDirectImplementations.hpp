@@ -103,16 +103,18 @@ public:
     }
 
     OperandInfo getSourceOperandInfo(Opcode,
-                                     const InstMetaData::PtrType& meta,
+                                     const InstMetaData::PtrType&,
                                      bool suppress_x0 = false) const override
     {
+        (void)suppress_x0;
         return sources_;
     }
 
     OperandInfo getDestOperandInfo(Opcode,
-                                   const InstMetaData::PtrType& meta,
+                                   const InstMetaData::PtrType&,
                                    bool suppress_x0 = false) const override
     {
+        (void)suppress_x0;
         return dests_;
     }
 
@@ -193,6 +195,7 @@ public:
     OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType& meta,
                                      bool suppress_x0 = false) const override
     {
+        (void)suppress_x0;
         OperandInfo olist;
         RegListType src_list = bitmaskToRegList_(sources_);
         for (const auto& reg : src_list) {
@@ -205,6 +208,7 @@ public:
     OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType& meta,
                                    bool suppress_x0 = false) const override
     {
+        (void)suppress_x0;
         OperandInfo olist;
         RegListType dst_list = bitmaskToRegList_(dests_);
         for (const auto& reg : dst_list) {
@@ -287,7 +291,7 @@ public:
         return src_bits;
     }
 
-    uint64_t getSourceDataRegs(const uint64_t icode) const override
+    uint64_t getSourceDataRegs(const uint64_t) const override
     {
         uint64_t src_bits = 0;
         for (const auto reg : data_sources_) {
@@ -308,6 +312,7 @@ public:
     OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType& meta,
                                      bool suppress_x0 = false) const override
     {
+        (void)suppress_x0;
         OperandInfo olist;
         // Order is important here, first address sources, then data sources. This is to match
         // up with the FormGeneric ordering in parsing the JSON information...
@@ -385,7 +390,7 @@ public:
     //    return bitmaskToRegList_(addr_sources);
     //}
 
-    uint64_t getSourceDataRegs(const uint64_t icode) const override
+    uint64_t getSourceDataRegs(const uint64_t) const override
     {
         return data_sources_;
     }
@@ -410,6 +415,7 @@ public:
     OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType& meta,
                                      bool suppress_x0 = false) const override
     {
+        (void)suppress_x0;
         OperandInfo olist;
         RegListType addr_list = bitmaskToRegList_(addr_sources_);
         for (const auto& reg : addr_list) {
@@ -497,6 +503,7 @@ public:
     OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType& meta,
                                      bool suppress_x0 = false) const override
     {
+        (void)suppress_x0;
         OperandInfo olist;
         RegListType addr_list = bitmaskToRegList_(addr_sources_);
         for (const auto& reg : addr_list) {
@@ -514,6 +521,7 @@ public:
     OperandInfo getDestOperandInfo(Opcode, const InstMetaData::PtrType& meta,
                                    bool suppress_x0 = false) const override
     {
+        (void)suppress_x0;
         OperandInfo olist;
         RegListType dst_list = bitmaskToRegList_(dests_);
         for (const auto& reg : dst_list) {

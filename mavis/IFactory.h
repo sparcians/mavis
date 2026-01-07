@@ -452,7 +452,7 @@ namespace mavis
 #endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
-        getInfo(const std::string & mnemonic, Opcode, const ExtractorIF::PtrType &) override
+        getInfo(const std::string &, Opcode, const ExtractorIF::PtrType &) override
         {
             assert(false);
             return nullptr;
