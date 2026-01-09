@@ -214,6 +214,8 @@ make
 ./mavis_decode -a rv64g -o 0x0001b283
 ```
 
+## Supported Extensions
+
 | RVA23U64 Mandatory Extensions | Status |
 | :---------------------------- | :----: |
 | **M** Integer multiplication and division. | :white_check_mark: |
