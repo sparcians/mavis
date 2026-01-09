@@ -595,6 +595,22 @@
       "json": "isa_rv32zcmt.json"
     },
     {
+      "xlen": 32,
+      "extension": "zimop",
+      "json": "isa_rv32zimop.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zimop",
+      "json": "isa_rv64zimop.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zicfiss",
+      "requires": ["zimop"],
+      "json": "isa_rv64zicfiss.json"
+    },
+    {
       "xlen": [32, 64],
       "extension": "svinval",
       "json": "isa_rv64svinval.json"

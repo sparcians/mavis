@@ -1,0 +1,12 @@
+[
+    {
+        "mnemonic" : "sspush",
+        "tags" : ["sspush"],
+        "overlay" : {
+            "base" : "mop.rr.7",
+            "match" : ["0x00100000", "0x00100000"]
+        },
+        "form" : "R",
+        "type" : ["int"]
+    }
+]

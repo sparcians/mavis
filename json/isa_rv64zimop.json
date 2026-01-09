@@ -1,0 +1,66 @@
+[
+    {
+        "mnemonic" : "mop.rr.0",
+        "tags" : ["mop"],
+        "form" : "R",
+        "stencil" : "0x82004073",
+        "type" : ["int"],
+        "l-oper" : "all"
+    },
+    {
+        "mnemonic" : "mop.rr.1",
+        "tags" : ["mop"],
+        "form" : "R",
+        "stencil" : "0x86004073",
+        "type" : ["int"],
+        "l-oper" : "all"
+    },
+    {
+        "mnemonic" : "mop.rr.2",
+        "tags" : ["mop"],
+        "form" : "R",
+        "stencil" : "0x8a004073",
+        "type" : ["int"],
+        "l-oper" : "all"
+    },
+    {
+        "mnemonic" : "mop.rr.3",
+        "tags" : ["mop"],
+        "form" : "R",
+        "stencil" : "0x8e004073",
+        "type" : ["int"],
+        "l-oper" : "all"
+    },
+    {
+        "mnemonic" : "mop.rr.4",
+        "tags" : ["mop"],
+        "form" : "R",
+        "stencil" : "0xc2004073",
+        "type" : ["int"],
+        "l-oper" : "all"
+    },
+    {
+        "mnemonic" : "mop.rr.5",
+        "tags" : ["mop"],
+        "form" : "R",
+        "stencil" : "0xc6004073",
+        "type" : ["int"],
+        "l-oper" : "all"
+    },
+    {
+        "mnemonic" : "mop.rr.6",
+        "tags" : ["mop"],
+        "form" : "R",
+        "stencil" : "0xca004073",
+        "type" : ["int"],
+        "l-oper" : "all"
+    },
+    {
+        "mnemonic" : "mop.rr.7",
+        "tags" : ["mop"],
+        "form" : "R",
+        "stencil" : "0xce004073",
+        "type" : ["int"],
+        "l-oper" : "all"
+    }
+]
