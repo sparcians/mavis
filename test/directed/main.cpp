@@ -160,6 +160,19 @@ int main(int argc, char** argv)
                         std::cout << "None";
                     }
                     std::cout << std::endl;
+                    std::cout << "Inst tags      : ";
+                    comma.clear();
+                    const auto tagv = inst->getTags().getV();
+                    for (auto tag : tagv)
+                    {
+                        std::cout << comma << tag.getV();
+                        comma = ", ";
+                    }
+                    if (comma.empty()) {
+                        std::cout << "None";
+                    }
+                    std::cout << std::endl;
+
                     std::cout << "Src List: " << std::endl;
                     for (const auto & op : inst->getSourceOpInfoList())
                     {
