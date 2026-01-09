@@ -529,7 +529,7 @@ namespace mavis
 
         uint32_t getDataSize() const { return data_size_; }
 
-        const MatchSet<Tag> getTags() const { return tags_; }
+        const MatchSet<Tag> & getTags() const { return tags_; }
 
         static const std::string & getFieldIDName(OperandFieldID fid);
 
