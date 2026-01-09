@@ -412,7 +412,7 @@ namespace mavis
 
         typename IFactoryIF<InstType, AnnotationType>::PtrType
         buildLeaf_(const FormBase* form,
-                   const typename IFactoryIF<InstType, AnnotationType>::PtrType & currNode,
+                   const typename IFactoryIF<InstType, AnnotationType>::PtrType & curr_node,
                    const std::string & mnemonic, Opcode istencil, const FieldNameListType & flist,
                    const std::string & factory_name, const std::string & xpand_name,
                    ExtractorIF::PtrType override_extractor, InstMetaData::PtrType & meta,
