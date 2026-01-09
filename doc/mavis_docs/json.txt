@@ -42,11 +42,22 @@
      - `AMO` for atomic instructions
      - `CSR` for CSR instructions
      - `Rfloat` for FP register instructions
-  
+
   The following fields are optional:
   - `expand`: for compressed instructions. gives mnemonic of instruction to exapand to
   - `xform`: extraction form override
-  - `overlay`: overlay instructions. Overlay instructions don't require form, but need to have `xform` instead. 
+  - `overlay`: overlay instructions. Overlay instructions don't require form, but need to have `xform` instead.
+
+  An `overlay` tells Mavis that an instruction's opcode overlays
+  another instruction's generic form.  The `overlay` must contain two
+  elements: the base it overlays (via mnemonic) and how it matches (mask + opcode):
+
+  ```
+     "overlay" : }
+         "base" : "<mnemonic_match>",  // For example, "ori"
+         "match" : [ "0x<mask>", "0x<opcode>"] // For example, ["0xFFFFFF80", "0x12345600"]
+     }
+  ```
 
   Metadata. The following fields are not used by Mavis to build the instructions themselves,
   but they are added as metadata (mavis::InstMetaData stored in mavis::InstMetaDataRegistry):
