@@ -257,16 +257,16 @@ namespace mavis
     typename IFactoryIF<InstType, AnnotationType>::PtrType
     DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildLeaf_(
         const FormBase* form,
-        const typename IFactoryIF<InstType, AnnotationType>::PtrType & currNode,
+        const typename IFactoryIF<InstType, AnnotationType>::PtrType & curr_node,
         const std::string & mnemonic, const Opcode istencil, const FieldNameListType & flist,
         const std::string & factory_name, const std::string & xpand_name,
         ExtractorIF::PtrType override_extractor, InstMetaData::PtrType & meta,
         const typename IFactoryIF<InstType, AnnotationType>::PtrType & shared_ifact)
     {
-        if (currNode == nullptr)
+        if (curr_node == nullptr)
         {
             std::cout << root_ << std::endl;
-            assert(currNode != nullptr);
+            assert(curr_node != nullptr);
         }
 
         // If we're given an expansion, use that mnemonic instead
@@ -282,11 +282,11 @@ namespace mavis
         }
 
         // IFactorySpecialCaseComposite<InstType, AnnotationType> *parent =  // just for now...
-        // dynamic_cast<IFactorySpecialCaseComposite<InstType, AnnotationType> *>(currNode);
+        // dynamic_cast<IFactorySpecialCaseComposite<InstType, AnnotationType> *>(curr_node);
         std::shared_ptr<IFactorySpecialCaseComposite<InstType, AnnotationType>>
             parent = // just for now...
             std::dynamic_pointer_cast<IFactorySpecialCaseComposite<InstType, AnnotationType>>(
-                currNode);
+                curr_node);
 
         // If parent is NULL, then we're not at an IFactorySpecialCaseComposite node
         // This happens when we're trying to build an instruction whose encoding is
@@ -317,7 +317,7 @@ namespace mavis
         // At LEAF...
         if (parent->getNode(istencil) == nullptr)
         {
-            // currNode->addIFactory(istencil, new IFactory<Form_R>(mnemonic));
+            // curr_node->addIFactory(istencil, new IFactory<Form_R>(mnemonic));
             //  IFactoryIF *ifact = builder_.build<FormType>(factory_name, istencil);
             parent->addIFactory(mnemonic, istencil, ifact, override_extractor);
             // Show the newly added LEAF factory
@@ -356,24 +356,24 @@ namespace mavis
     {
         assert(form != nullptr);
 
-        typename IFactoryIF<InstType, AnnotationType>::PtrType currNode = root_;
+        typename IFactoryIF<InstType, AnnotationType>::PtrType curr_node = root_;
 
         const FieldsType & fields = form->getOpcodeFields();
         const uint32_t n_fields = fields.size();
         assert(n_fields > 0);
 
         // At ROOT node...
-        if (currNode->getNode(istencil) == nullptr)
+        if (curr_node->getNode(istencil) == nullptr)
         {
-            currNode->addIFactory(
+            curr_node->addIFactory(
                 istencil, typename IFactoryIF<InstType, AnnotationType>::PtrType(
-                              new IFactoryDenseComposite<InstType, AnnotationType>(fields[0])));
+                    new IFactoryDenseComposite<InstType, AnnotationType>(fields[0])));
         }
-        currNode = currNode->getNode(istencil); // Advance...
-        assert(currNode->getField() != nullptr);
-        if (!currNode->getField()->isEquivalent(fields[0]))
+        curr_node = curr_node->getNode(istencil); // Advance...
+        assert(curr_node->getField() != nullptr);
+        if (!curr_node->getField()->isEquivalent(fields[0]))
         {
-            throw BuildErrorFieldsIncompatible(mnemonic, *currNode->getField(), fields[0]);
+            throw BuildErrorFieldsIncompatible(mnemonic, *curr_node->getField(), fields[0]);
         }
 
         // At branch nodes...
@@ -384,56 +384,56 @@ namespace mavis
             // node's default, otherwise, we add the child to the node's TRIE table
             if (ignore_set.find(fields[i].getName()) != ignore_set.end())
             {
-                if (currNode->getDefault() == nullptr)
+                if (curr_node->getDefault() == nullptr)
                 {
-                    currNode->addDefaultIFactory(
+                    curr_node->addDefaultIFactory(
                         typename IFactoryIF<InstType, AnnotationType>::PtrType(
                             new IFactoryDenseComposite<InstType, AnnotationType>(fields[i + 1])));
                 }
-                currNode = currNode->getDefault(); // Advance...
+                curr_node = curr_node->getDefault(); // Advance...
             }
             else
             {
-                if (currNode->getNode(istencil) == nullptr)
+                if (curr_node->getNode(istencil) == nullptr)
                 {
-                    currNode->addIFactory(
+                    curr_node->addIFactory(
                         istencil,
                         typename IFactoryIF<InstType, AnnotationType>::PtrType(
                             new IFactoryDenseComposite<InstType, AnnotationType>(fields[i + 1])));
                 }
-                currNode = currNode->getNode(istencil); // Advance...
+                curr_node = curr_node->getNode(istencil); // Advance...
             }
-            assert(currNode->getField() != nullptr);
-            if (!currNode->getField()->isEquivalent(fields[i + 1]))
+            assert(curr_node->getField() != nullptr);
+            if (!curr_node->getField()->isEquivalent(fields[i + 1]))
             {
                 std::cerr << "ERROR with field collision on tree:" << std::endl;
-                currNode->print(std::cerr);
-                throw BuildErrorFieldsIncompatible(mnemonic, *currNode->getField(), fields[i + 1]);
+                curr_node->print(std::cerr);
+                throw BuildErrorFieldsIncompatible(mnemonic, *curr_node->getField(), fields[i + 1]);
             }
         }
 
         // Add the special case exclusions node to the last field's node
         if (ignore_set.find(fields[last_field].getName()) != ignore_set.end())
         {
-            if (currNode->getDefault() == nullptr)
+            if (curr_node->getDefault() == nullptr)
             {
-                currNode->addDefaultIFactory(typename IFactoryIF<InstType, AnnotationType>::PtrType(
-                    new IFactorySpecialCaseComposite<InstType, AnnotationType>()));
+                curr_node->addDefaultIFactory(typename IFactoryIF<InstType, AnnotationType>::PtrType(
+                                                  new IFactorySpecialCaseComposite<InstType, AnnotationType>()));
             }
-            currNode = currNode->getDefault(); // Advance...
+            curr_node = curr_node->getDefault(); // Advance...
         }
         else
         {
-            if (currNode->getNode(istencil) == nullptr)
+            if (curr_node->getNode(istencil) == nullptr)
             {
-                currNode->addIFactory(
+                curr_node->addIFactory(
                     istencil, typename IFactoryIF<InstType, AnnotationType>::PtrType(
-                                  new IFactorySpecialCaseComposite<InstType, AnnotationType>()));
+                        new IFactorySpecialCaseComposite<InstType, AnnotationType>()));
             }
-            currNode = currNode->getNode(istencil); // Advance...
+            curr_node = curr_node->getNode(istencil); // Advance...
         }
 
-        return buildLeaf_(form, currNode, mnemonic, istencil, flist, factory_name, xpand_name,
+        return buildLeaf_(form, curr_node, mnemonic, istencil, flist, factory_name, xpand_name,
                           override_extractor, einfo, shared_ifact);
     }
 
