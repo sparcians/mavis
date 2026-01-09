@@ -1222,5 +1222,11 @@
     "unit" : ["float"],
     "issue" : "float",
     "latency" : 1
+  },
+  {
+    "mnemonic" : "mop.rr.7",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
   }
 ]
