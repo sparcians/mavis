@@ -1228,5 +1228,11 @@
     "unit" : ["int"],
     "issue" : "int",
     "latency" : 1
+  },
+  {
+    "mnemonic" : "mop.r.28",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
   }
 ]

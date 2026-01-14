@@ -1,10 +1,37 @@
 [
     {
-        "mnemonic" : "sspush",
-        "tags" : ["sspush"],
+        "mnemonic" : "sspush x1",
+        "tags" : ["shadow"],
         "overlay" : {
             "base" : "mop.rr.7",
-            "match" : ["0x00100000", "0x00100000"]
+            "match" : ["0x00700000", "0x00100000"]
+        },
+        "type" : ["int"]
+    },
+    {
+        "mnemonic" : "sspush x5",
+        "tags" : ["shadow"],
+        "overlay" : {
+            "base" : "mop.rr.7",
+            "match" : ["0x00700000", "0x00500000"]
+        },
+        "type" : ["int"]
+    },
+    {
+        "mnemonic" : "spopchk x1",
+        "tags" : ["shadow"],
+        "overlay" : {
+            "base" : "mop.r.28",
+            "match" : ["0x0070000", "0x00010000"]
+        },
+        "type" : ["int"]
+    },
+    {
+        "mnemonic" : "spopchk x5",
+        "tags" : ["shadow"],
+        "overlay" : {
+            "base" : "mop.r.28",
+            "match" : ["0x0070000", "0x00050000"]
         },
         "type" : ["int"]
     }
