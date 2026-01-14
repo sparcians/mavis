@@ -1,6 +1,6 @@
 [
     {
-        "mnemonic" : "sspush x1",
+        "mnemonic" : "sspush",
         "tags" : ["shadow"],
         "overlay" : {
             "base" : "mop.rr.7",
@@ -9,7 +9,7 @@
         "type" : ["int"]
     },
     {
-        "mnemonic" : "sspush x5",
+        "mnemonic" : "sspush",
         "tags" : ["shadow"],
         "overlay" : {
             "base" : "mop.rr.7",
@@ -18,7 +18,7 @@
         "type" : ["int"]
     },
     {
-        "mnemonic" : "spopchk x1",
+        "mnemonic" : "sspopchk",
         "tags" : ["shadow"],
         "overlay" : {
             "base" : "mop.r.28",
@@ -27,7 +27,7 @@
         "type" : ["int"]
     },
     {
-        "mnemonic" : "spopchk x5",
+        "mnemonic" : "sspopchk",
         "tags" : ["shadow"],
         "overlay" : {
             "base" : "mop.r.28",

@@ -1251,6 +1251,56 @@ int main()
     assert(inst->getImmediate() == 0);
     assert(inst->hasImmediate() == true);
 
+    cout << "====== TESTING MOP =========" << endl;
+
+    mavis_facade.makeContext("MOP",
+                             {"json/isa_rv64i.json",
+                              "json/isa_rv64m.json",
+                              "json/isa_rv64zmmul.json",
+                              "json/isa_rv64f.json",
+                              "json/isa_rv64d.json",
+                              "json/isa_rv64zimop.json"},
+                             {});
+    mavis_facade.switchContext("MOP");
+
+    const uint32_t mopr = 0x81c04073;
+
+    for (uint32_t i = 0; i < 32; ++i) {
+        const uint32_t mopi = mopr | (((i & 0b10000) >> 4) << 30) |
+            (((i & 0b1100) >> 2) << 26) | ((i & 0b11) << 20);
+        inst = mavis_facade.makeInst(mopi, 0);
+        cout << "line " << dec << __LINE__ << ": " << "DASM: 0x"
+             << hex << mopi << " = " << inst->dasmString()
+             << endl;
+    }
+
+    mavis_facade.makeContext("MOP_zicfiss",
+                             {"json/isa_rv64i.json",
+                              "json/isa_rv64m.json",
+                              "json/isa_rv64zmmul.json",
+                              "json/isa_rv64f.json",
+                              "json/isa_rv64d.json",
+                              "json/isa_rv64zimop.json",
+                              "json/isa_rv64zicfiss.json"},
+                             {});
+    mavis_facade.switchContext("MOP_zicfiss");
+
+    // sspush x1
+    inst = mavis_facade.makeInst(0xce104073, 0);
+    assert(inst->getMnemonic() == "sspush");
+
+    // sspush x5
+    inst = mavis_facade.makeInst(0xce504073, 0);
+    assert(inst->getMnemonic() == "sspush");
+
+    // sspopchk x1
+    inst = mavis_facade.makeInst(0xcdc14073, 0);
+    assert(inst->getMnemonic() == "sspopchk");
+
+    // sspopchk x5
+    inst = mavis_facade.makeInst(0xcdc54073, 0);
+    assert(inst->getMnemonic() == "sspopchk");
+
     cout << "====== TESTING RV32 =========" << endl;
 
     // RV32
