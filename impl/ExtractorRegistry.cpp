@@ -80,6 +80,7 @@ namespace mavis
             {Form_ISH::name,                     std::make_shared<Extractor<Form_ISH>>()               },
             {Form_ISHW::name,                    std::make_shared<Extractor<Form_ISHW>>()              },
             {Form_J::name,                       std::make_shared<Extractor<Form_J>>()                 },
+            {Form_MOP::name,                     std::make_shared<Extractor<Form_MOP>>()               },
             {Form_NTL_hint::name,                std::make_shared<Extractor<Form_NTL_hint>>()          },
             {Form_PF_hint::name,                 std::make_shared<Extractor<Form_PF_hint>>()           },
             {Form_R::name,                       std::make_shared<Extractor<Form_R>>()                 },

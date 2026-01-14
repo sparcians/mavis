@@ -5,8 +5,8 @@ aspects of the code base.
 
 - Update/addition to json files (see json directory)
 - Creation of or reuse of an existing Extractor form
-- Creation of or reuse of a new type
-- Updating the RISC-V ISA spec
+- Creation of or reuse of new types
+- Updating the RISC-V ISA spec (`riscv_isa_spec.json`)
 - Updating Mavis' testers
 
 This document will illustrate the effort to add the `zimop` extension.
@@ -17,7 +17,6 @@ In the `json` directory, the file `isa_rv64zimop.json` is created and
 populated with basic stencil for the `mop.r` instruction.
 
 ```
-TBD
 ```
 
 For RV32, since the instruction is available in 32-bit form, a
@@ -29,8 +28,23 @@ ln -s isa_rv64zimop.json isa_rv32zimop.json
 
 > **_NOTE_** This might not be the case for all 32-bit instructions.
 
-For the `form` entry, since there are no RISC-V forms that match
-`mop.r`'s form, a new form is required, called `mop` (can be anything).
+For decoding, Mavis will use the `stencil` portion of the json
+listing.  To determine which fields of the stencil are used for
+decoding, the form is used, specifically the form's defined fields.
+
+There are common forms, based on the RISC-V standard opcode types
+(R-type, I-type, S-type, B-type) and those are defined in
+impl/forms/CommonForms.h.  Most RV instructions fall into one of these
+types.
+
+For `mop.r` there are no RISC-V forms that match `mop.r`'s form or any
+of the RISC-V standards. Specifically, the instruction has functional
+bits 31, 29-28, and 25-22 that are part of the opcode.
+
+In this case, a custom form must be created.
+
+> Why not use "xform"?  xform is for extraction of the dynamic portions
+> of the opcode, not for use in decoding
 
 For `mop.r` and `mop.r.r` operations are actually 32 instructions and
 8 instructions respectively based on the `n` field of the opcode, TBD...

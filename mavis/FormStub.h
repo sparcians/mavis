@@ -585,12 +585,25 @@ namespace mavis
     };
 
     /**
+     * Stub for Maybe Ops extractor
+     */
+    class Form_MOP
+    {
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{"MOP"};
+    };
+
+    /**
      * Stub for Rfloat_fli extractor
      */
     template<ImmediateType ImmType>
     class Form_Rfloat_fli
     {
-      static_assert(utils::isOneOf(ImmType, ImmediateType::HALF_FLOAT, ImmediateType::SINGLE_FLOAT, ImmediateType::DOUBLE_FLOAT, ImmediateType::QUAD_FLOAT));
+      static_assert(utils::isOneOf(ImmType, ImmediateType::HALF_FLOAT,
+                                   ImmediateType::SINGLE_FLOAT,
+                                   ImmediateType::DOUBLE_FLOAT,
+                                   ImmediateType::QUAD_FLOAT));
 
       private:
         static std::string getName_()

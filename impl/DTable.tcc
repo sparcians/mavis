@@ -373,6 +373,8 @@ namespace mavis
         assert(curr_node->getField() != nullptr);
         if (!curr_node->getField()->isEquivalent(fields[0]))
         {
+            std::cerr << "curr_node: ";
+            curr_node->print(std::cerr);
             throw BuildErrorFieldsIncompatible(mnemonic, *curr_node->getField(), fields[0]);
         }
 
