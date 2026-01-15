@@ -1257,7 +1257,7 @@ int main()
     ASSERT_ALWAYS(inst->getImmediate() == 0);
     ASSERT_ALWAYS(inst->hasImmediate() == true);
 
-    cout << "====== TESTING MOP =========" << endl;
+    cout << "====== TESTING MOP and zicfiss =========" << endl;
 
     mavis_facade.makeContext("MOP",
                              {"json/isa_rv64i.json",
@@ -1286,7 +1286,8 @@ int main()
                               "json/isa_rv64f.json",
                               "json/isa_rv64d.json",
                               "json/isa_rv64zimop.json",
-                              "json/isa_rv64zicfiss.json"},
+                              "json/isa_rv64zicfiss.json",
+                              "json/isa_rv64zicfiss_common.json"},
                              {});
     mavis_facade.switchContext("MOP_zicfiss");
 
@@ -1319,6 +1320,18 @@ int main()
     ASSERT_ALWAYS(inst->getMnemonic() == "ssrdp");
     cout << "line " << dec << __LINE__ << ": "
          << "DASM: 0xcdc54173 = " << inst->dasmString() << endl;
+
+    // ssamoswap.w
+    inst = mavis_facade.makeInst(0x4800202f, 0);
+    ASSERT_ALWAYS(inst->getMnemonic() == "ssamoswap.w");
+    cout << "line " << dec << __LINE__ << ": "
+         << "DASM: 0x4800202f = " << inst->dasmString() << endl;
+
+    // ssamoswap.d
+    inst = mavis_facade.makeInst(0x4800302f, 0);
+    ASSERT_ALWAYS(inst->getMnemonic() == "ssamoswap.d");
+    cout << "line " << dec << __LINE__ << ": "
+         << "DASM: 0x4800302f = " << inst->dasmString() << endl;
 
     cout << "====== TESTING RV32 =========" << endl;
 
