@@ -1,0 +1,11 @@
+[
+    {
+        "mnemonic" : "c.mop",
+        "tags" : ["mop"],
+        "expand" : "lui",
+        "form" : "C1",
+        "ignore" : ["func2", "func2b", "rd"],
+        "stencil" : "0x6081",
+        "xform" : "MOPC"
+    }
+]

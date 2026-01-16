@@ -3817,6 +3817,41 @@ namespace mavis
     };
 
     /**
+     * MOPC-Form Extractor
+     */
+    template <> class Extractor<Form_MOPC> : public ExtractorBase<Form_C1>
+    {
+      public:
+        Extractor() = default;
+
+        ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
+                                              const uint64_t fset) const override
+        {
+            return ExtractorIF::PtrType(new Extractor<Form_MOPC>(ffmask, fset));
+        }
+
+        using ExtractorIF::dasmString; // tell the compiler all dasmString
+                                       // overloads are considered
+
+        std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+        {
+            return mnemonic + "." + std::to_string((extract_(Form_C1::idType::RS1, icode) & 0b1110) >> 1);
+        }
+
+        // clang-format off
+        std::string dasmString(const std::string & mnemonic, const Opcode icode,
+                               const InstMetaData::PtrType & ) const override
+        {
+            return dasmString(mnemonic, icode);
+        }
+
+        // clang-format on
+
+      private:
+        Extractor(const uint64_t ffmask, const uint64_t fset) : ExtractorBase(ffmask) {}
+    };
+
+    /**
      * Shadow-Form Extractor
      */
     template <> class Extractor<Form_Shadow> : public ExtractorBase<Form_R>

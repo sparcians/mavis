@@ -43,6 +43,7 @@ namespace mavis
         {
             FUNC3 = 0,
             FUNC1,
+            FUNC1B,
             FUNC2,
             RS1,
             RD,

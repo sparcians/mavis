@@ -1234,5 +1234,17 @@
     "unit" : ["int"],
     "issue" : "int",
     "latency" : 1
+  },
+  {
+    "mnemonic" : "c.mop",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.lui",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
   }
 ]

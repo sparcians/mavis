@@ -595,6 +595,16 @@ namespace mavis
     };
 
     /**
+     * Stub for Maybe Ops extractor, compressed
+     */
+    class Form_MOPC
+    {
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{"MOPC"};
+    };
+
+    /**
      * Stub for Shadow ope
      */
     class Form_Shadow
