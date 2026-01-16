@@ -1304,16 +1304,16 @@ int main()
          << "DASM: 0xce504073 = " << inst->dasmString() << endl;
 
     // sspopchk x1
-    inst = mavis_facade.makeInst(0xcdc14073, 0);
+    inst = mavis_facade.makeInst(0xcdc0c073, 0);
     ASSERT_ALWAYS(inst->getMnemonic() == "sspopchk");
     cout << "line " << dec << __LINE__ << ": "
-         << "DASM: 0xcdc14073 = " << inst->dasmString() << endl;
+         << "DASM: 0xcdc0c073 = " << inst->dasmString() << endl;
 
     // sspopchk x5
-    inst = mavis_facade.makeInst(0xcdc54073, 0);
+    inst = mavis_facade.makeInst(0xcdc2c073, 0);
     ASSERT_ALWAYS(inst->getMnemonic() == "sspopchk");
     cout << "line " << dec << __LINE__ << ": "
-         << "DASM: 0xcdc54073 = " << inst->dasmString() << endl;
+         << "DASM: 0xcdc2c073 = " << inst->dasmString() << endl;
 
     // ssrdp
     inst = mavis_facade.makeInst(0xcdc54173, 0);

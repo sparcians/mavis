@@ -3834,7 +3834,13 @@ namespace mavis
         std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
         {
             std::stringstream ss;
-            ss << mnemonic << "\tx" << extract_(Form_R::idType::RS2, icode);
+            ss << mnemonic;
+            if(mnemonic == "sspopchk") {
+                ss << "\tx" << extract_(Form_R::idType::RS1, icode);
+            }
+            else {
+                ss << "\tx" << extract_(Form_R::idType::RS2, icode);
+            }
             return ss.str();
         }
 
