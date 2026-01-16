@@ -1293,25 +1293,25 @@ int main()
 
     // sspush x1
     inst = mavis_facade.makeInst(0xce104073, 0);
-    ASSERT_ALWAYS(inst->getMnemonic() == "sspush x1");
+    ASSERT_ALWAYS(inst->getMnemonic() == "sspush");
     cout << "line " << dec << __LINE__ << ": "
          << "DASM: 0xce104073 = " << inst->dasmString() << endl;
 
     // sspush x5
     inst = mavis_facade.makeInst(0xce504073, 0);
-    ASSERT_ALWAYS(inst->getMnemonic() == "sspush x5");
+    ASSERT_ALWAYS(inst->getMnemonic() == "sspush");
     cout << "line " << dec << __LINE__ << ": "
          << "DASM: 0xce504073 = " << inst->dasmString() << endl;
 
     // sspopchk x1
     inst = mavis_facade.makeInst(0xcdc14073, 0);
-    ASSERT_ALWAYS(inst->getMnemonic() == "sspopchk x1");
+    ASSERT_ALWAYS(inst->getMnemonic() == "sspopchk");
     cout << "line " << dec << __LINE__ << ": "
          << "DASM: 0xcdc14073 = " << inst->dasmString() << endl;
 
     // sspopchk x5
     inst = mavis_facade.makeInst(0xcdc54073, 0);
-    ASSERT_ALWAYS(inst->getMnemonic() == "sspopchk x5");
+    ASSERT_ALWAYS(inst->getMnemonic() == "sspopchk");
     cout << "line " << dec << __LINE__ << ": "
          << "DASM: 0xcdc54073 = " << inst->dasmString() << endl;
 

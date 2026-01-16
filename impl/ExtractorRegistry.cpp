@@ -92,6 +92,7 @@ namespace mavis
             {Form_R4::name,                      std::make_shared<Extractor<Form_R4>>()                },
             {Form_S::name,                       std::make_shared<Extractor<Form_S>>()                 },
             {Form_S_Pair::name,                  std::make_shared<Extractor<Form_S_Pair>>()            },
+            {Form_Shadow::name,                  std::make_shared<Extractor<Form_Shadow>>()            },
             {Form_U::name,                       std::make_shared<Extractor<Form_U>>()                 },
             {Form_V::name,                       std::make_shared<Extractor<Form_V>>()                 },
             {Form_VF_mem::name,                  std::make_shared<Extractor<Form_VF_mem>>()            },

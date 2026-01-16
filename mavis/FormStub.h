@@ -595,6 +595,16 @@ namespace mavis
     };
 
     /**
+     * Stub for Shadow ope
+     */
+    class Form_Shadow
+    {
+      public:
+        using idType = uint32_t;
+        static inline const std::string name{"shadow"};
+    };
+
+    /**
      * Stub for Rfloat_fli extractor
      */
     template<ImmediateType ImmType>
