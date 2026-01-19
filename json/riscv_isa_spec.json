@@ -598,6 +598,13 @@
       "xlen": [32, 64],
       "extension": "svinval",
       "json": "isa_rv64svinval.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "svinvalh",
+      "internal": true,
+      "enabled_by": [["svinval", "h"]],
+      "json": "isa_rv64svinval_h.json"
     }
   ]
 }
