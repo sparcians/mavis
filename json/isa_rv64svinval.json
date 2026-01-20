@@ -15,23 +15,5 @@
     "fixed" : ["rs1", "rd"],
     "stencil" : "0x18000073",
     "type" : ["cache", "system"]
-  },
-  {
-    "mnemonic" : "hinval.vvma",
-    "tags" : ["svinval"],
-    "form" : "R",
-    "fixed" : ["rs2", "rs1"],
-    "stencil" : "0x26000073",
-    "type" : ["cache", "system"],
-    "l-oper" : ["rs1"]
-  },
-  {
-    "mnemonic" : "hinval.gvma",
-    "tags" : ["svinval"],
-    "form" : "R",
-    "fixed" : ["rs2", "rs1"],
-    "stencil" : "0x36000073",
-    "type" : ["cache", "system"],
-    "l-oper" : ["rs1"]
   }
 ]

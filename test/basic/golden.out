@@ -216,7 +216,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'vloxei64.v', value=0xc007007, extractor=Extractor 'V_load', factory=IFactory('vloxei64.v'), stencil = 0xc007007
 |	|	[f]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'pause', mask=0xf8f80, field_set=0x28, value=0x0, nfixed=2, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
+|	|	|	|	[0]: 'pause', mask=0xffff8f80, field_set=0x2f, value=0x1000000, nfixed=5, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
 |	|	|	|	[default]: 'fence', value=0xf, extractor=Extractor 'FENCE', factory=IFactory('fence'), stencil = 0xf
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fence.i', value=0x100f, extractor=Extractor 'I', factory=IFactory('fence.i'), stencil = 0x100f
@@ -1471,12 +1471,8 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[0]: 'sfence.w.inval', mask=0xf8f80, field_set=0x14, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('sfence.w.inval'), stencil = 0x18000073
 |	|	|	|	[11]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'hfence.vvma', mask=0xf80, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'R', factory=IFactory('hfence.vvma'), stencil = 0x22000073
-|	|	|	|	[13]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'hinval.vvma', mask=0x1ff8000, field_set=0x6, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('hinval.vvma'), stencil = 0x26000073
 |	|	|	|	[18]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'mret', mask=0x1ff8f80, field_set=0x16, value=0x200000, nfixed=3, extractor=Extractor 'R', factory=IFactory('mret'), stencil = 0x30200073
-|	|	|	|	[1b]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	[0]: 'hinval.gvma', mask=0x1ff8000, field_set=0x6, value=0x0, nfixed=2, extractor=Extractor 'R', factory=IFactory('hinval.gvma'), stencil = 0x36000073
 |	|	|	|	[31]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	[0]: 'hfence.gvma', mask=0xf80, field_set=0x10, value=0x0, nfixed=1, extractor=Extractor 'R', factory=IFactory('hfence.gvma'), stencil = 0x62000073
 |	|	|	[1]: IFactoryDenseComposite::Field func7
@@ -1818,7 +1814,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'vloxei64.v', value=0xc007007, extractor=Extractor 'V_load', factory=IFactory('vloxei64.v'), stencil = 0xc007007
 |	|	[f]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'pause', mask=0xf8f80, field_set=0x28, value=0x0, nfixed=2, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
+|	|	|	|	[0]: 'pause', mask=0xffff8f80, field_set=0x2f, value=0x1000000, nfixed=5, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
 |	|	|	|	[default]: 'fence', value=0xf, extractor=Extractor 'FENCE', factory=IFactory('fence'), stencil = 0xf
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fence.i', value=0x100f, extractor=Extractor 'I', factory=IFactory('fence.i'), stencil = 0x100f
@@ -3438,7 +3434,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'flq', value=0x4007, extractor=Extractor 'I_load', factory=IFactory('flq'), stencil = 0x4007
 |	|	[f]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'pause', mask=0xf8f80, field_set=0x28, value=0x0, nfixed=2, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
+|	|	|	|	[0]: 'pause', mask=0xffff8f80, field_set=0x2f, value=0x1000000, nfixed=5, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
 |	|	|	|	[default]: 'fence', value=0xf, extractor=Extractor 'FENCE', factory=IFactory('fence'), stencil = 0xf
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fence.i', value=0x100f, extractor=Extractor 'I', factory=IFactory('fence.i'), stencil = 0x100f
@@ -4025,7 +4021,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'fld', value=0x3007, extractor=Extractor 'I_load', factory=IFactory('fld'), stencil = 0x3007
 |	|	[f]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'pause', mask=0xf8f80, field_set=0x28, value=0x0, nfixed=2, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
+|	|	|	|	[0]: 'pause', mask=0xffff8f80, field_set=0x2f, value=0x1000000, nfixed=5, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
 |	|	|	|	[default]: 'fence', value=0xf, extractor=Extractor 'FENCE', factory=IFactory('fence'), stencil = 0xf
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fence.i', value=0x100f, extractor=Extractor 'I', factory=IFactory('fence.i'), stencil = 0x100f
@@ -4461,7 +4457,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	[default]: 'flq', value=0x4007, extractor=Extractor 'I_load', factory=IFactory('flq'), stencil = 0x4007
 |	|	[f]: IFactoryDenseComposite::Field func3
 |	|	|	[0]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	[0]: 'pause', mask=0xf8f80, field_set=0x28, value=0x0, nfixed=2, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
+|	|	|	|	[0]: 'pause', mask=0xffff8f80, field_set=0x2f, value=0x1000000, nfixed=5, extractor=Extractor 'I', factory=IFactory('pause'), stencil = 0x100000f
 |	|	|	|	[default]: 'fence', value=0xf, extractor=Extractor 'FENCE', factory=IFactory('fence'), stencil = 0xf
 |	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	[default]: 'fence.i', value=0x100f, extractor=Extractor 'I', factory=IFactory('fence.i'), stencil = 0x100f
