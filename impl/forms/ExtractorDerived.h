@@ -3835,7 +3835,7 @@ namespace mavis
 
         std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
         {
-            return mnemonic + "." + std::to_string((extract_(Form_C1::idType::RS1, icode) & 0b1110) >> 1);
+            return mnemonic;
         }
 
         // clang-format off

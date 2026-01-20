@@ -47,7 +47,7 @@ namespace mavis
         Field("func3", 13, 3), Field("func1", 12, 1), Field("func1b", 7, 1), Field("func2", 10, 2),
         Field("rs1", 7, 3), // RD and RS1 are aliases for the same field
         Field("rd", 7, 3),  // RD and RS1 are aliases for the same field
-        Field("func2b", 5, 2), Field("rs2", 2, 3),    Field("opcode", 0, 2)};
+        Field("func2b", 5, 2), Field("rs2", 2, 3), Field("imm5", 2, 5), Field("opcode", 0, 2)};
 
     const std::map<std::string, const Field &> Form_C1::fmap{
         {"func3",  Form_C1::fields[Form_C1::idType::FUNC3] },
@@ -58,6 +58,7 @@ namespace mavis
         {"rd",     Form_C1::fields[Form_C1::idType::RD]    },
         {"func2b", Form_C1::fields[Form_C1::idType::FUNC2B]},
         {"rs2",    Form_C1::fields[Form_C1::idType::RS2]   },
+        {"imm5",   Form_C1::fields[Form_C1::idType::IMM5]   },
         {"opcode", Form_C1::fields[Form_C1::idType::OPCODE]}
     };
 
@@ -70,13 +71,14 @@ namespace mavis
         {"rd",     Form_C1::idType::RD    },
         {"func2b", Form_C1::idType::FUNC2B},
         {"rs2",    Form_C1::idType::RS2   },
+        {"imm5",   Form_C1::idType::IMM5  },
         {"opcode", Form_C1::idType::OPCODE}
     };
 
     const FieldsType Form_C1::opcode_fields{
         Form_C1::fields[Form_C1::idType::OPCODE], Form_C1::fields[Form_C1::idType::FUNC3],
         Form_C1::fields[Form_C1::idType::FUNC2],  Form_C1::fields[Form_C1::idType::FUNC1],
-        Form_C1::fields[Form_C1::idType::FUNC1B],
+        Form_C1::fields[Form_C1::idType::FUNC1B], Form_C1::fields[Form_C1::idType::IMM5],
         Form_C1::fields[Form_C1::idType::FUNC2B],
     };
 
@@ -246,6 +248,33 @@ namespace mavis
                                             Form_CI::fields[Form_CI::idType::FUNC3]};
 
     const ImmediateType Form_CI::immediate_type = ImmediateType::UNSIGNED;
+
+    // /**
+    //  * CM-Form
+    //  */
+    // const char* Form_CM::name{"CM"};
+
+    // const FieldsType Form_CM::fields{Field("func5", 11, 5),
+    //     Field("func6", 2, 6),
+    //     Field("opcode", 0, 2)};
+
+    // const std::map<std::string, const Field &> Form_CM::fmap{
+    //     {"func5",  Form_CM::fields[Form_CM::idType::FUNC5] },
+    //     {"func6",  Form_CM::fields[Form_CM::idType::FUNC6] },
+    //     {"opcode", Form_CM::fields[Form_CM::idType::OPCODE]}
+    // };
+
+    // const std::map<std::string, Form_CM::idType> Form_CM::imap{
+    //     {"func5",  Form_CM::idType::FUNC5 },
+    //     {"func6",  Form_CM::idType::FUNC6 },
+    //     {"opcode", Form_CM::idType::OPCODE}
+    // };
+
+    // const FieldsType Form_CM::opcode_fields{Form_CM::fields[Form_CM::idType::OPCODE],
+    //                                         Form_CM::fields[Form_CM::idType::FUNC5],
+    //                                         Form_CM::fields[Form_CM::idType::FUNC6]};
+
+    // const ImmediateType Form_CM::immediate_type = ImmediateType::UNSIGNED;
 
     /**
      * CI_rD_only-Form (for c.li and c.lui)

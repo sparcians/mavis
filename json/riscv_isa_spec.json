@@ -608,13 +608,13 @@
       "xlen": 32,
       "extension": "zcmop",
       "json": "isa_rv32zcmop.json",
-      "requires": ["zca", "zicfiss"]
+      "requires": ["zca", "zimop"]
     },
     {
       "xlen": 64,
       "extension": "zcmop",
       "json": "isa_rv64zcmop.json",
-      "requires": ["zca", "zicfiss"]
+      "requires": ["zca", "zimop"]
     },
     {
       "xlen": 64,

@@ -1,11 +1,66 @@
 [
     {
-        "mnemonic" : "c.mop",
+        "mnemonic" : "c.mop.1",
         "tags" : ["mop"],
-        "expand" : "lui",
         "form" : "C1",
-        "ignore" : ["func2", "func2b", "rd"],
+        "fixed" : [ "rs1", "imm5" ],
         "stencil" : "0x6081",
+        "xform" : "MOPC"
+    },
+    {
+        "mnemonic" : "c.mop.3",
+        "tags" : ["mop"],
+        "form" : "C1",
+        "fixed" : [ "rs1", "imm5" ],
+        "stencil" : "0x6181",
+        "xform" : "MOPC"
+    },
+    {
+        "mnemonic" : "c.mop.5",
+        "tags" : ["mop"],
+        "form" : "C1",
+        "fixed" : [ "rs1", "imm5" ],
+        "stencil" : "0x6281",
+        "xform" : "MOPC"
+    },
+    {
+        "mnemonic" : "c.mop.7",
+        "tags" : ["mop"],
+        "form" : "C1",
+        "fixed" : [ "rs1", "imm5" ],
+        "stencil" : "0x6381",
+        "xform" : "MOPC"
+    },
+    {
+        "mnemonic" : "c.mop.9",
+        "tags" : ["mop"],
+        "form" : "C1",
+        "fixed" : [ "rs1", "imm5" ],
+        "stencil" : "0x6481",
+        "xform" : "MOPC"
+    },
+    {
+        "mnemonic" : "c.mop.11",
+        "tags" : ["mop"],
+        "form" : "C1",
+        "fixed" : [ "rs1", "imm5" ],
+        "stencil" : "0x6581",
+        "xform" : "MOPC"
+    },
+    {
+        "mnemonic" : "c.mop.13",
+        "tags" : ["mop"],
+        "form" : "C1",
+        "fixed" : [ "rs1", "imm5" ],
+        "stencil" : "0x6681",
+        "xform" : "MOPC"
+    },
+    {
+        "mnemonic" : "c.mop.15",
+        "tags" : ["mop"],
+        "form" : "C1",
+        "fixed" : [ "rs1", "imm5" ],
+        "stencil" : "0x6781",
         "xform" : "MOPC"
     }
 ]
