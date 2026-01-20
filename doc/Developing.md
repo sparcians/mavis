@@ -201,3 +201,7 @@ Adding `Zicfiss` requires `Zimop` to be provided:
   "json": "isa_rv64zicfiss.json"
 }
 ```
+
+### Add Some Testing
+
+It's not fancy, but add the new instructions and contexts to `mavis/test/basic/main.cpp`
