@@ -116,9 +116,10 @@ int main(int argc, char** argv)
 
         if (vm.count("opc"))
         {
-            for (auto opcode : vm["opc"].as<std::vector<std::string>>())
+            for (auto opc_str : vm["opc"].as<std::vector<std::string>>())
             {
-                auto inst = mavis_facade->makeInst(std::stol(opcode, 0, 16), 0);
+                const auto opcode = std::stol(opc_str, 0, 16);
+                auto inst = mavis_facade->makeInst(opcode, 0);
                 if (nullptr != inst)
                 {
                     std::cout << "Dasm (" << HEX8(opcode) << "): " << inst->dasmString() << std::endl;
