@@ -187,28 +187,6 @@ namespace mavis
     };
 
     /**
-     * CM-Form
-     */
-    // class Form_CM
-    // {
-    //   public:
-    //     enum idType : uint32_t
-    //     {
-    //         FUNC5 = 0,
-    //         FUNC6 = 0,
-    //         OPCODE,
-    //         __N
-    //     };
-
-    //     static const char* name;
-    //     static const FieldsType fields;
-    //     static const std::map<std::string, const Field &> fmap;
-    //     static const std::map<std::string, idType> imap;
-    //     static const FieldsType opcode_fields;
-    //     static const ImmediateType immediate_type;
-    // };
-
-    /**
      * CI_rD_only-Form (for c.li and c.lui)
      */
     class Form_CI_rD_only

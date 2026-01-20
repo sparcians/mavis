@@ -246,33 +246,6 @@ namespace mavis
 
     const ImmediateType Form_CI::immediate_type = ImmediateType::UNSIGNED;
 
-    // /**
-    //  * CM-Form
-    //  */
-    // const char* Form_CM::name{"CM"};
-
-    // const FieldsType Form_CM::fields{Field("func5", 11, 5),
-    //     Field("func6", 2, 6),
-    //     Field("opcode", 0, 2)};
-
-    // const std::map<std::string, const Field &> Form_CM::fmap{
-    //     {"func5",  Form_CM::fields[Form_CM::idType::FUNC5] },
-    //     {"func6",  Form_CM::fields[Form_CM::idType::FUNC6] },
-    //     {"opcode", Form_CM::fields[Form_CM::idType::OPCODE]}
-    // };
-
-    // const std::map<std::string, Form_CM::idType> Form_CM::imap{
-    //     {"func5",  Form_CM::idType::FUNC5 },
-    //     {"func6",  Form_CM::idType::FUNC6 },
-    //     {"opcode", Form_CM::idType::OPCODE}
-    // };
-
-    // const FieldsType Form_CM::opcode_fields{Form_CM::fields[Form_CM::idType::OPCODE],
-    //                                         Form_CM::fields[Form_CM::idType::FUNC5],
-    //                                         Form_CM::fields[Form_CM::idType::FUNC6]};
-
-    // const ImmediateType Form_CM::immediate_type = ImmediateType::UNSIGNED;
-
     /**
      * CI_rD_only-Form (for c.li and c.lui)
      */
