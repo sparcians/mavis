@@ -43,7 +43,7 @@
     "form" : "C1",
     "stencil": "0xac22",
     "xform": "CMMV_mvsa01",
-    "ignore": ["rd"],
+      "ignore": ["rd", "imm5"],
     "type": ["int", "arith", "move"],
     "l-oper" : "all"
   },
@@ -53,7 +53,7 @@
     "form" : "C1",
     "stencil": "0xac62",
     "xform": "CMMV_mva01s",
-    "ignore": ["rd"],
+    "ignore": ["rd", "imm5"],
     "type": ["int", "arith", "move"],
     "l-oper" : "all"
   }

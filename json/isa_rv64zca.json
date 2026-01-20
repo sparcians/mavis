@@ -49,7 +49,7 @@
     "tags" : ["c", "zca"],
     "expand" : "addi",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CI_addi",
     "stencil" : "0x1"
   },
@@ -198,7 +198,7 @@
     "tags" : ["c", "zca"],
     "expand" : "jal",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CJ",
     "stencil" : "0xa001"
   },
@@ -207,7 +207,7 @@
     "tags" : ["c", "zca"],
     "expand" : "beq",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+      "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CB",
     "stencil" : "0xc001"
   },
@@ -216,7 +216,7 @@
     "tags" : ["c", "zca"],
     "expand" : "bne",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CB",
     "stencil" : "0xe001"
   },

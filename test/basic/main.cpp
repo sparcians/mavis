@@ -1257,7 +1257,7 @@ int main()
     ASSERT_ALWAYS(inst->getImmediate() == 0);
     ASSERT_ALWAYS(inst->hasImmediate() == true);
 
-    cout << "====== TESTING MOP and zicfiss =========" << endl;
+    cout << "====== TESTING MOP, CMOP, and zicfiss =========" << endl;
 
     mavis_facade.makeContext("MOP",
                              {"json/isa_rv64i.json",
@@ -1273,6 +1273,26 @@ int main()
     for (uint32_t i = 0; i < 32; ++i) {
         const uint32_t mopi = mopr | (((i & 0b10000) >> 4) << 30) |
             (((i & 0b1100) >> 2) << 26) | ((i & 0b11) << 20);
+        inst = mavis_facade.makeInst(mopi, 0);
+        cout << "line " << dec << __LINE__ << ": " << "DASM: 0x"
+             << hex << mopi << " = " << inst->dasmString()
+             << endl;
+    }
+
+    mavis_facade.makeContext("CMOP",
+                             {"json/isa_rv64i.json",
+                              "json/isa_rv64m.json",
+                              "json/isa_rv64zmmul.json",
+                              "json/isa_rv64f.json",
+                              "json/isa_rv64d.json",
+                              "json/isa_rv64zimop.json",
+                              "json/isa_rv64zcmop.json"},
+                             {});
+    mavis_facade.switchContext("CMOP");
+
+    const uint32_t moprc = 0b0110000010000001;
+    for (uint32_t i = 0; i < 8; ++i) {
+        const uint32_t mopi = moprc | (i << 8);
         inst = mavis_facade.makeInst(mopi, 0);
         cout << "line " << dec << __LINE__ << ": " << "DASM: 0x"
              << hex << mopi << " = " << inst->dasmString()
@@ -1594,6 +1614,7 @@ int main()
         cout << "line " << dec << __LINE__ << ": DASM: 0xac22 is illegal " << endl;
     }
 
+    // cm.mvsa01
     inst = mavis_facade_rv32.makeInst(0xad26, 0);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xad26 = " << inst->dasmString() << endl;
     inst = mavis_facade_rv32.makeInst(0xac62, 0);
