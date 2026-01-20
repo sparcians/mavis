@@ -245,8 +245,8 @@ make
 | **Zvkt** Vector data-independent execution latency. | :white_check_mark: |
 | **Zihintntl** Non-temporal locality hints. | :white_check_mark: |
 | **Zicond** Integer conditional operations. | :white_check_mark: |
-| **Zimop** may-be-operations. | :x: |
-| **Zcmop** Compressed may-be-operations. | :x: |
+| **Zimop** may-be-operations. | :white_check_mark: |
+| **Zcmop** Compressed may-be-operations. | :white_check_mark: |
 | **Zcb** Additional compressed instructions. | :white_check_mark: |
 | **Zfa** Additional floating-Point instructions. | :white_check_mark: |
 | **Zawrs** Wait-on-reservation-set instructions. | :white_check_mark: |
@@ -265,7 +265,7 @@ make
 | **Zfh** Scalar half-precision floating-point. | :x: |
 | **Zbc** Scalar carryless multiply. | :x: |
 | **Zicfilp** Landing Pads. | :x: |
-| **Zicfiss** Shadow Stack. | :x: |
+| **Zicfiss** Shadow Stack. | :white_check_mark: |
 | **Zvfh** Vector half-precision floating-point. | :x: |
 | **Zfbfmin** Scalar BF16 converts. | :x: |
 | **Zvfbfmin** Vector BF16 converts. | :white_check_mark: |
