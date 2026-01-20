@@ -595,29 +595,18 @@
       "json": "isa_rv32zcmt.json"
     },
     {
-      "xlen": 32,
+      "xlen": [32, 64],
       "extension": "zimop",
       "json": "isa_rv32zimop.json"
     },
     {
-      "xlen": 64,
-      "extension": "zimop",
-      "json": "isa_rv64zimop.json"
-    },
-    {
-      "xlen": 32,
+      "xlen": [32, 64],
       "extension": "zcmop",
       "json": "isa_rv32zcmop.json",
       "requires": ["zca", "zimop"]
     },
     {
-      "xlen": 64,
-      "extension": "zcmop",
-      "json": "isa_rv64zcmop.json",
-      "requires": ["zca", "zimop"]
-    },
-    {
-      "xlen": 64,
+      "xlen": [32,64],
       "extension": "zicfiss",
       "requires": ["zimop"],
       "json": "isa_rv64zicfiss.json"
@@ -628,6 +617,13 @@
       "internal": true,
       "enabled_by": ["zicfiss"],
       "json": "isa_rv64zicfiss_common.json"
+    },
+    {
+      "xlen": [32,64],
+      "extension": "zicfiss_c",
+      "internal": true,
+      "enabled_by": [["zicfiss", "zcmop"]],
+      "json": "isa_rv64zicfiss_c.json"
     },
     {
       "xlen": [32, 64],

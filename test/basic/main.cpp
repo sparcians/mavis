@@ -1297,6 +1297,7 @@ int main()
         cout << "line " << dec << __LINE__ << ": " << "DASM: 0x"
              << hex << mopi << " = " << inst->dasmString()
              << endl;
+        ASSERT_ALWAYS(inst->getMnemonic() == ("c.mop." + std::to_string((i << 1) + 1)));
     }
 
     mavis_facade.makeContext("MOP_zicfiss",
@@ -1352,6 +1353,39 @@ int main()
     ASSERT_ALWAYS(inst->getMnemonic() == "ssamoswap.d");
     cout << "line " << dec << __LINE__ << ": "
          << "DASM: 0x4800302f = " << inst->dasmString() << endl;
+
+    // c.sspush -- should fail
+    try {
+        inst = mavis_facade.makeInst(0x6081, 0);
+        ASSERT_ALWAYS(!"c.sspush should have failed");
+    }
+    catch (...)
+    {}
+
+    mavis_facade.makeContext("MOP_zicfiss_c",
+                             {"json/isa_rv64i.json",
+                              "json/isa_rv64m.json",
+                              "json/isa_rv64zmmul.json",
+                              "json/isa_rv64f.json",
+                              "json/isa_rv64d.json",
+                              "json/isa_rv64zimop.json",
+                              "json/isa_rv64zcmop.json",
+                              "json/isa_rv64zca.json",
+                              "json/isa_rv64zicfiss.json",
+                              "json/isa_rv64zicfiss_c.json",
+                              "json/isa_rv64zicfiss_common.json"},
+                             {});
+    mavis_facade.switchContext("MOP_zicfiss_c");
+
+    // c.sspush
+    inst = mavis_facade.makeInst(0x6081, 0);
+    cout << "line " << dec << __LINE__ << ": "
+         << "DASM: 0x6081 = " << inst->dasmString() << endl;
+
+    // c.sspopchk
+    inst = mavis_facade.makeInst(0x6281, 0);
+    cout << "line " << dec << __LINE__ << ": "
+         << "DASM: 0x6281 = " << inst->dasmString() << endl;
 
     cout << "====== TESTING RV32 =========" << endl;
 

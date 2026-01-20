@@ -1236,7 +1236,13 @@
     "latency" : 1
   },
   {
-    "mnemonic" : "c.mop",
+    "mnemonic" : "c.mop.1",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.mop.5",
     "unit" : ["int"],
     "issue" : "int",
     "latency" : 1
