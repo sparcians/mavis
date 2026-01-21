@@ -51,6 +51,7 @@
     "tags" : ["zcb"],
     "form" : "C1",
     "fixed" : [ "rs2" ],
+    "ignore" : ["imm5"],
     "expand" : "andi",
     "xform" : "C1_rsd_I0xFF",
     "stencil" : "0x9c61"
@@ -60,6 +61,7 @@
     "tags" : ["zcb"],
     "form" : "C1",
     "fixed" : [ "rs2" ],
+    "ignore" : ["imm5"],
     "expand" : "sext.b",
     "xform" : "C1_rsd",
     "stencil" : "0x9c65"
@@ -69,6 +71,7 @@
     "tags" : ["zcb"],
     "form" : "C1",
     "fixed" : [ "rs2" ],
+    "ignore" : ["imm5"],
     "expand" : "zext.h",
     "xform" : "C1_rsd_zext_I0",
     "stencil" : "0x9c69"
@@ -78,6 +81,7 @@
     "tags" : ["zcb"],
     "form" : "C1",
     "fixed" : [ "rs2" ],
+    "ignore" : ["imm5"],
     "expand" : "sext.h",
     "xform" : "C1_rsd",
     "stencil" : "0x9c6d"
@@ -87,6 +91,7 @@
     "tags" : ["zcb"],
     "form" : "C1",
     "fixed" : [ "rs2" ],
+    "ignore" : ["imm5"],
     "expand" : "add.uw",
     "xform" : "C1_rsd_zext_I0",
     "stencil" : "0x9c71"
@@ -96,6 +101,7 @@
     "tags" : ["zcb"],
     "form" : "C1",
     "fixed" : [ "rs2" ],
+    "ignore" : ["imm5"],
     "expand" : "xori",
     "xform" : "C1_rsd_Ineg1",
     "stencil" : "0x9c75"
@@ -104,6 +110,7 @@
     "mnemonic" : "c.mul",
     "tags" : ["zcb"],
     "form" : "C1",
+    "ignore" : ["imm5"],
     "expand" : "mul",
     "xform" : "CA",
     "stencil" : "0x9c41"
