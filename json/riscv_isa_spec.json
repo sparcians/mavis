@@ -603,10 +603,10 @@
       "xlen": [32, 64],
       "extension": "zcmop",
       "json": "isa_rv32zcmop.json",
-      "requires": [["zca", "zimop"]]
+      "requires": ["zca", "zimop"]
     },
     {
-      "xlen": [32,64],
+      "xlen": [32, 64],
       "extension": "zicfiss",
       "requires": ["zimop"],
       "json": "isa_rv64zicfiss.json"
@@ -619,7 +619,7 @@
       "json": "isa_rv64zicfiss_common.json"
     },
     {
-      "xlen": [32,64],
+      "xlen": [32, 64],
       "extension": "zicfiss_c",
       "internal": true,
       "enabled_by": [["zicfiss", "zca"]],
