@@ -596,6 +596,38 @@
     },
     {
       "xlen": [32, 64],
+      "extension": "zimop",
+      "json": "isa_rv32zimop.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zcmop",
+      "json": "isa_rv32zcmop.json",
+      "requires": ["zca", "zimop"]
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicfiss",
+      "requires": ["zimop"],
+      "json": "isa_rv64zicfiss.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zicfissrv64",
+      "internal": true,
+      "enabled_by": ["zicfiss"],
+      "json": "isa_rv64zicfiss_common.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicfiss_c",
+      "internal": true,
+      "enabled_by": [["zicfiss", "zca"]],
+      "requires": ["zcmop"],
+      "json": "isa_rv64zicfiss_c.json"
+    },
+    {
+      "xlen": [32, 64],
       "extension": "svinval",
       "json": "isa_rv64svinval.json"
     },

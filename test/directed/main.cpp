@@ -107,79 +107,98 @@ int main(int argc, char** argv)
         uarch_file = "uarch/uarch_rv64g.json";
     }
 
-    std::unique_ptr<MavisType> mavis_facade
-        = std::make_unique<MavisType>(
-            extension_manager.constructMavis<Instruction<uArchInfo>, uArchInfo>({uarch_file}));
+    try {
+        std::unique_ptr<MavisType> mavis_facade
+            = std::make_unique<MavisType>(
+                extension_manager.constructMavis<Instruction<uArchInfo>, uArchInfo>({uarch_file}));
 
-    assert(nullptr != mavis_facade);
+        assert(nullptr != mavis_facade);
 
-    if (vm.count("opc"))
-    {
-        for (auto opcode : vm["opc"].as<std::vector<std::string>>())
+        if (vm.count("opc"))
         {
-            auto inst = mavis_facade->makeInst(std::stol(opcode, 0, 16), 0);
-            if (nullptr != inst)
+            for (auto opc_str : vm["opc"].as<std::vector<std::string>>())
             {
-                std::cout << "Dasm (" << HEX8(opcode) << "): " << inst->dasmString() << std::endl;
-                std::cout << "  Addr-Sources : "
-                          << printBitSet(std::bitset<64>(inst->getSourceAddressRegs())) << ": "
-                          << std::bitset<64>(inst->getSourceAddressRegs()) << std::endl;
-                std::cout << "  Data-Sources : "
-                          << printBitSet(std::bitset<64>(inst->getSourceDataRegs())) << ": "
-                          << std::bitset<64>(inst->getSourceDataRegs()) << std::endl;
-                std::cout << "  Int-Sources  : "
-                          << printBitSet(std::bitset<64>(inst->getIntSourceRegs())) << ": "
-                          << std::bitset<64>(inst->getIntSourceRegs()) << std::endl;
-                std::cout << "  Float-Sources: "
-                          << printBitSet(std::bitset<64>(inst->getFloatSourceRegs())) << ": "
-                          << std::bitset<64>(inst->getFloatSourceRegs()) << std::endl;
-                std::cout << "  Int-Dests    : "
-                          << printBitSet(std::bitset<64>(inst->getIntDestRegs())) << ": "
-                          << std::bitset<64>(inst->getIntDestRegs()) << std::endl;
-                std::cout << "  Float-Dests  : "
-                          << printBitSet(std::bitset<64>(inst->getFloatDestRegs())) << ": "
-                          << std::bitset<64>(inst->getFloatDestRegs()) << std::endl;
-                if (inst->hasImmediate())
+                const auto opcode = std::stol(opc_str, 0, 16);
+                auto inst = mavis_facade->makeInst(opcode, 0);
+                if (nullptr != inst)
                 {
-                    std::cout << "  immediate    : " << HEX8(inst->getImmediate()) << std::endl;
-                }
-                std::cout << "Inst type      : ";
-                std::string comma;
-                for (uint64_t inst_type = 0;
-                     inst_type < sizeof(mavis::InstMetaData::InstructionTypes) * 8;
-                     ++inst_type)
-                {
-                    const auto itype = static_cast<mavis::InstMetaData::InstructionTypes>((0x1ull << inst_type));
-                    if (inst->isInstType(itype)) {
-                        std::cout << comma << mavis::InstMetaData::getInstructionTypeName(itype);
+                    std::cout << "Dasm (" << HEX8(opcode) << "): " << inst->dasmString() << std::endl;
+                    std::cout << "  Addr-Sources : "
+                              << printBitSet(std::bitset<64>(inst->getSourceAddressRegs())) << ": "
+                              << std::bitset<64>(inst->getSourceAddressRegs()) << std::endl;
+                    std::cout << "  Data-Sources : "
+                              << printBitSet(std::bitset<64>(inst->getSourceDataRegs())) << ": "
+                              << std::bitset<64>(inst->getSourceDataRegs()) << std::endl;
+                    std::cout << "  Int-Sources  : "
+                              << printBitSet(std::bitset<64>(inst->getIntSourceRegs())) << ": "
+                              << std::bitset<64>(inst->getIntSourceRegs()) << std::endl;
+                    std::cout << "  Float-Sources: "
+                              << printBitSet(std::bitset<64>(inst->getFloatSourceRegs())) << ": "
+                              << std::bitset<64>(inst->getFloatSourceRegs()) << std::endl;
+                    std::cout << "  Int-Dests    : "
+                              << printBitSet(std::bitset<64>(inst->getIntDestRegs())) << ": "
+                              << std::bitset<64>(inst->getIntDestRegs()) << std::endl;
+                    std::cout << "  Float-Dests  : "
+                              << printBitSet(std::bitset<64>(inst->getFloatDestRegs())) << ": "
+                              << std::bitset<64>(inst->getFloatDestRegs()) << std::endl;
+                    if (inst->hasImmediate())
+                    {
+                        std::cout << "  immediate    : " << HEX8(inst->getImmediate()) << std::endl;
+                    }
+                    std::cout << "Inst type      : ";
+                    std::string comma;
+                    for (uint64_t inst_type = 0;
+                         inst_type < sizeof(mavis::InstMetaData::InstructionTypes) * 8;
+                         ++inst_type)
+                    {
+                        const auto itype = static_cast<mavis::InstMetaData::InstructionTypes>((0x1ull << inst_type));
+                        if (inst->isInstType(itype)) {
+                            std::cout << comma << mavis::InstMetaData::getInstructionTypeName(itype);
+                            comma = ", ";
+                        }
+                    }
+                    if (comma.empty()) {
+                        std::cout << "None";
+                    }
+                    std::cout << std::endl;
+                    std::cout << "Inst tags      : ";
+                    comma.clear();
+                    const auto tagv = inst->getTags().getV();
+                    for (auto tag : tagv)
+                    {
+                        std::cout << comma << tag.getV();
                         comma = ", ";
                     }
+                    if (comma.empty()) {
+                        std::cout << "None";
+                    }
+                    std::cout << std::endl;
+
+                    std::cout << "Src List: " << std::endl;
+                    for (const auto & op : inst->getSourceOpInfoList())
+                    {
+                        std::cout << "  Operand fid  : "
+                                  << mavis::InstMetaData::getFieldIDName(op.field_id) << std::endl;
+                        std::cout << "  Operand val  : " << op.field_value << std::endl;
+                    }
+                    std::cout << "Dest List: " << std::endl;
+                    for (const auto & op : inst->getDestOpInfoList())
+                    {
+                        std::cout << "  Operand fid  : "
+                                  << mavis::InstMetaData::getFieldIDName(op.field_id) << std::endl;
+                        std::cout << "  Operand val  : " << op.field_value << std::endl;
+                    }
                 }
-                if (comma.empty()) {
-                    std::cout << "None";
-                }
-                std::cout << std::endl;
-                std::cout << "Src List: " << std::endl;
-                for (const auto & op : inst->getSourceOpInfoList())
+                else
                 {
-                    std::cout << "  Operand fid  : "
-                              << mavis::InstMetaData::getFieldIDName(op.field_id) << std::endl;
-                    std::cout << "  Operand val  : " << op.field_value << std::endl;
+                    std::cerr << "ERROR: " << HEX8(opcode) << " is not decodable" << std::endl;
                 }
-                std::cout << "Dest List: " << std::endl;
-                for (const auto & op : inst->getDestOpInfoList())
-                {
-                    std::cout << "  Operand fid  : "
-                              << mavis::InstMetaData::getFieldIDName(op.field_id) << std::endl;
-                    std::cout << "  Operand val  : " << op.field_value << std::endl;
-                }
-            }
-            else
-            {
-                std::cerr << "ERROR: " << HEX8(opcode) << " is not decodable" << std::endl;
             }
         }
     }
-
+    catch (std::exception & ex) {
+        std::cerr << "Somthing went wrong: " << ex.what() << std::endl;
+        throw;
+    }
     return 0;
 }

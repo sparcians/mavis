@@ -23,6 +23,10 @@ public:
         return p.match(t_string_);
     }
 
+    const std::string &getV() const {
+        return t_string_;
+    }
+
 private:
     std::string t_string_;
     bool        is_empty_;

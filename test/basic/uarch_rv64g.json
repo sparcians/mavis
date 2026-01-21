@@ -1222,5 +1222,35 @@
     "unit" : ["float"],
     "issue" : "float",
     "latency" : 1
+  },
+  {
+    "mnemonic" : "mop.rr.7",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "mop.r.28",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.mop.1",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.mop.5",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
+  },
+  {
+    "mnemonic" : "c.lui",
+    "unit" : ["int"],
+    "issue" : "int",
+    "latency" : 1
   }
 ]

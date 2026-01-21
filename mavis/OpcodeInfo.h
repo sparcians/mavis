@@ -267,7 +267,7 @@ namespace mavis
 
         uint32_t getDataSize() const { return meta_->getDataSize(); }
 
-        MatchSet<Tag> getTags() const { return meta_->getTags(); }
+        const MatchSet<Tag> & getTags() const { return meta_->getTags(); }
 
         int32_t getSpecialField(SpecialField sfid)
         {

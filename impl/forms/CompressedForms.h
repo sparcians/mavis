@@ -48,6 +48,7 @@ namespace mavis
             RD,
             FUNC2B,
             RS2,
+            IMM5,
             OPCODE,
             __N
         };

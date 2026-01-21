@@ -1,0 +1,55 @@
+[
+    {
+        "mnemonic" : "sspush",
+        "tags" : ["shadow"],
+        "overlay" : {
+            "base" : "mop.rr.7",
+            "match" : ["0x00700F80", "0x00100000"]
+        },
+        "ignore" : ["rd"],
+        "xform" : "shadow",
+        "type" : ["int"]
+    },
+    {
+        "mnemonic" : "sspush",
+        "tags" : ["shadow"],
+        "overlay" : {
+            "base" : "mop.rr.7",
+            "match" : ["0x00700F80", "0x00500000"]
+        },
+        "ignore" : ["rd"],
+        "xform" : "shadow",
+        "type" : ["int"]
+    },
+    {
+        "mnemonic" : "sspopchk",
+        "tags" : ["shadow"],
+        "overlay" : {
+            "base" : "mop.r.28",
+            "match" : ["0x0028F80", "0x00008000"]
+        },
+        "xform" : "shadow",
+        "ignore" : ["rd"],
+        "type" : ["int"]
+    },
+    {
+        "mnemonic" : "sspopchk",
+        "tags" : ["shadow"],
+        "overlay" : {
+            "base" : "mop.r.28",
+            "match" : ["0x0028F80", "0x00028000"]
+        },
+        "xform" : "shadow",
+        "ignore" : ["rd"],
+        "type" : ["int"]
+    },
+    {
+        "mnemonic" : "ssrdp",
+        "overlay" : {
+            "base" : "mop.r.28",
+            "match" : ["0x0070000", "0x00050000"]
+        },
+        "ignore" : ["rd"],
+        "type" : ["int"]
+    }
+]

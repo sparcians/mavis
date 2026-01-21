@@ -1,0 +1,20 @@
+[
+    {
+        "mnemonic" : "ssamoswap.w",
+        "tags" : ["shadow", "a"],
+        "form" : "AMO",
+        "stencil" : "0x4800202f",
+        "type" : ["int", "load", "atomic"],
+        "l-oper" : "all",
+        "data" : 32
+    },
+    {
+        "mnemonic" : "ssamoswap.d",
+        "tags" : ["shadow", "a"],
+        "form" : "AMO",
+        "stencil" : "0x4800302f",
+        "type" : ["int", "load", "atomic"],
+        "l-oper" : "all",
+        "data" : 64
+    }
+]

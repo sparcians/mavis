@@ -47,7 +47,7 @@ namespace mavis
         Field("func3", 13, 3), Field("func1", 12, 1), Field("func2", 10, 2),
         Field("rs1", 7, 3), // RD and RS1 are aliases for the same field
         Field("rd", 7, 3),  // RD and RS1 are aliases for the same field
-        Field("func2b", 5, 2), Field("rs2", 2, 3),    Field("opcode", 0, 2)};
+        Field("func2b", 5, 2), Field("rs2", 2, 3), Field("imm5", 2, 5), Field("opcode", 0, 2)};
 
     const std::map<std::string, const Field &> Form_C1::fmap{
         {"func3",  Form_C1::fields[Form_C1::idType::FUNC3] },
@@ -57,6 +57,7 @@ namespace mavis
         {"rd",     Form_C1::fields[Form_C1::idType::RD]    },
         {"func2b", Form_C1::fields[Form_C1::idType::FUNC2B]},
         {"rs2",    Form_C1::fields[Form_C1::idType::RS2]   },
+        {"imm5",   Form_C1::fields[Form_C1::idType::IMM5]   },
         {"opcode", Form_C1::fields[Form_C1::idType::OPCODE]}
     };
 
@@ -68,13 +69,14 @@ namespace mavis
         {"rd",     Form_C1::idType::RD    },
         {"func2b", Form_C1::idType::FUNC2B},
         {"rs2",    Form_C1::idType::RS2   },
+        {"imm5",   Form_C1::idType::IMM5  },
         {"opcode", Form_C1::idType::OPCODE}
     };
 
     const FieldsType Form_C1::opcode_fields{
         Form_C1::fields[Form_C1::idType::OPCODE], Form_C1::fields[Form_C1::idType::FUNC3],
         Form_C1::fields[Form_C1::idType::FUNC2],  Form_C1::fields[Form_C1::idType::FUNC1],
-        Form_C1::fields[Form_C1::idType::FUNC2B],
+        Form_C1::fields[Form_C1::idType::IMM5], Form_C1::fields[Form_C1::idType::FUNC2B],
     };
 
     const ImmediateType Form_C1::immediate_type = ImmediateType::NONE;

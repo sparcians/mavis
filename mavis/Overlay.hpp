@@ -48,7 +48,8 @@ public:
         if (const auto it = olay.find("match"); it != olay.end()) {
             MatchMaskValType mlist = boost::json::value_to<MatchMaskValType>(it->value());
             if (mlist.size() != 2) {
-                throw BuildErrorOverlayBadMatchSpec(mnemonic);
+                throw BuildErrorOverlayBadMatchSpec(mnemonic +
+                                                    ": overlay match field requires a mask and opcode");
             }
             match_mask_ = std::strtoull(mlist[0].c_str(), nullptr, 0);
             match_value_ = std::strtoull(mlist[1].c_str(), nullptr, 0);

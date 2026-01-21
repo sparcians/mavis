@@ -22,6 +22,7 @@ namespace mavis
         {Form_CIX::name,        new Form<Form_CIX>()       },
         {Form_CJ::name,         new Form<Form_CJ>()        },
         {Form_CJR::name,        new Form<Form_CJR>()       },
+        // {Form_CM::name,         new Form<Form_CM>()        },
         {Form_CMPP::name,       new Form<Form_CMPP>()      },
         {Form_CMJT::name,       new Form<Form_CMJT>()      },
         {Form_CSR::name,        new Form<Form_CSR>()       },

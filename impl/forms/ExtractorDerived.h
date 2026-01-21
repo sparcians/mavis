@@ -3738,4 +3738,158 @@ namespace mavis
         }
     };
 
+    /**
+     * MOP-Form Extractor
+     */
+    template <> class Extractor<Form_MOP> : public ExtractorBase<Form_R>
+    {
+      public:
+        Extractor() = default;
+
+        ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
+                                              const uint64_t fset) const override
+        {
+            return ExtractorIF::PtrType(new Extractor<Form_MOP>(ffmask, fset));
+        }
+
+        uint64_t getDestRegs(const Opcode icode) const override
+        {
+            return 1ull << extract_(Form_R::idType::RD, icode & ~fixed_field_mask_);
+        }
+
+        uint64_t getDestOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                     InstMetaData::OperandTypes kind) const override
+        {
+            if (meta->isNoneOperandType(kind))
+            {
+                return 0;
+            }
+            else if (meta->isAllOperandType(kind))
+            {
+                return getDestRegs(icode);
+            }
+            else
+            {
+                uint64_t result = 0;
+                if (meta->isOperandType(InstMetaData::OperandFieldID::RD, kind))
+                {
+                    result |=
+                        extractUnmaskedIndexBit_(Form_R::idType::RD, icode, fixed_field_mask_);
+                }
+                return result;
+            }
+        }
+
+        OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                       bool suppress_x0 = false) const override
+        {
+            OperandInfo olist;
+            appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                       fixed_field_mask_, Form_R::idType::RD, false, suppress_x0);
+            return olist;
+        }
+
+        using ExtractorIF::dasmString; // tell the compiler all dasmString
+                                       // overloads are considered
+
+        std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic << "\t" << extract_(Form_R::idType::RD, icode & ~fixed_field_mask_);
+            return ss.str();
+        }
+
+        // clang-format off
+        std::string dasmString(const std::string & mnemonic, const Opcode icode,
+                               const InstMetaData::PtrType & meta) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic << "\t"
+               << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                     {{Form_R::idType::RD, InstMetaData::OperandFieldID::RD}});
+            return ss.str();
+        }
+
+        // clang-format on
+
+      private:
+        Extractor(const uint64_t ffmask, const uint64_t fset) : ExtractorBase(ffmask) {}
+    };
+
+    /**
+     * MOPC-Form Extractor
+     */
+    template <> class Extractor<Form_MOPC> : public ExtractorBase<Form_C1>
+    {
+      public:
+        Extractor() = default;
+
+        ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
+                                              const uint64_t fset) const override
+        {
+            return ExtractorIF::PtrType(new Extractor<Form_MOPC>(ffmask, fset));
+        }
+
+        using ExtractorIF::dasmString; // tell the compiler all dasmString
+                                       // overloads are considered
+
+        std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+        {
+            return mnemonic;
+        }
+
+        // clang-format off
+        std::string dasmString(const std::string & mnemonic, const Opcode icode,
+                               const InstMetaData::PtrType & ) const override
+        {
+            return dasmString(mnemonic, icode);
+        }
+
+        // clang-format on
+
+      private:
+        Extractor(const uint64_t ffmask, const uint64_t fset) : ExtractorBase(ffmask) {}
+    };
+
+    /**
+     * Shadow-Form Extractor
+     */
+    template <> class Extractor<Form_Shadow> : public ExtractorBase<Form_R>
+    {
+      public:
+        Extractor() = default;
+
+        ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
+                                              const uint64_t fset) const override
+        {
+            return ExtractorIF::PtrType(new Extractor<Form_Shadow>(ffmask, fset));
+        }
+
+
+        std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+        {
+            std::stringstream ss;
+            ss << mnemonic;
+            if(mnemonic == "sspopchk") {
+                ss << "\tx" << extract_(Form_R::idType::RS1, icode);
+            }
+            else {
+                ss << "\tx" << extract_(Form_R::idType::RS2, icode);
+            }
+            return ss.str();
+        }
+
+        // clang-format off
+        std::string dasmString(const std::string & mnemonic, const Opcode icode,
+                               const InstMetaData::PtrType &) const override
+        {
+            return dasmString(mnemonic, icode);
+        }
+
+        // clang-format on
+
+      private:
+        Extractor(const uint64_t ffmask, const uint64_t fset) : ExtractorBase(ffmask) {}
+    };
+
 } // namespace mavis

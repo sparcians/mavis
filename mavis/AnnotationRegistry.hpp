@@ -32,9 +32,9 @@ public:
      * @brief Annotations registry
      * @param anno_files
      */
-    explicit AnnotationRegistry(const FileNameListType &anno_files,
-                                AnnotationTypeAllocator & annotation_allocator,
-                                const AnnotationOverrides & anno_overrides):
+    AnnotationRegistry(const FileNameListType &anno_files,
+                       AnnotationTypeAllocator & annotation_allocator,
+                       const AnnotationOverrides & anno_overrides):
         anno_file_list_(anno_files)
     {
 

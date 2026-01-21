@@ -1,0 +1,20 @@
+[
+    {
+        "mnemonic" : "c.sspush",
+        "overlay" : {
+            "base" : "c.mop.1",
+            "match" : ["0xFFFF", "0x6081"]
+        },
+        "ignore" : ["rd"],
+        "type" : ["int"]
+    },
+    {
+        "mnemonic" : "c.sspopchk",
+        "overlay" : {
+            "base" : "c.mop.5",
+            "match" : ["0xFFFF", "0x6281"]
+        },
+        "ignore" : ["rd"],
+        "type" : ["int"]
+    }
+]
