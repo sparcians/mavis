@@ -26,7 +26,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[0]: IFactoryDenseComposite::Field func2
 |	|	|	|	[0]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'c.nop', mask=0x380, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'CI_addi', factory=CUSTOM IFactory('nop'): type = I
 |	|	|	|	[default]: IFactoryDenseComposite::Field func1
@@ -37,7 +37,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[1]: IFactoryDenseComposite::Field func2
 |	|	|	|	[default]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.addiw', value=0x2001, extractor=Extractor 'CI_addiw', factory=IFactory('addiw'), stencil = 0x1b
 |	|	|	[2]: IFactoryDenseComposite::Field func2
@@ -60,38 +60,34 @@ IFactoryMatchListComposite::Field family
 |	|	|	[4]: IFactoryDenseComposite::Field func2
 |	|	|	|	[0]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.srli', value=0x8001, extractor=Extractor 'CIX', factory=IFactory('srli'), stencil = 0x5013
 |	|	|	|	[1]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.srai', value=0x8401, extractor=Extractor 'CIX', factory=IFactory('srai'), stencil = 0x40005013
 |	|	|	|	[2]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.andi', value=0x8801, extractor=Extractor 'CIX_andi', factory=IFactory('andi'), stencil = 0x7013
 |	|	|	|	[3]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[0]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.sub', value=0x8c01, extractor=Extractor 'CA', factory=IFactory('sub'), stencil = 0x40000033
-|	|	|	|	|	|	[8]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.xor', value=0x8c21, extractor=Extractor 'CA', factory=IFactory('xor'), stencil = 0x4033
-|	|	|	|	|	|	[10]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.or', value=0x8c41, extractor=Extractor 'CA', factory=IFactory('or'), stencil = 0x6033
-|	|	|	|	|	|	[18]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[3]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.and', value=0x8c61, extractor=Extractor 'CA', factory=IFactory('and'), stencil = 0x7033
 |	|	|	|	|	[1]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.subw', value=0x9c01, extractor=Extractor 'CA', factory=IFactory('subw'), stencil = 0x4000003b
-|	|	|	|	|	|	[8]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.addw', value=0x9c21, extractor=Extractor 'CA', factory=IFactory('addw'), stencil = 0x3b
 |	|	|	[5]: IFactoryDenseComposite::Field func2
@@ -1633,7 +1629,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[0]: IFactoryDenseComposite::Field func2
 |	|	|	|	[0]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'c.nop', mask=0x380, field_set=0x8, value=0x0, nfixed=1, extractor=Extractor 'CI_addi', factory=CUSTOM IFactory('nop'): type = I
 |	|	|	|	[default]: IFactoryDenseComposite::Field func1
@@ -1644,7 +1640,7 @@ IFactoryMatchListComposite::Field family
 |	|	|	[1]: IFactoryDenseComposite::Field func2
 |	|	|	|	[default]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.addiw', value=0x2001, extractor=Extractor 'CI_addiw', factory=IFactory('addiw'), stencil = 0x1b
 |	|	|	[2]: IFactoryDenseComposite::Field func2
@@ -1667,40 +1663,31 @@ IFactoryMatchListComposite::Field family
 |	|	|	[4]: IFactoryDenseComposite::Field func2
 |	|	|	|	[0]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.srli', value=0x8001, extractor=Extractor 'CIX', factory=IFactory('srli'), stencil = 0x5013
 |	|	|	|	[1]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.srai', value=0x8401, extractor=Extractor 'CIX', factory=IFactory('srai'), stencil = 0x40005013
 |	|	|	|	[2]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[default]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.andi', value=0x8801, extractor=Extractor 'CIX_andi', factory=IFactory('andi'), stencil = 0x7013
 |	|	|	|	[3]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[0]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.sub', value=0x8c01, extractor=Extractor 'CA', factory=IFactory('sub'), stencil = 0x40000033
-|	|	|	|	|	|	[8]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[1]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.xor', value=0x8c21, extractor=Extractor 'CA', factory=IFactory('xor'), stencil = 0x4033
-|	|	|	|	|	|	[10]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.or', value=0x8c41, extractor=Extractor 'CA', factory=IFactory('or'), stencil = 0x6033
-|	|	|	|	|	|	[18]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[3]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.and', value=0x8c61, extractor=Extractor 'CA', factory=IFactory('and'), stencil = 0x7033
 |	|	|	|	|	[1]: IFactoryDenseComposite::Field imm5
-|	|	|	|	|	|	[0]: IFactoryDenseComposite::Field func2b
-|	|	|	|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	|	|	|	[default]: 'c.subw', value=0x9c01, extractor=Extractor 'CA', factory=IFactory('subw'), stencil = 0x4000003b
-|	|	|	|	|	|	[8]: IFactoryDenseComposite::Field func2b
-|	|	|	|	|	|	|	[1]: IFactorySpecialCaseComposite::Field 
-|	|	|	|	|	|	|	|	[default]: 'c.addw', value=0x9c21, extractor=Extractor 'CA', factory=IFactory('addw'), stencil = 0x3b
 |	|	|	|	|	|	[10]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[2]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[default]: 'c.mul', value=0x9c41, extractor=Extractor 'CA', factory=IFactory('mul'), stencil = 0x2000033
@@ -1722,6 +1709,11 @@ IFactoryMatchListComposite::Field family
 |	|	|	|	|	|	[1d]: IFactoryDenseComposite::Field func2b
 |	|	|	|	|	|	|	[3]: IFactorySpecialCaseComposite::Field 
 |	|	|	|	|	|	|	|	[0]: 'c.not', mask=0x1c, field_set=0x40, value=0x14, nfixed=1, extractor=Extractor 'C1_rsd_Ineg1', factory=IFactory('xori'), stencil = 0x4013
+|	|	|	|	|	|	[default]: IFactoryDenseComposite::Field func2b
+|	|	|	|	|	|	|	[0]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	|	|	|	[default]: 'c.subw', value=0x9c01, extractor=Extractor 'CA', factory=IFactory('subw'), stencil = 0x4000003b
+|	|	|	|	|	|	|	[1]: IFactorySpecialCaseComposite::Field 
+|	|	|	|	|	|	|	|	[default]: 'c.addw', value=0x9c21, extractor=Extractor 'CA', factory=IFactory('addw'), stencil = 0x3b
 |	|	|	[5]: IFactoryDenseComposite::Field func2
 |	|	|	|	[default]: IFactoryDenseComposite::Field func1
 |	|	|	|	|	[default]: IFactoryDenseComposite::Field imm5
