@@ -613,7 +613,7 @@
     },
     {
       "xlen": 64,
-      "extension": "zicfiss_common",
+      "extension": "zicfissrv64",
       "internal": true,
       "enabled_by": ["zicfiss"],
       "json": "isa_rv64zicfiss_common.json"

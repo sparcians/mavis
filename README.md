@@ -50,7 +50,8 @@ instruction as it is being created using micro-architectural JSON files.
 
 Build the doxygen found in
 [mavis_docs](https://github.com/sparcians/mavis/tree/main/doc) to
-learn more.
+learn more or take a peek at
+[doc/Developing.md](https://github.com/sparcians/mavis/tree/main/doc/Developing.md)
 
 ## Using Mavis
 
