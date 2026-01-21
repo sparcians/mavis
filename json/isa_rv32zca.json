@@ -31,7 +31,7 @@
     "tags" : ["c", "zca"],
     "expand" : "addi",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CI_addi",
     "stencil" : "0x1"
   },
@@ -40,7 +40,7 @@
     "tags" : ["c", "zca"],
     "expand" : "nop",
     "form" : "C1",
-    "ignore" : ["func1", "func2b"],
+    "ignore" : ["func1", "func2b", "imm5"],
     "fixed" : [ "rs1" ],
     "xform" : "CI_addi",
     "stencil" : "0x1"
@@ -50,7 +50,7 @@
     "tags" : ["c", "zca"],
     "expand" : "addi",
     "form" : "C1",
-    "ignore" : ["func1", "func2b"],
+    "ignore" : ["func1", "func2b", "imm5"],
     "fixed" : [ "rs1" ],
     "xform" : "CI_sp",
     "stencil" : "0x6101"
@@ -78,7 +78,7 @@
     "tags" : ["c", "zca"],
     "expand" : "li",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CI_rD_only",
     "stencil" : "0x4001"
   },
@@ -87,7 +87,7 @@
     "tags" : ["c", "zca"],
     "expand" : "lui",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CI_rD_shifted",
     "stencil" : "0x6001"
   },
@@ -96,7 +96,7 @@
     "tags" : ["c", "zca"],
     "expand" : "srli",
     "form" : "C1",
-    "ignore" : ["func1", "func2b"],
+    "ignore" : ["func1", "func2b", "imm5"],
     "xform" : "CIX",
     "stencil" : "0x8001"
   },
@@ -105,7 +105,7 @@
     "tags" : ["c", "zca"],
     "expand" : "srai",
     "form" : "C1",
-    "ignore" : ["func1", "func2b"],
+    "ignore" : ["func1", "func2b", "imm5"],
     "xform" : "CIX",
     "stencil" : "0x8401"
   },
@@ -114,7 +114,7 @@
     "tags" : ["c", "zca"],
     "expand" : "andi",
     "form" : "C1",
-    "ignore" : ["func1", "func2b"],
+    "ignore" : ["func1", "func2b", "imm5"],
     "xform" : "CIX_andi",
     "stencil" : "0x8801"
   },
@@ -123,6 +123,7 @@
     "tags" : ["c", "zca"],
     "expand" : "sub",
     "form" : "C1",
+    "ignore" : ["imm5"],
     "xform" : "CA",
     "stencil" : "0x8c01"
   },
@@ -131,6 +132,7 @@
     "tags" : ["c", "zca"],
     "expand" : "xor",
     "form" : "C1",
+    "ignore" : ["imm5"],
     "xform" : "CA",
     "stencil" : "0x8c21"
   },
@@ -139,6 +141,7 @@
     "tags" : ["c", "zca"],
     "expand" : "or",
     "form" : "C1",
+    "ignore" : ["imm5"],
     "xform" : "CA",
     "stencil" : "0x8c41"
   },
@@ -147,6 +150,7 @@
     "tags" : ["c", "zca"],
     "expand" : "and",
     "form" : "C1",
+    "ignore" : ["imm5"],
     "xform" : "CA",
     "stencil" : "0x8c61"
   },
@@ -155,7 +159,7 @@
     "tags" : ["c", "zca"],
     "expand" : "jal",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CJ",
     "stencil" : "0xa001"
   },
@@ -164,7 +168,7 @@
     "tags" : ["c", "zca"],
     "expand" : "jal",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CJAL",
     "stencil" : "0x2001"
   },
@@ -173,7 +177,7 @@
     "tags" : ["c", "zca"],
     "expand" : "beq",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CB",
     "stencil" : "0xc001"
   },
@@ -182,7 +186,7 @@
     "tags" : ["c", "zca"],
     "expand" : "bne",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CB",
     "stencil" : "0xe001"
   },
