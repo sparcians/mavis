@@ -15,7 +15,7 @@
     "fixed" : ["rm"],
     "tags" : ["d", "zfa"],
     "form" : "Rfloat",
-    "l-oper" : ["rs1"],
+    "l-oper" : ["rs1", "rs2"],
     "q-oper" : ["rd"],
     "type" : ["float", "arith"]
   }
