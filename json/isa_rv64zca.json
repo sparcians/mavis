@@ -87,7 +87,7 @@
     "tags" : ["c", "zca"],
     "expand" : "addiw",
     "form" : "C1",
-    "ignore" : ["func2", "func1", "func2b"],
+    "ignore" : ["func2", "func1", "func2b", "imm5"],
     "xform" : "CI_addiw",
     "stencil" : "0x2001"
   },
@@ -132,7 +132,7 @@
     "tags" : ["c", "zca"],
     "expand" : "srai",
     "form" : "C1",
-    "ignore" : ["func1", "func2b"],
+    "ignore" : ["func1", "func2b", "imm5"],
     "xform" : "CIX",
     "stencil" : "0x8401"
   },
@@ -141,7 +141,7 @@
     "tags" : ["c", "zca"],
     "expand" : "andi",
     "form" : "C1",
-    "ignore" : ["func1", "func2b"],
+    "ignore" : ["func1", "func2b", "imm5"],
     "xform" : "CIX_andi",
     "stencil" : "0x8801"
   },
@@ -190,6 +190,7 @@
     "tags" : ["c", "zca"],
     "expand" : "addw",
     "form" : "C1",
+    "ignore" : ["imm5"],
     "xform" : "CA",
     "stencil" : "0x9c21"
   },
