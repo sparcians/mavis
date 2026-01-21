@@ -23,3 +23,6 @@ Knute Lingaard
 Brett Butro
 - Framwork developer; bug fixes; ISA enahancements
 - Chief designer and developer of the Extensions Manager
+
+Linda Hastings
+- Bug fixes; ISA enhanceemnts
