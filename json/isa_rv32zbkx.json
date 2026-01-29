@@ -1,18 +1,1 @@
-[
-    {
-        "mnemonic": "xperm8",
-        "tags": ["zbkx"],
-        "form": "R",
-        "stencil": "0x28004033",
-        "type": ["int", "arith"],
-        "l-oper": "all"
-    },
-    {
-        "mnemonic": "xperm4",
-        "tags": ["zbkx"],
-        "form": "R",
-        "stencil": "0x28002033",
-        "type": ["int", "arith"],
-        "l-oper": "all"
-    }
-]
+isa_rv64zbkx.json

@@ -639,14 +639,9 @@
       "json": "isa_rv64svinval_h.json"
     },
     {
-      "xlen" : 64,
+      "xlen" : [32, 64],
       "extension": "zbkx",
       "json": "isa_rv64zbkx.json"
-    },
-    {
-      "xlen" : 32,
-      "extension" : "zbkx",
-      "json" : "isa_rv32zbkx.json"
     }
   ]
 }
