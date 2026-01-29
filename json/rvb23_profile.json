@@ -1,0 +1,509 @@
+{
+  "meta_extensions": [
+    {
+      "xlen": [32, 64, 128],
+      "extension": "g",
+      "is_base_extension": true
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "a",
+      "meta_extension": "g"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "b"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "c"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zce"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvknc"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvkng"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvkn",
+      "meta_extension": ["zvknc", "zvkng"]
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvksc"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvksg"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvks",
+      "meta_extension": ["zvksc", "zvksg"]
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "v"
+    }
+  ],
+  "config_extensions": [
+    {
+      "xlen": [32, 64],
+      "extension": "Ss1p13"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Svnapot"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Svbare"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Sv39"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Svade"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Ssccptr"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Sstvecd"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "sstvala"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Sscounterenw"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Svpbmt"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Sstc"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Sscofpmf"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Ssu64xl"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "Sv48"
+    }
+  ],
+  "extensions": [
+    {
+      "xlen": 32,
+      "extension": "i",
+      "meta_extension": "g",
+      "is_base_extension": true,
+      "json": "isa_rv32i.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "i",
+      "meta_extension": "g",
+      "is_base_extension": true,
+      "json": "isa_rv64i.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "m",
+      "enables": "zmmul",
+      "meta_extension": "g",
+      "json": "isa_rv32m.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zmmul",
+      "json": "isa_rv32zmmul.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "m",
+      "enables": "zmmul",
+      "meta_extension": "g",
+      "json": "isa_rv64m.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zmmul",
+      "json": "isa_rv64zmmul.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zaamo",
+      "meta_extension": "a",
+      "json": "isa_rv32zaamo.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zalrsc",
+      "meta_extension": "a",
+      "json": "isa_rv32zalrsc.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zaamo",
+      "meta_extension": "a",
+      "json": "isa_rv64zaamo.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zalrsc",
+      "meta_extension": "a",
+      "json": "isa_rv64zalrsc.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "f",
+      "meta_extension": "g",
+      "json": "isa_rv32f.json"
+    },
+    {
+      "xlen": [64, 128],
+      "extension": "f",
+      "meta_extension": "g",
+      "json": "isa_rv64f.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "d",
+      "meta_extension": "g",
+      "enables": ["f"],
+      "json": "isa_rv32d.json"
+    },
+    {
+      "xlen": [64, 128],
+      "extension": "d",
+      "meta_extension": "g",
+      "enables": ["f"],
+      "json": "isa_rv64d.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zcd",
+      "enabled_by": [["c", "d"]],
+      "requires": ["zca", "d"],
+      "json": "isa_rv32zcd.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zca",
+      "meta_extension": ["c", "zce"],
+      "json": "isa_rv32zca.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zcf",
+      "enabled_by": [["c", "f"], ["zce", "f"]],
+      "requires": ["zca", "f"],
+      "conflicts": ["zclsd"],
+      "json": "isa_rv32zcf.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zca",
+      "meta_extension": ["c", "zce"],
+      "json": "isa_rv64zca.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zcb",
+      "meta_extension": "zce",
+      "requires": ["zca"],
+      "json": "isa_rv64zcb.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zba",
+      "meta_extension": "b",
+      "json": "isa_rv64zba.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zbb",
+      "meta_extension": "b",
+      "json": "isa_rv64zbb.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zbc",
+      "meta_extension": "b",
+      "json": "isa_rv32zbc.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zbs",
+      "meta_extension": "b",
+      "json": "isa_rv64zbs.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicsr",
+      "meta_extension": "g",
+      "json": "isa_rv32zicsr.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zihintpause",
+      "json": "isa_rv32zihintpause.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicbom",
+      "json": "isa_rv64zicbom.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicbop",
+      "json": "isa_rv64zicbop.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicboz",
+      "json": "isa_rv64zicboz.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zihintntl",
+      "json": "isa_rv64zihintntl.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicond",
+      "json": "isa_rv32zicond.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zimop",
+      "json": "isa_rv32zimop.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zcmop",
+      "json": "isa_rv32zcmop.json",
+      "requires": ["zca", "zimop"]
+    },
+    {
+      "xlen": 32,
+      "extension": "zcb",
+      "meta_extension": "zce",
+      "requires": ["zca"],
+      "json": "isa_rv32zcb.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfa",
+      "requires": "f",
+      "json": "isa_rv32zfa.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfad",
+      "internal": true,
+      "enabled_by": [["zfa", "d"]],
+      "json": "isa_rv32zfa_d.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zfadrv32",
+      "internal": true,
+      "enabled_by": ["zfad"],
+      "json": "isa_rv32zfa_d_addons.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfah",
+      "internal": true,
+      "enabled_by": [["zfa", "zfh"]],
+      "json": "isa_rv32zfa_h.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zawrs",
+      "requires": ["zalrsc"],
+      "json": "isa_rv32zawrs.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvkg",
+      "meta_extension": ["zvkng", "zvksg"],
+      "json": "isa_rv64zvkg.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvkned",
+      "meta_extension": ["zvkn"],
+      "json": "isa_rv64zvkned.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvknhb",
+      "aliases": ["zvknha"],
+      "meta_extension": ["zvkn"],
+      "json": "isa_rv64zvknh.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvksed",
+      "meta_extension": "zvks",
+      "json": "isa_rv64zvksed.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvksh",
+      "meta_extension": "zvks",
+      "json": "isa_rv64zvksh.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zabha",
+      "json": "isa_rv32zabha.json"
+    },
+    {
+      "xlen": 32,
+      "extension": "zacas",
+      "json": "isa_rv32zacas.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfh",
+      "requires": ["f"],
+      "enables": "zfhmin",
+      "json": "isa_rv32zfh.json"
+    },
+    {
+      "xlen": [64, 128],
+      "extension": "zfhrv64",
+      "internal": true,
+      "enabled_by": ["zfh"],
+      "json": "isa_rv64zfh_addons.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfhmin",
+      "json": "isa_rv32zfhmin.json"
+    },
+    {
+      "xlen": [32, 64, 128],
+      "extension": "zfhmind",
+      "internal": true,
+      "enabled_by": [["zfhmin", "d"]],
+      "json": "isa_rv32zfhmin_d.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zve64f",
+      "enabled_by": [["v", "f"]],
+      "requires": "f",
+      "enables": ["zve32f", "zve64x"]
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zve32x",
+      "meta_extension": "v",
+      "requires": "zicsr",
+      "json": "isa_rv64zve32x.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zve32f",
+      "enabled_by": [["v", "f"]],
+      "requires": "f",
+      "enables": "zve32x",
+      "json": "isa_rv64zve32f.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zve64x",
+      "meta_extension": "v",
+      "enables": "zve32x",
+      "json": "isa_rv64zve64x.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zve64d",
+      "enabled_by": [["v", "d"]],
+      "requires": "d",
+      "enables": "zve64f",
+      "json": "isa_rv64zve64d.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvbb",
+      "meta_extension": ["zvkn", "zvks"],
+      "json": "isa_rv64zvbb.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicfiss",
+      "requires": ["zimop"],
+      "json": "isa_rv64zicfiss.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zicfissrv64",
+      "internal": true,
+      "enabled_by": ["zicfiss"],
+      "json": "isa_rv64zicfiss_common.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicfiss_c",
+      "internal": true,
+      "enabled_by": [["zicfiss", "zca"]],
+      "requires": ["zcmop"],
+      "json": "isa_rv64zicfiss_c.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zfbfmin",
+      "requires": ["f"],
+      "json": "isa_rv64zfbfmin.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvfbfwma",
+      "requires": ["v", "zfbfmin"],
+      "json": "isa_rv64zvfbfwma.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvbc",
+      "meta_extension": ["zvknc", "zvksc"],
+      "json": "isa_rv64zvbc.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zifencei",
+      "meta_extension": "g",
+      "json": "isa_rv32zifencei.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "svinval",
+      "json": "isa_rv64svinval.json"
+    }
+  ]
+}
