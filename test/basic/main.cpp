@@ -215,7 +215,9 @@ int main()
                             "json/isa_rv64zawrs.json",
                             "json/isa_rv64zfbfmin.json",
                             "json/isa_rv64zvfbfwma.json",
-                            "json/isa_rv64svinval.json"},
+                            "json/isa_rv64svinval.json",
+                            "json/isa_rv64zbkx.json"
+    },
                            {"uarch/uarch_rv64g.json"}, uid_init, anno_overrides);
     cout << mavis_facade;
 
@@ -299,6 +301,7 @@ int main()
     runTSet(mavis_facade, "rv64_bits.tset", {mavis::InstMetaData::ISAExtension::B});
     runTSet(mavis_facade, "rv64_zcb.tset");
     runTSet(mavis_facade, "rv64_zicond.tset");
+    runTSet(mavis_facade, "rv64_zbkx.tset");
 
     // Check implied extraction fields for zcb c.zext.[bhw] instructions
     // c.zext.b should have 0xFF implied immediate
