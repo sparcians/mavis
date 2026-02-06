@@ -1,0 +1,26 @@
+From 1680c8346e0e6282db0bd64d923d48ea91cf9845 Mon Sep 17 00:00:00 2001
+From: Brett Dutro <bdutro@mips.com>
+Date: Thu, 5 Feb 2026 17:49:05 -0600
+Subject: [PATCH 2/2] Patch to silence "unsupported option
+ '-print-multi-os-directory'" error
+
+---
+ libquadmath/configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libquadmath/configure b/libquadmath/configure
+index f82dd3d..f67391e 100755
+--- a/libquadmath/configure
++++ b/libquadmath/configure
+@@ -12251,7 +12251,7 @@ case ${version_specific_libs} in
+       toolexecdir='$(libdir)/gcc-lib/$(target_alias)'
+       toolexeclibdir='$(libdir)'
+     fi
+-    multi_os_directory=`$CC -print-multi-os-directory`
++    multi_os_directory=`$CC -print-multi-os-directory 2>/dev/null`
+     case $multi_os_directory in
+       .) ;; # Avoid trailing /.
+       *) toolexeclibdir=$toolexeclibdir/$multi_os_directory ;;
+-- 
+2.48.1
+

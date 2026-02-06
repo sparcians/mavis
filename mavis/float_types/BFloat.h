@@ -56,6 +56,8 @@ namespace mavis
 
         explicit BFloat(const Half value) { fromFloat_(value); }
 
+        BFloat(const Quad value) { fromFloat_(static_cast<float>(value)); }
+
         template <typename RHS>
         BFloat(const RHS value)
         requires std::is_arithmetic_v<RHS>

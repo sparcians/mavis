@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Mavis.h"
+#include "mavis/Mavis.h"
 #include "Inst.h"
 #include "uArchInfo.h"
 

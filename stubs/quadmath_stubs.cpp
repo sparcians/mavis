@@ -1,5 +1,5 @@
 #include <numeric>
-#include "stubs/quadmath_stubs.h"
+#include "quadmath_stubs.h"
 
 __float128 __builtin_huge_valq()
 {
