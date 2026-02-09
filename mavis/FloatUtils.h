@@ -1,7 +1,11 @@
 #pragma once
 
 #include <ostream>
+#ifdef __cpp_lib_format
 #include <format>
+#else
+#include <boost/format.hpp>
+#endif
 
 namespace mavis::float_utils
 {
@@ -19,6 +23,10 @@ namespace mavis::float_utils
     template <typename FloatType>
     inline void formatFloat(std::ostream & os, const FloatType & value)
     {
+#ifdef __cpp_lib_format
         os << std::format("{}", value);
+#else
+        os << boost::format("%1%") % value;
+#endif
     }
 } // namespace mavis::float_utils

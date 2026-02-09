@@ -252,6 +252,7 @@ namespace mavis
     } // namespace float_utils
 } // namespace mavis
 
+#ifdef __cpp_lib_format
 template <> struct std::formatter<mavis::BFloat> : std::formatter<float>
 {
     constexpr auto parse(std::format_parse_context & ctx)
@@ -264,3 +265,4 @@ template <> struct std::formatter<mavis::BFloat> : std::formatter<float>
         return std::formatter<float>::format(static_cast<float>(obj), ctx);
     }
 };
+#endif

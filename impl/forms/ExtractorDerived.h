@@ -3526,14 +3526,14 @@ namespace mavis
     class Extractor<Form_Rfloat_fli<ImmType>> : public Extractor<Form_Rfloat>
     {
       private:
-        using ImmReturnType = ImmediateReturnType<ImmType>::return_type;
+        using ImmReturnType = typename ImmediateReturnType<ImmType>::return_type;
 
         // Generates the table of immediate values for fli instructions listed in the ISA manual
         template <typename ReturnType> static constexpr std::array<ReturnType, 32> initTable_()
         {
             std::array<ReturnType, 32> values;
 
-            using FloatBits = ReturnType::storage_type;
+            using FloatBits = typename ReturnType::storage_type;
 
             FloatBits exponent;
             FloatBits significand_top_2_bits = 0;

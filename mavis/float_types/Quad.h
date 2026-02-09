@@ -112,8 +112,12 @@ namespace mavis
         friend inline std::ostream & operator<<(std::ostream & os,
                                                 const UnsupportedFloat128 & value)
         {
+#ifdef __cpp_lib_format
             os << std::format("0x{:016x}{:016x}", static_cast<uint64_t>(value.value_ >> 64),
                               static_cast<uint64_t>(value.value_));
+#else
+            os << boost::format("0x%|016x|%|016x|") % static_cast<uint64_t>(value.value_ >> 64) % static_cast<uint64_t>(value.value_);
+#endif
             return os;
         }
     };
