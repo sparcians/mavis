@@ -4,9 +4,6 @@
 #include <compare>
 #include <cstddef>
 #include <cstdint>
-#ifdef __cpp_lib_format
-#include <format>
-#endif
 #include <functional>
 #include <limits>
 
@@ -15,6 +12,7 @@
 #include "float_types/Double.h"
 #include "float_types/Quad.h"
 #include "float_types/BFloat.h"
+#include "Format.h"
 #include "Utils.h"
 
 namespace mavis
@@ -416,7 +414,7 @@ namespace mavis
         // Writes the binary representation of the floating point value to a stream
         void formatHex(std::ostream & os) const
         {
-#ifdef __cpp_lib_format
+#ifdef MAVIS_HAS_STD_FORMAT
             os << std::format("{:x}", data_);
 #else
             os << boost::format("%|x|") % data_;
@@ -431,7 +429,7 @@ namespace mavis
     using Float128 = Float<128>;
 } // namespace mavis
 
-#ifdef __cpp_lib_format
+#ifdef MAVIS_HAS_STD_FORMAT
 template <size_t Bits, typename FloatSettingsType>
 struct std::formatter<mavis::Float<Bits, FloatSettingsType>> :
     std::formatter<typename mavis::Float<Bits, FloatSettingsType>::float_type>
