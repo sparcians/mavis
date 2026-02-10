@@ -252,7 +252,7 @@ namespace mavis
     } // namespace float_utils
 } // namespace mavis
 
-#ifdef __cpp_lib_format
+#ifdef MAVIS_HAS_STD_FORMAT
 template <> struct std::formatter<mavis::BFloat> : std::formatter<float>
 {
     constexpr auto parse(std::format_parse_context & ctx)
