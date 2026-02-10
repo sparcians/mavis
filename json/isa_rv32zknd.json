@@ -1,0 +1,20 @@
+[
+    {
+        "mnemonic": "aes32dsi",
+        "tags": ["zknd"],
+        "form": "R",
+        "stencil": "0x2a000033",
+        "mask": "0x3e00707f",
+        "type": ["int", "arith"],
+        "l-oper": "all"
+    },
+    {
+        "mnemonic": "aes32dsmi",
+        "tags": ["zknd"],
+        "form": "R",
+        "stencil": "0x2e000033",
+        "mask": "0x3e00707f",
+        "type": ["int", "arith"],
+        "l-oper": "all"
+    }
+]

@@ -263,6 +263,7 @@ make
 | **Ziccamoc** Main memory regions with both the cacheability and coherence PMAs must provide AMOCASQ level PMA support. | |
 | **Zvbc** Vector carryless multiplication. | :white_check_mark: |
 | **Zbkx** Crosssbar permutation instructions (xperm4, xperm8). | :white_check_mark: |
+| **Zknd** Accelerating instructions for decryption and key-schedule functiosn of the AES block cipher. | :white_check_mark: |
 | **Zama16b** Misaligned loads, stores, and AMOs to main memory regions that do not cross a naturally aligned 16-byte boundary are atomic. | |
 | **Zfh** Scalar half-precision floating-point. | :x: |
 | **Zbc** Scalar carryless multiply. | :x: |

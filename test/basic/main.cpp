@@ -216,7 +216,8 @@ int main()
                             "json/isa_rv64zfbfmin.json",
                             "json/isa_rv64zvfbfwma.json",
                             "json/isa_rv64svinval.json",
-                            "json/isa_rv64zbkx.json"
+                            "json/isa_rv64zbkx.json",
+                            "json/isa_rv64zknd.json"
     },
                            {"uarch/uarch_rv64g.json"}, uid_init, anno_overrides);
     cout << mavis_facade;
@@ -302,6 +303,7 @@ int main()
     runTSet(mavis_facade, "rv64_zcb.tset");
     runTSet(mavis_facade, "rv64_zicond.tset");
     runTSet(mavis_facade, "rv64_zbkx.tset");
+    runTSet(mavis_facade, "rv64_zknd.tset");
 
     // Check implied extraction fields for zcb c.zext.[bhw] instructions
     // c.zext.b should have 0xFF implied immediate
@@ -1410,7 +1412,9 @@ int main()
                                  "json/isa_rv32zfhmin.json",      "json/isa_rv32zfhmin_d.json",
                                  "json/isa_rv32zihintpause.json", "json/isa_rv32zawrs.json",
                                  "json/isa_rv32zilsd.json",       "json/isa_rv32zacas.json",
-                                 "json/isa_rv32zabha.json"},
+                                 "json/isa_rv32zabha.json",
+                                 "json/isa_rv32zknd.json"
+                                 },
                                 {"uarch/uarch_rv32g.json"}, uid_init, anno_overrides);
     cout << mavis_facade_rv32;
 
@@ -1514,6 +1518,8 @@ int main()
     ASSERT_ALWAYS(inst != nullptr);
     cout << "line " << dec << __LINE__ << ": " << "DASM: 0xe008 = " << inst->dasmString() << endl;
     ASSERT_ALWAYS(inst->getMnemonic() == "c.fsw");
+
+    runTSet(mavis_facade_rv32, "rv32_zknd.tset");
 
     // "ZCLSD" context should exist yet
     ASSERT_ALWAYS(mavis_facade_rv32.hasContext("ZCLSD") == false);

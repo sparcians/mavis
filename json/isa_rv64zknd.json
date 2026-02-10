@@ -1,0 +1,48 @@
+[
+    {
+        "mnemonic": "aes64ds",
+        "tags": ["zknd"],
+        "form": "R",
+        "stencil": "0x3a000033",
+        "mask": "0xfe00707f",
+        "type": ["int", "arith"],
+        "l-oper": "all"
+    },
+    {
+        "mnemonic": "aes64dsm",
+        "tags": ["zknd"],
+        "form": "R",
+        "stencil": "0x3e000033",
+        "mask": "0xfe00707f",
+        "type": ["int", "arith"],
+        "l-oper": "all"
+    },
+    {
+        "mnemonic": "aes64im",
+        "tags": ["zknd"],
+        "form": "ISH",
+        "stencil": "0x30001013",
+        "mask": "0xfff0707f",
+        "fixed":["shamt"],
+        "type": ["int", "arith"],
+        "l-oper": "all"
+    },
+    {
+        "mnemonic": "aes64ks1i",
+        "tags": ["zknd"],
+        "form": "ISH",
+        "stencil": "0x31001013",
+        "mask": "0xfff0707f",
+        "type": ["int", "arith"],
+        "l-oper": "all"
+    },
+    {
+        "mnemonic": "aes64ks2",
+        "tags": ["zknd"],
+        "form": "R",
+        "stencil": "0x7e000033",
+        "mask": "0xfe00707f",
+        "type": ["int", "arith"],
+        "l-oper": "all"
+    }
+]
