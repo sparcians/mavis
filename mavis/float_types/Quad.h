@@ -109,6 +109,8 @@ namespace mavis
             return value_ <=> rhs.value_;
         }
 
+        operator float() const { throw std::runtime_error("UnsupportedFloat128 cannot be implicitly converted to float"); }
+
         friend inline std::ostream & operator<<(std::ostream & os,
                                                 const UnsupportedFloat128 & value)
         {
