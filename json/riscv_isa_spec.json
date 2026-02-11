@@ -642,6 +642,16 @@
       "xlen" : [32, 64],
       "extension": "zbkx",
       "json": "isa_rv64zbkx.json"
+    },
+    {
+      "xlen": 32,
+      "extension":"zknd",
+      "json":"isa_rv32zknd.json"
+    },
+    {
+      "xlen":64,
+      "extension":"zknd",
+      "json":"isa_rv64zknd.json"
     }
   ]
 }
