@@ -1496,6 +1496,8 @@ namespace mavis::extension_manager
 
         virtual std::string getISAFromELF_(const std::string & elf) const = 0;
 
+        virtual void setISASpecJSONImpl_(const std::string &) {};
+
         virtual void setISAImpl_(const std::string & isa) = 0;
 
       private:
@@ -1829,6 +1831,8 @@ namespace mavis::extension_manager
                 std::cerr << "Error parsing file " << jfile << std::endl;
                 throw;
             }
+
+	    setISASpecJSONImpl_(jfile);
         }
 
         void setISAFromELF(const std::string & elf) { setISA(getISAFromELF_(elf)); }

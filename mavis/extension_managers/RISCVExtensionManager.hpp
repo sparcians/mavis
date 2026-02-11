@@ -59,6 +59,15 @@ namespace mavis::extension_manager::riscv
         }
     };
 
+    class InvalidRISCVProfileException : public ExtensionManagerException
+    {
+      public:
+        explicit InvalidRISCVProfileException(const std::string & profile) :
+            ExtensionManagerException(profile + " is not a valid RISCV profile.")
+        {
+        }
+    };
+
     static constexpr uint32_t RISCV_DEFAULT_MAJOR_VER = 2;
     static constexpr uint32_t RISCV_DEFAULT_MINOR_VER = 0;
 
@@ -164,6 +173,105 @@ namespace mavis::extension_manager::riscv
         static constexpr std::string_view DIGITS_{"0123456789"};
 
         uint32_t xlen_ = 0;
+
+        class ISA
+        {
+        public:
+            ISA(const std::string & isa)
+            {
+                // ISA string must at least contain rv, the XLEN, and the base ISA,
+                // e.g. rv32i
+                static constexpr size_t MIN_LENGTH = 5;
+
+                std::string_view isa_view(isa);
+                if (isa_view.size() < MIN_LENGTH || isa_view.find("rv") != 0 || !isdigit(isa_view[2]))
+                {
+                    throw InvalidISAStringException(isa);
+                }
+
+                // Remove "rv" prefix
+                isa_view.remove_prefix(2);
+
+                // Get XLEN
+                try
+                {
+                    size_t num_chars = 0;
+                    xlen_ = std::stoul(std::string(isa_view), &num_chars);
+
+                    // Remove XLEN prefix
+                    isa_view.remove_prefix(num_chars);
+                }
+                catch (const std::invalid_argument &)
+                {
+                    throw InvalidISAStringException(isa, "Could not determine xlen");
+                }
+                catch (const std::out_of_range &)
+                {
+                    throw InvalidISAStringException(isa, "Invalid xlen");
+                }
+
+                if (isa_view.empty())
+                {
+                    throw InvalidISAStringException(isa, "Missing base extension");
+                }
+
+                // Base ISA
+                base_isa_ = std::string(1, isa_view.front());
+
+                // Remove base ISA
+                isa_view.remove_prefix(1);
+
+                // TODO: Check if base ISA has a version
+
+                if (!isa_view.empty())
+                {
+                    char ext;
+
+                    while (inSingleCharExtRange_(isa_view, ext))
+                    {
+                        if (ext == '_')
+                        {
+                            isa_view.remove_prefix(1);
+                            continue;
+                        }
+
+                        const std::string ext_str(1, ext);
+                        extensions_.emplace_back(ext_str);
+
+                        isa_view.remove_prefix(1);
+                    }
+
+                    while (!isa_view.empty())
+                    {
+                        if (isa_view[0] == '_')
+                        {
+                            isa_view.remove_prefix(1);
+                            continue;
+                        }
+
+                        auto current_ext = isa_view.substr(0, isa_view.find('_'));
+                        const size_t ext_length = current_ext.size();
+                        const std::string ext_str(current_ext);
+                        extensions_.emplace_back(ext_str);
+
+                        isa_view.remove_prefix(ext_length);
+                    }
+                }
+            }
+
+            uint32_t getXLEN() const { return xlen_; }
+
+            const std::string& getBaseISA() const { return base_isa_; }
+
+            const std::vector<std::string>& getExtensions() const { return extensions_; }
+
+        private:
+            uint32_t xlen_;
+            std::string base_isa_;
+            std::vector<std::string> extensions_;
+        };
+
+        std::map<std::string, ISA> profiles_;
 
         static bool getCharIfValid_(const std::string_view & isa_view, char & front_char)
         {
@@ -400,6 +508,31 @@ namespace mavis::extension_manager::riscv
             return isa_str;
         }
 
+        void setISASpecJSONImpl_(const std::string & jfile) override
+        {
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
+
+            try
+            {
+                const auto & jobj = json.as_object();
+
+                if (auto profiles_it = jobj.find("profiles"); profiles_it != jobj.end())
+                {
+                    for (const auto & profile_obj : profiles_it->value().as_object())
+                    {
+                        ISA parsed_isa{profile_obj.value().as_string().c_str()};
+                        profiles_.emplace(profile_obj.key(), parsed_isa);
+                    }
+                }
+            }
+            catch (const ExtensionManagerException &)
+            {
+                std::cerr << "Error parsing file " << jfile << std::endl;
+                throw;
+            }
+        }
+
+        // FIXME: Use ISA class to reduce code duplication
         void setISAImpl_(const std::string & isa) override
         {
             // ISA string must at least contain rv, the XLEN, and the base ISA,
@@ -605,6 +738,24 @@ namespace mavis::extension_manager::riscv
         {
             return fromELF_<RISCVExtensionManager>(elf, spec_json, mavis_json_dir,
                                                    unknown_extension_action);
+        }
+
+        void setProfile(const std::string& profile)
+        {
+            const auto profile_it = profiles_.find(profile);
+            if(profile_it != profiles_.end())
+            {
+                allowExtension(profile_it->second.getBaseISA());
+                for (const std::string& ext : profile_it->second.getExtensions())
+                {
+                    allowExtension(ext);
+                }
+            }
+            else
+            {
+                throw InvalidRISCVProfileException(profile);
+            }
+
         }
 
         uint32_t getXLEN() const { return xlen_; }
