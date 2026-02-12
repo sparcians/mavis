@@ -59,14 +59,24 @@ namespace mavis::extension_manager::riscv
         }
     };
 
+    class InvalidRISCVProfileException : public ExtensionManagerException
+    {
+      public:
+        explicit InvalidRISCVProfileException(const std::string & profile) :
+            ExtensionManagerException(profile + " is not a valid RISCV profile.")
+        {
+        }
+    };
+
     static constexpr uint32_t RISCV_DEFAULT_MAJOR_VER = 2;
     static constexpr uint32_t RISCV_DEFAULT_MINOR_VER = 0;
+
+    using RISCVVersionType = std::pair<uint32_t, uint32_t>;
 
     class RISCVExtensionInfo : public ExtensionInfoBase
     {
       private:
-        uint32_t major_ver_ = RISCV_DEFAULT_MAJOR_VER;
-        uint32_t minor_ver_ = RISCV_DEFAULT_MINOR_VER;
+        RISCVVersionType version_{RISCV_DEFAULT_MAJOR_VER, RISCV_DEFAULT_MINOR_VER};
 
       public:
         RISCVExtensionInfo(const std::string & ext, const std::string & json,
@@ -82,13 +92,13 @@ namespace mavis::extension_manager::riscv
 
         void setVersion(const uint32_t major_ver, const uint32_t minor_ver)
         {
-            major_ver_ = major_ver;
-            minor_ver_ = minor_ver;
+            version_.first = major_ver;
+            version_.second = minor_ver;
         }
 
-        uint32_t getMajorVersion() const { return major_ver_; }
+        uint32_t getMajorVersion() const { return version_.first; }
 
-        uint32_t getMinorVersion() const { return minor_ver_; }
+        uint32_t getMinorVersion() const { return version_.second; }
     };
 
     class RISCVXLENState : public ExtensionStateBase<RISCVExtensionInfo>
@@ -164,6 +174,172 @@ namespace mavis::extension_manager::riscv
         static constexpr std::string_view DIGITS_{"0123456789"};
 
         uint32_t xlen_ = 0;
+
+        class ISA
+        {
+          public:
+            explicit ISA(const std::string & isa)
+            {
+                // ISA string must at least contain rv, the XLEN, and the base ISA,
+                // e.g. rv32i
+                static constexpr size_t MIN_LENGTH = 5;
+
+                std::string_view isa_view(isa);
+                if (isa_view.size() < MIN_LENGTH || isa_view.find("rv") != 0 || !isdigit(isa_view[2]))
+                {
+                    throw InvalidISAStringException(isa);
+                }
+
+                // Remove "rv" prefix
+                isa_view.remove_prefix(2);
+
+                // Get XLEN
+                try
+                {
+                    size_t num_chars = 0;
+                    xlen_ = std::stoul(std::string(isa_view), &num_chars);
+
+                    // Remove XLEN prefix
+                    isa_view.remove_prefix(num_chars);
+                }
+                catch (const std::invalid_argument &)
+                {
+                    throw InvalidISAStringException(isa, "Could not determine xlen");
+                }
+                catch (const std::out_of_range &)
+                {
+                    throw InvalidISAStringException(isa, "Invalid xlen");
+                }
+
+                if (isa_view.empty())
+                {
+                    throw InvalidISAStringException(isa, "Missing base extension");
+                }
+
+                // Base ISA
+                base_isa_ = std::string(1, isa_view.front());
+                isa_view.remove_prefix(1);
+                char ext;
+                if (getCharIfValid_(isa_view, ext) && isdigit(ext))
+                {
+                    const auto [major_ver, minor_ver] = extractVersions_(isa_view);
+                    extension_versions_.emplace(base_isa_, std::make_pair(major_ver, minor_ver));
+                }
+
+                if (!isa_view.empty())
+                {
+                    // Single char extensions (e.g imafd)
+                    while (inSingleCharExtRange_(isa_view, ext))
+                    {
+                        if (ext == '_')
+                        {
+                            isa_view.remove_prefix(1);
+                            continue;
+                        }
+
+                        const std::string ext_str(1, ext);
+                        extensions_.emplace_back(ext_str);
+                        isa_view.remove_prefix(1);
+
+                        if (getCharIfValid_(isa_view, ext) && isdigit(ext))
+                        {
+                            const auto [major_ver, minor_ver] = extractVersions_(isa_view);
+                            extension_versions_.emplace(ext_str, std::make_pair(major_ver, minor_ver));
+                        }
+                    }
+
+                    // Extensions separated with underscores
+                    while (!isa_view.empty())
+                    {
+                        if (isa_view[0] == '_')
+                        {
+                            isa_view.remove_prefix(1);
+                            continue;
+                        }
+
+                        auto current_ext = isa_view.substr(0, isa_view.find('_'));
+                        const size_t ext_length = current_ext.size();
+
+                        bool has_version = false;
+                        uint32_t major_ver = RISCV_DEFAULT_MAJOR_VER;
+                        uint32_t minor_ver = RISCV_DEFAULT_MINOR_VER;
+
+                        if (isdigit(current_ext.back()))
+                        {
+                            auto ver_pos = current_ext.find_last_not_of(DIGITS_);
+                            if (ver_pos == std::string_view::npos)
+                            {
+                                throw InvalidISAStringException(
+                                    isa, "Invalid version number specified for extension "
+                                              + std::string(current_ext));
+                            }
+                            else if (current_ext[ver_pos] == 'p')
+                            {
+                                if (ver_pos == 0)
+                                {
+                                    throw InvalidISAStringException(
+                                        isa, "Invalid version number specified for extension "
+                                                  + std::string(current_ext));
+                                }
+
+                                ver_pos = current_ext.find_last_not_of(DIGITS_, ver_pos - 1);
+
+                                if (ver_pos == std::string_view::npos)
+                                {
+                                    throw InvalidISAStringException(
+                                        isa, "Invalid version number specified for extension "
+                                                  + std::string(current_ext));
+                                }
+                            }
+
+                            ++ver_pos;
+
+                            auto ver_str = current_ext.substr(ver_pos);
+                            current_ext.remove_suffix(ver_str.size());
+
+                            try
+                            {
+                                std::tie(major_ver, minor_ver) = extractVersions_(ver_str);
+                            }
+                            catch (const VersionNumberExtractionError &)
+                            {
+                                throw InvalidISAStringException(
+                                    isa, "Invalid version number specified for extension "
+                                              + std::string(current_ext));
+                            }
+
+                            has_version = true;
+                        }
+
+                        const std::string ext_str(current_ext);
+                        extensions_.emplace_back(ext_str);
+
+                        if (has_version)
+                        {
+                            extension_versions_.emplace(ext_str, std::make_pair(major_ver, minor_ver));
+                        }
+
+                        isa_view.remove_prefix(ext_length);
+                    }
+                }
+            }
+
+            uint32_t getXLEN() const { return xlen_; }
+
+            const std::string& getBaseISA() const { return base_isa_; }
+
+            const std::vector<std::string>& getExtensions() const { return extensions_; }
+
+            const std::map<std::string, RISCVVersionType>& getExtensionVersions() const { return extension_versions_; }
+
+          private:
+            uint32_t xlen_;
+            std::string base_isa_;
+            std::vector<std::string> extensions_;
+            std::map<std::string, RISCVVersionType> extension_versions_;
+        };
+
+        std::map<std::string, ISA> profiles_;
 
         static bool getCharIfValid_(const std::string_view & isa_view, char & front_char)
         {
@@ -400,174 +576,61 @@ namespace mavis::extension_manager::riscv
             return isa_str;
         }
 
-        void setISAImpl_(const std::string & isa) override
+        void setISASpecJSONImpl_(const std::string & jfile) override
         {
-            // ISA string must at least contain rv, the XLEN, and the base ISA,
-            // e.g. rv32i
-            static constexpr size_t MIN_LENGTH = 5;
-
-            isa_ = toLowercase_(isa);
-
-            std::string_view isa_view(isa_);
-            if (isa_view.size() < MIN_LENGTH || isa_view.find("rv") != 0 || !isdigit(isa_view[2]))
-            {
-                throw InvalidISAStringException(isa_);
-            }
-
-            // Remove "rv" prefix
-            isa_view.remove_prefix(2);
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
 
             try
             {
-                size_t num_chars = 0;
-                xlen_ = std::stoul(std::string(isa_view), &num_chars);
-                // Remove XLEN prefix
-                isa_view.remove_prefix(num_chars);
-                enabled_arch_ = extensions_.find(xlen_);
-                if (enabled_arch_ == extensions_.end())
+                const auto & jobj = json.as_object();
+
+                if (auto profiles_it = jobj.find("profiles"); profiles_it != jobj.end())
                 {
-                    throw std::out_of_range("");
+                    for (const auto & profile_obj : profiles_it->value().as_object())
+                    {
+                        ISA parsed_isa{profile_obj.value().as_string().c_str()};
+                        profiles_.emplace(profile_obj.key(), parsed_isa);
+                    }
                 }
             }
-            catch (const std::invalid_argument &)
+            catch (const ExtensionManagerException &)
             {
-                throw InvalidISAStringException(isa_, "Could not determine xlen");
+                std::cerr << "Error parsing file " << jfile << std::endl;
+                throw;
             }
-            catch (const std::out_of_range &)
-            {
-                throw InvalidISAStringException(isa_, "Invalid xlen");
-            }
+        }
 
-            if (isa_view.empty())
+        // FIXME: Use ISA class to reduce code duplication
+        void setISAImpl_(const std::string & isa) override
+        {
+            isa_ = toLowercase_(isa);
+            ISA parsed_isa{isa_};
+
+            xlen_ = parsed_isa.getXLEN();
+            enabled_arch_ = extensions_.find(xlen_);
+            if (enabled_arch_ == extensions_.end())
             {
-                throw InvalidISAStringException(isa_, "Missing base extension");
+                throw std::out_of_range("");
             }
 
             auto & xlen_extension = enabled_arch_->second;
-            const std::string base_isa(1, isa_view.front());
 
+            const std::string& base_isa = parsed_isa.getBaseISA();
             xlen_extension.enableBaseExtension(base_isa);
 
-            // Remove base ISA
-            isa_view.remove_prefix(1);
-
-            if (!isa_view.empty())
+            const auto& extension_versions = parsed_isa.getExtensionVersions();
+            if (auto it = extension_versions.find(base_isa); it != extension_versions.end())
             {
-                char ext;
+                xlen_extension.setExtensionVersion(base_isa, it->second.first, it->second.second);
+            }
 
-                if (getCharIfValid_(isa_view, ext) && isdigit(ext))
+            for (const auto& ext : parsed_isa.getExtensions())
+            {
+                xlen_extension.enableExtension(ext);
+
+                if (auto it = extension_versions.find(ext); it != extension_versions.end())
                 {
-                    try
-                    {
-                        const auto [major_ver, minor_ver] = extractVersions_(isa_view);
-                        xlen_extension.setExtensionVersion(base_isa, major_ver, minor_ver);
-                    }
-                    catch (const VersionNumberExtractionError &)
-                    {
-                        throw InvalidISAStringException(
-                            isa_, "Invalid version number specified for extension " + base_isa);
-                    }
-                }
-
-                while (inSingleCharExtRange_(isa_view, ext))
-                {
-                    if (ext == '_')
-                    {
-                        isa_view.remove_prefix(1);
-                        continue;
-                    }
-
-                    const std::string ext_str(1, ext);
-                    xlen_extension.enableExtension(ext_str);
-
-                    isa_view.remove_prefix(1);
-
-                    if (inSingleCharExtRange_(isa_view, ext) && isdigit(ext))
-                    {
-                        try
-                        {
-                            const auto [major_ver, minor_ver] = extractVersions_(isa_view);
-                            xlen_extension.setExtensionVersion(ext_str, major_ver, minor_ver);
-                        }
-                        catch (const VersionNumberExtractionError &)
-                        {
-                            throw InvalidISAStringException(
-                                isa_, "Invalid version number specified for extension " + ext_str);
-                        }
-                    }
-                }
-
-                while (!isa_view.empty())
-                {
-                    if (isa_view[0] == '_')
-                    {
-                        isa_view.remove_prefix(1);
-                        continue;
-                    }
-
-                    auto current_ext = isa_view.substr(0, isa_view.find('_'));
-                    const size_t ext_length = current_ext.size();
-
-                    bool has_version = false;
-                    uint32_t major_ver = RISCV_DEFAULT_MAJOR_VER;
-                    uint32_t minor_ver = RISCV_DEFAULT_MINOR_VER;
-
-                    if (isdigit(current_ext.back()))
-                    {
-                        auto ver_pos = current_ext.find_last_not_of(DIGITS_);
-                        if (ver_pos == std::string_view::npos)
-                        {
-                            throw InvalidISAStringException(
-                                isa_, "Invalid version number specified for extension "
-                                          + std::string(current_ext));
-                        }
-                        else if (current_ext[ver_pos] == 'p')
-                        {
-                            if (ver_pos == 0)
-                            {
-                                throw InvalidISAStringException(
-                                    isa_, "Invalid version number specified for extension "
-                                              + std::string(current_ext));
-                            }
-
-                            ver_pos = current_ext.find_last_not_of(DIGITS_, ver_pos - 1);
-
-                            if (ver_pos == std::string_view::npos)
-                            {
-                                throw InvalidISAStringException(
-                                    isa_, "Invalid version number specified for extension "
-                                              + std::string(current_ext));
-                            }
-                        }
-
-                        ++ver_pos;
-
-                        auto ver_str = current_ext.substr(ver_pos);
-                        current_ext.remove_suffix(ver_str.size());
-
-                        try
-                        {
-                            std::tie(major_ver, minor_ver) = extractVersions_(ver_str);
-                        }
-                        catch (const VersionNumberExtractionError &)
-                        {
-                            throw InvalidISAStringException(
-                                isa_, "Invalid version number specified for extension "
-                                          + std::string(current_ext));
-                        }
-
-                        has_version = true;
-                    }
-
-                    const std::string ext_str(current_ext);
-                    xlen_extension.enableExtension(ext_str);
-
-                    if (has_version)
-                    {
-                        xlen_extension.setExtensionVersion(ext_str, major_ver, minor_ver);
-                    }
-
-                    isa_view.remove_prefix(ext_length);
+                    xlen_extension.setExtensionVersion(ext, it->second.first, it->second.second);
                 }
             }
 
@@ -605,6 +668,24 @@ namespace mavis::extension_manager::riscv
         {
             return fromELF_<RISCVExtensionManager>(elf, spec_json, mavis_json_dir,
                                                    unknown_extension_action);
+        }
+
+        void setProfile(const std::string& profile)
+        {
+            const auto profile_it = profiles_.find(profile);
+            if(profile_it != profiles_.end())
+            {
+                allowExtension(profile_it->second.getBaseISA());
+                for (const std::string& ext : profile_it->second.getExtensions())
+                {
+                    allowExtension(ext);
+                }
+            }
+            else
+            {
+                throw InvalidRISCVProfileException(profile);
+            }
+
         }
 
         uint32_t getXLEN() const { return xlen_; }
