@@ -178,7 +178,7 @@ namespace mavis::extension_manager::riscv
         class ISA
         {
           public:
-            ISA(const std::string & isa)
+            explicit ISA(const std::string & isa)
             {
                 // ISA string must at least contain rv, the XLEN, and the base ISA,
                 // e.g. rv32i

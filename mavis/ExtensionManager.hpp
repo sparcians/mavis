@@ -1832,7 +1832,7 @@ namespace mavis::extension_manager
                 throw;
             }
 
-	    setISASpecJSONImpl_(jfile);
+            setISASpecJSONImpl_(jfile);
         }
 
         void setISAFromELF(const std::string & elf) { setISA(getISAFromELF_(elf)); }
