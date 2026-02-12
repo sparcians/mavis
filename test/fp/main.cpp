@@ -23,9 +23,14 @@ template <typename... FloatTypes> struct FloatTester
             result = lhs == rhs;
         }
         std::cout << (result ? "PASSED" : "FAILED") << std::endl;
-        if(!result) {
-            throw std::runtime_error("result failed, expected " + std::to_string(rhs) +
-                                     " got " + std::to_string(float_t(lhs)));
+        if (!result)
+        {
+            std::ostringstream ss;
+            ss << "result failed, expected ";
+            mavis::float_utils::formatFloat(ss, rhs);
+            ss << " got ";
+            mavis::float_utils::formatFloat(ss, float_t(lhs));
+            throw std::runtime_error(ss.str());
         }
     };
 
@@ -80,7 +85,7 @@ template <typename... FloatTypes> struct FloatTester
                 [](const FloatLHS & lhs, const FloatRHS & rhs, const char op_char)
             { std::cout << "Testing " << lhs << ' ' << op_char << ' ' << rhs << ": "; };
 
-            for (const auto& [val1, val2] : binary_op_values)
+            for (const auto & [val1, val2] : binary_op_values)
             {
                 const FloatLHS x(val1);
                 const FloatRHS y(val2);

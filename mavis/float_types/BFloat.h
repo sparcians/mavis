@@ -56,6 +56,8 @@ namespace mavis
 
         explicit BFloat(const Half value) { fromFloat_(value); }
 
+        BFloat(const Quad value) { fromFloat_(static_cast<float>(value)); }
+
         template <typename RHS>
         BFloat(const RHS value)
         requires std::is_arithmetic_v<RHS>
@@ -250,6 +252,7 @@ namespace mavis
     } // namespace float_utils
 } // namespace mavis
 
+#ifdef MAVIS_HAS_STD_FORMAT
 template <> struct std::formatter<mavis::BFloat> : std::formatter<float>
 {
     constexpr auto parse(std::format_parse_context & ctx)
@@ -262,3 +265,4 @@ template <> struct std::formatter<mavis::BFloat> : std::formatter<float>
         return std::formatter<float>::format(static_cast<float>(obj), ctx);
     }
 };
+#endif

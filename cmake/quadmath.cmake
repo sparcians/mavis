@@ -1,8 +1,10 @@
 include(ExternalProject)
 
+set(MAVIS_PATCHES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/patches)
+
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_subdirectory(stubs)
-    set(QUADMATH_PATCH_COMMAND git am --whitespace=nowarn ${CMAKE_CURRENT_SOURCE_DIR}/patches/0001-Patch-to-enable-building-quadmath-with-clang.patch)
+    set(QUADMATH_PATCH_COMMAND git am --whitespace=nowarn ${MAVIS_PATCHES_DIR}/0001-Patch-to-enable-building-quadmath-with-clang.patch ${MAVIS_PATCHES_DIR}/0002-Patch-to-silence-unsupported-option-print-multi-os-d.patch)
     set(QUADMATH_CPPFLAGS "-include ${CMAKE_CURRENT_SOURCE_DIR}/stubs/quadmath_stubs.h -Wno-unknown-warning-option")
     set(QUADMATH_CFLAGS "-Wno-invalid-gnu-asm-cast -fheinous-gnu-extensions")
     set(QUADMATH_LDFLAGS -L${CMAKE_CURRENT_BINARY_DIR}/stubs)

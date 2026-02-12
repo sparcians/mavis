@@ -109,11 +109,17 @@ namespace mavis
             return value_ <=> rhs.value_;
         }
 
+        operator float() const { throw std::runtime_error("UnsupportedFloat128 cannot be implicitly converted to float"); }
+
         friend inline std::ostream & operator<<(std::ostream & os,
                                                 const UnsupportedFloat128 & value)
         {
+#ifdef MAVIS_HAS_STD_FORMAT
             os << std::format("0x{:016x}{:016x}", static_cast<uint64_t>(value.value_ >> 64),
                               static_cast<uint64_t>(value.value_));
+#else
+            os << boost::format("0x%|016x|%|016x|") % static_cast<uint64_t>(value.value_ >> 64) % static_cast<uint64_t>(value.value_);
+#endif
             return os;
         }
     };

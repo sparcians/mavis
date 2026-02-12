@@ -4,7 +4,6 @@
 #include <compare>
 #include <cstddef>
 #include <cstdint>
-#include <format>
 #include <functional>
 #include <limits>
 
@@ -13,6 +12,7 @@
 #include "float_types/Double.h"
 #include "float_types/Quad.h"
 #include "float_types/BFloat.h"
+#include "Format.h"
 #include "Utils.h"
 
 namespace mavis
@@ -35,11 +35,11 @@ namespace mavis
         using IEEEDefaultFormat = float_utils::IEEEFloatDefaults<Bits>;
 
       public:
-        using storage_type = FloatSettingsType::int_type;
+        using storage_type = typename FloatSettingsType::int_type;
         static_assert(std::is_nothrow_default_constructible_v<storage_type>);
         static_assert(utils::num_bits<storage_type> == Bits);
 
-        using float_type = FloatSettingsType::float_type;
+        using float_type = typename FloatSettingsType::float_type;
         static_assert(utils::num_bits<float_type> == Bits);
 
         static constexpr size_t bits = Bits;
@@ -412,7 +412,14 @@ namespace mavis
         }
 
         // Writes the binary representation of the floating point value to a stream
-        void formatHex(std::ostream & os) const { os << std::format("{:x}", data_); }
+        void formatHex(std::ostream & os) const
+        {
+#ifdef MAVIS_HAS_STD_FORMAT
+            os << std::format("{:x}", data_);
+#else
+            os << boost::format("%|x|") % data_;
+#endif
+        }
     };
 
     using Float16 = Float<16>;
@@ -422,6 +429,7 @@ namespace mavis
     using Float128 = Float<128>;
 } // namespace mavis
 
+#ifdef MAVIS_HAS_STD_FORMAT
 template <size_t Bits, typename FloatSettingsType>
 struct std::formatter<mavis::Float<Bits, FloatSettingsType>> :
     std::formatter<typename mavis::Float<Bits, FloatSettingsType>::float_type>
@@ -438,3 +446,4 @@ struct std::formatter<mavis::Float<Bits, FloatSettingsType>> :
             obj.asFloat(), ctx);
     }
 };
+#endif

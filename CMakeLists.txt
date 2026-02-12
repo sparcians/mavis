@@ -74,8 +74,8 @@ if(NOT DISABLE_MAVIS_FLOAT128_SUPPORT)
     cmake_pop_check_state()
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/elfio ${Boost_INCLUDE_DIRS})
+add_subdirectory(elfio)
+add_subdirectory(int128)
 
 add_library(mavis
   impl/ExtractorRegistry.cpp
@@ -86,7 +86,9 @@ add_library(mavis
   impl/forms/VectorForms.cpp
 )
 
-target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/int128/include ${CMAKE_CURRENT_SOURCE_DIR}/simde)
+target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/simde)
+target_link_libraries(mavis PUBLIC elfio Boost::int128 Boost::json)
 
 if(DISABLE_MAVIS_FLOAT128_SUPPORT)
     message("-- Quad float support explicitly disabled")
@@ -99,11 +101,35 @@ elseif(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
         target_include_directories(mavis PUBLIC ${QUADMATH_INCLUDE_DIR})
         target_link_directories(mavis PUBLIC ${QUADMATH_LIB_DIR})
         add_dependencies(mavis libquadmath)
-        target_link_libraries(mavis ${QUADMATH_LIB_DIR}/libquadmath.a)
+        target_link_libraries(mavis PRIVATE ${QUADMATH_LIB_DIR}/libquadmath.a)
+        if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+            target_compile_options(mavis PUBLIC -Wno-c99-extensions)
+        endif ()
     else()
         target_link_libraries(mavis PUBLIC quadmath)
     endif()
 endif()
+
+# Setup common compiler options for the tests and examples
+add_library(mavis_test_lib INTERFACE)
+target_link_libraries (mavis_test_lib INTERFACE mavis)
+target_compile_options (mavis_test_lib INTERFACE -g -Werror -fPIC
+  -Wall -Wextra -Winline -Winit-self -Wno-unused-function
+  -Wuninitialized -Wno-sequence-point -Wno-inline -Wno-unknown-pragmas
+  -Wno-unused-parameter -Wno-missing-field-initializers -pipe
+  -Winvalid-pch -Woverloaded-virtual)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  target_compile_options(mavis_test_lib INTERFACE -Wpedantic -Wno-gnu-zero-variadic-macro-arguments)
+endif ()
+
+if (CMAKE_BUILD_TYPE MATCHES "^[Dd]ebug")
+  target_compile_options (mavis_test_lib INTERFACE -O0)
+endif()
+
+# For tests that use the Inst class in test/basic/Inst.h
+add_library(mavis_test_inst_lib INTERFACE)
+target_include_directories(mavis_test_inst_lib INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/test/basic)
 
 add_subdirectory(example EXCLUDE_FROM_ALL)
 add_subdirectory(test EXCLUDE_FROM_ALL)
