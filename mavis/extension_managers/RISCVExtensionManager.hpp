@@ -610,7 +610,7 @@ namespace mavis::extension_manager::riscv
             enabled_arch_ = extensions_.find(xlen_);
             if (enabled_arch_ == extensions_.end())
             {
-                throw std::out_of_range("");
+                throw InvalidISAStringException(isa_, "Invalid XLEN");
             }
 
             auto & xlen_extension = enabled_arch_->second;
