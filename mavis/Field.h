@@ -5,6 +5,8 @@
 #include <array>
 #include <cstdint>
 
+#include "Utils.h"
+
 namespace mavis
 {
 
