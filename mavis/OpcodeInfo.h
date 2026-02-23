@@ -97,7 +97,7 @@ namespace mavis
                 case OperandTypes::VECTOR:
                     return info_->vector_sources;
                 case OperandTypes::__N:
-                    assert(false && "invalid operand type");
+                    throw std::invalid_argument("invalid operand type");
             }
             return DecodedInstructionInfo::BitMask();
         }
@@ -129,7 +129,7 @@ namespace mavis
                 case OperandTypes::VECTOR:
                     return info_->vector_n_sources;
                 case OperandTypes::__N:
-                    assert(false && "invalid operand type");
+                    throw std::invalid_argument("invalid operand type");
             }
             return std::numeric_limits<uint32_t>::max();
         }
@@ -168,7 +168,7 @@ namespace mavis
                 case OperandTypes::VECTOR:
                     return info_->vector_dests;
                 case OperandTypes::__N:
-                    assert(false && "invalid operand type");
+                    throw std::invalid_argument("invalid operand type");
             }
             return DecodedInstructionInfo::BitMask();
         }
@@ -200,7 +200,7 @@ namespace mavis
                 case OperandTypes::VECTOR:
                     return info_->vector_n_dests;
                 case OperandTypes::__N:
-                    assert(false && "invalid operand type");
+                    throw std::invalid_argument("invalid operand type");
             }
             return std::numeric_limits<uint32_t>::max();
         }

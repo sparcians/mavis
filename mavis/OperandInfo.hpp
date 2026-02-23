@@ -81,18 +81,26 @@ public:
         ++n_opers_;
         has_implied_operand_ = has_implied_operand_ || elem.is_implied;
         bool duplicate_operand = false;
-        if (elem.field_id != InstMetaData::OperandFieldID::NONE) {
+        if (elem.field_id != InstMetaData::OperandFieldID::NONE)
+        {
             // allow multiple copies of the same exact operand...
-            if (hasFieldID(elem.field_id)) {
+            if (hasFieldID(elem.field_id))
+            {
                 const FieldIDInfo& finfo = field_id_list_[static_cast<OperandFieldIDUnderlyingType>(elem.field_id)];
                 duplicate_operand = (finfo == elem);
-                assert(duplicate_operand);
-            } else {
+                if (!duplicate_operand) [[unlikely]]
+                {
+                    throw std::runtime_error("Expected duplicate operand not found");
+                }
+            }
+            else
+            {
                 field_id_list_[static_cast<OperandFieldIDUnderlyingType>(elem.field_id)] =
                     {true, elem.field_value, elem.operand_type, elem.is_store_data, elem.is_implied};
             }
         }
-        if ((elem.operand_type != InstMetaData::OperandTypes::NONE) && (! duplicate_operand)) {
+        if ((elem.operand_type != InstMetaData::OperandTypes::NONE) && (!duplicate_operand))
+        {
             ++n_types_[static_cast<OperandTypesUnderLyingType>(elem.operand_type)];
         }
     }
@@ -109,7 +117,10 @@ public:
 
     uint32_t getNTypes(InstMetaData::OperandTypes otype) const
     {
-        assert(otype != InstMetaData::OperandTypes::NONE);
+        if (otype == InstMetaData::OperandTypes::NONE)
+        {
+            throw std::invalid_argument("otype must not be NONE");
+        }
         return n_types_[static_cast<OperandTypesUnderLyingType>(otype)];
     }
 

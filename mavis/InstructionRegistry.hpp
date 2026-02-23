@@ -94,12 +94,22 @@ public:
     // mnemonic_array
     bool aliasInstWithUID(const std::string& mnemonic, const InstructionUniqueID uid)
     {
-        assert((uid != INVALID_UID) && (uid < uid_man_.getUID()) && "invalid uid");
-        if (id_map_.find(mnemonic) == id_map_.end()) {
-            assert(mnemonic_array_.contains(uid));
+        if ((uid == INVALID_UID) || (uid >= uid_man_.getUID())) [[unlikely]]
+        {
+            throw std::invalid_argument("invalid uid");
+        }
+
+        if (id_map_.find(mnemonic) == id_map_.end())
+        {
+            if (!mnemonic_array_.contains(uid)) [[unlikely]]
+            {
+                throw std::invalid_argument("unknown mnemonic uid");
+            }
             id_map_[mnemonic] = uid;
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -119,8 +129,13 @@ public:
 
     void addInstWithUIDUniquely(const std::string& mnemonic, const InstructionUniqueID uid)
     {
-        assert((uid != INVALID_UID) && (uid < uid_man_.getUID()) && "invalid uid");
-        if (id_map_.find(mnemonic) != id_map_.end()) {
+        if ((uid == INVALID_UID) || (uid >= uid_man_.getUID())) [[unlikely]]
+        {
+            throw std::invalid_argument("invalid uid");
+        }
+
+        if (id_map_.find(mnemonic) != id_map_.end())
+        {
             throw BuildErrorDuplicateMnemonic(mnemonic);
         }
         id_map_[mnemonic] = uid;

@@ -54,23 +54,17 @@ public:
 
     typename BuilderType::PtrType getBuilder() const
     {
-        assert(current_ != nullptr);
-        assert(current_->builder != nullptr);
-        return current_->builder;
+        return mavis::utils::notNull(mavis::utils::notNull(current_)->builder);
     }
 
     typename PseudoBuilderType::PtrType getPseudoBuilder() const
     {
-        assert(current_ != nullptr);
-        assert(current_->pseudo_builder != nullptr);
-        return current_->pseudo_builder;
+        return mavis::utils::notNull(mavis::utils::notNull(current_)->pseudo_builder);
     }
 
     typename DTableType::PtrType getDTable() const
     {
-        assert(current_ != nullptr);
-        assert(current_->dtrie != nullptr);
-        return current_->dtrie;
+        return mavis::utils::notNull(mavis::utils::notNull(current_)->dtrie);
     }
 
 private:

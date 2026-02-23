@@ -186,7 +186,7 @@ namespace mavis
       private:
         ExtractorIF::PtrType specialCaseClone(const uint64_t, const uint64_t) const override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
 
@@ -398,7 +398,14 @@ namespace mavis
                     InstMetaData::OperandFieldID::RS_MAX)
                 - static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(
                     InstMetaData::OperandFieldID::RS1);
-            assert(sources_.size() <= max_sources);
+            if (sources_.size() > max_sources) [[unlikely]]
+            {
+                std::ostringstream ss;
+                ss << "There are " << sources_.size() << " source operands, but the maximum is "
+                   << max_sources;
+                throw std::length_error(ss.str());
+            }
+
             for (const auto & reg : sources_)
             {
                 while ((field_id < max_sources)
@@ -406,8 +413,11 @@ namespace mavis
                 {
                     ++field_id;
                 }
-                assert(field_id < static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(
-                           InstMetaData::OperandFieldID::RS_MAX));
+                if (field_id >= static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(
+                        InstMetaData::OperandFieldID::RS_MAX)) [[unlikely]]
+                {
+                    throw std::out_of_range("Exceeded maximum number of source operands");
+                }
 
                 const InstMetaData::OperandFieldID op_field_id =
                     static_cast<InstMetaData::OperandFieldID>(field_id);
@@ -432,7 +442,14 @@ namespace mavis
                     InstMetaData::OperandFieldID::RD_MAX)
                 - static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(
                     InstMetaData::OperandFieldID::RD1);
-            assert(dests_.size() <= max_dests);
+            if (dests_.size() > max_dests) [[unlikely]]
+            {
+                std::ostringstream ss;
+                ss << "There are " << dests_.size() << " dest operands, but the maximum is "
+                   << max_dests;
+                throw std::length_error(ss.str());
+            }
+
             for (const auto & reg : dests_)
             {
                 while ((field_id < max_dests)
@@ -440,8 +457,11 @@ namespace mavis
                 {
                     ++field_id;
                 }
-                assert(field_id < static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(
-                           InstMetaData::OperandFieldID::RD_MAX));
+                if (field_id >= static_cast<std::underlying_type_t<InstMetaData::OperandFieldID>>(
+                        InstMetaData::OperandFieldID::RD_MAX)) [[unlikely]]
+                {
+                    throw std::out_of_range("Exceeded maximum number of dest operands");
+                }
 
                 const InstMetaData::OperandFieldID op_field_id =
                     static_cast<InstMetaData::OperandFieldID>(field_id);

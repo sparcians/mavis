@@ -115,24 +115,15 @@ namespace mavis
         //}
 
         // TEMPORARY: Check opinfo lists for agreement with reg lists and bit sets
-        bool
+        void
         agree_opinfo_(const OperandInfo::ElementList & olist, uint64_t bits,
                       const std::string & context, const std::string & form_name,
                       InstMetaData::OperandTypes otype = InstMetaData::OperandTypes::NONE) const
         {
-            if (olist.empty() && (bits != 0))
+            if (olist.empty() && (bits != 0)) [[unlikely]]
             {
-                std::cerr << "EXTRACTION MISMATCH: Form '" << form_name << "'"
-                          << ", context '" << context << "'"
-                          << ", empty opinfo-list and non-zero bitset=0x" << std::hex << bits
-                          << " [";
-                OperandArray bits_arr = getVectorOfBitIndices_(bits);
-                for (const auto & reg : bits_arr)
-                {
-                    std::cerr << std::dec << reg << ",";
-                }
-                std::cerr << "]" << std::dec << std::endl;
-                return false;
+                throw OperandListExtractionMismatch(form_name, context, bits,
+                                                    getVectorOfBitIndices_(bits));
             }
 
             for (const auto & opinfo : olist)
@@ -140,22 +131,12 @@ namespace mavis
                 uint64_t oi_bit = (0x1ull << opinfo.field_value);
 
                 if (((otype == InstMetaData::OperandTypes::NONE) || (opinfo.operand_type == otype))
-                    && ((oi_bit & bits) == 0))
+                    && ((oi_bit & bits) == 0)) [[unlikely]]
                 {
-                    std::cerr << "EXTRACTION MISMATCH: Form '" << form_name << "'"
-                              << ", context '" << context << "'"
-                              << ", operand value '" << opinfo.field_value << "'"
-                              << " not in bitset=0x" << std::hex << bits << " [";
-                    OperandArray bits_arr = getVectorOfBitIndices_(bits);
-                    for (const auto & reg : bits_arr)
-                    {
-                        std::cerr << std::dec << reg << ",";
-                    }
-                    std::cerr << "]" << std::dec << std::endl;
-                    return false;
+                    throw OperandListExtractionMismatch(
+                        form_name, context, bits, opinfo.field_value, getVectorOfBitIndices_(bits));
                 }
             }
-            return true;
         }
 
       public:
@@ -516,37 +497,37 @@ namespace mavis
                 // assert(agree_(addr_source_vals, addr_sources, "addr_sources", form_name));
                 // assert(agree_(data_source_vals, data_sources, "data_sources", form_name));
 
-                assert(agree_opinfo_(source_opinfo_list, sources, "sources", form_name));
-                assert(agree_opinfo_(source_opinfo_list, word_sources, "word_sources", form_name,
-                                     InstMetaData::OperandTypes::WORD));
-                assert(agree_opinfo_(source_opinfo_list, long_sources, "long_sources", form_name,
-                                     InstMetaData::OperandTypes::LONG));
-                assert(agree_opinfo_(source_opinfo_list, half_sources, "half_sources",
-                                     form_name, InstMetaData::OperandTypes::HALF));
-                assert(agree_opinfo_(source_opinfo_list, single_sources, "single_sources",
-                                     form_name, InstMetaData::OperandTypes::SINGLE));
-                assert(agree_opinfo_(source_opinfo_list, double_sources, "double_sources",
-                                     form_name, InstMetaData::OperandTypes::DOUBLE));
-                assert(agree_opinfo_(source_opinfo_list, quad_sources, "quad_sources", form_name,
-                                     InstMetaData::OperandTypes::QUAD));
-                assert(agree_opinfo_(source_opinfo_list, vector_sources, "vector_sources",
-                                     form_name, InstMetaData::OperandTypes::VECTOR));
+                agree_opinfo_(source_opinfo_list, sources, "sources", form_name);
+                agree_opinfo_(source_opinfo_list, word_sources, "word_sources", form_name,
+                              InstMetaData::OperandTypes::WORD);
+                agree_opinfo_(source_opinfo_list, long_sources, "long_sources", form_name,
+                              InstMetaData::OperandTypes::LONG);
+                agree_opinfo_(source_opinfo_list, half_sources, "half_sources", form_name,
+                              InstMetaData::OperandTypes::HALF);
+                agree_opinfo_(source_opinfo_list, single_sources, "single_sources", form_name,
+                              InstMetaData::OperandTypes::SINGLE);
+                agree_opinfo_(source_opinfo_list, double_sources, "double_sources", form_name,
+                              InstMetaData::OperandTypes::DOUBLE);
+                agree_opinfo_(source_opinfo_list, quad_sources, "quad_sources", form_name,
+                              InstMetaData::OperandTypes::QUAD);
+                agree_opinfo_(source_opinfo_list, vector_sources, "vector_sources", form_name,
+                              InstMetaData::OperandTypes::VECTOR);
 
-                assert(agree_opinfo_(dest_opinfo_list, dests, "dests", form_name));
-                assert(agree_opinfo_(dest_opinfo_list, word_dests, "word_dests", form_name,
-                                     InstMetaData::OperandTypes::WORD));
-                assert(agree_opinfo_(dest_opinfo_list, long_dests, "long_dests", form_name,
-                                     InstMetaData::OperandTypes::LONG));
-                assert(agree_opinfo_(dest_opinfo_list, half_dests, "half_dests", form_name,
-                                     InstMetaData::OperandTypes::HALF));
-                assert(agree_opinfo_(dest_opinfo_list, single_dests, "single_dests", form_name,
-                                     InstMetaData::OperandTypes::SINGLE));
-                assert(agree_opinfo_(dest_opinfo_list, double_dests, "double_dests", form_name,
-                                     InstMetaData::OperandTypes::DOUBLE));
-                assert(agree_opinfo_(dest_opinfo_list, quad_dests, "quad_dests", form_name,
-                                     InstMetaData::OperandTypes::QUAD));
-                assert(agree_opinfo_(dest_opinfo_list, vector_dests, "vector_dests", form_name,
-                                     InstMetaData::OperandTypes::VECTOR));
+                agree_opinfo_(dest_opinfo_list, dests, "dests", form_name);
+                agree_opinfo_(dest_opinfo_list, word_dests, "word_dests", form_name,
+                              InstMetaData::OperandTypes::WORD);
+                agree_opinfo_(dest_opinfo_list, long_dests, "long_dests", form_name,
+                              InstMetaData::OperandTypes::LONG);
+                agree_opinfo_(dest_opinfo_list, half_dests, "half_dests", form_name,
+                              InstMetaData::OperandTypes::HALF);
+                agree_opinfo_(dest_opinfo_list, single_dests, "single_dests", form_name,
+                              InstMetaData::OperandTypes::SINGLE);
+                agree_opinfo_(dest_opinfo_list, double_dests, "double_dests", form_name,
+                              InstMetaData::OperandTypes::DOUBLE);
+                agree_opinfo_(dest_opinfo_list, quad_dests, "quad_dests", form_name,
+                              InstMetaData::OperandTypes::QUAD);
+                agree_opinfo_(dest_opinfo_list, vector_dests, "vector_dests", form_name,
+                              InstMetaData::OperandTypes::VECTOR);
             }
 #endif
 

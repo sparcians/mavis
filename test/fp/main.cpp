@@ -1,5 +1,4 @@
 #include "mavis/Float.h"
-#include <cassert>
 #include <cstdlib>
 #include <iostream>
 #include <numbers>
