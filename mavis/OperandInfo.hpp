@@ -90,7 +90,13 @@ public:
                 duplicate_operand = (finfo == elem);
                 if (!duplicate_operand) [[unlikely]]
                 {
-                    throw std::runtime_error("Expected duplicate operand not found");
+                    std::ostringstream ss;
+                    ss << "Attempted to add a near-duplicate operand: fid=" << InstMetaData::getFieldIDName(elem.field_id)
+                       << " optype=" << InstMetaData::getOperandTypeName(elem.operand_type)
+                       << " val=" << elem.field_value
+                       << " sd=" << std::boolalpha << elem.is_store_data
+                       << " implied=" << elem.is_implied;
+                    throw std::runtime_error(ss.str());
                 }
             }
             else

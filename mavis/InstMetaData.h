@@ -535,6 +535,7 @@ namespace mavis
         const MatchSet<Tag> & getTags() const { return tags_; }
 
         static const std::string & getFieldIDName(OperandFieldID fid);
+        static const std::string & getOperandTypeName(OperandTypes optype);
 
         static OperandFieldID getFieldID(const std::string & fname);
 
