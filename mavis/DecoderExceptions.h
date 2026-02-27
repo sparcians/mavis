@@ -777,4 +777,43 @@ namespace mavis
         }
     };
 
+    /**
+     * Exception thrown when an operand list doesn't match a bitset
+     */
+    class OperandListExtractionMismatch : public BaseException
+    {
+      public:
+        OperandListExtractionMismatch(const std::string & form_name, const std::string & context,
+                                      const uint64_t bits, const std::vector<uint32_t> & bits_arr)
+        {
+            std::ostringstream ss;
+            ss << "EXTRACTION MISMATCH: Form '" << form_name << "'"
+               << ", context '" << context << "'"
+               << ", empty opinfo-list and non-zero bitset=0x" << std::hex << bits << std::dec
+               << " [";
+            for (const auto & reg : bits_arr)
+            {
+                ss << reg << ",";
+            }
+            ss << "]" << std::endl;
+            why_ = ss.str();
+        }
+
+        OperandListExtractionMismatch(const std::string & form_name, const std::string & context,
+                                      const uint64_t bits, const uint32_t field_value,
+                                      const std::vector<uint32_t> & bits_arr)
+        {
+            std::ostringstream ss;
+            ss << "EXTRACTION MISMATCH: Form '" << form_name << "'"
+               << ", context '" << context << "'"
+               << ", operand value '" << field_value << "'"
+               << " not in bitset=0x" << std::hex << bits << std::dec << " [";
+            for (const auto & reg : bits_arr)
+            {
+                ss << reg << ",";
+            }
+            ss << "]" << std::endl;
+            why_ = ss.str();
+        }
+    };
 } // namespace mavis

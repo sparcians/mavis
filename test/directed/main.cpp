@@ -112,7 +112,7 @@ int main(int argc, char** argv)
             = std::make_unique<MavisType>(
                 extension_manager.constructMavis<Instruction<uArchInfo>, uArchInfo>({uarch_file}));
 
-        assert(nullptr != mavis_facade);
+        mavis::utils::notNull(mavis_facade);
 
         if (vm.count("opc"))
         {

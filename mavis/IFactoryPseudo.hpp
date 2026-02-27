@@ -51,8 +51,7 @@ public:
 
     void setDisassembler(const DisassemblerIF::PtrType& dasm)
     {
-        assert(dasm != nullptr);
-        dasm_ = dasm;
+        dasm_ = mavis::utils::notNull(dasm);
     }
 
     void print(std::ostream& os, const uint32_t) const override
@@ -73,17 +72,21 @@ private:
 private:
     const Field* getField() const override
     {
-        assert(false);
+        throw std::runtime_error("Unimplemented");
         return nullptr;
     }
 
     void addIFactory(const Opcode, const typename IFactoryIF<InstType, AnnotationType>::PtrType&) override
-    { assert(false); }
+    {
+        throw std::runtime_error("Unimplemented");
+    }
 
     void addIFactory(const std::string&, const Opcode,
                      const typename IFactoryIF<InstType, AnnotationType>::PtrType&,
                      const ExtractorIF::PtrType&) override
-    { assert(false); }
+    {
+        throw std::runtime_error("Unimplemented");
+    }
 
     typename IFactoryIF<InstType, AnnotationType>::PtrType getNode(const Opcode) override
     { return nullptr; }
@@ -92,21 +95,23 @@ private:
     { return nullptr; }
 
     void addDefaultIFactory(const typename IFactoryIF<InstType, AnnotationType>::PtrType&) override
-    { assert(false); }
+    {
+        throw std::runtime_error("Unimplemented");
+    }
 
     Opcode getStencil() const override
     { return 0; }
 
     typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType getInfo(Opcode) override
     {
-        assert(false);
+        throw std::runtime_error("Unimplemented");
         return nullptr;
     }
 
     typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
     getInfo(const std::string&, Opcode, const ExtractorIF::PtrType&) override
     {
-        assert(false);
+        throw std::runtime_error("Unimplemented");
         return nullptr;
     }
 
