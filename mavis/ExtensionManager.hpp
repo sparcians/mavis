@@ -829,7 +829,7 @@ namespace mavis::extension_manager
                     return true;
                 case UnknownExtensionAction::WARN:
                     std::cerr << "WARNING: ISA string contains an unknown extension (" << ext
-                              << "). Ignoring." << std::endl;;
+                              << "). Ignoring." << std::endl;
                     break;
                 case UnknownExtensionAction::IGNORE:
                     break;
@@ -1737,9 +1737,7 @@ namespace mavis::extension_manager
 
                 const bool was_unknown = enabled_arch_->second.enableExtension(ext);
                 if(was_unknown){
-                    if(was_unknown){
                         unknown_extensions_ += ext; 
-                    }
                 }
                 if constexpr (refresh)
                 {
