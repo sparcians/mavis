@@ -1,4 +1,5 @@
 // Defining this enables additional circular dependency sanity checking via boost::graph
+#include "mavis/ExtensionManager.hpp"
 #define ENABLE_GRAPH_SANITY_CHECKER
 #include "mavis/extension_managers/RISCVExtensionManager.hpp"
 
@@ -102,7 +103,7 @@ int main(int argc, char* argv[])
         // Test reusing the same object with a new ISA string
         auto rv_generic_man =
             mavis::extension_manager::riscv::RISCVExtensionManager::fromISASpecJSON(
-                "json/riscv_isa_spec.json", "json");
+                "json/riscv_isa_spec.json", "json", mavis::extension_manager::UnknownExtensionAction::WARN);
         rv_generic_man.setISA("rv64gcbv");
 
         ASSERT_ALWAYS(rv_generic_man.getXLEN() == 64);
@@ -114,13 +115,15 @@ int main(int argc, char* argv[])
         // Test enabled_by behavior - c + d (implied by g) should enable zcd
         ASSERT_ALWAYS(rv_generic_man.isEnabled("zcd"));
 
-        rv_generic_man.setISA("rv32gcb");
+        rv_generic_man.setISA("rv32gcb_zhelloworld");
 
         ASSERT_ALWAYS(rv_generic_man.getXLEN() == 32);
+        ASSERT_ALWAYS(rv_generic_man.getUnknownExtensions() == "zhelloworld ");
         ASSERT_ALWAYS(rv_generic_man.isEnabled("i"));
 
         ASSERT_ALWAYS(rv_generic_man.isEnabled("zba"));
         ASSERT_ALWAYS(!rv_generic_man.isEnabled("v"));
+
     }
 
     testFailingISAString<mavis::extension_manager::InvalidISAStringException>("rv16gc");

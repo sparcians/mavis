@@ -624,11 +624,15 @@ namespace mavis::extension_manager::riscv
                 xlen_extension.setExtensionVersion(base_isa, it->second.first, it->second.second);
             }
 
+            unknown_extensions_.clear();
+
             for (const auto& ext : parsed_isa.getExtensions())
             {
-                xlen_extension.enableExtension(ext);
+                const bool is_unknown = xlen_extension.enableExtension(ext);
 
-                if (auto it = extension_versions.find(ext); it != extension_versions.end())
+                if(is_unknown){
+                    unknown_extensions_ += ext + " ";
+                } else if (auto it = extension_versions.find(ext); it != extension_versions.end())
                 {
                     xlen_extension.setExtensionVersion(ext, it->second.first, it->second.second);
                 }
