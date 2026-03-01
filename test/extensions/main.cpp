@@ -1,4 +1,5 @@
 // Defining this enables additional circular dependency sanity checking via boost::graph
+#include "mavis/ExtensionManager.hpp"
 #define ENABLE_GRAPH_SANITY_CHECKER
 #include "mavis/extension_managers/RISCVExtensionManager.hpp"
 
@@ -121,6 +122,18 @@ int main(int argc, char* argv[])
 
         ASSERT_ALWAYS(rv_generic_man.isEnabled("zba"));
         ASSERT_ALWAYS(!rv_generic_man.isEnabled("v"));
+    }
+
+    // Test the unknown extensions warning
+    {
+        auto rv_unknown_man =
+            mavis::extension_manager::riscv::RISCVExtensionManager::fromISASpecJSON(
+                "json/riscv_isa_spec.json", "json", mavis::extension_manager::UnknownExtensionAction::WARN);
+
+        rv_unknown_man.setISA("rv32gcb_zhelloworld");
+
+        ASSERT_ALWAYS(rv_unknown_man.getXLEN() == 32);
+        ASSERT_ALWAYS(rv_unknown_man.getUnknownExtensions() == "zhelloworld ");
     }
 
     testFailingISAString<mavis::extension_manager::InvalidISAStringException>("rv16gc");
