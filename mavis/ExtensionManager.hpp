@@ -829,7 +829,7 @@ namespace mavis::extension_manager
                     return true;
                 case UnknownExtensionAction::WARN:
                     std::cerr << "WARNING: ISA string contains an unknown extension (" << ext
-                              << "). Ignoring.";
+                              << "). Ignoring." << std::endl;
                     break;
                 case UnknownExtensionAction::IGNORE:
                     break;
@@ -1146,7 +1146,7 @@ namespace mavis::extension_manager
 
         void clearBlockedExtensions() { extension_blocklist_.clear(); }
 
-        void enableExtension(const std::string & ext)
+        bool enableExtension(const std::string & ext)
         {
             if (!extensionAllowed_(ext))
             {
@@ -1154,6 +1154,7 @@ namespace mavis::extension_manager
             }
 
             bool is_meta = true;
+            bool is_unknown = false;
             if (recurseExtension_(ext,
                                   [this](const std::string & child) { enableExtension(child); }))
             {
@@ -1188,6 +1189,8 @@ namespace mavis::extension_manager
                     {
                         throw;
                     }
+                    is_unknown = true;
+                    is_meta = false;
                 }
             }
 
@@ -1195,6 +1198,7 @@ namespace mavis::extension_manager
             {
                 enabled_meta_extensions_.emplace(ext);
             }
+            return is_unknown;
         }
 
         void disableExtension(const std::string & ext)
@@ -1346,6 +1350,7 @@ namespace mavis::extension_manager
         const UnknownExtensionAction unknown_extension_action_;
         std::string mavis_json_dir_;
         std::string isa_;
+        std::string unknown_extensions_;
         using ArchMap = std::unordered_map<uint32_t, ExtensionState>;
         ArchMap extensions_;
         typename ArchMap::iterator enabled_arch_{extensions_.end()};
@@ -1706,7 +1711,7 @@ namespace mavis::extension_manager
             {
                 throw UninitializedISASpecException();
             }
-        }
+        } 
 
         void assertISAInitialized_() const
         {
@@ -1729,8 +1734,8 @@ namespace mavis::extension_manager
         {
             if (!isEnabled(ext))
             {
-                enabled_arch_->second.enableExtension(ext);
-
+                const bool was_unknown = enabled_arch_->second.enableExtension(ext);
+                if (was_unknown) unknown_extensions_ += ext; 
                 if constexpr (refresh)
                 {
                     refresh_();
@@ -1789,6 +1794,11 @@ namespace mavis::extension_manager
         ExtensionManager(const ExtensionManager &) = delete;
         ExtensionManager(ExtensionManager &&) = default;
         virtual ~ExtensionManager() = default;
+
+        std::string getUnknownExtensions() const
+        {
+            return unknown_extensions_;
+        }
 
         void setISASpecJSON(const std::string & jfile, const std::string & mavis_json_dir)
         {
