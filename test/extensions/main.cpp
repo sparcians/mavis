@@ -122,7 +122,6 @@ int main(int argc, char* argv[])
 
         ASSERT_ALWAYS(rv_generic_man.isEnabled("zba"));
         ASSERT_ALWAYS(!rv_generic_man.isEnabled("v"));
-
     }
 
     // Test the unknown extensions warning

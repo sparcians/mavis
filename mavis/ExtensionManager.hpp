@@ -1711,7 +1711,7 @@ namespace mavis::extension_manager
             {
                 throw UninitializedISASpecException();
             }
-        } 
+        }
 
         void assertISAInitialized_() const
         {
