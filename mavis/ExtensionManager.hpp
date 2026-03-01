@@ -1734,11 +1734,8 @@ namespace mavis::extension_manager
         {
             if (!isEnabled(ext))
             {
-
                 const bool was_unknown = enabled_arch_->second.enableExtension(ext);
-                if(was_unknown){
-                        unknown_extensions_ += ext; 
-                }
+                if (was_unknown) unknown_extensions_ += ext; 
                 if constexpr (refresh)
                 {
                     refresh_();
