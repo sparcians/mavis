@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
         // Test reusing the same object with a new ISA string
         auto rv_generic_man =
             mavis::extension_manager::riscv::RISCVExtensionManager::fromISASpecJSON(
-                "json/riscv_isa_spec.json", "json", mavis::extension_manager::UnknownExtensionAction::WARN);
+                "json/riscv_isa_spec.json", "json");
         rv_generic_man.setISA("rv64gcbv");
 
         ASSERT_ALWAYS(rv_generic_man.getXLEN() == 64);
@@ -115,15 +115,26 @@ int main(int argc, char* argv[])
         // Test enabled_by behavior - c + d (implied by g) should enable zcd
         ASSERT_ALWAYS(rv_generic_man.isEnabled("zcd"));
 
-        rv_generic_man.setISA("rv32gcb_zhelloworld");
+        rv_generic_man.setISA("rv32gcb");
 
         ASSERT_ALWAYS(rv_generic_man.getXLEN() == 32);
-        ASSERT_ALWAYS(rv_generic_man.getUnknownExtensions() == "zhelloworld ");
         ASSERT_ALWAYS(rv_generic_man.isEnabled("i"));
 
         ASSERT_ALWAYS(rv_generic_man.isEnabled("zba"));
         ASSERT_ALWAYS(!rv_generic_man.isEnabled("v"));
 
+    }
+
+    // Test the unknown extensions warning
+    {
+        auto rv_unknown_man =
+            mavis::extension_manager::riscv::RISCVExtensionManager::fromISASpecJSON(
+                "json/riscv_isa_spec.json", "json", mavis::extension_manager::UnknownExtensionAction::WARN);
+
+        rv_unknown_man.setISA("rv32gcb_zhelloworld");
+
+        ASSERT_ALWAYS(rv_unknown_man.getXLEN() == 32);
+        ASSERT_ALWAYS(rv_unknown_man.getUnknownExtensions() == "zhelloworld ");
     }
 
     testFailingISAString<mavis::extension_manager::InvalidISAStringException>("rv16gc");
