@@ -1798,7 +1798,7 @@ namespace mavis::extension_manager
         ExtensionManager(ExtensionManager &&) = default;
         virtual ~ExtensionManager() = default;
 
-        std::string getUnknownExtensions() const
+        const std::string& getUnknownExtensions() const
         {
             return unknown_extensions_;
         }
