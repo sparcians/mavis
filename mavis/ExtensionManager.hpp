@@ -1350,7 +1350,7 @@ namespace mavis::extension_manager
         const UnknownExtensionAction unknown_extension_action_;
         std::string mavis_json_dir_;
         std::string isa_;
-        std::string unknown_extensions_;
+	std::unordered_set<std::string> unknown_extensions_;
         using ArchMap = std::unordered_map<uint32_t, ExtensionState>;
         ArchMap extensions_;
         typename ArchMap::iterator enabled_arch_{extensions_.end()};
@@ -1737,7 +1737,7 @@ namespace mavis::extension_manager
                 const bool was_unknown = enabled_arch_->second.enableExtension(ext);
                 if (was_unknown)
                 {
-                    unknown_extensions_ += ext;
+                    unknown_extensions_.insert(ext);
                 }
                 if constexpr (refresh)
                 {
@@ -1798,7 +1798,7 @@ namespace mavis::extension_manager
         ExtensionManager(ExtensionManager &&) = default;
         virtual ~ExtensionManager() = default;
 
-        const std::string& getUnknownExtensions() const
+        const std::unordered_set<std::string> getUnknownExtensions() const
         {
             return unknown_extensions_;
         }

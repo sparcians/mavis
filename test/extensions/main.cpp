@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
         rv_unknown_man.setISA("rv32gcb_zhelloworld");
 
         ASSERT_ALWAYS(rv_unknown_man.getXLEN() == 32);
-        ASSERT_ALWAYS(rv_unknown_man.getUnknownExtensions() == "zhelloworld ");
+        ASSERT_ALWAYS(rv_unknown_man.getUnknownExtensions().contains("zhelloworld"));
     }
 
     testFailingISAString<mavis::extension_manager::InvalidISAStringException>("rv16gc");

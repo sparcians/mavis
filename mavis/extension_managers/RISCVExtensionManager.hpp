@@ -632,7 +632,7 @@ namespace mavis::extension_manager::riscv
 
                 if(is_unknown)
                 {
-                    unknown_extensions_ += ext + " ";
+                    unknown_extensions_.insert(ext);
                 }
                 else if (auto it = extension_versions.find(ext); it != extension_versions.end())
                 {
