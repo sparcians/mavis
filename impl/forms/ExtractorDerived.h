@@ -400,7 +400,10 @@ namespace mavis
                                            fixed_field_mask_, Form_S::idType::RS2, false,
                                            suppress_x0);
                 auto rs3_elem = olist.getElements().at(1);
-                assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+                if (rs3_elem.field_id != InstMetaData::OperandFieldID::RS2) [[unlikely]]
+                {
+                    throw std::runtime_error("Expected second operand to be RS2");
+                }
 
                 rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
                 ++rs3_elem.field_value;
@@ -714,7 +717,10 @@ namespace mavis
 
             auto rs3_elem = olist.getElements().at(1);
             // RS2 is in Form_C0's RD slot
-            assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+            if (rs3_elem.field_id != InstMetaData::OperandFieldID::RS2) [[unlikely]]
+            {
+                throw std::runtime_error("Expected second operand to be RS2");
+            }
 
             rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
             ++rs3_elem.field_value;
@@ -2198,7 +2204,10 @@ namespace mavis
                                                                                  suppress_x0);
 
                 auto rs3_elem = olist.getElements().at(1);
-                assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+                if (rs3_elem.field_id != InstMetaData::OperandFieldID::RS2) [[unlikely]]
+                {
+                    throw std::runtime_error("Expected second operand to be RS2");
+                }
 
                 rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
                 ++rs3_elem.field_value;
@@ -3507,7 +3516,10 @@ namespace mavis
                                            fixed_field_mask_, Form_AMO::idType::RS2, false,
                                            suppress_x0);
                 auto rs3_elem = olist.getElements().at(1);
-                assert(rs3_elem.field_id == InstMetaData::OperandFieldID::RS2);
+                if (rs3_elem.field_id != InstMetaData::OperandFieldID::RS2) [[unlikely]]
+                {
+                    throw std::runtime_error("Expected second operand to be RS2");
+                }
 
                 rs3_elem.field_id = InstMetaData::OperandFieldID::RS3;
                 ++rs3_elem.field_value;
@@ -3864,7 +3876,6 @@ namespace mavis
         {
             return ExtractorIF::PtrType(new Extractor<Form_Shadow>(ffmask, fset));
         }
-
 
         std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
         {

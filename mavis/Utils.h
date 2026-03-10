@@ -1,7 +1,10 @@
 #pragma once
 
 #include <cstddef>
+#include <memory>
 #include <type_traits>
+
+#include <boost/core/demangle.hpp>
 
 namespace mavis::utils
 {
@@ -27,4 +30,55 @@ namespace mavis::utils
 
     template <typename Type, typename... OtherTypes>
     inline constexpr bool any_of_v = any_of<Type, OtherTypes...>::value;
+
+    template <typename T> inline T* notNull(T* p)
+    {
+        if (p == nullptr) [[unlikely]]
+        {
+            throw std::runtime_error("notNull: pointer was null: "
+                                     + boost::core::demangle(typeid(T).name()));
+        }
+        return p;
+    }
+
+    template <typename T> inline const std::unique_ptr<T> & notNull(const std::unique_ptr<T> & p)
+    {
+        if (p == nullptr) [[unlikely]]
+        {
+            throw std::runtime_error("notNull: pointer was null: "
+                                     + boost::core::demangle(typeid(T).name()));
+        }
+        return p;
+    }
+
+    template <typename T> inline std::unique_ptr<T> & notNull(std::unique_ptr<T> & p)
+    {
+        if (p == nullptr) [[unlikely]]
+        {
+            throw std::runtime_error("notNull: pointer was null: "
+                                     + boost::core::demangle(typeid(T).name()));
+        }
+        return p;
+    }
+
+    template <typename T> inline const std::shared_ptr<T> & notNull(const std::shared_ptr<T> & p)
+    {
+        if (p == nullptr) [[unlikely]]
+        {
+            throw std::runtime_error("notNull: pointer was null: "
+                                     + boost::core::demangle(typeid(T).name()));
+        }
+        return p;
+    }
+
+    template <typename T> inline std::shared_ptr<T> & notNull(std::shared_ptr<T> & p)
+    {
+        if (p == nullptr) [[unlikely]]
+        {
+            throw std::runtime_error("notNull: pointer was null: "
+                                     + boost::core::demangle(typeid(T).name()));
+        }
+        return p;
+    }
+
 } // namespace mavis::utils

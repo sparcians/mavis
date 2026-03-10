@@ -263,10 +263,11 @@ namespace mavis
         ExtractorIF::PtrType override_extractor, InstMetaData::PtrType & meta,
         const typename IFactoryIF<InstType, AnnotationType>::PtrType & shared_ifact)
     {
-        if (curr_node == nullptr)
+        if (curr_node == nullptr) [[unlikely]]
         {
-            std::cout << root_ << std::endl;
-            assert(curr_node != nullptr);
+            std::ostringstream ss;
+            ss << root_;
+            throw std::invalid_argument(ss.str());
         }
 
         // If we're given an expansion, use that mnemonic instead
@@ -354,13 +355,15 @@ namespace mavis
         const ExtractorIF::PtrType & override_extractor, InstMetaData::PtrType & einfo,
         const typename IFactoryIF<InstType, AnnotationType>::PtrType shared_ifact)
     {
-        assert(form != nullptr);
-
         typename IFactoryIF<InstType, AnnotationType>::PtrType curr_node = root_;
 
-        const FieldsType & fields = form->getOpcodeFields();
+        const FieldsType & fields = mavis::utils::notNull(form)->getOpcodeFields();
         const uint32_t n_fields = fields.size();
-        assert(n_fields > 0);
+
+        if (n_fields == 0) [[unlikely]]
+        {
+            throw std::runtime_error("Form must have at least 1 field");
+        }
 
         // At ROOT node...
         if (curr_node->getNode(istencil) == nullptr)
@@ -370,8 +373,7 @@ namespace mavis
                     new IFactoryDenseComposite<InstType, AnnotationType>(fields[0])));
         }
         curr_node = curr_node->getNode(istencil); // Advance...
-        assert(curr_node->getField() != nullptr);
-        if (!curr_node->getField()->isEquivalent(fields[0]))
+        if (!mavis::utils::notNull(curr_node->getField())->isEquivalent(fields[0]))
         {
             std::cerr << "curr_node: ";
             curr_node->print(std::cerr);
@@ -405,8 +407,7 @@ namespace mavis
                 }
                 curr_node = curr_node->getNode(istencil); // Advance...
             }
-            assert(curr_node->getField() != nullptr);
-            if (!curr_node->getField()->isEquivalent(fields[i + 1]))
+            if (!mavis::utils::notNull(curr_node->getField())->isEquivalent(fields[i + 1]))
             {
                 std::cerr << "ERROR with field collision on tree:" << std::endl;
                 curr_node->print(std::cerr);

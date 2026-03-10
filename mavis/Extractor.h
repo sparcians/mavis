@@ -184,12 +184,15 @@ namespace mavis
         // TODO: If we need annotations for disassembly for normal extractors, we
         // can add it here. See the implementation in ExtractorDirectInfoBase as a
         // reference
-        void dasmAnnotate(const std::string &) override { assert(false); }
+        void dasmAnnotate(const std::string &) override
+        {
+            throw std::runtime_error("Unimplemented");
+        }
 
         const std::string & getDasmAnnotation() const override
         {
             static const std::string empty_string;
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return empty_string;
         }
 
@@ -351,8 +354,13 @@ namespace mavis
 
         static inline int64_t signExtend_(const uint64_t uval, uint32_t sign_bit_pos)
         {
-            assert(sign_bit_pos < (sizeof(uval) * 8));
-            const uint32_t sign_shift = (sizeof(uval) * 8) - sign_bit_pos - 1;
+            static constexpr auto uval_bits = mavis::utils::num_bits<decltype(uval)>;
+
+            if (sign_bit_pos >= uval_bits) [[unlikely]]
+            {
+                throw std::range_error("sign_bit_pos must be <= 64");
+            }
+            const uint32_t sign_shift = uval_bits - sign_bit_pos - 1;
             return static_cast<int64_t>(uval) << sign_shift >> sign_shift;
         }
 

@@ -35,7 +35,11 @@ int main()
     }
 
     const uint32_t num_opcodes = opcodes.size();
-    assert(num_opcodes > 0);
+    if (num_opcodes == 0) [[unlikely]]
+    {
+        throw std::runtime_error("Expected at least 1 opcode");
+    }
+
     const uint32_t num_trials = num_opcodes * 100000;
     uint32_t curr_opcode = 0;
     auto start = std::chrono::system_clock::system_clock::now();

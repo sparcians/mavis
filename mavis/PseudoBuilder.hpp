@@ -70,12 +70,11 @@ public:
     // TODO: Move this to BuilderBase() once we have full support for Disassembler
     void setDisassembler(const InstructionUniqueID uid, const DisassemblerIF::PtrType& dasm)
     {
-        assert(dasm != nullptr);
         typename FactoryType::PtrType ifact = this->findIFact(uid);
         if (ifact == nullptr) {
             throw UnknownPseudoUID(uid);
         }
-        ifact->setDisassembler(dasm);
+        ifact->setDisassembler(mavis::utils::notNull(dasm));
     }
 
 private:

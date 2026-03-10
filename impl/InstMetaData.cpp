@@ -120,6 +120,18 @@ namespace mavis
         {"pop_rd13",   InstMetaData::OperandFieldID::POP_RD13  },
     });
 
+    using OperandTypesMapType = boost::bimap<std::string, InstMetaData::OperandTypes>;
+    static const OperandTypesMapType otmap = make_bimap<OperandTypesMapType>({
+        {"WORD", InstMetaData::OperandTypes::WORD},
+        {"LONG", InstMetaData::OperandTypes::LONG},
+        {"HALF", InstMetaData::OperandTypes::HALF},
+        {"SINGLE", InstMetaData::OperandTypes::SINGLE},
+        {"DOUBLE", InstMetaData::OperandTypes::DOUBLE},
+        {"QUAD", InstMetaData::OperandTypes::QUAD},
+        {"VECTOR", InstMetaData::OperandTypes::VECTOR},
+        {"NONE", InstMetaData::OperandTypes::NONE}
+    });
+
     /**
      * Construct from JSON information pertaining to extraction
      */
@@ -377,6 +389,11 @@ namespace mavis
             return OperandFieldID::NONE;
         }
         return itr->second;
+    }
+
+    const std::string & InstMetaData::getOperandTypeName(OperandTypes optype)
+    {
+        return otmap.right.at(optype);
     }
 
     // InstMetaData types

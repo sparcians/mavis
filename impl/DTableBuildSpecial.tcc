@@ -71,6 +71,16 @@ namespace mavis
     {
         typename IFactoryIF<InstType, AnnotationType>::PtrType currNode = root;
 
+        const auto assert_field = [&currNode](const Form_R::idType ExpectedField)
+        {
+            if (!mavis::utils::notNull(currNode->getField())
+                     ->isEquivalent(Form_R::fields[ExpectedField])) [[unlikely]]
+            {
+                throw std::runtime_error("Unexpected field type for field "
+                                         + currNode->getField()->getName());
+            }
+        };
+
         // At ROOT node...
         if (currNode->getNode(istencil) == nullptr)
         {
@@ -80,8 +90,7 @@ namespace mavis
                                           Form_R::fields[Form_R::OPCODE])));
         }
         currNode = currNode->getNode(istencil); // Advance...
-        assert(currNode->getField() != nullptr);
-        assert(currNode->getField()->isEquivalent(Form_R::fields[Form_R::OPCODE]));
+        assert_field(Form_R::OPCODE);
 
         // At OPCODE node...
         if (currNode->getNode(istencil) == nullptr)
@@ -92,8 +101,7 @@ namespace mavis
                                           Form_R::fields[Form_R::FUNC3])));
         }
         currNode = currNode->getNode(istencil); // Advance...
-        assert(currNode->getField() != nullptr);
-        assert(currNode->getField()->isEquivalent(Form_R::fields[Form_R::FUNC3]));
+        assert_field(Form_R::FUNC3);
 
         // At FUNC3 node...
         if (ignore_set.find(Form_R::fields[Form_R::FUNC3].getName()) != ignore_set.end())
@@ -117,8 +125,7 @@ namespace mavis
             }
             currNode = currNode->getNode(istencil); // Advance...
         }
-        assert(currNode->getField() != nullptr);
-        assert(currNode->getField()->isEquivalent(Form_R::fields[Form_R::FUNC7]));
+        assert_field(Form_R::FUNC7);
 
         // At FUNC7 node...
         if (ignore_set.find(Form_R::fields[Form_R::FUNC7].getName()) != ignore_set.end())

@@ -188,12 +188,15 @@ namespace mavis
         // TODO: If we need annotations for disassembly for trace extractors, we
         // can add it here. See the implementation in ExtractorDirectInfoBase as a
         // reference
-        void dasmAnnotate(const std::string &) override { assert(false); }
+        void dasmAnnotate(const std::string &) override
+        {
+            throw std::runtime_error("Unimplemented");
+        }
 
         const std::string & getDasmAnnotation() const override
         {
             static const std::string empty;
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return empty;
         }
 
@@ -205,7 +208,7 @@ namespace mavis
       private:
         ExtractorIF::PtrType specialCaseClone(const uint64_t, const uint64_t) const override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
 

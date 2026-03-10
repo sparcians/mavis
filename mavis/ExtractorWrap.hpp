@@ -177,7 +177,7 @@ private:
 private:
     ExtractorIF::PtrType specialCaseClone(const uint64_t, const uint64_t) const override
     {
-        assert(false);
+        throw std::runtime_error("Unimplemented");
         return nullptr;
     }
 };

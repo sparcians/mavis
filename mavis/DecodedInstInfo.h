@@ -34,7 +34,7 @@ namespace mavis
 
       private:
         // TODO: Move this to a central place in mavis
-        constexpr uint32_t count1Bits_(const uint64_t n) const
+        static constexpr uint32_t count1Bits_(const uint64_t n)
         {
             uint64_t x = n - ((n >> 1) & 0x5555555555555555ull);
             x = (x & 0x3333333333333333ull) + ((x >> 2) & 0x3333333333333333ull);
@@ -52,7 +52,7 @@ namespace mavis
          * \return
          */
         // TODO: Move this to a central place in mavis
-        OperandArray getVectorOfBitIndices_(uint64_t bits) const
+        static OperandArray getVectorOfBitIndices_(uint64_t bits)
         {
             // Iterate through the combined mask, adding 1-bit positions to the
             // returned vector
@@ -74,7 +74,7 @@ namespace mavis
             return vals;
         }
 
-        constexpr bool hasSourceReg_(uint64_t srcs) const
+        static constexpr bool hasSourceReg_(uint64_t srcs)
         {
             return (srcs != 0) && (srcs != (1ull << REGISTER_X0));
         }
@@ -115,24 +115,15 @@ namespace mavis
         //}
 
         // TEMPORARY: Check opinfo lists for agreement with reg lists and bit sets
-        bool
+        static void
         agree_opinfo_(const OperandInfo::ElementList & olist, uint64_t bits,
                       const std::string & context, const std::string & form_name,
-                      InstMetaData::OperandTypes otype = InstMetaData::OperandTypes::NONE) const
+                      InstMetaData::OperandTypes otype = InstMetaData::OperandTypes::NONE)
         {
-            if (olist.empty() && (bits != 0))
+            if (olist.empty() && (bits != 0)) [[unlikely]]
             {
-                std::cerr << "EXTRACTION MISMATCH: Form '" << form_name << "'"
-                          << ", context '" << context << "'"
-                          << ", empty opinfo-list and non-zero bitset=0x" << std::hex << bits
-                          << " [";
-                OperandArray bits_arr = getVectorOfBitIndices_(bits);
-                for (const auto & reg : bits_arr)
-                {
-                    std::cerr << std::dec << reg << ",";
-                }
-                std::cerr << "]" << std::dec << std::endl;
-                return false;
+                throw OperandListExtractionMismatch(form_name, context, bits,
+                                                    getVectorOfBitIndices_(bits));
             }
 
             for (const auto & opinfo : olist)
@@ -140,22 +131,12 @@ namespace mavis
                 uint64_t oi_bit = (0x1ull << opinfo.field_value);
 
                 if (((otype == InstMetaData::OperandTypes::NONE) || (opinfo.operand_type == otype))
-                    && ((oi_bit & bits) == 0))
+                    && ((oi_bit & bits) == 0)) [[unlikely]]
                 {
-                    std::cerr << "EXTRACTION MISMATCH: Form '" << form_name << "'"
-                              << ", context '" << context << "'"
-                              << ", operand value '" << opinfo.field_value << "'"
-                              << " not in bitset=0x" << std::hex << bits << " [";
-                    OperandArray bits_arr = getVectorOfBitIndices_(bits);
-                    for (const auto & reg : bits_arr)
-                    {
-                        std::cerr << std::dec << reg << ",";
-                    }
-                    std::cerr << "]" << std::dec << std::endl;
-                    return false;
+                    throw OperandListExtractionMismatch(
+                        form_name, context, bits, opinfo.field_value, getVectorOfBitIndices_(bits));
                 }
             }
-            return true;
         }
 
       public:
@@ -449,14 +430,13 @@ namespace mavis
             special_fields(extractor->getSpecialFields(icode, meta))
         // function(extractor->getFunction(icode))
         {
-#if 1
+#ifndef NDEBUG
             // TODO: Move this into a sanity checking method
             // FOR NOW: We bypass these checks if we're given an pseudo op (opcode = 0, e.g. from
             // makeInstDirectly() et al)
             if (icode != 0)
             {
                 const std::string & form_name = extractor->getName();
-                (void)form_name;
 
                 // OperandArray    x_arr = extractor->getSourceList(icode);
                 // assert(agree_(x_arr, sources, "sources", form_name));
@@ -516,38 +496,69 @@ namespace mavis
                 // assert(agree_(addr_source_vals, addr_sources, "addr_sources", form_name));
                 // assert(agree_(data_source_vals, data_sources, "data_sources", form_name));
 
-                assert(agree_opinfo_(source_opinfo_list, sources, "sources", form_name));
-                assert(agree_opinfo_(source_opinfo_list, word_sources, "word_sources", form_name,
-                                     InstMetaData::OperandTypes::WORD));
-                assert(agree_opinfo_(source_opinfo_list, long_sources, "long_sources", form_name,
-                                     InstMetaData::OperandTypes::LONG));
-                assert(agree_opinfo_(source_opinfo_list, half_sources, "half_sources",
-                                     form_name, InstMetaData::OperandTypes::HALF));
-                assert(agree_opinfo_(source_opinfo_list, single_sources, "single_sources",
-                                     form_name, InstMetaData::OperandTypes::SINGLE));
-                assert(agree_opinfo_(source_opinfo_list, double_sources, "double_sources",
-                                     form_name, InstMetaData::OperandTypes::DOUBLE));
-                assert(agree_opinfo_(source_opinfo_list, quad_sources, "quad_sources", form_name,
-                                     InstMetaData::OperandTypes::QUAD));
-                assert(agree_opinfo_(source_opinfo_list, vector_sources, "vector_sources",
-                                     form_name, InstMetaData::OperandTypes::VECTOR));
+                agree_opinfo_(source_opinfo_list, sources, "sources", form_name);
+                agree_opinfo_(source_opinfo_list, word_sources, "word_sources", form_name,
+                              InstMetaData::OperandTypes::WORD);
+                agree_opinfo_(source_opinfo_list, long_sources, "long_sources", form_name,
+                              InstMetaData::OperandTypes::LONG);
+                agree_opinfo_(source_opinfo_list, half_sources, "half_sources", form_name,
+                              InstMetaData::OperandTypes::HALF);
+                agree_opinfo_(source_opinfo_list, single_sources, "single_sources", form_name,
+                              InstMetaData::OperandTypes::SINGLE);
+                agree_opinfo_(source_opinfo_list, double_sources, "double_sources", form_name,
+                              InstMetaData::OperandTypes::DOUBLE);
+                agree_opinfo_(source_opinfo_list, quad_sources, "quad_sources", form_name,
+                              InstMetaData::OperandTypes::QUAD);
+                agree_opinfo_(source_opinfo_list, vector_sources, "vector_sources", form_name,
+                              InstMetaData::OperandTypes::VECTOR);
 
-                assert(agree_opinfo_(dest_opinfo_list, dests, "dests", form_name));
-                assert(agree_opinfo_(dest_opinfo_list, word_dests, "word_dests", form_name,
-                                     InstMetaData::OperandTypes::WORD));
-                assert(agree_opinfo_(dest_opinfo_list, long_dests, "long_dests", form_name,
-                                     InstMetaData::OperandTypes::LONG));
-                assert(agree_opinfo_(dest_opinfo_list, half_dests, "half_dests", form_name,
-                                     InstMetaData::OperandTypes::HALF));
-                assert(agree_opinfo_(dest_opinfo_list, single_dests, "single_dests", form_name,
-                                     InstMetaData::OperandTypes::SINGLE));
-                assert(agree_opinfo_(dest_opinfo_list, double_dests, "double_dests", form_name,
-                                     InstMetaData::OperandTypes::DOUBLE));
-                assert(agree_opinfo_(dest_opinfo_list, quad_dests, "quad_dests", form_name,
-                                     InstMetaData::OperandTypes::QUAD));
-                assert(agree_opinfo_(dest_opinfo_list, vector_dests, "vector_dests", form_name,
-                                     InstMetaData::OperandTypes::VECTOR));
+                agree_opinfo_(dest_opinfo_list, dests, "dests", form_name);
+                agree_opinfo_(dest_opinfo_list, word_dests, "word_dests", form_name,
+                              InstMetaData::OperandTypes::WORD);
+                agree_opinfo_(dest_opinfo_list, long_dests, "long_dests", form_name,
+                              InstMetaData::OperandTypes::LONG);
+                agree_opinfo_(dest_opinfo_list, half_dests, "half_dests", form_name,
+                              InstMetaData::OperandTypes::HALF);
+                agree_opinfo_(dest_opinfo_list, single_dests, "single_dests", form_name,
+                              InstMetaData::OperandTypes::SINGLE);
+                agree_opinfo_(dest_opinfo_list, double_dests, "double_dests", form_name,
+                              InstMetaData::OperandTypes::DOUBLE);
+                agree_opinfo_(dest_opinfo_list, quad_dests, "quad_dests", form_name,
+                              InstMetaData::OperandTypes::QUAD);
+                agree_opinfo_(dest_opinfo_list, vector_dests, "vector_dests", form_name,
+                              InstMetaData::OperandTypes::VECTOR);
             }
+#else
+            // When I moved the above calls to agree_opinfo_ behind the NDEBUG ifdef guard,
+            // I noticed that the perf_test performance actually got *worse*.
+            //
+            // After some trial and error, I discovered that prefetching the following members
+            // recovers the performance loss, and gains an additional ~2%.
+            //
+            // Here are some thoughts on why this (appears to) work:
+            // 1. sizeof(DecodedInstructionInfo) is over 2kB
+            // 2. We do *a lot* of work in the initializer list for this class and call several
+            //    external methods
+            // 3. Each one of these members is used in an agree_opinfo_ invocation
+            //
+            // Altogether, these members cover about 7 contiguous cachelines. I haven't been able
+            // to pin down exactly which members/cachelines are the most important.
+            __builtin_prefetch(static_cast<const void*>(&sources));
+            __builtin_prefetch(static_cast<const void*>(&word_sources));
+            __builtin_prefetch(static_cast<const void*>(&long_sources));
+            __builtin_prefetch(static_cast<const void*>(&half_sources));
+            __builtin_prefetch(static_cast<const void*>(&single_sources));
+            __builtin_prefetch(static_cast<const void*>(&double_sources));
+            __builtin_prefetch(static_cast<const void*>(&quad_sources));
+            __builtin_prefetch(static_cast<const void*>(&vector_sources));
+            __builtin_prefetch(static_cast<const void*>(&dests));
+            __builtin_prefetch(static_cast<const void*>(&word_dests));
+            __builtin_prefetch(static_cast<const void*>(&long_dests));
+            __builtin_prefetch(static_cast<const void*>(&half_dests));
+            __builtin_prefetch(static_cast<const void*>(&single_dests));
+            __builtin_prefetch(static_cast<const void*>(&double_dests));
+            __builtin_prefetch(static_cast<const void*>(&quad_dests));
+            __builtin_prefetch(static_cast<const void*>(&vector_dests));
 #endif
 
             // Certain instruction type information is most readily available from extracted
@@ -557,7 +568,7 @@ namespace mavis
 
             // Here, we qualify JAL and JALR instructions with call/return/indirect type
             // information, based on the source/dest register values
-            const uint64_t link_regs = (1ull << REGISTER_LINK) | (1ull << REGISTER_ALT_LINK);
+            constexpr uint64_t link_regs = (1ull << REGISTER_LINK) | (1ull << REGISTER_ALT_LINK);
             if (meta->isInstType(InstMetaData::InstructionTypes::JAL)
                 || meta->isInstType(InstMetaData::InstructionTypes::JALR))
             {

@@ -3,8 +3,9 @@
 #include <ostream>
 #include <string>
 #include <array>
-#include <cassert>
 #include <cstdint>
+
+#include "Utils.h"
 
 namespace mavis
 {
@@ -20,7 +21,7 @@ namespace mavis
             rpos_(rpos),
             len_(len)
         {
-            mask_ = -1ull >> (sizeof(mask_) * 8 - len);
+            mask_ = -1ull >> (mavis::utils::num_bits<decltype(mask_)> - len);
             shift_ = rpos_;
             size_ = 1 << len_;
         }
@@ -130,7 +131,7 @@ namespace mavis
         // For now...
         virtual bool isEquivalent(const Field &) const
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return false;
         }
     };

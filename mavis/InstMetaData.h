@@ -299,8 +299,7 @@ namespace mavis
          */
         void merge(const InstMetaData::PtrType & other)
         {
-            assert(other != nullptr);
-            compressed_ = other->compressed_;
+            compressed_ = mavis::utils::notNull(other)->compressed_;
             inst_types_ |= other->inst_types_;
         }
 
@@ -426,7 +425,11 @@ namespace mavis
 
         void setISAWidth(const ISAExtensionIndex isa, uint32_t width)
         {
-            assert((width != 0) && ((width & (width - 1)) == 0));
+            if ((width == 0) || ((width & (width - 1)) != 0)) [[unlikely]]
+            {
+                throw std::invalid_argument("ISA width must be a non-zero power of 2");
+            }
+
             isa_width_[static_cast<std::underlying_type_t<ISAExtensionIndex>>(isa)] |= width;
         }
 
@@ -532,6 +535,7 @@ namespace mavis
         const MatchSet<Tag> & getTags() const { return tags_; }
 
         static const std::string & getFieldIDName(OperandFieldID fid);
+        static const std::string & getOperandTypeName(OperandTypes optype);
 
         static OperandFieldID getFieldID(const std::string & fname);
 

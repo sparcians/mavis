@@ -215,24 +215,26 @@ namespace mavis
             if (table_.size() > 1)
             {
                 uint32_t alias_count = 0;
+                std::ostringstream aliasing_errors;
                 for (const auto & entry : table_)
                 {
                     if (((istencil & entry.mask) == entry.value) && (mask == entry.mask)
-                        && (mnemonic != entry.mnemonic))
+                        && (mnemonic != entry.mnemonic)) [[unlikely]]
                     {
                         ++alias_count;
-                    }
-                    if (alias_count > 0)
-                    {
-                        std::cerr << "IFactorySpecialCaseComposite::addSpecialCase() -- "
-                                  << "Instruction '" << mnemonic << "' "
-                                  << "(stencil 0x" << std::hex << istencil << ") "
-                                  << "is aliased with '" << entry.mnemonic << "' "
-                                  << "(mask 0x" << std::hex << entry.mask << ", "
-                                  << "value 0x" << std::hex << entry.value << ") " << std::endl;
+                        aliasing_errors << "IFactorySpecialCaseComposite::addSpecialCase() -- "
+                                        << "Instruction '" << mnemonic << "' "
+                                        << "(stencil 0x" << std::hex << istencil << ") "
+                                        << "is aliased with '" << entry.mnemonic << "' "
+                                        << "(mask 0x" << std::hex << entry.mask << ", "
+                                        << "value 0x" << std::hex << entry.value << ") "
+                                        << std::endl;
                     }
                 }
-                assert(alias_count == 0);
+                if (alias_count != 0) [[unlikely]]
+                {
+                    throw std::runtime_error(aliasing_errors.str());
+                }
             }
         }
 
@@ -259,8 +261,8 @@ namespace mavis
                          const typename IFactoryIF<InstType, AnnotationType>::PtrType & node,
                          const ExtractorIF::PtrType & extractor) override
         {
-            assert(node != nullptr);
-            assert(extractor != nullptr);
+            mavis::utils::notNull(node);
+            mavis::utils::notNull(extractor);
 
             for (auto & entry : table_)
             {
@@ -275,7 +277,11 @@ namespace mavis
 
             // If this is not true, then we've already assigned a default
             // This can happen if fixed fields are missing from the specification
-            assert(default_.factory == nullptr);
+            if (default_.factory != nullptr) [[unlikely]]
+            {
+                throw std::runtime_error("Attempted to reassign default factory for mnemonic "
+                                         + mnemonic);
+            }
             default_ = {mnemonic, 0, 0, istencil, 0, node, extractor};
         }
 
@@ -283,33 +289,18 @@ namespace mavis
                                 const typename IFactoryIF<InstType, AnnotationType>::PtrType & node,
                                 const ExtractorIF::PtrType & extractor)
         {
-            assert(node != nullptr);
-            assert(extractor != nullptr);
+            mavis::utils::notNull(node);
+            mavis::utils::notNull(extractor);
 
             // If this is not true, then we've already assigned a default
             // This can happen if fixed fields are missing from the specification
-            assert(default_.factory == nullptr);
+            if (default_.factory != nullptr) [[unlikely]]
+            {
+                throw std::runtime_error("Attempted to reassign default factory for mnemonic "
+                                         + mnemonic);
+            }
             default_ = {mnemonic, 0, 0, istencil, 0, node, extractor};
         }
-
-#if 0
-    virtual typename InstType::PtrType makeInst(Opcode icode) {
-        for (const auto& entry : table_) {
-            // The first match will be the most specific match
-            if ((icode & entry.mask) == entry.value) {
-                assert(entry.factory != nullptr);
-                return entry.factory->makeInst(entry.mnemonic, icode, entry.extractor);
-            }
-        }
-
-        if (default_.factory != nullptr) {
-            return default_.factory->makeInst(default_.mnemonic, icode, default_.extractor);
-        } else {
-            // WARN ABOUT THIS!
-            assert(false);
-        }
-    }
-#endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfo(Opcode icode) override
@@ -319,13 +310,13 @@ namespace mavis
                 // The first match will be the most specific match
                 if ((icode & entry.mask) == entry.value)
                 {
-                    assert(entry.factory != nullptr);
                     // Check for illegal opcode
                     if (entry.extractor->isIllop(icode))
                     {
                         throw IllegalOpcode(entry.mnemonic, icode);
                     }
-                    return entry.factory->getInfo(entry.mnemonic, icode, entry.extractor);
+                    return mavis::utils::notNull(entry.factory)
+                        ->getInfo(entry.mnemonic, icode, entry.extractor);
                 }
             }
 
@@ -364,8 +355,7 @@ namespace mavis
         {
             for (auto & entry : table_)
             {
-                assert(entry.factory != nullptr);
-                entry.factory->flushCaches();
+                mavis::utils::notNull(entry.factory)->flushCaches();
             }
 
             if (default_.factory != nullptr)
@@ -381,7 +371,6 @@ namespace mavis
             uint32_t i = 0;
             for (const auto & sce : table_)
             {
-                assert(sce.factory != nullptr);
                 for (uint32_t j = 0; j < level + 1; ++j)
                 {
                     os << "|\t";
@@ -390,7 +379,7 @@ namespace mavis
                    << ", mask=0x" << std::hex << sce.mask << ", field_set=0x" << sce.field_set
                    << ", value=0x" << sce.value << ", nfixed=" << std::dec << sce.nfixed
                    << ", extractor=" << sce.extractor << ", factory=";
-                sce.factory->print(os, level + 1);
+                mavis::utils::notNull(sce.factory)->print(os, level + 1);
                 ++i;
             }
 
@@ -425,7 +414,7 @@ namespace mavis
 
         const Field* getField() const override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
 
@@ -434,27 +423,19 @@ namespace mavis
         void addIFactory(const Opcode,
                          const typename IFactoryIF<InstType, AnnotationType>::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
 
         void
         addDefaultIFactory(const typename IFactoryIF<InstType, AnnotationType>::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
-
-#if 0
-    virtual typename InstType::PtrType
-    makeInst(const std::string& mnemonic, Opcode icode, const ExtractorIF::PtrType& extractor) {
-        assert(false);
-        return nullptr;
-    }
-#endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfo(const std::string &, Opcode, const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
     };
@@ -469,8 +450,10 @@ namespace mavis
         explicit IFactorySparseComposite(const Field & f) : field_(f.clone())
         {
             mask_ = field_->getShiftedMask();
-            // TODO: replace with mavis_assert
-            assert(mask_ != 0 && "field mask must be non-zero");
+            if (mask_ == 0) [[unlikely]]
+            {
+                throw std::invalid_argument("field mask must be non-zero");
+            }
         }
 
         ~IFactorySparseComposite() = default;
@@ -503,34 +486,22 @@ namespace mavis
                     const typename IFactoryIF<InstType, AnnotationType>::PtrType & node) override
         {
             const auto itr = hash_.find(istencil);
-            assert(itr != hash_.end() && "cannot find stencil");
+            if (itr == hash_.end()) [[unlikely]]
+            {
+                throw std::runtime_error("cannot find stencil");
+            }
             hash_[istencil] = node;
         }
 
         void addDefaultIFactory(
             const typename IFactoryIF<InstType, AnnotationType>::PtrType & node) override
         {
-            assert(default_ == nullptr && "default node already has a value");
+            if (default_ != nullptr) [[unlikely]]
+            {
+                throw std::runtime_error("default node already has a value");
+            }
             default_ = node;
         }
-
-#if 0
-    virtual typename InstType::PtrType makeInst(Opcode icode) {
-        auto itr = hash_.find(icode & mask_);
-        if (itr != hash_.end()) {
-            assert(itr->second != nullptr);
-            return itr->second->makeInst(icode);
-        } else if (default_ != nullptr) {
-            return default_->makeInst(icode);
-        } else {
-            std::cout << "CANT FIND FACTORY FOR ICODE: 0x" << std::hex << icode << std::dec << std::endl;
-            std::cout << "MASK = 0x" << std::hex << mask_ << std::dec << std::endl;
-            std::cout << this;
-            assert(false);
-            return nullptr;
-        }
-    }
-#endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfo(Opcode icode) override
@@ -538,7 +509,10 @@ namespace mavis
             const auto itr = hash_.find(icode & mask_);
             if (itr != hash_.end())
             {
-                assert(itr->second != nullptr && "cannot find hash entry for opcode");
+                if (itr->second == nullptr) [[unlikely]]
+                {
+                    throw std::runtime_error("cannot find hash entry for opcode");
+                }
                 return itr->second->getInfo(icode);
             }
             else if (default_ != nullptr)
@@ -547,12 +521,11 @@ namespace mavis
             }
             else
             {
-                std::ios_base::fmtflags cout_state(std::cout.flags());
-                std::cout << "CANT FIND FACTORY FOR ICODE: 0x" << std::hex << icode << std::endl;
-                std::cout << "MASK = 0x" << std::hex << mask_ << std::endl;
-                std::cout << this;
-                std::cout.flags(cout_state);
-                assert(false && "cannot find factory for opcode");
+                std::ostringstream ss;
+                ss << "CANT FIND FACTORY FOR ICODE: 0x" << std::hex << icode << std::endl;
+                ss << "MASK = 0x" << std::hex << mask_ << std::endl;
+                ss << this;
+                throw std::runtime_error(ss.str());
                 return nullptr;
             }
         }
@@ -615,21 +588,13 @@ namespace mavis
                          const typename IFactoryIF<InstType, AnnotationType>::PtrType &,
                          const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
-
-#if 0
-    virtual typename InstType::PtrType
-    makeInst(const std::string& mnemonic, Opcode icode, const ExtractorIF::PtrType& extractor) {
-        assert(false);
-        return nullptr;
-    }
-#endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfo(const std::string &, Opcode, const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
     };
@@ -680,7 +645,10 @@ namespace mavis
         void addDefaultIFactory(
             const typename IFactoryIF<InstType, AnnotationType>::PtrType & node) override
         {
-            assert((default_ == nullptr) && "default already assigned");
+            if (default_ != nullptr) [[unlikely]]
+            {
+                throw std::runtime_error("default already assigned");
+            }
             default_ = node;
         }
 
@@ -791,21 +759,13 @@ namespace mavis
                          const typename IFactoryIF<InstType, AnnotationType>::PtrType &,
                          const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
-
-#if 0
-    virtual typename InstType::PtrType
-    makeInst(const std::string& mnemonic, Opcode icode, const ExtractorIF::PtrType& extractor) {
-        assert(false);
-        return nullptr;
-    }
-#endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfo(const std::string &, Opcode, const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
     };
@@ -866,7 +826,10 @@ namespace mavis
         void addDefaultIFactory(
             const typename IFactoryIF<InstType, AnnotationType>::PtrType & node) override
         {
-            assert((default_ == nullptr) && "default already assigned");
+            if (default_ != nullptr) [[unlikely]]
+            {
+                throw std::runtime_error("default already assigned");
+            }
             default_ = node;
         }
 
@@ -961,21 +924,13 @@ namespace mavis
                          const typename IFactoryIF<InstType, AnnotationType>::PtrType &,
                          const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
-
-#if 0
-    virtual typename InstType::PtrType
-    makeInst(const std::string& mnemonic, Opcode icode, const ExtractorIF::PtrType& extractor) {
-        assert(false);
-        return nullptr;
-    }
-#endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfo(const std::string &, Opcode, const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
     };
@@ -1041,7 +996,10 @@ namespace mavis
         void addDefaultIFactory(
             const typename IFactoryIF<InstType, AnnotationType>::PtrType & node) override
         {
-            assert((default_ == nullptr) && "default already assigned");
+            if (default_ != nullptr) [[unlikely]]
+            {
+                throw std::runtime_error("default already assigned");
+            }
             default_ = node;
         }
 
@@ -1154,21 +1112,13 @@ namespace mavis
                          const typename IFactoryIF<InstType, AnnotationType>::PtrType &,
                          const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
-
-#if 0
-    virtual typename InstType::PtrType
-    makeInst(const std::string& mnemonic, Opcode icode, const ExtractorIF::PtrType& extractor) {
-        assert(false);
-        return nullptr;
-    }
-#endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfo(const std::string &, Opcode, const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
     };
@@ -1488,7 +1438,11 @@ namespace mavis
          */
         const typename AnnotationType::PtrType findAnnotation_(const std::string & mnemonic) const
         {
-            assert(!annotation_map_.empty());
+            if (annotation_map_.empty()) [[unlikely]]
+            {
+                throw std::runtime_error("Annotation map is empty");
+            }
+
             auto iter = annotation_map_.find(mnemonic);
             if (iter == annotation_map_.end())
             {
@@ -1541,7 +1495,10 @@ namespace mavis
         InstructionUniqueID getInstructionUID_(const std::string & mnemonic) const
         {
             InstructionUniqueID uid = uid_map_.at(mnemonic);
-            assert((uid != INVALID_UID) && "UID is invalid");
+            if (uid == INVALID_UID) [[unlikely]]
+            {
+                throw std::runtime_error("UID is invalid");
+            }
             return uid;
         }
 
@@ -1567,21 +1524,21 @@ namespace mavis
       private:
         const Field* getField() const override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
 
         void addIFactory(const Opcode,
                          const typename IFactoryIF<InstType, AnnotationType>::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
 
         void addIFactory(const std::string &, const Opcode,
                          const typename IFactoryIF<InstType, AnnotationType>::PtrType &,
                          const ExtractorIF::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
 
         typename IFactoryIF<InstType, AnnotationType>::PtrType getNode(const Opcode) override
@@ -1597,20 +1554,13 @@ namespace mavis
         void
         addDefaultIFactory(const typename IFactoryIF<InstType, AnnotationType>::PtrType &) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
         }
-
-#if 0
-    virtual typename InstType::PtrType makeInst(Opcode) {
-        assert(false);
-        return nullptr;
-    }
-#endif
 
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfo(Opcode) override
         {
-            assert(false);
+            throw std::runtime_error("Unimplemented");
             return nullptr;
         }
     };

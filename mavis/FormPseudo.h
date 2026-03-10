@@ -32,15 +32,23 @@ namespace mavis
 
         static inline const Field & getField(const idType fid)
         {
-            assert(fid == idType::FAMILY);
-            (void)fid;
+            if (fid != idType::FAMILY) [[unlikely]]
+            {
+                throw std::invalid_argument(
+                    "idType::FAMILY is the only valid idType for this form");
+            }
+
             return family_;
         }
 
         static inline uint64_t extract(const idType fid, const uint64_t icode)
         {
-            assert(fid == idType::FAMILY);
-            (void)fid;
+            if (fid != idType::FAMILY) [[unlikely]]
+            {
+                throw std::invalid_argument(
+                    "idType::FAMILY is the only valid idType for this form");
+            }
+
             return family_.extract(icode);
         }
 
