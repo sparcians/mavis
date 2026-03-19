@@ -3682,17 +3682,18 @@ namespace mavis
             return (rs1 >= 32 || rs2 != 1);
         }
 
-        uint64_t getSourceRegs(const Opcode) const override { return 0; }
-
-        uint64_t getSourceOperTypeRegs(const Opcode, const InstMetaData::PtrType &,
-                                       InstMetaData::OperandTypes) const override
+        uint64_t getSourceRegs(const Opcode icode) const override
         {
-            return 0;
+            return extractUnmaskedIndexBit_(Form_Rfloat::idType::RS1, icode, fixed_field_mask_);
         }
 
-        OperandInfo getSourceOperandInfo(Opcode, const InstMetaData::PtrType &, bool) const override
+        OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType & meta, bool suppress_x0) const override
         {
-            return OperandInfo{};
+            OperandInfo olist;
+            appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
+                                       fixed_field_mask_, Form_Rfloat::idType::RS1, false,
+                                       suppress_x0);
+            return olist;
         }
 
         std::string getName() const override { return Form_Rfloat_fli<ImmType>::name; }

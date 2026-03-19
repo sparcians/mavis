@@ -26,6 +26,7 @@
     "tags" : ["d", "zfa"],
     "form" : "Rfloat",
     "xform" : "Rfloat_fli_d",
+    "w-oper" : ["rs1"],
     "d-oper" : ["rd"],
     "type" : ["float", "arith"]
   },
