@@ -1,0 +1,10 @@
+[
+    {
+        "mnemonic" : "mnret",
+        "tags" : ["i", "g"],
+        "form" : "R",
+        "fixed" : ["rs2", "rs1", "rd"],
+        "stencil" : "0x70200073",
+        "type" : ["system"]
+    }
+]
