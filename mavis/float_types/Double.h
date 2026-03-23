@@ -6,7 +6,9 @@
 
 // Try to use STL types if we're in C++23 mode
 #if __cplusplus >= 202302L
+#if __has_include(<stdfloat>)
     #include <stdfloat>
+#endif
 
     #ifdef __STDCPP_FLOAT64_T__
         #define MAVIS_FLOAT64 std::float64_t
