@@ -10,7 +10,9 @@
 // clang-format off
 
 #if __cplusplus >= 202302L
+#if __has_include(<stdfloat>)
     #include <stdfloat>
+#endif
 
     #ifdef __STDCPP_BFLOAT16_T__
         #define MAVIS_BFLOAT16 std::bfloat16_t

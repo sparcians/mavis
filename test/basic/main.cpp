@@ -294,7 +294,8 @@ int main()
                               "json/isa_rv64zcb.json",
                               "json/isa_rv64zihintntl.json",
                               "json/isa_rv64zihintpause.json",
-                              "json/isa_rv64zicond.json"},
+                              "json/isa_rv64zicond.json",
+                              "json/isa_rv64smrnmi.json"},
                              {});
     mavis_facade.switchContext("NEW");
     cout << mavis_facade;
@@ -334,9 +335,16 @@ int main()
     // sext.b
     inst = mavis_facade.makeInst(0x60401013, 0);
     ASSERT_ALWAYS(inst != nullptr);
-    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x0x60401013 = " << inst->dasmString()
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x60401013 = " << inst->dasmString()
          << endl;
     ASSERT_ALWAYS(inst->getMnemonic() == "sext.b");
+
+    // mnret from smrnmi
+    inst = mavis_facade.makeInst(0x70200073, 0);
+    ASSERT_ALWAYS(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x70200073 = " << inst->dasmString()
+         << endl;
+    ASSERT_ALWAYS(inst->getMnemonic() == "mnret");
 
     // Switch back to BASE context
     mavis_facade.switchContext("BASE");
