@@ -522,7 +522,13 @@
       "xlen": [32, 64],
       "extension": "zvbb",
       "meta_extension": ["zvkn", "zvks"],
+      "enables": ["zvkb"],
       "json": "isa_rv64zvbb.json"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvkb",
+      "json": "isa_rv64zvkb.json"
     },
     {
       "xlen": [32, 64],

@@ -196,6 +196,7 @@ int main()
                             "json/isa_rv64zve64x.json",
                             "json/isa_rv64zve64d.json",
                             "json/isa_rv64zvbb.json",
+                            "json/isa_rv64zvkb.json",
                             "json/isa_rv64zvbc.json",
                             "json/isa_rv64zvkned.json",
                             "json/isa_rv64zvkg.json",
