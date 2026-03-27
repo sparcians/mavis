@@ -243,6 +243,7 @@ make
 | **V** Vector extension. | :white_check_mark: |
 | **Zvfhmin** Vector minimal half-precision floating-point. | :white_check_mark: |
 | **Zvbb** Vector basic bit-manipulation instructions. | :white_check_mark: |
+| **Zvkb** Vector cryptography bit-manipulation instructions. | :white_check_mark: |
 | **Zvkt** Vector data-independent execution latency. | :white_check_mark: |
 | **Zihintntl** Non-temporal locality hints. | :white_check_mark: |
 | **Zicond** Integer conditional operations. | :white_check_mark: |
