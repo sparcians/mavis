@@ -124,6 +124,14 @@
     {
       "xlen": [32, 64],
       "extension": "svpbmt"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "smcsrind"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "sscsrind"
     }
   ],
   "extensions": [
@@ -156,14 +164,6 @@
       "extension": "zicsr",
       "meta_extension": "g",
       "json": "isa_rv32zicsr.json"
-    },
-    {
-      "xlen": [32, 64],
-      "extension": "smcsrind"
-    },
-    {
-      "xlen": [32, 64],
-      "extension": "sscsrind"
     },
     {
       "xlen": [32, 64],
