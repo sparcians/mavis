@@ -678,6 +678,16 @@
       "xlen":64,
       "extension":"zknd",
       "json":"isa_rv64zknd.json"
+    },
+    {
+      "xlen": 32,
+      "extension" : "zkne",
+      "json" : "isa_rv32zkne.json"
+    },
+    {
+      "xlen": 64,
+      "extension": "zkne",
+      "json" : "isa_rv64zkne.json"
     }
   ]
 }
