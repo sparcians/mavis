@@ -285,7 +285,7 @@ namespace mavis
 
         // clang-format on
 
-      private:
+      protected:
         Extractor(const uint64_t ffmask, const uint64_t fset) : ExtractorBase(ffmask) {}
     };
 
@@ -1737,8 +1737,9 @@ namespace mavis
         {
             std::stringstream ss;
             ss << mnemonic << '\t';
-            formatRList_(ss, icode,
-                         [&ss](const uint64_t urlist) { ss << getRListRangeEnd_(urlist); });
+            formatRList_(ss, icode, [](std::stringstream& ss, const uint64_t urlist) {
+                ss << getRListRangeEnd_(urlist);
+            });
             ss << ", " << getSignedOffset(icode);
             return ss.str();
         }
@@ -1749,7 +1750,7 @@ namespace mavis
         {
             std::stringstream ss;
             ss << mnemonic << '\t';
-            formatRList_(ss, icode, [&ss, &meta, op_id = getFirstOperandID_()](const uint64_t urlist) mutable {
+            formatRList_(ss, icode, [&meta, op_id = getFirstOperandID_()](std::stringstream& ss, const uint64_t urlist) mutable {
                 ss << dasmFormatReg_(meta, op_id, getRListRangeEnd_(urlist));
                 op_id = incrementFieldID_(op_id);
             });
@@ -1804,7 +1805,7 @@ namespace mavis
 
                 const auto urlist_end = std::min(range.second, urlist);
 
-                format_func(urlist_begin);
+                format_func(ss, urlist_begin);
 
                 if (urlist_begin == urlist_end)
                 {
@@ -1813,7 +1814,7 @@ namespace mavis
 
                 ss << '-';
 
-                format_func(urlist_end);
+                format_func(ss, urlist_end);
             }
 
             ss << "}";
@@ -2598,7 +2599,7 @@ namespace mavis
                << "," << extract_(Form_ISH::idType::RS1, icode & ~fixed_field_mask_);
             if (!isMaskedField_(Form_ISH::idType::SHAMT, fixed_field_mask_))
             {
-                ss << ", SHAMT=" << std::dec << getImmediate(icode);
+                ss << ", " << getImmediateDasmName_() << "=" << std::dec << getImmediate(icode);
             }
             return ss.str();
         }
@@ -2614,15 +2615,18 @@ namespace mavis
                                       {Form_ISH::idType::RS1, InstMetaData::OperandFieldID::RS1}});
             if (!isMaskedField_(Form_ISH::idType::SHAMT, fixed_field_mask_))
             {
-                ss << ", SHAMT=" << std::dec << getImmediate(icode);
+                ss << ", " << getImmediateDasmName_() << "=" << std::dec << getImmediate(icode);
             }
             return ss.str();
         }
 
         // clang-format on
 
-      private:
+      protected:
         Extractor(const uint64_t ffmask, const uint64_t fset) : ExtractorBase(ffmask) {}
+
+      private:
+        virtual const char * getImmediateDasmName_() const { return "SHAMT"; }
     };
 
     /**

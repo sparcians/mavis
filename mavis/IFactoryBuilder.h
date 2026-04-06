@@ -210,6 +210,25 @@ namespace mavis
                 throw BuildErrorOverlayMissingAnnotation(olay_mnemonic, olay_base_mnemonic);
             }
             olay->setAnnotation(panno);
+
+            // Only register the overlay manually if it doesn't already have a factory registered, i.e.
+            // it has a custom IFactory
+            if(auto olay_ifact = this->findIFact(olay_mnemonic); olay_ifact == nullptr)
+            {
+                // Register the overlay mnemonic with the IFactory so that
+                // we can use makeInstDirectly with a mnemonic
+                auto ifact = this->findIFact(olay_base_mnemonic);
+
+                if (ifact == nullptr)
+                {
+                    throw BuildErrorOverlayBaseNotFound(olay_mnemonic, olay_base_mnemonic, jfile);
+                }
+
+                ifact->addInstructionVariantUID(olay_mnemonic, olay->getUID());
+                ifact->registerInstructionVariantMetaData(olay_mnemonic, olay->getMetaData());
+                ifact->addInstructionVariantAnnotation(olay_mnemonic, panno);
+                registry_[olay_mnemonic] = std::move(ifact);
+            }
         }
     };
 

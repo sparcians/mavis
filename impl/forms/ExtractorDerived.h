@@ -3327,6 +3327,19 @@ namespace mavis
       public:
         Extractor() = default;
 
+        bool isIllop(Opcode icode) const override
+        {
+            // Form_I::idType::IMM corresponds to bits [31:20].
+            // Check the bottom 5 bits of this range to make sure it's a valid prefetch instruction.
+            static constexpr uint64_t MASK = std::numeric_limits<uint64_t>::max() >> 59;
+            const auto pref_op = extract_(Form_I::idType::IMM, icode) & MASK;
+
+            // 0 = prefetch.i
+            // 1 = prefetch.r
+            // 3 = prefetch.w
+            return !utils::isOneOf(pref_op, 0U, 1U, 3U);
+        }
+
         ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
                                               const uint64_t fset) const override
         {
@@ -3388,7 +3401,11 @@ namespace mavis
 
         uint64_t getImmediate(const Opcode icode) const override
         {
-            return extract_(Form_I::idType::IMM, icode) >> 5;
+            // Form_I::idType::IMM corresponds to bits [31:20], but we want [31:25].
+            // The imm field in this form has bits [11:5].
+            // Therefore, we just need to zero out the bottom 5 Form_I::idType::IMM bits.
+            static constexpr uint64_t MASK = std::numeric_limits<uint64_t>::max() << 5;
+            return extract_(Form_I::idType::IMM, icode) & MASK;
         }
 
         int64_t getSignedOffset(const Opcode icode) const override

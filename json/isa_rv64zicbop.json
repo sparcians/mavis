@@ -24,8 +24,7 @@
     "fixed" : ["rd", "rs2"],
     "stencil" : "0x106013",
     "type" : ["prefetch", "hint"],
-    "l-oper" : ["rs1"],
-    "data" : 8
+    "l-oper" : ["rs1"]
   },
   {
     "mnemonic" : "prefetch.w",

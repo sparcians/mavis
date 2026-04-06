@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include "elfio/elfio.hpp"
 #include "mavis/ExtensionManager.hpp"
 #include "mavis/Utils.h"

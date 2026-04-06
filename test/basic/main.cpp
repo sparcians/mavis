@@ -1174,11 +1174,31 @@ int main()
     ASSERT_ALWAYS(inst->getImmediate() == 0);
     ASSERT_ALWAYS(inst->hasImmediate() == true);
 
-    // prefetch.w x0, 0x1
+    try
+    {
+        // prefetch.r x0, 0x30
+        // This is an invalid immediate and should fail to decode
+        inst = mavis_facade.makeInst(0x3106013, 0);
+        ASSERT_ALWAYS(inst == nullptr);
+    }
+    catch (const mavis::IllegalOpcode &)
+    {
+        cout << "line " << dec << __LINE__ << ": "
+             << "DASM: 0x3106013 fails to decode. This is expected" << endl;
+    }
+
+    // prefetch.r x0, 0x80
+    inst = mavis_facade.makeInst(0x8106013, 0);
+    ASSERT_ALWAYS(inst != nullptr);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x8106013 = " << inst->dasmString() << endl;
+    ASSERT_ALWAYS(inst->getImmediate() == 0x80);
+    ASSERT_ALWAYS(inst->hasImmediate() == true);
+
+    // prefetch.w x0, 0x20
     inst = mavis_facade.makeInst(0x2306013, 0);
     ASSERT_ALWAYS(inst != nullptr);
-    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x306013 = " << inst->dasmString() << endl;
-    ASSERT_ALWAYS(inst->getImmediate() == 1);
+    cout << "line " << dec << __LINE__ << ": " << "DASM: 0x2306013 = " << inst->dasmString() << endl;
+    ASSERT_ALWAYS(inst->getImmediate() == 32);
     ASSERT_ALWAYS(inst->hasImmediate() == true);
 
     // pause
