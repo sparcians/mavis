@@ -3,7 +3,7 @@
 Adding new extensions and instructions to Mavis involves updating/changing
 a few aspects of the code base.
 
-- Update/addition to json files (see json directory)
+- Update/addition to json files (see `json` directory)
 - Creation of or reuse of new types
 - Creation of or reuse of an existing Extractor form
 - Updating the RISC-V ISA spec (`riscv_isa_spec.json`)
@@ -20,6 +20,7 @@ as an example of putting these instructions into practice.
 Each new extension needs a corresponding file in the `json` directory. The
 name of the file should follow this basic convention:
 `isa_[rv32|rv64]<extension_name>.json`
+
 For example, the RV64 version of `zicond` would look like: `isa_rv64zicond.json`.
 
 If the instructions are also available in 32-bit form, the RV32 file can be
@@ -53,7 +54,9 @@ Some additional notes:
     "w-oper" : ["rd"]
     ```
   - An instruction with long operand types for all operands:
+    ```
     `"l-oper" : "all"`
+    ```
 
 ### Creation or Reuse of Instruction Form (or format)
 
@@ -114,7 +117,7 @@ Instructions for adding a new extension to `json/riscv_isa_spec.json`:
     the extension should automatically be enabled if some combination of
     other extensions are enabled. The inner arrays constitute AND statements
     while the outer array is equivalent to an OR statement.
-    - Example: `”enabled_by”: [["c", "f"], ["zce", "f"]]` will enable the
+    - Example: `"enabled_by": [["c", "f"], ["zce", "f"]]` will enable the
       extension if `c` AND `f` are enabled OR if `zce` AND `f` are enabled
   - `enables`: A single extension name or an array of extensions that
     should be automatically enabled if this extension is enabled
@@ -137,7 +140,7 @@ Instructions for adding a new extension to `json/riscv_isa_spec.json`:
 - Basic test: Add your new `.json` file to `test/basic/main.cpp` and add any
   desired tests. You may also need to update `test/basic/golden.out`.
 
-### Case Study of Adding `zimop` Extension
+### Case Study of Adding `Zimop`, `Zcmop` and `Zicfiss` Extensions
 
 #### Create JSON file
 
