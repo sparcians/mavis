@@ -132,6 +132,14 @@
     {
       "xlen": [32, 64],
       "extension": "sscsrind"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zicntr"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zihpm"
     }
   ],
   "extensions": [
