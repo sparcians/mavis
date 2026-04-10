@@ -55,7 +55,7 @@ Some additional notes:
     ```
   - An instruction with long operand types for all operands:
     ```
-    `"l-oper" : "all"`
+    "l-oper" : "all"
     ```
 
 ### Creation or Reuse of Instruction Form (or format)
@@ -83,14 +83,13 @@ To enable proper disassembly of instructions, an extraction form is use.
 This form _does not_ contribute to the decoding of the instruction, just
 extraction and disassembly.
 
-If you had to add a new Form class, you will also need to add a
-specialization of `Extractor` to `impl/forms/ExtractorForms.h`.
+- If you had to add a new Form class, you will also need to add a
+  specialization of `Extractor` to `impl/forms/ExtractorForms.h`.
+- If you were able to re-use an existing Form, but need to make some
+  modifications to the way the fields of the instruction are extracted,
+  you will need to add a derivative class in `impl/forms/ExtractorDerived.h`.
 
-If you were able to re-use an existing Form, but need to make some
-modifications to the way the fields of the instruction are extracted,
-you will need to add a derivative class in `impl/forms/ExtractorDerived.h`.
-
-If you added a new `Extractor`:
+In either case, if you added a new `Extractor`:
 - Add it to the registry in `impl/ExtractorRegistry.cpp`
 - Add a stub in `mavis/FormStub.h`
 - Be sure to set the `xform` field in the JSON you create to point to your
@@ -103,7 +102,7 @@ facade or even validate an ISA string. This manager uses as input the
 `json/riscv_isa_spec.json` file to build relationships between
 extensions.
 
-**Adding any new extensions to this file is required.**
+*Adding any new extensions to this file is required.*
 
 Instructions for adding a new extension to `json/riscv_isa_spec.json`:
 - Normal extensions should go under the extensions array
