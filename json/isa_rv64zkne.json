@@ -18,13 +18,11 @@
   {
     "mnemonic": "aes64ks1i",
     "tags": ["zkne"],
-    "form": "ISH",
+    "form": "AES64KSI",
     "stencil": "0x31001013",
-    "ignore": ["shamt"],
-    "xform" : "R",
     "type": ["crypto", "arith"],
     "l-oper": "all"
-  },
+ },
   {
     "mnemonic": "aes64ks2",
     "tags": ["zkne"],

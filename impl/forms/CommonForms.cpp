@@ -1,4 +1,5 @@
 #include "impl/forms/CommonForms.h"
+#include "mavis/Field.h"
 #include "mavis/Form.h"
 
 namespace mavis
@@ -452,15 +453,18 @@ namespace mavis
     /**
      * AES64ksi-form
      */
+    const char* Form_AES64KSI::name{"AES64KSI"};
 
-    const char* Form_AES64KSI::name{"AES64KS1I"};
-    const FieldsType Form_AES64KSI::fields{
-        Field("func2", 30, 2), Field("func5", 25, 5), Field("fixed", 24, 1), Field("rnum", 20, 4),
-        Field("rs1", 15, 5),   Field("func3", 12, 3), Field("rd", 7, 5),     Field("opcode", 0, 7)};
+    const FieldsType Form_AES64KSI::fields{Field("func7", 26, 6), Field("func1", 25 ,1), 
+                                        Field("fixed", 24, 1), Field("rnum", 20, 4), 
+                                        Field("rs1", 15, 5), Field("func3", 12, 3), 
+                                        Field("rd", 7 ,5), Field("opcode", 0, 7)
+    };
+
 
     const std::map<std::string, const Field &> Form_AES64KSI::fmap{
-        {"func2",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC2] },
-        {"func5",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC5] },
+        {"func6",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC6] },
+        {"func1" , Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1]},
         {"fixed",  Form_AES64KSI::fields[Form_AES64KSI::idType::FIXED] },
         {"rnum",   Form_AES64KSI::fields[Form_AES64KSI::idType::RNUM]  },
         {"rs1",    Form_AES64KSI::fields[Form_AES64KSI::idType::RS1]   },
@@ -470,9 +474,8 @@ namespace mavis
     };
 
     const std::map<std::string, Form_AES64KSI::idType> Form_AES64KSI::imap{
-        {"func2",  Form_AES64KSI::idType::FUNC2 },
-        {"func5",  Form_AES64KSI::idType::FUNC5 },
-        {"func1",  Form_AES64KSI::idType::FIXED },
+        {"func6",  Form_AES64KSI::idType::FUNC6 },
+        {"fixed",  Form_AES64KSI::idType::FIXED },
         {"rnum",   Form_AES64KSI::idType::RNUM  },
         {"rs1",    Form_AES64KSI::idType::RS1   },
         {"func3",  Form_AES64KSI::idType::FUNC3 },
@@ -483,11 +486,11 @@ namespace mavis
     const FieldsType Form_AES64KSI::opcode_fields{
         Form_AES64KSI::fields[Form_AES64KSI::idType::OPCODE],
         Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC3],
-        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC2],
-        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC5],
+        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC6],
+        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1],
         Form_AES64KSI::fields[Form_AES64KSI::idType::FIXED],
     };
 
-    const ImmediateType Form_AES64KSI::immediate_type = ImmediateType::NONE;
+    const ImmediateType Form_AES64KSI::immediate_type = ImmediateType::UNSIGNED;
 
 } // namespace mavis

@@ -4351,4 +4351,134 @@ namespace mavis
 
         const uint64_t fixed_field_set_ = 0;
     };
+
+   /**
+ * AES64KS1I-Form Extractor
+ */
+    template<>
+    class Extractor<Form_AES64KSI> : public ExtractorBase<Form_AES64KSI>
+    {
+    public:
+    Extractor() = default;
+
+    ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
+                                          const uint64_t fset) const override
+    {
+        return ExtractorIF::PtrType(new Extractor<Form_AES64KSI>(ffmask, fset));
+    }
+
+    uint64_t getSourceRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_AES64KSI::idType::RS1, icode, fixed_field_mask_);
+        // NOTE: no RS2 — bits [24:20] are NOT a register, RNUM is an immediate
+    }
+
+    uint64_t getDestRegs(const Opcode icode) const override
+    {
+        return extractUnmaskedIndexBit_(Form_AES64KSI::idType::RD, icode, fixed_field_mask_);
+    }
+
+    uint64_t getSourceOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                   InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind))
+        {
+            return 0;
+        }
+        else if (meta->isAllOperandType(kind))
+        {
+            return getSourceRegs(icode);
+        }
+        else
+        {
+            uint64_t result = 0;
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RS1, kind))
+            {
+                result |= extractUnmaskedIndexBit_(Form_AES64KSI::idType::RS1,
+                                                   icode, fixed_field_mask_);
+            }
+            return result;
+        }
+    }
+
+    uint64_t getDestOperTypeRegs(const Opcode icode, const InstMetaData::PtrType & meta,
+                                 InstMetaData::OperandTypes kind) const override
+    {
+        if (meta->isNoneOperandType(kind))
+        {
+            return 0;
+        }
+        else if (meta->isAllOperandType(kind))
+        {
+            return getDestRegs(icode);
+        }
+        else
+        {
+            uint64_t result = 0;
+            if (meta->isOperandType(InstMetaData::OperandFieldID::RD, kind))
+            {
+                result |= extractUnmaskedIndexBit_(Form_AES64KSI::idType::RD,
+                                                   icode, fixed_field_mask_);
+            }
+            return result;
+        }
+    }
+
+    OperandInfo getSourceOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                     bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RS1,
+                                   fixed_field_mask_, Form_AES64KSI::idType::RS1,
+                                   false, suppress_x0);
+        return olist;
+    }
+
+    OperandInfo getDestOperandInfo(Opcode icode, const InstMetaData::PtrType & meta,
+                                   bool suppress_x0 = false) const override
+    {
+        OperandInfo olist;
+        appendUnmaskedOperandInfo_(olist, icode, meta, InstMetaData::OperandFieldID::RD,
+                                   fixed_field_mask_, Form_AES64KSI::idType::RD,
+                                   false, suppress_x0);
+        return olist;
+    }
+
+    ImmediateType getImmediateType() const override { return ImmediateType::UNSIGNED; }
+
+    uint64_t getImmediate(const Opcode icode) const override
+    {
+        // Extract only bits [23:20] as rnum — bit 24 is fixed and must NOT be included
+        return extract_(Form_AES64KSI::idType::RNUM, icode);
+    }
+
+    using ExtractorIF::dasmString;
+
+    std::string dasmString(const std::string & mnemonic, const Opcode icode) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << extract_(Form_AES64KSI::idType::RD,  icode & ~fixed_field_mask_) << ","
+           << extract_(Form_AES64KSI::idType::RS1, icode & ~fixed_field_mask_)
+           << ", rnum=" << std::dec << getImmediate(icode);
+        return ss.str();
+    }
+
+    // clang-format off
+    std::string dasmString(const std::string & mnemonic, const Opcode icode,
+                           const InstMetaData::PtrType & meta) const override
+    {
+        std::stringstream ss;
+        ss << mnemonic << "\t"
+           << dasmFormatRegList_(meta, icode, fixed_field_mask_,
+                                 {{Form_AES64KSI::idType::RD,  InstMetaData::OperandFieldID::RD},
+                                  {Form_AES64KSI::idType::RS1, InstMetaData::OperandFieldID::RS1}})
+           << ", rnum=" << std::dec << getImmediate(icode);
+        return ss.str();
+    }
+    // clang-format on
+
+    private:
+        Extractor(const uint64_t ffmask, const uint64_t fset) : ExtractorBase(ffmask) {}
+    };
 } // namespace mavis
