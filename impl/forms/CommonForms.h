@@ -360,4 +360,29 @@ namespace mavis
         static const FieldsType opcode_fields;
         static const ImmediateType immediate_type;
     };
+
+    class Form_AES64KSI
+    {
+      public:
+        enum idType : uint32_t
+        {
+            FUNC2 = 0, // bits [31:30] named if func2 - because of the bit width
+            FUNC5,     // bits [29:25]
+            FIXED,     // bit [24] - fixed
+            RNUM,      // bits [23:20]
+            RS1,       // bits [ 19:15]
+            FUNC3,     // bits [14:12]
+            RD,        // bits [11:7]
+            OPCODE,    // bits[6:0]
+            __N
+
+        };
+
+        static const char* name;
+        static const FieldsType fields;
+        static const std::map<std::string, const Field &> fmap;
+        static const std::map<std::string, idType> imap;
+        static const ImmediateType immediate_type;
+        static const FieldsType opcode_fields;
+    };
 } // namespace mavis
