@@ -455,17 +455,14 @@ namespace mavis
      */
     const char* Form_AES64KSI::name{"AES64KSI"};
 
-    const FieldsType Form_AES64KSI::fields{Field("func7", 26, 6), Field("func1", 25 ,1), 
-                                        Field("fixed", 24, 1), Field("rnum", 20, 4), 
+    const FieldsType Form_AES64KSI::fields{Field("func8", 24, 8),  Field("rnum", 20, 4), 
                                         Field("rs1", 15, 5), Field("func3", 12, 3), 
                                         Field("rd", 7 ,5), Field("opcode", 0, 7)
     };
 
 
     const std::map<std::string, const Field &> Form_AES64KSI::fmap{
-        {"func6",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC6] },
-        {"func1" , Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1]},
-        {"fixed",  Form_AES64KSI::fields[Form_AES64KSI::idType::FIXED] },
+        {"func8",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC8] },
         {"rnum",   Form_AES64KSI::fields[Form_AES64KSI::idType::RNUM]  },
         {"rs1",    Form_AES64KSI::fields[Form_AES64KSI::idType::RS1]   },
         {"func3",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC3] },
@@ -474,8 +471,7 @@ namespace mavis
     };
 
     const std::map<std::string, Form_AES64KSI::idType> Form_AES64KSI::imap{
-        {"func6",  Form_AES64KSI::idType::FUNC6 },
-        {"fixed",  Form_AES64KSI::idType::FIXED },
+        {"func8",  Form_AES64KSI::idType::FUNC8 },
         {"rnum",   Form_AES64KSI::idType::RNUM  },
         {"rs1",    Form_AES64KSI::idType::RS1   },
         {"func3",  Form_AES64KSI::idType::FUNC3 },
@@ -486,9 +482,7 @@ namespace mavis
     const FieldsType Form_AES64KSI::opcode_fields{
         Form_AES64KSI::fields[Form_AES64KSI::idType::OPCODE],
         Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC3],
-        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC6],
-        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1],
-        Form_AES64KSI::fields[Form_AES64KSI::idType::FIXED],
+        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC8],
     };
 
     const ImmediateType Form_AES64KSI::immediate_type = ImmediateType::UNSIGNED;

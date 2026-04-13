@@ -366,9 +366,7 @@ namespace mavis
       public:
         enum idType : uint32_t
         {
-            FUNC6 = 0,
-            FUNC1,
-            FIXED,     // bit [24] - fixed
+            FUNC8 = 0,
             RNUM,      // bits [23:20]
             RS1,       // bits [ 19:15]
             FUNC3,     // bits [14:12]

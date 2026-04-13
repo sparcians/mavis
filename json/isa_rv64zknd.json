@@ -19,8 +19,8 @@
         "mnemonic": "aes64im",
         "tags": ["zknd"],
         "form": "ISH",
+        "fixed" : ["func6", "shamt"],
         "stencil": "0x30001013",
-        "fixed":["shamt"],
         "type": ["int", "arith"],
         "l-oper": "all"
     } 
