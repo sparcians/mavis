@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <numbers>
+#include <sstream>
 
 #include <boost/core/demangle.hpp>
 
