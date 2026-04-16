@@ -1,4 +1,6 @@
 #include "impl/forms/CommonForms.h"
+#include "mavis/Field.h"
+#include "mavis/Form.h"
 
 namespace mavis
 {
@@ -447,5 +449,44 @@ namespace mavis
     const FieldsType Form_U::opcode_fields{Form_U::fields[Form_U::idType::OPCODE]};
 
     const ImmediateType Form_U::immediate_type = ImmediateType::UNSIGNED;
+
+    /**
+     * AES64ksi-form
+     */
+    const char* Form_AES64KSI::name{"AES64KSI"};
+
+    const FieldsType Form_AES64KSI::fields{Field("func6", 26, 6), Field("func2", 24, 2),  Field("rnum", 20, 4), 
+                                        Field("rs1", 15, 5), Field("func3", 12, 3), 
+                                        Field("rd", 7 ,5), Field("opcode", 0, 7)
+    };
+
+
+    const std::map<std::string, const Field &> Form_AES64KSI::fmap{
+        {"func6",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC6] },
+        {"func2", Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC2]},
+        {"rnum",   Form_AES64KSI::fields[Form_AES64KSI::idType::RNUM]  },
+        {"rs1",    Form_AES64KSI::fields[Form_AES64KSI::idType::RS1]   },
+        {"func3",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC3] },
+        {"rd",     Form_AES64KSI::fields[Form_AES64KSI::idType::RD]    },
+        {"opcode", Form_AES64KSI::fields[Form_AES64KSI::idType::OPCODE]}
+    };
+
+    const std::map<std::string, Form_AES64KSI::idType> Form_AES64KSI::imap{
+        {"func6",  Form_AES64KSI::idType::FUNC6 },
+        {"func2", Form_AES64KSI::idType::FUNC2},
+        {"rnum",   Form_AES64KSI::idType::RNUM  },
+        {"rs1",    Form_AES64KSI::idType::RS1   },
+        {"func3",  Form_AES64KSI::idType::FUNC3 },
+        {"rd",     Form_AES64KSI::idType::RD    },
+        {"opcode", Form_AES64KSI::idType::OPCODE}
+    };
+
+    const FieldsType Form_AES64KSI::opcode_fields{
+        Form_AES64KSI::fields[Form_AES64KSI::idType::OPCODE],
+        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC3],
+        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC6],
+    };
+
+    const ImmediateType Form_AES64KSI::immediate_type = ImmediateType::UNSIGNED;
 
 } // namespace mavis

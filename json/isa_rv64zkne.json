@@ -1,0 +1,18 @@
+[
+  {
+    "mnemonic": "aes64es",
+    "tags": ["zkne"],
+    "form": "R",
+    "stencil": "0x32000033",
+    "type": ["int", "arith"],
+    "l-oper": "all"
+  },
+  {
+    "mnemonic": "aes64esm",
+    "tags": ["zkne"],
+    "form": "R",
+    "stencil": "0x36000033",
+    "type": ["int", "arith"],
+    "l-oper": "all"
+  }
+]

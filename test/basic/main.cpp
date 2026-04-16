@@ -218,7 +218,8 @@ int main()
                             "json/isa_rv64zvfbfwma.json",
                             "json/isa_rv64svinval.json",
                             "json/isa_rv64zbkx.json",
-                            "json/isa_rv64zknd.json"
+                            "json/isa_rv64zknd.json",
+                            "json/isa_rv64zkne.json"
     },
                            {"uarch/uarch_rv64g.json"}, uid_init, anno_overrides);
     cout << mavis_facade;
@@ -248,6 +249,9 @@ int main()
 
     // Test BF16 extensions
     runTSet(mavis_facade, "rv64_bf16.tset");
+
+    // Test Zkne extensions
+    runTSet(mavis_facade, "rv64_zkne.tset");
 
     // Exercise the cache
     runTSet(mavis_facade, "rv64.tset");
@@ -1422,7 +1426,8 @@ int main()
                                  "json/isa_rv32zihintpause.json", "json/isa_rv32zawrs.json",
                                  "json/isa_rv32zilsd.json",       "json/isa_rv32zacas.json",
                                  "json/isa_rv32zabha.json",
-                                 "json/isa_rv32zknd.json"
+                                 "json/isa_rv32zknd.json",
+                                 "json/isa_rv32zkne.json",
                                  },
                                 {"uarch/uarch_rv32g.json"}, uid_init, anno_overrides);
     cout << mavis_facade_rv32;
@@ -1529,6 +1534,8 @@ int main()
     ASSERT_ALWAYS(inst->getMnemonic() == "c.fsw");
 
     runTSet(mavis_facade_rv32, "rv32_zknd.tset");
+
+    runTSet(mavis_facade_rv32, "rv32_zkne.tset");
 
     // "ZCLSD" context should exist yet
     ASSERT_ALWAYS(mavis_facade_rv32.hasContext("ZCLSD") == false);
