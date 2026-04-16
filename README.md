@@ -175,6 +175,12 @@ Example:
 
 ## Contributing
 
+### Developing on Mavis
+
+See 
+[doc/Developing.md](https://github.com/sparcians/mavis/tree/main/doc/Developing.md)
+for the basics of adding new instructions/extensions to Mavis.
+
 ### Run regression
 
 Regression is mostly manual and entails the developer to build a basic
