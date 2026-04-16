@@ -428,6 +428,17 @@
       "json": "isa_rv64zve64d.json"
     },
     {
+      "xlen": [32, 64],
+      "extension": "zvfh",
+      "requires": "zve32f",
+      "enables": "zvfhmin"
+    },
+    {
+      "xlen": [32, 64],
+      "extension": "zvfhmin",
+      "requires": "zve32f"
+    },
+    {
       "xlen": 64,
       "extension": "zaamo",
       "meta_extension": "a",
