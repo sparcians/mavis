@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boost/int128.hpp>
 #include "mavis/FloatUtils.h"
 
 // clang-format off
@@ -66,74 +65,20 @@
     #endif
 #endif
 
-// Use UnsupportedFloat128 if all other attempts failed
 #ifndef MAVIS_FLOAT128
-    #define MAVIS_FLOAT128 UnsupportedFloat128
+    #define MAVIS_FLOAT128 void
+    #define MAVIS_FLOAT128_UNSUPPORTED 1
 #endif
 
 // clang-format on
 
 namespace mavis
 {
-    // Stores an IEEE quad float in a 128 bit integer
-    // Does not support any arithmetic operations
-    class UnsupportedFloat128
-    {
-      private:
-        static constexpr boost::int128::uint128_t SIGN_MASK{boost::int128::uint128_t(0x1U) << 127};
-        static constexpr boost::int128::uint128_t EXPONENT_MASK{boost::int128::uint128_t(0x7FFFU)
-                                                                << 112};
-        static constexpr boost::int128::uint128_t FRACTION_MASK{~(SIGN_MASK | EXPONENT_MASK)};
-
-        static constexpr bool isNaN_(const boost::int128::uint128_t value)
-        {
-            return ((value & EXPONENT_MASK) == EXPONENT_MASK) && ((value & FRACTION_MASK) != 0U);
-        }
-
-        boost::int128::uint128_t value_;
-
-      public:
-        boost::int128::uint128_t getValue() const { return value_; }
-
-        constexpr bool operator==(const UnsupportedFloat128 & rhs) const
-        {
-            if (isNaN_(value_) || isNaN_(rhs.value_))
-            {
-                return false;
-            }
-
-            return value_ == rhs.value_;
-        }
-
-        constexpr auto operator<=>(const UnsupportedFloat128 & rhs) const
-        {
-            return value_ <=> rhs.value_;
-        }
-
-        operator float() const { throw std::runtime_error("UnsupportedFloat128 cannot be implicitly converted to float"); }
-
-        friend inline std::ostream & operator<<(std::ostream & os,
-                                                const UnsupportedFloat128 & value)
-        {
-#ifdef MAVIS_HAS_STD_FORMAT
-            os << std::format("0x{:016x}{:016x}", static_cast<uint64_t>(value.value_ >> 64),
-                              static_cast<uint64_t>(value.value_));
-#else
-            os << boost::format("0x%|016x|%|016x|") % static_cast<uint64_t>(value.value_ >> 64) % static_cast<uint64_t>(value.value_);
-#endif
-            return os;
-        }
-    };
-
     using Quad = MAVIS_FLOAT128;
 
+#ifndef MAVIS_FLOAT128_UNSUPPORTED
     namespace float_utils
     {
-        template <>
-        struct IEEEFloatDefaults<128> : FloatSettings<Quad, boost::int128::uint128_t, 15, 112>
-        {
-        };
-
         // Override the formatter for Quad if we need to use libquadmath
 #ifdef FORMAT_FLOAT128_WITH_QUADMATH
         template <> inline void formatFloat<Quad>(std::ostream & os, const Quad & value)
@@ -142,13 +87,12 @@ namespace mavis
             quadmath_snprintf(buf.data(), buf.size(), "%Qg", value);
             os << buf.data();
         }
-#endif
-
-        template <>
-        inline void formatFloat<UnsupportedFloat128>(std::ostream & os,
-                                                     const UnsupportedFloat128 & value)
+#elif defined(MAVIS_HAS_STD_FORMAT)
+        template <> inline void formatFloat<Quad>(std::ostream & os, const Quad & value)
         {
-            os << value;
+            os << std::format("{}", value);
         }
+#endif
     } // namespace float_utils
+#endif
 } // namespace mavis

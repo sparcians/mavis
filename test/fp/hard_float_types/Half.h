@@ -50,9 +50,5 @@ namespace mavis
             os << simde_float16_to_float32(value);
         }
 #endif
-
-        template <> struct IEEEFloatDefaults<16> : FloatSettings<Half, uint16_t, 5, 10>
-        {
-        };
     } // namespace float_utils
 } // namespace mavis

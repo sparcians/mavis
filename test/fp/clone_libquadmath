@@ -7,12 +7,12 @@
 GCC_GIT_REPO=https://github.com/gcc-mirror/gcc.git
 GCC_GIT_TAG=releases/gcc-15.2.0
 
-if [ ! -f libquadmath/.checked-out ]; then
-    if [ -d libquadmath ]; then
-        rm -rf libquadmath
+if [ ! -f libquadmath_build/.checked-out ]; then
+    if [ -d libquadmath_build ]; then
+        rm -rf libquadmath_build
     fi
-    git clone -b ${GCC_GIT_TAG} --depth=1 --filter=blob:none --sparse ${GCC_GIT_REPO} libquadmath && \
-    cd libquadmath && \
+    git clone -b ${GCC_GIT_TAG} --depth=1 --filter=blob:none --sparse ${GCC_GIT_REPO} libquadmath_build && \
+    cd libquadmath_build && \
     git sparse-checkout init && \
     git sparse-checkout set include libquadmath && \
     git pull && \
