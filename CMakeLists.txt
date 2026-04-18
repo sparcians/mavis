@@ -9,9 +9,6 @@ endif()
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include(CheckIncludeFile)
-include(CMakePushCheckState)
-
 find_package (Boost 1.75.0 REQUIRED COMPONENTS program_options json)
 message (STATUS "Using BOOST ${Boost_VERSION_STRING}")
 
@@ -35,47 +32,7 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/elfio/CMakeLists.txt")
     message(FATAL_ERROR "The elfio submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
 
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/int128/CMakeLists.txt")
-    message(FATAL_ERROR "The int128 submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-endif()
-
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/int128/CMakeLists.txt")
-    message(FATAL_ERROR "The int128 submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-endif()
-
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/simde/README.md")
-    message(FATAL_ERROR "The simde submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-endif()
-
-if(NOT DISABLE_MAVIS_FLOAT128_SUPPORT)
-    cmake_push_check_state(RESET)
-        if(CMAKE_CXX_STANDARD GREATER_EQUAL 23)
-            include(CheckSourceCompiles)
-            check_source_compiles(CXX [[
-                #include <format>
-                #include <iostream>
-                #include <stdfloat>
-
-                int main()
-                {
-                    std::float128_t val{1.0};
-                    std::cout << std::format("{}", val) << std::endl;
-                }
-            ]] HAS_NATIVE_STD_FLOAT_128_SUPPORT)
-        endif()
-
-        if(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT AND NOT APPLE)
-            check_include_file(quadmath.h SYSTEM_HAS_QUADMATH)
-
-            if(NOT SYSTEM_HAS_QUADMATH)
-                set(BUILD_QUADMATH_FROM_SOURCE True)
-            endif()
-        endif()
-    cmake_pop_check_state()
-endif()
-
 add_subdirectory(elfio)
-add_subdirectory(int128)
 
 add_library(mavis
   impl/ExtractorRegistry.cpp
@@ -86,28 +43,33 @@ add_library(mavis
   impl/forms/VectorForms.cpp
 )
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/softfloat.cmake)
 target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/simde)
-target_link_libraries(mavis PUBLIC elfio Boost::int128 Boost::json)
+target_link_libraries(mavis PUBLIC elfio Boost::json softfloat)
 
-if(DISABLE_MAVIS_FLOAT128_SUPPORT)
-    message("-- Quad float support explicitly disabled")
-    add_compile_definitions(DISABLE_MAVIS_FLOAT128_SUPPORT)
-elseif(NOT HAS_NATIVE_STD_FLOAT_128_SUPPORT)
-    if(APPLE)
-        message("-- Quad float not supported by this platform")
-    elseif(BUILD_QUADMATH_FROM_SOURCE)
-        include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/quadmath.cmake)
-        target_include_directories(mavis PUBLIC ${QUADMATH_INCLUDE_DIR})
-        target_link_directories(mavis PUBLIC ${QUADMATH_LIB_DIR})
-        add_dependencies(mavis libquadmath)
-        target_link_libraries(mavis PRIVATE ${QUADMATH_LIB_DIR}/libquadmath.a)
-        if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-            target_compile_options(mavis PUBLIC -Wno-c99-extensions)
-        endif ()
-    else()
-        target_link_libraries(mavis PUBLIC quadmath)
-    endif()
+include(CheckSourceCompiles)
+include(CMakePushCheckState)
+
+cmake_push_check_state(RESET)
+    set(CMAKE_REQUIRED_QUIET True)
+
+    # Check if std::bitset can be constexpr
+    check_source_compiles(CXX [[
+        #include <bitset>
+        #ifndef __cpp_lib_constexpr_bitset
+        #error "no constexpr bitset support"
+        #endif
+
+        int main()
+        {
+        }
+        ]] COMPILER_SUPPORTS_CONSTEXPR_BITSET)
+cmake_pop_check_state()
+
+# Bring in the bitset2 library if std::bitset isn't constexpr
+if(NOT COMPILER_SUPPORTS_CONSTEXPR_BITSET)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bitset2.cmake)
+    target_include_directories(mavis PUBLIC "${bitset2_SOURCE_DIR}")
 endif()
 
 # Setup common compiler options for the tests and examples
