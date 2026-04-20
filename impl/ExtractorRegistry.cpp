@@ -108,7 +108,8 @@ namespace mavis
             {Form_V_op::name,                    std::make_shared<Extractor<Form_V_op>>()              },
             {Form_V_implied::name,               std::make_shared<Extractor<Form_V_implied>>()         },
             {Form_V_op_implied::name,            std::make_shared<Extractor<Form_V_op_implied>>()      },
-            {Form_V_uimm_implied::name,          std::make_shared<Extractor<Form_V_uimm_implied>>()    }
+            {Form_V_uimm_implied::name,          std::make_shared<Extractor<Form_V_uimm_implied>>()    },
+            {Form_AES64KSI::name,                std::make_shared<Extractor<Form_AES64KSI>>()          }
         };
 
         const auto itr = EXTRACTOR_REGISTRY.find(fname);

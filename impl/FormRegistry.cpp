@@ -42,7 +42,8 @@ namespace mavis
         {Form_V_vsetvl::name,   new Form<Form_V_vsetvl>()  },
         {Form_V_vsetvli::name,  new Form<Form_V_vsetvli>() },
         {Form_V_vsetivli::name, new Form<Form_V_vsetivli>()},
-        {Form_V_uimm6::name,    new Form<Form_V_uimm6>()   }
+        {Form_V_uimm6::name,    new Form<Form_V_uimm6>()   },
+        {Form_AES64KSI::name,  new Form<Form_AES64KSI>() }
     };
 
     const FormBase* FormRegistry::findFormWrapper(const std::string & fname)
