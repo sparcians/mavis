@@ -20,7 +20,7 @@ namespace mavis
     struct FloatSettings<float16_t>
     {
         using format_type = float;
-        using underlying_type = uint16_t;
+        using bits_type = uint16_t;
         static constexpr size_t exponent_bits = 5;
         static constexpr size_t fraction_bits = 10;
         using exponent_type = float_utils::bitset<exponent_bits>;
@@ -31,7 +31,7 @@ namespace mavis
     struct FloatSettings<bfloat16_t>
     {
         using format_type = float;
-        using underlying_type = uint16_t;
+        using bits_type = uint16_t;
         static constexpr size_t exponent_bits = 8;
         static constexpr size_t fraction_bits = 7;
         using exponent_type = float_utils::bitset<exponent_bits>;
@@ -42,7 +42,7 @@ namespace mavis
     struct FloatSettings<float32_t>
     {
         using format_type = float;
-        using underlying_type = uint32_t;
+        using bits_type = uint32_t;
         static constexpr size_t exponent_bits = 8;
         static constexpr size_t fraction_bits = 23;
         using exponent_type = float_utils::bitset<exponent_bits>;
@@ -53,7 +53,7 @@ namespace mavis
     struct FloatSettings<float64_t>
     {
         using format_type = double;
-        using underlying_type = uint64_t;
+        using bits_type = uint64_t;
         static constexpr size_t exponent_bits = 11;
         static constexpr size_t fraction_bits = 52;
         using exponent_type = float_utils::bitset<exponent_bits>;
@@ -64,7 +64,7 @@ namespace mavis
     struct FloatSettings<float128_t>
     {
         using format_type = double;
-        using underlying_type = uint64_t;
+        using bits_type = uint64_t;
         static constexpr size_t exponent_bits = 15;
         static constexpr size_t fraction_bits = 112;
         using exponent_type = float_utils::bitset<exponent_bits>;
@@ -75,10 +75,10 @@ namespace mavis
     struct FloatExtractor
     {
         using FloatSettingsType = FloatSettings<FloatType>;
-        using format_type = FloatSettingsType::format_type;
-        using underlying_type = FloatSettingsType::underlying_type;
-        using exponent_type = FloatSettingsType::exponent_type;
-        using fraction_type = FloatSettingsType::fraction_type;
+        using format_type = typename FloatSettingsType::format_type;
+        using bits_type = typename FloatSettingsType::bits_type;
+        using exponent_type = typename FloatSettingsType::exponent_type;
+        using fraction_type = typename FloatSettingsType::fraction_type;
 
         static constexpr size_t exponent_bits = FloatSettingsType::exponent_bits;
         static constexpr size_t fraction_bits = FloatSettingsType::fraction_bits;
@@ -168,7 +168,7 @@ namespace mavis
 
         static constexpr FloatType toFloat(const storage_type& val) requires (bits <= utils::num_bits<unsigned long long>)
         {
-            return FloatType{static_cast<underlying_type>(val.to_ullong())};
+            return FloatType{static_cast<bits_type>(val.to_ullong())};
         }
 
         static constexpr FloatType toFloat(storage_type val) requires (bits > utils::num_bits<unsigned long long>)
@@ -860,10 +860,10 @@ namespace mavis
         public:
             using Extractor = FloatExtractor<FloatType>;
 
-            using format_type = Extractor::format_type;
-            using storage_type = Extractor::storage_type;
-            using exponent_type = Extractor::exponent_type;
-            using fraction_type = Extractor::fraction_type;
+            using format_type = typename Extractor::format_type;
+            using storage_type = typename Extractor::storage_type;
+            using exponent_type = typename Extractor::exponent_type;
+            using fraction_type = typename Extractor::fraction_type;
             using float_type = FloatType;
             static constexpr auto fraction_bits = Extractor::fraction_bits;
 
@@ -1214,9 +1214,9 @@ namespace mavis
                 constexpr auto format_chunk = [&os](const storage_type& data)
                 {
 #ifdef MAVIS_HAS_STD_FORMAT
-                    os << std::format("{:x}", static_cast<Extractor::underlying_type>(data.to_ullong()));
+                    os << std::format("{:x}", static_cast<typename Extractor::bits_type>(data.to_ullong()));
 #else
-                    os << boost::format("%|x|") % static_cast<Extractor::underlying_type>(data.to_ullong());
+                    os << boost::format("%|x|") % static_cast<typename Extractor::bits_type>(data.to_ullong());
 #endif
                 };
 
@@ -1284,7 +1284,7 @@ namespace mavis
         }
     }
 
-    std::pair<Float<float128_t>, int32_t> scientificScale(Float<float128_t> val)
+    inline std::pair<Float<float128_t>, int32_t> scientificScale(Float<float128_t> val)
     {
         static constexpr int START_POWER = 8;
 
