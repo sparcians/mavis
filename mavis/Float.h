@@ -1307,7 +1307,7 @@ namespace mavis
     }
 
     template<>
-    std::ostream& operator<<(std::ostream& os, const Float<float128_t>& rhs)
+    inline std::ostream& operator<<(std::ostream& os, const Float<float128_t>& rhs)
     {
         // Only deal with absolute values to keep the code simple
         if(rhs.sign())
