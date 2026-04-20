@@ -10,39 +10,32 @@
     #include <stdfloat>
 #endif
 
-    #ifdef __STDCPP_FLOAT64_T__
-        #define MAVIS_FLOAT64 std::float64_t
+    #ifdef __STDCPP_FLOAT32_T__
+        #define MAVIS_FLOAT32 std::float32_t
     #endif
 #endif
 
 // If that didn't catch it, try boost standard float type
-#ifndef MAVIS_FLOAT64
+#ifndef MAVIS_FLOAT32
     // Boost versions < 1.84 have a definition conflict with libstdc++ 14 and newer
     #include <boost/version.hpp>
     #if BOOST_VERSION >= 108400
         #include <boost/cstdfloat.hpp>
 
-        #if defined(BOOST_FLOAT64_C) && !defined(MAVIS_FLOAT64)
-            #define MAVIS_FLOAT64 boost::float64_t
+        #if defined(BOOST_FLOAT32_C) && !defined(MAVIS_FLOAT32)
+            #define MAVIS_FLOAT32 boost::float32_t
         #endif
     #endif
 #endif
 
-// If we haven't found a guaranteed 64 bit float, just try double
-#ifndef MAVIS_FLOAT64
-    #define MAVIS_FLOAT64 double
+// If we haven't found a guaranteed 32 bit float, just try float
+#ifndef MAVIS_FLOAT32
+    #define MAVIS_FLOAT32 float
 #endif
 
 // clang-format on
 
 namespace mavis
 {
-    using Double = MAVIS_FLOAT64;
-
-    namespace float_utils
-    {
-        template <> struct IEEEFloatDefaults<64> : FloatSettings<Double, uint64_t, 11, 52>
-        {
-        };
-    } // namespace float_utils
+    using Single = MAVIS_FLOAT32;
 } // namespace mavis

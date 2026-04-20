@@ -3545,86 +3545,88 @@ namespace mavis
         {
             std::array<ReturnType, 32> values;
 
-            using FloatBits = typename ReturnType::storage_type;
+            using exponent_type = typename ReturnType::exponent_type;
+            using fraction_type = typename ReturnType::fraction_type;
 
-            FloatBits exponent;
-            FloatBits significand_top_2_bits = 0;
+            float_utils::bitset_with_arithmetic<exponent_type{}.size()> exponent;
+            float_utils::bitset_with_arithmetic<fraction_type{}.size()> significand_top_2_bits{0};
+            constexpr float_utils::bitset_with_arithmetic<fraction_type{}.size()> significand_top_2_bits_mask{0x3};
 
-            constexpr std::array<FloatBits, 26> exponent_increments{
-                1, // 4
-                3, // 5
-                1, // 6
-                1, // 7
-                0, // 8
-                0, // 9
-                0, // 10
-                1, // 11
-                0, // 12
-                0, // 13
-                0, // 14
-                1, // 15
-                0, // 16
-                0, // 17
-                0, // 18
-                1, // 19
-                0, // 20
-                0, // 21
-                1, // 22
-                1, // 23
-                1, // 24
-                3, // 25
-                1, // 26
-                7, // 27
-                1, // 28
-                0  // 29
-            };
+            constexpr auto exponent_increments = std::to_array<exponent_type>({
+                exponent_type{1}, // 4
+                exponent_type{3}, // 5
+                exponent_type{1}, // 6
+                exponent_type{1}, // 7
+                exponent_type{0}, // 8
+                exponent_type{0}, // 9
+                exponent_type{0}, // 10
+                exponent_type{1}, // 11
+                exponent_type{0}, // 12
+                exponent_type{0}, // 13
+                exponent_type{0}, // 14
+                exponent_type{1}, // 15
+                exponent_type{0}, // 16
+                exponent_type{0}, // 17
+                exponent_type{0}, // 18
+                exponent_type{1}, // 19
+                exponent_type{0}, // 20
+                exponent_type{0}, // 21
+                exponent_type{1}, // 22
+                exponent_type{1}, // 23
+                exponent_type{1}, // 24
+                exponent_type{3}, // 25
+                exponent_type{1}, // 26
+                exponent_type{7}, // 27
+                exponent_type{1}, // 28
+                exponent_type{0}  // 29
+            });
 
-            constexpr std::array<FloatBits, 26> significand_increments = {
-                0, // 4
-                0, // 5
-                0, // 6
-                0, // 7
-                1, // 8
-                1, // 9
-                1, // 10
-                1, // 11
-                1, // 12
-                1, // 13
-                1, // 14
-                1, // 15
-                1, // 16
-                1, // 17
-                1, // 18
-                1, // 19
-                1, // 20
-                1, // 21
-                2, // 22
-                0, // 23
-                0, // 24
-                0, // 25
-                0, // 26
-                0, // 27
-                0, // 28
-                0  // 29
-            };
+            constexpr auto significand_increments = std::to_array<fraction_type>({
+                fraction_type{0}, // 4
+                fraction_type{0}, // 5
+                fraction_type{0}, // 6
+                fraction_type{0}, // 7
+                fraction_type{1}, // 8
+                fraction_type{1}, // 9
+                fraction_type{1}, // 10
+                fraction_type{1}, // 11
+                fraction_type{1}, // 12
+                fraction_type{1}, // 13
+                fraction_type{1}, // 14
+                fraction_type{1}, // 15
+                fraction_type{1}, // 16
+                fraction_type{1}, // 17
+                fraction_type{1}, // 18
+                fraction_type{1}, // 19
+                fraction_type{1}, // 20
+                fraction_type{1}, // 21
+                fraction_type{2}, // 22
+                fraction_type{0}, // 23
+                fraction_type{0}, // 24
+                fraction_type{0}, // 25
+                fraction_type{0}, // 26
+                fraction_type{0}, // 27
+                fraction_type{0}, // 28
+                fraction_type{0}  // 29
+            });
 
-            constexpr auto exponent_bias = ReturnType::exponent_bias;
+            constexpr auto exponent_bias = float_utils::bitset_with_arithmetic<ReturnType::exponent_bias.size()>(ReturnType::exponent_bias);
 
-            values[0] = ReturnType(1, exponent_bias, 0);
+            values[0] = ReturnType(1, exponent_bias, fraction_type{0});
             values[1] = ReturnType::min_normal();
 
             if constexpr (std::is_same_v<ReturnType, Float16>)
             {
-                values[2] = ReturnType(0, 0, 256);
-                values[3] = ReturnType(0, 0, 512);
+                values[2] = ReturnType(0, exponent_type{0}, fraction_type{256});
+                values[3] = ReturnType(0, exponent_type{0}, fraction_type{512});
             }
             else
             {
                 exponent = exponent_bias - 16U;
-                values[2] = ReturnType(0, exponent, 0);
+                values[2] = ReturnType(0, exponent, fraction_type{0});
 
                 exponent = exponent_bias - 15U;
-                values[3] = ReturnType(0, exponent, 0);
+                values[3] = ReturnType(0, exponent, fraction_type{0});
             }
 
             exponent = exponent_bias - 8U;
@@ -3635,7 +3637,7 @@ namespace mavis
                                        significand_top_2_bits << (ReturnType::fraction_bits - 2));
                 exponent += exponent_increments[i - 4];
                 significand_top_2_bits =
-                    (significand_top_2_bits + significand_increments[i - 4]) & 0x3U;
+                    (significand_top_2_bits + significand_increments[i - 4]) & significand_top_2_bits_mask;
             }
 
             values[30] = ReturnType::infinity();
@@ -3643,8 +3645,6 @@ namespace mavis
 
             return values;
         }
-
-        static constexpr std::array<ImmReturnType, 32> TABLE_ = initTable_<ImmReturnType>();
 
         template <typename ReturnType> static ReturnType getFloatImmediate_(const Opcode icode)
         {
@@ -3654,7 +3654,7 @@ namespace mavis
             {
                 const auto rs1 = extract_(Form_Rfloat::idType::RS1, icode);
 
-                result = TABLE_[rs1];
+                result = TABLE[rs1];
             }
 
             return result;
@@ -3666,6 +3666,8 @@ namespace mavis
         }
 
       public:
+        static constexpr std::array<ImmReturnType, 32> TABLE = initTable_<ImmReturnType>();
+
         Extractor() = default;
 
         ExtractorIF::PtrType specialCaseClone(const uint64_t ffmask,
