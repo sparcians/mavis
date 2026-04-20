@@ -691,7 +691,7 @@
     },
     {
       "xlen" : 64,
-      "extension" : "zknezkndcommon",
+      "extension" : "zkne_zknd_common",
       "internal": true,
       "enabled_by":["zkne", "zknd"],
       "json" : "isa_rv64zkne_zknd_common.json"
