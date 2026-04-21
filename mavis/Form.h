@@ -4,6 +4,7 @@
 #include "Field.h"
 #include "mavis/DecoderExceptions.h"
 #include "Float.h"
+#include "GenericRegistryTraits.h"
 
 namespace mavis
 {
@@ -64,6 +65,9 @@ namespace mavis
     class FormBase
     {
       public:
+        using PtrType = std::unique_ptr<FormBase>;
+
+        virtual ~FormBase() = default;
         virtual std::string getName() const = 0;
         virtual const Field & getField(const uint32_t fid) const = 0;
         virtual const Field & getField(const std::string & fname) const = 0;
@@ -137,6 +141,13 @@ namespace mavis
             }
             os.flags(os_state);
         }
+    };
+
+    template<>
+    struct GenericRegistryTraits<Form>
+    {
+        using BaseType = FormBase;
+        using PtrType = FormBase::PtrType;
     };
 
     inline std::ostream & operator<<(std::ostream & os, const FormBase & form)

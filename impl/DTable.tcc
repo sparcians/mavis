@@ -48,8 +48,7 @@ namespace mavis
         ExtractorIF::PtrType override_extractor = nullptr;
         if (const auto it = inst.find("xform"); it != inst.end())
         {
-            override_extractor =
-                extractors_.getExtractor(boost::json::value_to<std::string>(it->value()));
+            override_extractor = ExtractorRegistry::getExtractor(boost::json::value_to<std::string>(it->value()));
         }
 
         // Parse the factory name override, if present
@@ -88,36 +87,39 @@ namespace mavis
         else
         {
             const std::string form = boost::json::value_to<std::string>(inst.at("form"));
-            const FormBase* form_wrap = forms_.findFormWrapper(form);
-            if (form_wrap == nullptr)
-            {
-                throw BuildErrorUnknownForm(jfile, mnemonic, form);
-            }
-
-            InstMetaData::PtrType meta =
-                builder_->makeInstMetaData(mnemonic, inst, !xpand_name.empty(), tags);
             try
             {
-                typename IFactoryIF<InstType, AnnotationType>::PtrType ifact =
-                    build_(form_wrap, mnemonic, istencil, flist, ignore_set, factory_name,
-                           xpand_name, override_extractor, meta);
+                const auto& form_wrap = FormRegistry::findFormWrapper(form);
 
-                // Check for encoding aliases for this factory and add them to the tree
-                StringListType alias_stencils;
-                if (const auto alias_it = inst.find("alias"); alias_it != inst.end())
+                InstMetaData::PtrType meta =
+                    builder_->makeInstMetaData(mnemonic, inst, !xpand_name.empty(), tags);
+                try
                 {
-                    alias_stencils = boost::json::value_to<StringListType>(alias_it->value());
-                    for (const auto & astencil : alias_stencils)
+                    typename IFactoryIF<InstType, AnnotationType>::PtrType ifact =
+                        build_(form_wrap, mnemonic, istencil, flist, ignore_set, factory_name,
+                               xpand_name, override_extractor, meta);
+
+                    // Check for encoding aliases for this factory and add them to the tree
+                    StringListType alias_stencils;
+                    if (const auto alias_it = inst.find("alias"); alias_it != inst.end())
                     {
-                        Opcode opc = stoll(astencil, nullptr, 16);
-                        build_(form_wrap, mnemonic, opc, flist, ignore_set, factory_name,
-                               xpand_name, override_extractor, meta, ifact);
+                        alias_stencils = boost::json::value_to<StringListType>(alias_it->value());
+                        for (const auto & astencil : alias_stencils)
+                        {
+                            Opcode opc = stoll(astencil, nullptr, 16);
+                            build_(form_wrap, mnemonic, opc, flist, ignore_set, factory_name,
+                                   xpand_name, override_extractor, meta, ifact);
+                        }
                     }
                 }
+                catch (const BuildErrorInstructionAlias & ex)
+                {
+                    std::cerr << ex.what() << std::endl;
+                }
             }
-            catch (const BuildErrorInstructionAlias & ex)
+            catch (const RegistryNotFoundException&)
             {
-                std::cerr << ex.what() << std::endl;
+                throw BuildErrorUnknownForm(jfile, mnemonic, form);
             }
         }
     }
@@ -256,7 +258,7 @@ namespace mavis
     template <typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
     typename IFactoryIF<InstType, AnnotationType>::PtrType
     DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildLeaf_(
-        const FormBase* form,
+        const FormBase::PtrType& form,
         const typename IFactoryIF<InstType, AnnotationType>::PtrType & curr_node,
         const std::string & mnemonic, const Opcode istencil, const FieldNameListType & flist,
         const std::string & factory_name, const std::string & xpand_name,
@@ -279,7 +281,7 @@ namespace mavis
         // the form specified by the FormType template parameter
         if (override_extractor == nullptr)
         {
-            override_extractor = extractors_.getExtractor(form->getName());
+            override_extractor = ExtractorRegistry::getExtractor(form->getName());
         }
 
         // IFactorySpecialCaseComposite<InstType, AnnotationType> *parent =  // just for now...
@@ -349,7 +351,7 @@ namespace mavis
     template <typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
     typename IFactoryIF<InstType, AnnotationType>::PtrType
     DTable<InstType, AnnotationType, AnnotationTypeAllocator>::build_(
-        const FormBase* form, const std::string & mnemonic, const Opcode istencil,
+        const FormBase::PtrType& form, const std::string & mnemonic, const Opcode istencil,
         const FieldNameListType & flist, const FieldNameSetType & ignore_set,
         const std::string & factory_name, const std::string & xpand_name,
         const ExtractorIF::PtrType & override_extractor, InstMetaData::PtrType & einfo,

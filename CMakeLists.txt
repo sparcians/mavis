@@ -100,6 +100,8 @@ target_compile_options(mavis PUBLIC -fPIC)
 set(CMAKE_CXX_FLAGS_DEBUG "-U_FORTIFY_SOURCE -O0 -g")
 set(CMAKE_CXX_FLAGS_FASTDEBUG "-O3 -g")
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/internal.cmake OPTIONAL)
+
 if(NOT CLANGFORMAT_EXECUTABLE)
   set(CLANGFORMAT_EXECUTABLE clang-format)
 endif()

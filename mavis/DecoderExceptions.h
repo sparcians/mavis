@@ -101,6 +101,10 @@ namespace mavis
         }
     };
 
+    class RegistryNotFoundException : public BaseException
+    {
+    };
+
     /**
      * DTable build error: Occurs when building the TRIE branches (non-leaves)
      * and we're trying to add an instruction whose field is incompatible with
