@@ -219,7 +219,8 @@ int main()
                             "json/isa_rv64svinval.json",
                             "json/isa_rv64zbkx.json",
                             "json/isa_rv64zknd.json",
-                            "json/isa_rv64zkne.json"
+                            "json/isa_rv64zkne.json",
+                            "json/isa_rv64zkne_zknd_common.json"
     },
                            {"uarch/uarch_rv64g.json"}, uid_init, anno_overrides);
     cout << mavis_facade;
@@ -1428,6 +1429,7 @@ int main()
                                  "json/isa_rv32zabha.json",
                                  "json/isa_rv32zknd.json",
                                  "json/isa_rv32zkne.json",
+                                 "json/isa_rv32zkne_zknd_common.json",
                                  },
                                 {"uarch/uarch_rv32g.json"}, uid_init, anno_overrides);
     cout << mavis_facade_rv32;

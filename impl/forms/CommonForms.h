@@ -174,7 +174,8 @@ namespace mavis
       public:
         enum idType : uint32_t
         {
-            FUNC6 = 0,
+            FUNC2 = 0,
+            FUNC4,
             SHAMT,
             RS1,
             FUNC3,
@@ -199,7 +200,9 @@ namespace mavis
       public:
         enum idType : uint32_t
         {
-            FUNC7 = 0,
+            FUNC2 = 0,
+            FUNC4,
+            FUNC1,
             SHAMTW,
             RS1,
             FUNC3,
@@ -246,7 +249,9 @@ namespace mavis
       public:
         enum idType : uint32_t
         {
-            FUNC7 = 0,
+            FUNC2 = 0,
+            FUNC4,
+            FUNC1,
             RS2,
             RS1,
             FUNC3,
@@ -366,8 +371,10 @@ namespace mavis
       public:
         enum idType : uint32_t
         {
-            FUNC6 = 0,
-            FUNC2,
+            FUNC2 = 0,
+            FUNC4,
+            FUNC1A,
+            FUNC1B,
             RNUM,      // bits [23:20]
             RS1,       // bits [ 19:15]
             FUNC3,     // bits [14:12]
