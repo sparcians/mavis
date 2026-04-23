@@ -210,9 +210,9 @@ namespace mavis
      */
     const char* Form_ISH::name{"ISH"};
 
-    const FieldsType Form_ISH::fields{Field("func2", 30, 2), Field("func4", 26, 4), Field("shamt", 20, 6),
-                                      Field("rs1", 15, 5),   Field("func3", 12, 3),
-                                      Field("rd", 7, 5),     Field("opcode", 0, 7)};
+    const FieldsType Form_ISH::fields{
+        Field("func2", 30, 2), Field("func4", 26, 4), Field("shamt", 20, 6), Field("rs1", 15, 5),
+        Field("func3", 12, 3), Field("rd", 7, 5),     Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_ISH::fmap{
         {"func2",  Form_ISH::fields[Form_ISH::idType::FUNC2] },
@@ -234,10 +234,9 @@ namespace mavis
         {"opcode", Form_ISH::idType::OPCODE}
     };
 
-    const FieldsType Form_ISH::opcode_fields{Form_ISH::fields[Form_ISH::idType::OPCODE],
-                                             Form_ISH::fields[Form_ISH::idType::FUNC3],
-                                             Form_ISH::fields[Form_ISH::idType::FUNC2],
-                                             Form_ISH::fields[Form_ISH::idType::FUNC4]};
+    const FieldsType Form_ISH::opcode_fields{
+        Form_ISH::fields[Form_ISH::idType::OPCODE], Form_ISH::fields[Form_ISH::idType::FUNC3],
+        Form_ISH::fields[Form_ISH::idType::FUNC2], Form_ISH::fields[Form_ISH::idType::FUNC4]};
 
     const ImmediateType Form_ISH::immediate_type = ImmediateType::SIGNED;
 
@@ -246,9 +245,9 @@ namespace mavis
      */
     const char* Form_ISHW::name{"ISHW"};
 
-    const FieldsType Form_ISHW::fields{Field("func2", 30, 2), Field("func4", 26, 4), Field("func1", 25, 1), Field("shamtw", 20, 5),
-                                       Field("rs1", 15, 5),   Field("func3", 12, 3),
-                                       Field("rd", 7, 5),     Field("opcode", 0, 7)};
+    const FieldsType Form_ISHW::fields{
+        Field("func2", 30, 2), Field("func4", 26, 4), Field("func1", 25, 1), Field("shamtw", 20, 5),
+        Field("rs1", 15, 5),   Field("func3", 12, 3), Field("rd", 7, 5),     Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_ISHW::fmap{
         {"func2",  Form_ISHW::fields[Form_ISHW::idType::FUNC2] },
@@ -272,11 +271,10 @@ namespace mavis
         {"opcode", Form_ISHW::idType::OPCODE}
     };
 
-    const FieldsType Form_ISHW::opcode_fields{Form_ISHW::fields[Form_ISHW::idType::OPCODE],
-                                              Form_ISHW::fields[Form_ISHW::idType::FUNC3],
-                                              Form_ISHW::fields[Form_ISHW::idType::FUNC2],
-                                              Form_ISHW::fields[Form_ISHW::idType::FUNC4],
-                                              Form_ISHW::fields[Form_ISHW::idType::FUNC1]};
+    const FieldsType Form_ISHW::opcode_fields{
+        Form_ISHW::fields[Form_ISHW::idType::OPCODE], Form_ISHW::fields[Form_ISHW::idType::FUNC3],
+        Form_ISHW::fields[Form_ISHW::idType::FUNC2], Form_ISHW::fields[Form_ISHW::idType::FUNC4],
+        Form_ISHW::fields[Form_ISHW::idType::FUNC1]};
 
     const ImmediateType Form_ISHW::immediate_type = ImmediateType::SIGNED;
 
@@ -309,9 +307,9 @@ namespace mavis
      */
     const char* Form_R::name{"R"};
 
-    const FieldsType Form_R::fields{Field("func2", 30, 2), Field("func4", 26, 4), Field("func1", 25, 1), Field("rs2", 20, 5),
-                                    Field("rs1", 15, 5),   Field("func3", 12, 3),
-                                    Field("rd", 7, 5),     Field("opcode", 0, 7)};
+    const FieldsType Form_R::fields{
+        Field("func2", 30, 2), Field("func4", 26, 4), Field("func1", 25, 1), Field("rs2", 20, 5),
+        Field("rs1", 15, 5),   Field("func3", 12, 3), Field("rd", 7, 5),     Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_R::fmap{
         {"func2",  Form_R::fields[Form_R::idType::FUNC2] },
@@ -335,11 +333,10 @@ namespace mavis
         {"opcode", Form_R::idType::OPCODE}
     };
 
-    const FieldsType Form_R::opcode_fields{Form_R::fields[Form_R::idType::OPCODE],
-                                           Form_R::fields[Form_R::idType::FUNC3],
-                                           Form_R::fields[Form_R::idType::FUNC2],
-                                           Form_R::fields[Form_R::idType::FUNC4],
-                                           Form_R::fields[Form_R::idType::FUNC1]};
+    const FieldsType Form_R::opcode_fields{
+        Form_R::fields[Form_R::idType::OPCODE], Form_R::fields[Form_R::idType::FUNC3],
+        Form_R::fields[Form_R::idType::FUNC2], Form_R::fields[Form_R::idType::FUNC4],
+        Form_R::fields[Form_R::idType::FUNC1]};
 
     const ImmediateType Form_R::immediate_type = ImmediateType::NONE;
 
@@ -470,17 +467,16 @@ namespace mavis
      */
     const char* Form_AES64KSI::name{"AES64KSI"};
 
-    const FieldsType Form_AES64KSI::fields{Field("func2", 30, 2), Field("func4", 26, 4), Field("func1a", 25, 1), Field("func1b", 24, 1), Field("rnum", 20, 4), 
-                                        Field("rs1", 15, 5), Field("func3", 12, 3), 
-                                        Field("rd", 7 ,5), Field("opcode", 0, 7)
-    };
-
+    const FieldsType Form_AES64KSI::fields{
+        Field("func2", 30, 2),  Field("func4", 26, 4), Field("func1a", 25, 1),
+        Field("func1b", 24, 1), Field("rnum", 20, 4),  Field("rs1", 15, 5),
+        Field("func3", 12, 3),  Field("rd", 7, 5),     Field("opcode", 0, 7)};
 
     const std::map<std::string, const Field &> Form_AES64KSI::fmap{
         {"func2",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC2] },
         {"func4",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC4] },
-        {"func1a",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1A] },
-        {"func1b",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1B] },
+        {"func1a", Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1A]},
+        {"func1b", Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1B]},
         {"rnum",   Form_AES64KSI::fields[Form_AES64KSI::idType::RNUM]  },
         {"rs1",    Form_AES64KSI::fields[Form_AES64KSI::idType::RS1]   },
         {"func3",  Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC3] },
@@ -491,8 +487,8 @@ namespace mavis
     const std::map<std::string, Form_AES64KSI::idType> Form_AES64KSI::imap{
         {"func2",  Form_AES64KSI::idType::FUNC2 },
         {"func4",  Form_AES64KSI::idType::FUNC4 },
-        {"func1a",  Form_AES64KSI::idType::FUNC1A },
-        {"func1b",  Form_AES64KSI::idType::FUNC1B },
+        {"func1a", Form_AES64KSI::idType::FUNC1A},
+        {"func1b", Form_AES64KSI::idType::FUNC1B},
         {"rnum",   Form_AES64KSI::idType::RNUM  },
         {"rs1",    Form_AES64KSI::idType::RS1   },
         {"func3",  Form_AES64KSI::idType::FUNC3 },
@@ -506,8 +502,7 @@ namespace mavis
         Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC2],
         Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC4],
         Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1A],
-        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1B]
-    };
+        Form_AES64KSI::fields[Form_AES64KSI::idType::FUNC1B]};
 
     const ImmediateType Form_AES64KSI::immediate_type = ImmediateType::UNSIGNED;
 

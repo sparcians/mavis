@@ -375,11 +375,11 @@ namespace mavis
             FUNC4,
             FUNC1A,
             FUNC1B,
-            RNUM,      // bits [23:20]
-            RS1,       // bits [ 19:15]
-            FUNC3,     // bits [14:12]
-            RD,        // bits [11:7]
-            OPCODE,    // bits[6:0]
+            RNUM,   // bits [23:20]
+            RS1,    // bits [ 19:15]
+            FUNC3,  // bits [14:12]
+            RD,     // bits [11:7]
+            OPCODE, // bits[6:0]
             __N
 
         };
