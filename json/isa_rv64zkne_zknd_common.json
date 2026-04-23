@@ -6,7 +6,7 @@
     "stencil": "0x31001013",
     "type": ["crypto", "arith"],
     "l-oper": "all"
- },
+  },
   {
     "mnemonic": "aes64ks2",
     "tags": ["zkne", "zknd"],

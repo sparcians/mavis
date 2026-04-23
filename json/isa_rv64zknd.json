@@ -18,8 +18,8 @@
     {
         "mnemonic": "aes64im",
         "tags": ["zknd"],
-        "form": "ISH",
-        "fixed" : ["func6", "shamt"],
+        "form": "AES64KSI",
+        "fixed" : ["rnum"],
         "stencil": "0x30001013",
         "type": ["int", "arith"],
         "l-oper": "all"
