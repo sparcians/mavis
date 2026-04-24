@@ -197,15 +197,9 @@ cmake ..
 cmake .. -DMAVIS_CXX_STANDARD=23
 make -j8
 ```
-* Build the basic tester; output program is `Mavis`
+* Run regression
 ```
-cd build/test/basic
-make -j8
-```
-* Execute the basic tester and compare golden `out`
-```
-./Mavis > test.out
-diff -s test.out golden.out
+make -j8 regress
 ```
 
 * Build and test with a directed program; output program is

@@ -186,7 +186,8 @@ namespace mavis::extension_manager::riscv
                 static constexpr size_t MIN_LENGTH = 5;
 
                 std::string_view isa_view(isa);
-                if (isa_view.size() < MIN_LENGTH || isa_view.find("rv") != 0 || !isdigit(isa_view[2]))
+                if (isa_view.size() < MIN_LENGTH || isa_view.find("rv") != 0
+                    || !isdigit(isa_view[2]))
                 {
                     throw InvalidISAStringException(isa);
                 }
@@ -245,7 +246,8 @@ namespace mavis::extension_manager::riscv
                         if (getCharIfValid_(isa_view, ext) && isdigit(ext))
                         {
                             const auto [major_ver, minor_ver] = extractVersions_(isa_view);
-                            extension_versions_.emplace(ext_str, std::make_pair(major_ver, minor_ver));
+                            extension_versions_.emplace(ext_str,
+                                                        std::make_pair(major_ver, minor_ver));
                         }
                     }
 
@@ -272,7 +274,7 @@ namespace mavis::extension_manager::riscv
                             {
                                 throw InvalidISAStringException(
                                     isa, "Invalid version number specified for extension "
-                                              + std::string(current_ext));
+                                             + std::string(current_ext));
                             }
                             else if (current_ext[ver_pos] == 'p')
                             {
@@ -280,7 +282,7 @@ namespace mavis::extension_manager::riscv
                                 {
                                     throw InvalidISAStringException(
                                         isa, "Invalid version number specified for extension "
-                                                  + std::string(current_ext));
+                                                 + std::string(current_ext));
                                 }
 
                                 ver_pos = current_ext.find_last_not_of(DIGITS_, ver_pos - 1);
@@ -289,7 +291,7 @@ namespace mavis::extension_manager::riscv
                                 {
                                     throw InvalidISAStringException(
                                         isa, "Invalid version number specified for extension "
-                                                  + std::string(current_ext));
+                                                 + std::string(current_ext));
                                 }
                             }
 
@@ -306,7 +308,7 @@ namespace mavis::extension_manager::riscv
                             {
                                 throw InvalidISAStringException(
                                     isa, "Invalid version number specified for extension "
-                                              + std::string(current_ext));
+                                             + std::string(current_ext));
                             }
 
                             has_version = true;
@@ -317,7 +319,8 @@ namespace mavis::extension_manager::riscv
 
                         if (has_version)
                         {
-                            extension_versions_.emplace(ext_str, std::make_pair(major_ver, minor_ver));
+                            extension_versions_.emplace(ext_str,
+                                                        std::make_pair(major_ver, minor_ver));
                         }
 
                         isa_view.remove_prefix(ext_length);
@@ -327,11 +330,14 @@ namespace mavis::extension_manager::riscv
 
             uint32_t getXLEN() const { return xlen_; }
 
-            const std::string& getBaseISA() const { return base_isa_; }
+            const std::string & getBaseISA() const { return base_isa_; }
 
-            const std::vector<std::string>& getExtensions() const { return extensions_; }
+            const std::vector<std::string> & getExtensions() const { return extensions_; }
 
-            const std::map<std::string, RISCVVersionType>& getExtensionVersions() const { return extension_versions_; }
+            const std::map<std::string, RISCVVersionType> & getExtensionVersions() const
+            {
+                return extension_versions_;
+            }
 
           private:
             uint32_t xlen_;
@@ -357,7 +363,8 @@ namespace mavis::extension_manager::riscv
 
         static bool inSingleCharExtRange_(const std::string_view & isa_view, char & front_char)
         {
-            return getCharIfValid_(isa_view, front_char) && !mavis::utils::isOneOf(front_char, 'z', 's', 'x');
+            return getCharIfValid_(isa_view, front_char)
+                   && !mavis::utils::isOneOf(front_char, 'z', 's', 'x');
         }
 
         static uint32_t extractNumber_(std::string_view & isa_view)
@@ -577,27 +584,15 @@ namespace mavis::extension_manager::riscv
             return isa_str;
         }
 
-        void setISASpecJSONImpl_(const std::string & jfile) override
+        void setISASpecJSONImpl_(const boost::json::object & jobj) override
         {
-            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
-
-            try
+            if (auto profiles_it = jobj.find("profiles"); profiles_it != jobj.end())
             {
-                const auto & jobj = json.as_object();
-
-                if (auto profiles_it = jobj.find("profiles"); profiles_it != jobj.end())
+                for (const auto & profile_obj : profiles_it->value().as_object())
                 {
-                    for (const auto & profile_obj : profiles_it->value().as_object())
-                    {
-                        ISA parsed_isa{profile_obj.value().as_string().c_str()};
-                        profiles_.emplace(profile_obj.key(), parsed_isa);
-                    }
+                    ISA parsed_isa{profile_obj.value().as_string().c_str()};
+                    profiles_.emplace(profile_obj.key(), parsed_isa);
                 }
-            }
-            catch (const ExtensionManagerException &)
-            {
-                std::cerr << "Error parsing file " << jfile << std::endl;
-                throw;
             }
         }
 
@@ -616,10 +611,10 @@ namespace mavis::extension_manager::riscv
 
             auto & xlen_extension = enabled_arch_->second;
 
-            const std::string& base_isa = parsed_isa.getBaseISA();
+            const std::string & base_isa = parsed_isa.getBaseISA();
             xlen_extension.enableBaseExtension(base_isa);
 
-            const auto& extension_versions = parsed_isa.getExtensionVersions();
+            const auto & extension_versions = parsed_isa.getExtensionVersions();
             if (auto it = extension_versions.find(base_isa); it != extension_versions.end())
             {
                 xlen_extension.setExtensionVersion(base_isa, it->second.first, it->second.second);
@@ -627,11 +622,11 @@ namespace mavis::extension_manager::riscv
 
             unknown_extensions_.clear();
 
-            for (const auto& ext : parsed_isa.getExtensions())
+            for (const auto & ext : parsed_isa.getExtensions())
             {
                 const bool is_unknown = xlen_extension.enableExtension(ext);
 
-                if(is_unknown)
+                if (is_unknown)
                 {
                     unknown_extensions_.insert(ext);
                 }
@@ -677,13 +672,13 @@ namespace mavis::extension_manager::riscv
                                                    unknown_extension_action);
         }
 
-        void setProfile(const std::string& profile)
+        void setProfile(const std::string & profile)
         {
             const auto profile_it = profiles_.find(profile);
-            if(profile_it != profiles_.end())
+            if (profile_it != profiles_.end())
             {
                 allowExtension(profile_it->second.getBaseISA());
-                for (const std::string& ext : profile_it->second.getExtensions())
+                for (const std::string & ext : profile_it->second.getExtensions())
                 {
                     allowExtension(ext);
                 }
@@ -692,7 +687,6 @@ namespace mavis::extension_manager::riscv
             {
                 throw InvalidRISCVProfileException(profile);
             }
-
         }
 
         uint32_t getXLEN() const { return xlen_; }

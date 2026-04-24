@@ -4,6 +4,7 @@
 #include "OperandInfo.hpp"
 #include "DecoderConsts.h"
 #include "Swizzler.hpp"
+#include "GenericRegistryTraits.h"
 #include <map>
 #include <algorithm>
 
@@ -454,6 +455,13 @@ namespace mavis
      */
     // Only specialized Forms will compile
     template <typename FormType> class Extractor;
+
+    template<>
+    struct GenericRegistryTraits<Extractor>
+    {
+        using BaseType = ExtractorIF;
+        using PtrType = ExtractorIF::PtrType;
+    };
 
     /**
      * ExtractorIF ostream insertion operator

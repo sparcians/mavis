@@ -1,0 +1,22 @@
+# This is an example CMake config for including internal-only instruction definitions
+# Edit this file as needed and rename it to cmake/internal.cmake
+
+add_library(internal_instructions
+    internal/InternalForms.cpp
+)
+
+get_target_property(MAVIS_INCLUDES mavis INCLUDE_DIRECTORIES)
+target_include_directories(internal_instructions PRIVATE ${MAVIS_INCLUDES})
+
+get_target_property(MAVIS_LIBRARIES mavis LINK_LIBRARIES)
+target_link_libraries(internal_instructions PRIVATE ${MAVIS_LIBRARIES})
+
+target_compile_definitions(mavis PRIVATE
+    INTERNAL_EXTRACTOR_REGISTRY=InternalExtractorRegistry
+    INTERNAL_EXTRACTOR_REGISTRY_HEADER="internal/InternalExtractorRegistry.h"
+    INTERNAL_FORM_REGISTRY=InternalFormRegistry
+    INTERNAL_FORM_REGISTRY_HEADER="internal/InternalFormRegistry.h"
+)
+target_link_libraries(mavis PRIVATE internal_instructions)
+
+add_subdirectory(internal/test EXCLUDE_FROM_ALL)

@@ -123,24 +123,30 @@ int main(int argc, char** argv)
                 if (nullptr != inst)
                 {
                     std::cout << "Dasm (" << HEX8(opcode) << "): " << inst->dasmString() << std::endl;
-                    std::cout << "  Addr-Sources : "
+                    std::cout << "  Addr-Sources : " << std::setw(4) << std::right
                               << printBitSet(std::bitset<64>(inst->getSourceAddressRegs())) << ": "
                               << std::bitset<64>(inst->getSourceAddressRegs()) << std::endl;
-                    std::cout << "  Data-Sources : "
+                    std::cout << "  Data-Sources : " << std::setw(4) << std::right
                               << printBitSet(std::bitset<64>(inst->getSourceDataRegs())) << ": "
                               << std::bitset<64>(inst->getSourceDataRegs()) << std::endl;
-                    std::cout << "  Int-Sources  : "
+                    std::cout << "  Int-Sources  : " << std::setw(4) << std::right
                               << printBitSet(std::bitset<64>(inst->getIntSourceRegs())) << ": "
                               << std::bitset<64>(inst->getIntSourceRegs()) << std::endl;
-                    std::cout << "  Float-Sources: "
+                    std::cout << "  Float-Sources: " << std::setw(4) << std::right
                               << printBitSet(std::bitset<64>(inst->getFloatSourceRegs())) << ": "
                               << std::bitset<64>(inst->getFloatSourceRegs()) << std::endl;
-                    std::cout << "  Int-Dests    : "
+                    std::cout << "  Vec-Sources  : " << std::setw(4) << std::right
+                              << printBitSet(std::bitset<64>(inst->getVectorSourceRegs())) << ": "
+                              << std::bitset<64>(inst->getVectorSourceRegs()) << std::endl;
+                    std::cout << "  Int-Dests    : " << std::setw(4) << std::right
                               << printBitSet(std::bitset<64>(inst->getIntDestRegs())) << ": "
                               << std::bitset<64>(inst->getIntDestRegs()) << std::endl;
-                    std::cout << "  Float-Dests  : "
+                    std::cout << "  Float-Dests  : " << std::setw(4) << std::right
                               << printBitSet(std::bitset<64>(inst->getFloatDestRegs())) << ": "
                               << std::bitset<64>(inst->getFloatDestRegs()) << std::endl;
+                    std::cout << "  Vec-Dests    : " << std::setw(4) << std::right
+                              << printBitSet(std::bitset<64>(inst->getVectorDestRegs())) << ": "
+                              << std::bitset<64>(inst->getVectorDestRegs()) << std::endl;
                     if (inst->hasImmediate())
                     {
                         std::cout << "  immediate    : " << HEX8(inst->getImmediate()) << std::endl;

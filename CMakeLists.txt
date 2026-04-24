@@ -34,6 +34,12 @@ endif()
 
 add_subdirectory(elfio)
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14.0)
+    add_compile_options(-Wno-template-id-cdtor)
+  endif()
+endif()
+
 add_library(mavis
   impl/ExtractorRegistry.cpp
   impl/FormRegistry.cpp
@@ -72,6 +78,35 @@ if(NOT COMPILER_SUPPORTS_CONSTEXPR_BITSET)
     target_include_directories(mavis PUBLIC "${bitset2_SOURCE_DIR}")
 endif()
 
+# Set up test infrastructure
+# Only enable tests if Mavis is the top-level project
+if (PROJECT_IS_TOP_LEVEL)
+  include(CTest)
+  include(ProcessorCount)
+  ProcessorCount(NUM_CORES)
+
+  if (NUM_CORES GREATER 8)  # Max of 8 cores
+    set(NUM_CORE, 8)
+  endif()
+  if (NOT NUM_CORES EQUAL 0)
+    set(CTEST_BUILD_FLAGS -j${NUM_CORES})
+    set(ctest_test_args ${ctest_test_args} PARALLEL_LEVEL ${NUM_CORES})
+  endif()
+
+  add_custom_target(regress)
+  add_custom_command(TARGET regress POST_BUILD COMMAND ${CMAKE_CTEST_COMMAND})
+  set(ENABLE_MAVIS_TESTS True)
+else()
+  set(ENABLE_MAVIS_TESTS False)
+endif()
+
+function (mavis_test name target)
+  if (ENABLE_MAVIS_TESTS)
+    add_dependencies(regress ${target})
+    add_test(NAME ${name} COMMAND ${ARGN})
+  endif()
+endfunction (mavis_test)
+
 # Setup common compiler options for the tests and examples
 add_library(mavis_test_lib INTERFACE)
 target_link_libraries (mavis_test_lib INTERFACE mavis)
@@ -99,6 +134,8 @@ add_subdirectory(test EXCLUDE_FROM_ALL)
 target_compile_options(mavis PUBLIC -fPIC)
 set(CMAKE_CXX_FLAGS_DEBUG "-U_FORTIFY_SOURCE -O0 -g")
 set(CMAKE_CXX_FLAGS_FASTDEBUG "-O3 -g")
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/internal.cmake OPTIONAL)
 
 if(NOT CLANGFORMAT_EXECUTABLE)
   set(CLANGFORMAT_EXECUTABLE clang-format)
