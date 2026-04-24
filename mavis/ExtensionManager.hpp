@@ -1541,7 +1541,7 @@ namespace mavis::extension_manager
                 {
                     for (const auto & include : includes_it->value().as_array())
                     {
-                        setISASpecJSON_(include.as_string());
+                        setISASpecJSON_(mavis_json_dir_ + "/" + std::string(include.as_string().c_str()));
                     }
                 }
             }
