@@ -48,7 +48,8 @@ namespace mavis
         ExtractorIF::PtrType override_extractor = nullptr;
         if (const auto it = inst.find("xform"); it != inst.end())
         {
-            override_extractor = ExtractorRegistry::getExtractor(boost::json::value_to<std::string>(it->value()));
+            override_extractor =
+                ExtractorRegistry::getExtractor(boost::json::value_to<std::string>(it->value()));
         }
 
         // Parse the factory name override, if present
@@ -89,7 +90,7 @@ namespace mavis
             const std::string form = boost::json::value_to<std::string>(inst.at("form"));
             try
             {
-                const auto& form_wrap = FormRegistry::findFormWrapper(form);
+                const auto & form_wrap = FormRegistry::findFormWrapper(form);
 
                 InstMetaData::PtrType meta =
                     builder_->makeInstMetaData(mnemonic, inst, !xpand_name.empty(), tags);
@@ -117,7 +118,7 @@ namespace mavis
                     std::cerr << ex.what() << std::endl;
                 }
             }
-            catch (const RegistryNotFoundException&)
+            catch (const RegistryNotFoundException &)
             {
                 throw BuildErrorUnknownForm(jfile, mnemonic, form);
             }
@@ -258,7 +259,7 @@ namespace mavis
     template <typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
     typename IFactoryIF<InstType, AnnotationType>::PtrType
     DTable<InstType, AnnotationType, AnnotationTypeAllocator>::buildLeaf_(
-        const FormBase::PtrType& form,
+        const FormBase::PtrType & form,
         const typename IFactoryIF<InstType, AnnotationType>::PtrType & curr_node,
         const std::string & mnemonic, const Opcode istencil, const FieldNameListType & flist,
         const std::string & factory_name, const std::string & xpand_name,
@@ -351,7 +352,7 @@ namespace mavis
     template <typename InstType, typename AnnotationType, typename AnnotationTypeAllocator>
     typename IFactoryIF<InstType, AnnotationType>::PtrType
     DTable<InstType, AnnotationType, AnnotationTypeAllocator>::build_(
-        const FormBase::PtrType& form, const std::string & mnemonic, const Opcode istencil,
+        const FormBase::PtrType & form, const std::string & mnemonic, const Opcode istencil,
         const FieldNameListType & flist, const FieldNameSetType & ignore_set,
         const std::string & factory_name, const std::string & xpand_name,
         const ExtractorIF::PtrType & override_extractor, InstMetaData::PtrType & einfo,
@@ -372,7 +373,7 @@ namespace mavis
         {
             curr_node->addIFactory(
                 istencil, typename IFactoryIF<InstType, AnnotationType>::PtrType(
-                    new IFactoryDenseComposite<InstType, AnnotationType>(fields[0])));
+                              new IFactoryDenseComposite<InstType, AnnotationType>(fields[0])));
         }
         curr_node = curr_node->getNode(istencil); // Advance...
         if (!mavis::utils::notNull(curr_node->getField())->isEquivalent(fields[0]))
@@ -422,8 +423,9 @@ namespace mavis
         {
             if (curr_node->getDefault() == nullptr)
             {
-                curr_node->addDefaultIFactory(typename IFactoryIF<InstType, AnnotationType>::PtrType(
-                                                  new IFactorySpecialCaseComposite<InstType, AnnotationType>()));
+                curr_node->addDefaultIFactory(
+                    typename IFactoryIF<InstType, AnnotationType>::PtrType(
+                        new IFactorySpecialCaseComposite<InstType, AnnotationType>()));
             }
             curr_node = curr_node->getDefault(); // Advance...
         }
@@ -433,7 +435,7 @@ namespace mavis
             {
                 curr_node->addIFactory(
                     istencil, typename IFactoryIF<InstType, AnnotationType>::PtrType(
-                        new IFactorySpecialCaseComposite<InstType, AnnotationType>()));
+                                  new IFactorySpecialCaseComposite<InstType, AnnotationType>()));
             }
             curr_node = curr_node->getNode(istencil); // Advance...
         }

@@ -13,7 +13,6 @@
 
 namespace mavis
 {
-
     const ExtractorIF::PtrType & ExtractorRegistry::getExtractor(const std::string & fname)
     {
         // clang-format off
@@ -124,10 +123,9 @@ namespace mavis
         {
             return extractor_registry::get(fname);
         }
-        catch(const RegistryNotFoundException&)
+        catch (const RegistryNotFoundException &)
         {
             throw BuildErrorUnknownForm(fname);
         }
     }
-
 } // namespace mavis

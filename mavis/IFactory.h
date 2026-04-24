@@ -173,7 +173,7 @@ namespace mavis
         // enum definition in that form's class. When we're extracting, we may use an "xform" which
         // likely has an incompatible field enum (where field id enum values are different between
         // the form and xform)
-        void addSpecialCase(const FormBase::PtrType& form, const std::string & mnemonic,
+        void addSpecialCase(const FormBase::PtrType & form, const std::string & mnemonic,
                             const Opcode istencil, const std::vector<std::string> & flist)
         {
             Opcode mask = 0; // Mask of fixed fields

@@ -409,7 +409,7 @@ namespace mavis
                             const std::string & mnemonic, const MatchSet<Tag> & tags);
 
         typename IFactoryIF<InstType, AnnotationType>::PtrType
-        buildLeaf_(const FormBase::PtrType& form,
+        buildLeaf_(const FormBase::PtrType & form,
                    const typename IFactoryIF<InstType, AnnotationType>::PtrType & curr_node,
                    const std::string & mnemonic, Opcode istencil, const FieldNameListType & flist,
                    const std::string & factory_name, const std::string & xpand_name,
@@ -417,7 +417,7 @@ namespace mavis
                    const typename IFactoryIF<InstType, AnnotationType>::PtrType & shared_ifact);
 
         typename IFactoryIF<InstType, AnnotationType>::PtrType
-        build_(const FormBase::PtrType& form, const std::string & mnemonic, Opcode istencil,
+        build_(const FormBase::PtrType & form, const std::string & mnemonic, Opcode istencil,
                const FieldNameListType & flist, const FieldNameSetType & ignore_set,
                const std::string & factory_name, const std::string & xpand_name,
                const ExtractorIF::PtrType & override_extractor, InstMetaData::PtrType & einfo,
