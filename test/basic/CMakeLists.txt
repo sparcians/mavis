@@ -11,3 +11,5 @@ file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/basic/golden.out ${CMAKE_CURRENT_BINAR
 
 add_executable(Mavis main.cpp)
 target_link_libraries (Mavis mavis_test_lib)
+
+mavis_test(Mavis_basic_test Mavis bash -c "./Mavis > test.out && diff test.out golden.out")

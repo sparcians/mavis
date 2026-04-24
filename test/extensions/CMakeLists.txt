@@ -12,3 +12,5 @@ file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/basic ${CMAKE_CURRENT_BINARY_DIR}/uarc
 
 add_executable(ExtensionManager main.cpp)
 target_link_libraries (ExtensionManager mavis_test_lib mavis_test_inst_lib)
+
+mavis_test(Mavis_extension_test ExtensionManager ExtensionManager)

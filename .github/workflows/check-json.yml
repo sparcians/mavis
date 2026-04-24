@@ -23,3 +23,40 @@ jobs:
       # Run JSON check script
       - name: Check JSONs
         run: ./scripts/check_jsons
+
+  regress:
+    strategy:
+      # Strategy is a matrix of debug and release builds/regression
+      matrix:
+        BUILD_TYPE: [Debug,Release]
+        COMPILER: [gcc,clang]
+
+    name: Ubuntu-regress
+    runs-on: ubuntu-latest
+
+    env:
+      MAVIS_BUILD_TYPE:   ${{ matrix.BUILD_TYPE }}
+      COMPILER:           ${{ matrix.COMPILER }}
+
+    steps:
+      # Get Mavis
+      - name: Clone Mavis
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Build
+      - name: Build
+        run ./.github/actions/build.sh
+
+      # Regress
+      - name: Regress
+        run ./.github/actions/regress.sh
+
+      # Save error logs, etc
+      - name: Save artifacts
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: ErrorLogs-${{matrix.BUILD_TYPE}}-${{matrix.COMPILER}}
+          path: ${{matrix.BUILD_TYPE}}/
