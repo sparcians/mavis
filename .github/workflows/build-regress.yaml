@@ -3,7 +3,7 @@ on:
     branches:
       - main
 
-name: Check Mavis JSON validity on Ubuntu
+name: Run Mavis regression on Ubuntu
 jobs:
   check_json_job:
     name: Ubuntu-check-json

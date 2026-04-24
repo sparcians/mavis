@@ -1,15 +1,5 @@
 PROJECT(MAVIS_TESTS)
 
-cmake_minimum_required (VERSION 3.15)
-
-if(NOT DEFINED MAVIS_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 20)
-else()
-    set(CMAKE_CXX_STANDARD ${MAVIS_CXX_STANDARD})
-endif()
-
-set (CMAKE_CXX_STANDARD_REQUIRED ON)
-
 if(APPLE)
     message("-- Skipping fp_test on Apple")
 else()
