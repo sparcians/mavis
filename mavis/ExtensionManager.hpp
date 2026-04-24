@@ -1501,7 +1501,58 @@ namespace mavis::extension_manager
 
         virtual std::string getISAFromELF_(const std::string & elf) const = 0;
 
-        virtual void setISASpecJSONImpl_(const std::string &) {};
+        void setISASpecJSON_(const std::string & jfile)
+        {
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
+
+            try
+            {
+                const auto & jobj = json.as_object();
+
+                if (auto meta_extensions_it = jobj.find("meta_extensions");
+                    meta_extensions_it != jobj.end())
+                {
+                    for (const auto & meta_ext_obj : meta_extensions_it->value().as_array())
+                    {
+                        processExtension_<ExtensionType::META>(meta_ext_obj.as_object());
+                    }
+                }
+
+                if (auto config_extensions_it = jobj.find("config_extensions");
+                    config_extensions_it != jobj.end())
+                {
+                    for (const auto & config_ext_obj : config_extensions_it->value().as_array())
+                    {
+                        processExtension_<ExtensionType::CONFIG>(config_ext_obj.as_object());
+                    }
+                }
+
+                if (auto extensions_it = jobj.find("extensions"); extensions_it != jobj.end())
+                {
+                    for (const auto & ext_obj : extensions_it->value().as_array())
+                    {
+                        processExtension_<ExtensionType::NORMAL>(ext_obj.as_object());
+                    }
+                }
+
+                setISASpecJSONImpl_(jobj);
+
+                if(auto includes_it = jobj.find("includes"); includes_it != jobj.end())
+                {
+                    for (const auto & include : includes_it->value().as_array())
+                    {
+                        setISASpecJSON_(include.as_string());
+                    }
+                }
+            }
+            catch (const ExtensionManagerException &)
+            {
+                std::cerr << "Error parsing file " << jfile << std::endl;
+                throw;
+            }
+        }
+
+        virtual void setISASpecJSONImpl_(const boost::json::object &) {};
 
         virtual void setISAImpl_(const std::string & isa) = 0;
 
@@ -1806,46 +1857,7 @@ namespace mavis::extension_manager
         void setISASpecJSON(const std::string & jfile, const std::string & mavis_json_dir)
         {
             mavis_json_dir_ = mavis_json_dir;
-
-            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
-
-            try
-            {
-                const auto & jobj = json.as_object();
-
-                if (auto meta_extensions_it = jobj.find("meta_extensions");
-                    meta_extensions_it != jobj.end())
-                {
-                    for (const auto & meta_ext_obj : meta_extensions_it->value().as_array())
-                    {
-                        processExtension_<ExtensionType::META>(meta_ext_obj.as_object());
-                    }
-                }
-
-                if (auto config_extensions_it = jobj.find("config_extensions");
-                    config_extensions_it != jobj.end())
-                {
-                    for (const auto & config_ext_obj : config_extensions_it->value().as_array())
-                    {
-                        processExtension_<ExtensionType::CONFIG>(config_ext_obj.as_object());
-                    }
-                }
-
-                if (auto extensions_it = jobj.find("extensions"); extensions_it != jobj.end())
-                {
-                    for (const auto & ext_obj : extensions_it->value().as_array())
-                    {
-                        processExtension_<ExtensionType::NORMAL>(ext_obj.as_object());
-                    }
-                }
-            }
-            catch (const ExtensionManagerException &)
-            {
-                std::cerr << "Error parsing file " << jfile << std::endl;
-                throw;
-            }
-
-            setISASpecJSONImpl_(jfile);
+            setISASpecJSON_(jfile);
         }
 
         void setISAFromELF(const std::string & elf) { setISA(getISAFromELF_(elf)); }

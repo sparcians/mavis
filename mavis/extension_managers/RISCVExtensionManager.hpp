@@ -577,27 +577,15 @@ namespace mavis::extension_manager::riscv
             return isa_str;
         }
 
-        void setISASpecJSONImpl_(const std::string & jfile) override
+        void setISASpecJSONImpl_(const boost::json::object& jobj) override
         {
-            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
-
-            try
+            if (auto profiles_it = jobj.find("profiles"); profiles_it != jobj.end())
             {
-                const auto & jobj = json.as_object();
-
-                if (auto profiles_it = jobj.find("profiles"); profiles_it != jobj.end())
+                for (const auto & profile_obj : profiles_it->value().as_object())
                 {
-                    for (const auto & profile_obj : profiles_it->value().as_object())
-                    {
-                        ISA parsed_isa{profile_obj.value().as_string().c_str()};
-                        profiles_.emplace(profile_obj.key(), parsed_isa);
-                    }
+                    ISA parsed_isa{profile_obj.value().as_string().c_str()};
+                    profiles_.emplace(profile_obj.key(), parsed_isa);
                 }
-            }
-            catch (const ExtensionManagerException &)
-            {
-                std::cerr << "Error parsing file " << jfile << std::endl;
-                throw;
             }
         }
 
