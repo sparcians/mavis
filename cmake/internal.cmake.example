@@ -1,4 +1,5 @@
 # This is an example CMake config for including internal-only instruction definitions
+# Edit this file as needed and rename it to cmake/internal.cmake
 
 add_library(internal_instructions
     internal/InternalForms.cpp
