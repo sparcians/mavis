@@ -79,19 +79,20 @@ if(NOT COMPILER_SUPPORTS_CONSTEXPR_BITSET)
 endif()
 
 # Set up test infrastructure
-include(CTest)
-include(ProcessorCount)
-ProcessorCount(NUM_CORES)
-
-if (NUM_CORES GREATER 8)  # Max of 8 cores
-  set(NUM_CORE, 8)
-endif()
-if (NOT NUM_CORES EQUAL 0)
-  set(CTEST_BUILD_FLAGS -j${NUM_CORES})
-  set(ctest_test_args ${ctest_test_args} PARALLEL_LEVEL ${NUM_CORES})
-endif()
-
+# Only enable tests if Mavis is the top-level project
 if (PROJECT_IS_TOP_LEVEL)
+  include(CTest)
+  include(ProcessorCount)
+  ProcessorCount(NUM_CORES)
+
+  if (NUM_CORES GREATER 8)  # Max of 8 cores
+    set(NUM_CORE, 8)
+  endif()
+  if (NOT NUM_CORES EQUAL 0)
+    set(CTEST_BUILD_FLAGS -j${NUM_CORES})
+    set(ctest_test_args ${ctest_test_args} PARALLEL_LEVEL ${NUM_CORES})
+  endif()
+
   add_custom_target(regress)
   add_custom_command(TARGET regress POST_BUILD COMMAND ${CMAKE_CTEST_COMMAND})
   set(ENABLE_MAVIS_TESTS True)
