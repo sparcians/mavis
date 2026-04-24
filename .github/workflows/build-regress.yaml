@@ -30,6 +30,7 @@ jobs:
       matrix:
         BUILD_TYPE: [Debug,Release]
         COMPILER: [gcc,clang]
+        MAVIS_CXX_STANDARD: [20, 23]
 
     name: Ubuntu-regress
     runs-on: ubuntu-latest
@@ -37,6 +38,7 @@ jobs:
     env:
       MAVIS_BUILD_TYPE:   ${{ matrix.BUILD_TYPE }}
       COMPILER:           ${{ matrix.COMPILER }}
+      MAVIS_CXX_STANDARD: ${{ matrix.MAVIS_CXX_STANDARD }}
 
     steps:
       - name: Setup Git Identity
