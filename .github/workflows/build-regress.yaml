@@ -44,6 +44,12 @@ jobs:
           git config --global user.email "runner@github.com"
           git config --global user.name "Github Runner"
 
+      # Install packages
+      - name: Install packages
+        run: |
+          sudo apt-get update --fix-missing
+          sudo apt-get install libboost-all-dev llvm lld
+
       # Get Mavis
       - name: Clone Mavis
         uses: actions/checkout@v4
