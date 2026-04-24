@@ -1274,6 +1274,10 @@ namespace mavis
                     if (olay->getExtractor() != nullptr)
                     {
                         use_extractor = olay->getExtractor();
+                        if (use_extractor->isIllop(icode))
+                        {
+                            throw IllegalOpcode(use_mnemonic, icode);
+                        }
                     }
                     use_meta = olay->getMetaData();
                     use_dasm = olay->getDasm();
@@ -1312,12 +1316,13 @@ namespace mavis
         typename IFactoryIF<InstType, AnnotationType>::IFactoryInfo::PtrType
         getInfoBypassCache(const std::string & mnemonic, const ExtractorIF::PtrType & extractor)
         {
-            // TODO: Overlays are not supported yet, since no opcode provided
+            const auto meta = getMeta_(mnemonic);
+
             const DecodedInstructionInfo::PtrType & new_dii =
                 std::make_shared<DecodedInstructionInfo>(mnemonic, getInstructionUID_(mnemonic),
-                                                         extractor, meta_, Opcode(0));
+                                                         extractor, meta, Opcode(0));
             OpcodeInfo::PtrType optr =
-                std::make_shared<OpcodeInfo>(Opcode(0), new_dii, extractor, meta_, dasm_);
+                std::make_shared<OpcodeInfo>(Opcode(0), new_dii, extractor, meta, dasm_);
 
             // return std::make_shared<typename IFactoryIF<InstType,
             // AnnotationType>::IFactoryInfo>(optr, getAnnotation_(mnemonic));
@@ -1370,11 +1375,16 @@ namespace mavis
             // Clone the factory metadata and merge in the new stuff
             InstMetaData::PtrType combined_meta = meta_->clone();
             combined_meta->merge(new_meta);
+            registerInstructionVariantMetaData(mnemonic, combined_meta);
+        }
 
+        void registerInstructionVariantMetaData(const std::string & mnemonic,
+                                                const InstMetaData::PtrType & new_meta)
+        {
             // Register the combined metadata with the mnemonic
             if (meta_map_.find(mnemonic) == meta_map_.end())
             {
-                meta_map_[mnemonic] = combined_meta;
+                meta_map_[mnemonic] = new_meta;
             }
             else
             {

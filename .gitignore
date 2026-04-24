@@ -1,4 +1,6 @@
 build
+debug
+release
 .cache
 clang-format-files.out
 
