@@ -34,6 +34,12 @@ endif()
 
 add_subdirectory(elfio)
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14.0)
+    add_compile_options(-Wno-template-id-cdtor)
+  endif()
+endif()
+
 add_library(mavis
   impl/ExtractorRegistry.cpp
   impl/FormRegistry.cpp
