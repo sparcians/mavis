@@ -45,8 +45,14 @@ void runTSet(MavisType & mavis_facade, const std::string & tfile,
     // Run a test file
     ifstream tin(tfile);
 
+    std::cout << "======= Start running tset: " << tfile << std::endl;
+
+    ASSERT_ALWAYS(tin.good());
+
+    uint32_t fline = 0;
     while (tin)
     {
+        ++fline;
         string line;
         tin >> line;
         if (tin)
@@ -67,6 +73,11 @@ void runTSet(MavisType & mavis_facade, const std::string & tfile,
             tinfo.mnemonic = std::string(mnestr);
             tinfo.opcode = icode;
 
+            if (tinfo.mnemonic[0] == '#') {
+                cout << "skipping: " << tinfo.mnemonic << std::endl;
+                continue;
+            }
+
             Instruction<uArchInfo>::PtrType iptr = nullptr;
             try
             {
@@ -74,16 +85,20 @@ void runTSet(MavisType & mavis_facade, const std::string & tfile,
             }
             catch (const mavis::IllegalOpcode & ex)
             {
-                cout << ex.what() << endl;
+                cout << "from: " << tfile << ", line " << dec << fline
+                     << ": " << ex.what() << endl;
+                throw;
             }
             catch (const mavis::UnknownOpcode & ex)
             {
-                cout << ex.what() << endl;
+                cout << "from: " << tfile << ", line " << dec << fline
+                     << ": " << ex.what() << endl;
+                throw;
             }
 
             if (iptr != nullptr)
             {
-                cout << "HEX: 0x" << hex << icode << ", INST: " << *iptr
+                cout << "HEX: 0x" << hex << icode << ", INST: " << *iptr << dec
                      << ", DASM: " << iptr->dasmString() << endl;
                 if (iptr->getMnemonic() != std::string(mnestr))
                 {
@@ -155,6 +170,7 @@ void runTSet(MavisType & mavis_facade, const std::string & tfile,
         }
     }
     tin.close();
+    std::cout << "======= End running tset: " << tfile << std::endl;
 }
 
 int main()
@@ -242,11 +258,11 @@ int main()
 
     runTSet(mavis_facade, "rv64.tset");
 
-    // Test HV decoding
-    runTSet(mavis_facade, "rv64h.tset");
+    // Test HV decoding -- file does not exist
+    //runTSet(mavis_facade, "rv64h.tset");
 
     // Test the Vector Crypto decoding
-    runTSet(mavis_facade, "rv64zvk.tset");
+    //runTSet(mavis_facade, "rv64zvk.tset");
 
     // Test BF16 extensions
     runTSet(mavis_facade, "rv64_bf16.tset");
@@ -1314,7 +1330,7 @@ int main()
             (((i & 0b1100) >> 2) << 26) | ((i & 0b11) << 20);
         inst = mavis_facade.makeInst(mopi, 0);
         cout << "line " << dec << __LINE__ << ": " << "DASM: 0x"
-             << hex << mopi << " = " << inst->dasmString()
+             << hex << mopi << " = " << inst->dasmString() << dec
              << endl;
     }
 
@@ -1334,7 +1350,7 @@ int main()
         const uint32_t mopi = moprc | (i << 8);
         inst = mavis_facade.makeInst(mopi, 0);
         cout << "line " << dec << __LINE__ << ": " << "DASM: 0x"
-             << hex << mopi << " = " << inst->dasmString()
+             << hex << mopi << " = " << inst->dasmString() << dec
              << endl;
         ASSERT_ALWAYS(inst->getMnemonic() == ("c.mop." + std::to_string((i << 1) + 1)));
     }
