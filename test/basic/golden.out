@@ -3487,7 +3487,7 @@ line 1159: DASM: 0x6013 = prefetch.i	x0, +0x0
 line 1166: DASM: 0x6013 = ori	x0,x0, +0x2
 line 1173: DASM: 0x106013 = prefetch.r	x0, +0x0
 line 1186: DASM: 0x3106013 fails to decode. This is expected
-line 1193: DASM: 0x8106013 = prefetch.r	x0, +0xffffffffffffff80
+line 1193: DASM: 0x8106013 = prefetch.r	x0, +0x80
 line 1200: DASM: 0x2306013 = prefetch.w	x0, +0x20
 line 1207: DASM: 0x0100000f = pause	, +0x10
 ====== TAG 'pf' EXCLUDED =========
