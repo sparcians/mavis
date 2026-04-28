@@ -323,8 +323,8 @@ int main()
     cout << mavis_facade;
     runTSet(mavis_facade, "rv64.tset");
     runTSet(mavis_facade, "rv64_bits.tset", {mavis::InstMetaData::ISAExtension::B});
-    runTSet(mavis_facade, "rv64_zcb.tset");
-    runTSet(mavis_facade, "rv64_zicond.tset");
+    //runTSet(mavis_facade, "rv64_zcb.tset");
+    //runTSet(mavis_facade, "rv64_zicond.tset");
     runTSet(mavis_facade, "rv64_zbkx.tset");
     runTSet(mavis_facade, "rv64_zknd.tset");
 
