@@ -3410,7 +3410,7 @@ namespace mavis
 
         int64_t getSignedOffset(const Opcode icode) const override
         {
-            return signExtend_(getImmediate(icode), 7);
+            return signExtend_(getImmediate(icode), 11);
         }
 
         using ExtractorIF::dasmString; // tell the compiler all dasmString
