@@ -1,15 +1,5 @@
 PROJECT(MAVIS_TESTS)
 
-cmake_minimum_required (VERSION 3.15)
-
-if(NOT DEFINED MAVIS_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 20)
-else()
-    set(CMAKE_CXX_STANDARD ${MAVIS_CXX_STANDARD})
-endif()
-
-set (CMAKE_CXX_STANDARD_REQUIRED ON)
-
 if(APPLE)
     message("-- Skipping fp_test on Apple")
 else()
@@ -62,8 +52,16 @@ else()
             target_link_libraries(fp_test libquadmath)
         endif()
     endif()
+
+    file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/fp/fp_golden.out ${CMAKE_CURRENT_BINARY_DIR}/fp_golden.out SYMBOLIC)
+
+    mavis_test(Mavis_fp_test fp_test bash -c "./fp_test > fp_test.out && diff fp_test.out fp_golden.out")
 endif()
 
 add_executable(dump_fli_table dump_fli_table.cpp)
 
 target_link_libraries (dump_fli_table mavis_test_lib)
+
+file(CREATE_LINK ${CMAKE_SOURCE_DIR}/test/fp/fli_golden.out ${CMAKE_CURRENT_BINARY_DIR}/fli_golden.out SYMBOLIC)
+
+mavis_test(Mavis_fli_table_test dump_fli_table bash -c "./dump_fli_table > fli_test.out && diff fli_test.out fli_golden.out")

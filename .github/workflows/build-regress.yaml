@@ -1,0 +1,75 @@
+on:
+  pull_request:
+    branches:
+      - main
+
+name: Run Mavis regression on Ubuntu
+jobs:
+  check_json_job:
+    name: Ubuntu-check-json
+    runs-on: ubuntu-latest
+
+    steps:
+      # Install jq
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      # Get Mavis
+      - name: Clone Mavis
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Run JSON check script
+      - name: Check JSONs
+        run: ./scripts/check_jsons
+
+  regress:
+    strategy:
+      # Strategy is a matrix of debug and release builds/regression
+      matrix:
+        BUILD_TYPE: [Debug,Release]
+        COMPILER: [gcc,clang]
+        MAVIS_CXX_STANDARD: [20, 23]
+
+    name: Ubuntu-regress
+    runs-on: ubuntu-latest
+
+    env:
+      MAVIS_BUILD_TYPE:   ${{ matrix.BUILD_TYPE }}
+      COMPILER:           ${{ matrix.COMPILER }}
+      MAVIS_CXX_STANDARD: ${{ matrix.MAVIS_CXX_STANDARD }}
+
+    steps:
+      - name: Setup Git Identity
+        run: |
+          git config --global user.email "runner@github.com"
+          git config --global user.name "Github Runner"
+
+      # Install packages
+      - name: Install packages
+        run: |
+          sudo apt-get update --fix-missing
+          sudo apt-get install libboost-all-dev llvm lld
+
+      # Get Mavis
+      - name: Clone Mavis
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Build
+      - name: Build
+        run: ./.github/actions/build.sh
+
+      # Regress
+      - name: Regress
+        run: ./.github/actions/regress.sh
+
+      # Save error logs, etc
+      - name: Save artifacts
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: ErrorLogs-${{matrix.BUILD_TYPE}}-${{matrix.COMPILER}}
+          path: ${{matrix.BUILD_TYPE}}/

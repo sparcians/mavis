@@ -20,7 +20,7 @@
 #endif
 
 // Clang versions prior to 16 had a bug that broke std::views
-#if(__clang__ && __clang_major__ < 16)
+#if (__clang__ && __clang_major__ < 16)
 #define STD_VIEWS_BUG 1
 #endif
 
@@ -444,94 +444,81 @@ namespace mavis::extension_manager
         // Mimics the behavior of std::views::filter
         class FilteredView
         {
-            public:
-                class iterator
-                {
-                    private:
-                        const bool include_meta_;
-                        const EnabledMap::const_iterator end_it_;
-                        EnabledMap::const_iterator it_;
-
-                        void advance_()
-                        {
-                            while(it_ != end_it_ && !filterExt_(*it_, include_meta_))
-                            {
-                                ++it_;
-                            }
-                        }
-
-                    public:
-                        iterator(const EnabledMap::const_iterator& it, const EnabledMap::const_iterator& end_it, const bool include_meta) :
-                            include_meta_(include_meta),
-                            end_it_(end_it),
-                            it_(it)
-                        {
-                            advance_();
-                        }
-
-                        explicit iterator(const EnabledMap::const_iterator& end_it) :
-                            include_meta_(false),
-                            end_it_(end_it),
-                            it_(end_it)
-                        {
-                        }
-
-                        iterator& operator++()
-                        {
-                            ++it_;
-                            advance_();
-                            return *this;
-                        }
-
-                        iterator operator++(int)
-                        {
-                            const auto temp = *this;
-                            ++it_;
-                            advance_();
-                            return temp;
-                        }
-
-                        const EnabledMap::value_type& operator*() const
-                        {
-                            return *it_;
-                        }
-
-                        const EnabledMap::value_type* operator->() const
-                        {
-                            return it_.operator->();
-                        }
-
-                        bool operator==(const iterator& rhs) const
-                        {
-                            return it_ == rhs.it_;
-                        }
-
-                        bool operator!=(const iterator& rhs) const
-                        {
-                            return it_ != rhs.it_;
-                        }
-                };
-
-            private:
-                const EnabledMap& enabled_extensions_;
+          public:
+            class iterator
+            {
+              private:
                 const bool include_meta_;
+                const EnabledMap::const_iterator end_it_;
+                EnabledMap::const_iterator it_;
 
-            public:
-                explicit FilteredView(const EnabledMap& enabled_extensions, const bool include_meta) :
-                    enabled_extensions_(enabled_extensions),
-                    include_meta_(include_meta)
+                void advance_()
+                {
+                    while (it_ != end_it_ && !filterExt_(*it_, include_meta_))
+                    {
+                        ++it_;
+                    }
+                }
+
+              public:
+                iterator(const EnabledMap::const_iterator & it,
+                         const EnabledMap::const_iterator & end_it, const bool include_meta) :
+                    include_meta_(include_meta),
+                    end_it_(end_it),
+                    it_(it)
+                {
+                    advance_();
+                }
+
+                explicit iterator(const EnabledMap::const_iterator & end_it) :
+                    include_meta_(false),
+                    end_it_(end_it),
+                    it_(end_it)
                 {
                 }
 
-                iterator begin() const
+                iterator & operator++()
                 {
-                    return iterator(enabled_extensions_.begin(), enabled_extensions_.end(), include_meta_);
+                    ++it_;
+                    advance_();
+                    return *this;
                 }
 
-                iterator end() const
+                iterator operator++(int)
                 {
-                    return iterator(enabled_extensions_.end());
+                    const auto temp = *this;
+                    ++it_;
+                    advance_();
+                    return temp;
                 }
+
+                const EnabledMap::value_type & operator*() const { return *it_; }
+
+                const EnabledMap::value_type* operator->() const { return it_.operator->(); }
+
+                bool operator==(const iterator & rhs) const { return it_ == rhs.it_; }
+
+                bool operator!=(const iterator & rhs) const { return it_ != rhs.it_; }
+            };
+
+          private:
+            const EnabledMap & enabled_extensions_;
+            const bool include_meta_;
+
+          public:
+            explicit FilteredView(const EnabledMap & enabled_extensions, const bool include_meta) :
+                enabled_extensions_(enabled_extensions),
+                include_meta_(include_meta)
+            {
+            }
+
+            iterator begin() const
+            {
+                return iterator(enabled_extensions_.begin(), enabled_extensions_.end(),
+                                include_meta_);
+            }
+
+            iterator end() const { return iterator(enabled_extensions_.end()); }
         };
 #endif
 
@@ -1034,7 +1021,6 @@ namespace mavis::extension_manager
 #else
             (void)dep;
 #endif
-
         }
 
         template <DependencyType type>
@@ -1501,7 +1487,59 @@ namespace mavis::extension_manager
 
         virtual std::string getISAFromELF_(const std::string & elf) const = 0;
 
-        virtual void setISASpecJSONImpl_(const std::string &) {};
+        void setISASpecJSON_(const std::string & jfile)
+        {
+            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
+
+            try
+            {
+                const auto & jobj = json.as_object();
+
+                if (auto meta_extensions_it = jobj.find("meta_extensions");
+                    meta_extensions_it != jobj.end())
+                {
+                    for (const auto & meta_ext_obj : meta_extensions_it->value().as_array())
+                    {
+                        processExtension_<ExtensionType::META>(meta_ext_obj.as_object());
+                    }
+                }
+
+                if (auto config_extensions_it = jobj.find("config_extensions");
+                    config_extensions_it != jobj.end())
+                {
+                    for (const auto & config_ext_obj : config_extensions_it->value().as_array())
+                    {
+                        processExtension_<ExtensionType::CONFIG>(config_ext_obj.as_object());
+                    }
+                }
+
+                if (auto extensions_it = jobj.find("extensions"); extensions_it != jobj.end())
+                {
+                    for (const auto & ext_obj : extensions_it->value().as_array())
+                    {
+                        processExtension_<ExtensionType::NORMAL>(ext_obj.as_object());
+                    }
+                }
+
+                setISASpecJSONImpl_(jobj);
+
+                if (auto includes_it = jobj.find("includes"); includes_it != jobj.end())
+                {
+                    for (const auto & include : includes_it->value().as_array())
+                    {
+                        setISASpecJSON_(mavis_json_dir_ + "/"
+                                        + std::string(include.as_string().c_str()));
+                    }
+                }
+            }
+            catch (const ExtensionManagerException &)
+            {
+                std::cerr << "Error parsing file " << jfile << std::endl;
+                throw;
+            }
+        }
+
+        virtual void setISASpecJSONImpl_(const boost::json::object &) {};
 
         virtual void setISAImpl_(const std::string & isa) = 0;
 
@@ -1798,7 +1836,7 @@ namespace mavis::extension_manager
         ExtensionManager(ExtensionManager &&) = default;
         virtual ~ExtensionManager() = default;
 
-        const std::unordered_set<std::string>& getUnknownExtensions() const
+        const std::unordered_set<std::string> & getUnknownExtensions() const
         {
             return unknown_extensions_;
         }
@@ -1806,46 +1844,7 @@ namespace mavis::extension_manager
         void setISASpecJSON(const std::string & jfile, const std::string & mavis_json_dir)
         {
             mavis_json_dir_ = mavis_json_dir;
-
-            const boost::json::value json = parseJSONWithException<BadISAFile>(jfile);
-
-            try
-            {
-                const auto & jobj = json.as_object();
-
-                if (auto meta_extensions_it = jobj.find("meta_extensions");
-                    meta_extensions_it != jobj.end())
-                {
-                    for (const auto & meta_ext_obj : meta_extensions_it->value().as_array())
-                    {
-                        processExtension_<ExtensionType::META>(meta_ext_obj.as_object());
-                    }
-                }
-
-                if (auto config_extensions_it = jobj.find("config_extensions");
-                    config_extensions_it != jobj.end())
-                {
-                    for (const auto & config_ext_obj : config_extensions_it->value().as_array())
-                    {
-                        processExtension_<ExtensionType::CONFIG>(config_ext_obj.as_object());
-                    }
-                }
-
-                if (auto extensions_it = jobj.find("extensions"); extensions_it != jobj.end())
-                {
-                    for (const auto & ext_obj : extensions_it->value().as_array())
-                    {
-                        processExtension_<ExtensionType::NORMAL>(ext_obj.as_object());
-                    }
-                }
-            }
-            catch (const ExtensionManagerException &)
-            {
-                std::cerr << "Error parsing file " << jfile << std::endl;
-                throw;
-            }
-
-            setISASpecJSONImpl_(jfile);
+            setISASpecJSON_(jfile);
         }
 
         void setISAFromELF(const std::string & elf) { setISA(getISAFromELF_(elf)); }
@@ -1882,7 +1881,8 @@ namespace mavis::extension_manager
             return ExtensionMapView(enabled_extensions_, include_meta_extensions);
         }
 
-        void registerExtensionChangeCallback(std::function<void(const std::vector<std::string> &, bool)> cb)
+        void registerExtensionChangeCallback(
+            std::function<void(const std::vector<std::string> &, bool)> cb)
         {
             extensions_changed_callback_ = cb;
         }

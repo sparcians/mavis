@@ -81,4 +81,31 @@ namespace mavis::utils
         return p;
     }
 
+    template <typename T> struct smart_ptr_traits
+    {
+        static_assert(false, "Type must be std::shared_ptr or std::unique_ptr");
+    };
+
+    template <typename T> struct smart_ptr_traits<std::shared_ptr<T>>
+    {
+        using ptr_type = std::shared_ptr<T>;
+        using element_type = typename ptr_type::element_type;
+
+        template <typename U, typename... Args> static ptr_type construct(Args... args)
+        {
+            return std::make_shared<U>(std::forward<Args>(args)...);
+        }
+    };
+
+    template <typename T, typename Deleter> struct smart_ptr_traits<std::unique_ptr<T, Deleter>>
+    {
+        using ptr_type = std::unique_ptr<T, Deleter>;
+        using element_type = typename ptr_type::element_type;
+
+        template <typename U, typename... Args> static ptr_type construct(Args... args)
+        {
+            return std::make_unique<U>(std::forward<Args>(args)...);
+        }
+    };
+
 } // namespace mavis::utils
