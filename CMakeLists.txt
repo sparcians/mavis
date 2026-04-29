@@ -34,12 +34,6 @@ endif()
 
 add_subdirectory(elfio)
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14.0)
-    add_compile_options(-Wno-template-id-cdtor)
-  endif()
-endif()
-
 add_library(mavis
   impl/ExtractorRegistry.cpp
   impl/FormRegistry.cpp
@@ -48,6 +42,12 @@ add_library(mavis
   impl/forms/CompressedForms.cpp
   impl/forms/VectorForms.cpp
 )
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 14.0)
+    target_compile_options(mavis PRIVATE -Wno-template-id-cdtor)
+  endif()
+endif()
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/softfloat.cmake)
 target_include_directories(mavis PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

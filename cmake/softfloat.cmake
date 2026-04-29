@@ -28,7 +28,7 @@ add_dependencies(softfloat softfloat_build)
 target_link_libraries(softfloat INTERFACE ${INSTALL_DIR}/softfloat.a)
 target_compile_definitions(softfloat INTERFACE ${SOFTFLOAT_DEFS})
 target_compile_definitions(softfloat INTERFACE SOFTFLOAT_FAST_INT64 LITTLEENDIAN=1 INLINE=inline SOFTFLOAT_BUILTIN_CLZ=1 SOFTFLOAT_INTRINSIC_INT128=1)
-target_include_directories(softfloat INTERFACE ${SOURCE_DIR}/source/${SOFTFLOAT_SPECIALIZE_TYPE} ${SOURCE_DIR}/source/include ${SOURCE_DIR}/${SOFTFLOAT_BUILD_CONFIG_DIR})
+target_include_directories(softfloat SYSTEM INTERFACE ${SOURCE_DIR}/source/${SOFTFLOAT_SPECIALIZE_TYPE} ${SOURCE_DIR}/source/include ${SOURCE_DIR}/${SOFTFLOAT_BUILD_CONFIG_DIR})
 
 unset(SOURCE_DIR)
 unset(INSTALL_DIR)
