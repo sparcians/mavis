@@ -83,7 +83,10 @@ namespace mavis::utils
 
     template <typename T> struct smart_ptr_traits
     {
-        static_assert(false, "Type must be std::shared_ptr or std::unique_ptr");
+        // This condition will always evaluate to false. static_assert(false...) does not work
+        // in older compilers because it doesn't depend on T
+        // (e.g., https://gcc.gnu.org/bugzilla/show_bug.cgi?id=53638)
+        static_assert(!std::is_same_v<T, T>, "Type must be std::shared_ptr or std::unique_ptr");
     };
 
     template <typename T> struct smart_ptr_traits<std::shared_ptr<T>>
