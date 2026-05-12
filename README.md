@@ -259,15 +259,15 @@ make
 | :---------------------------- | :----: |
 | **Zvkng** Vector crypto NIST algorithms with GCM. | :white_check_mark: |
 | **Zvksg** Vector crypto ShangMi algorithms with GCM. | :white_check_mark: |
-| **Zabha** Byte and halfword atomic memory operations. | :x: |
-| **Zacas** Compare-and-Swap instructions. | :x: |
+| **Zabha** Byte and halfword atomic memory operations. | :white_check_mark: |
+| **Zacas** Compare-and-Swap instructions. | :white_check_mark: |
 | **Ziccamoc** Main memory regions with both the cacheability and coherence PMAs must provide AMOCASQ level PMA support. | |
 | **Zvbc** Vector carryless multiplication. | :white_check_mark: |
 | **Zbkx** Crosssbar permutation instructions (xperm4, xperm8). | :white_check_mark: |
 | **Zknd** Accelerating instructions for decryption and key-schedule functions of the AES block cipher. | :white_check_mark: |
 | **Zama16b** Misaligned loads, stores, and AMOs to main memory regions that do not cross a naturally aligned 16-byte boundary are atomic. | |
-| **Zfh** Scalar half-precision floating-point. | :x: |
-| **Zbc** Scalar carryless multiply. | :x: |
+| **Zfh** Scalar half-precision floating-point. | :white_check_mark: |
+| **Zbc** Scalar carryless multiply. | :white_check_mark: |
 | **Zicfilp** Landing Pads. | :x: |
 | **Zicfiss** Shadow Stack. | :white_check_mark: |
 | **Zvfh** Vector half-precision floating-point. | :x: |
