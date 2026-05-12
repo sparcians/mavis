@@ -271,7 +271,7 @@ make
 | **Zicfilp** Landing Pads. | :x: |
 | **Zicfiss** Shadow Stack. | :white_check_mark: |
 | **Zvfh** Vector half-precision floating-point. | :x: |
-| **Zfbfmin** Scalar BF16 converts. | :x: |
+| **Zfbfmin** Scalar BF16 converts. | :white_check_mark: |
 | **Zvfbfmin** Vector BF16 converts. | :white_check_mark: |
 | **Zvfbfwma** Vector BF16 widening mul-add. | :white_check_mark: |
 

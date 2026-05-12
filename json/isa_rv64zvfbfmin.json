@@ -1,0 +1,20 @@
+[
+  {
+    "mnemonic": "vfncvtbf16.f.f.w",
+    "tags" : ["zvfbfmin"],
+    "form": "V",
+    "stencil": "0x480e9057",
+    "fixed": [ "rs1" ],
+    "type": [ "vector", "float", "maskable", "convert" ],
+    "v-oper": [ "rs2", "rd" ]
+  },
+  {
+    "mnemonic": "vfwcvtbf16.f.f.v",
+    "tags" : ["zvfbfmin"],
+    "form": "V",
+    "stencil": "0x48069057",
+    "fixed": [ "rs1" ],
+    "type": [ "vector", "float", "maskable", "convert", "widening" ],
+    "v-oper": [ "rs2", "rd" ]
+  }
+]
