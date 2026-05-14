@@ -10,12 +10,14 @@
 #include <unordered_set>
 #include <vector>
 
+#include <boost/graph/subgraph.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/adjacency_list.hpp>
+
 // Uncomment to enable detection of cycles in the dependency graph
 // #define ENABLE_GRAPH_SANITY_CHECKER
 
 #ifdef ENABLE_GRAPH_SANITY_CHECKER
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/depth_first_search.hpp>
 #endif
 
@@ -433,11 +435,13 @@ namespace mavis::extension_manager
             sorted_enabled_extensions_set_.emplace(extension);
         }
 
-        // Returns false if an extension is internal-only or (optionally) if it's a meta-extension
-        static bool filterExt_(const EnabledMap::value_type & ext_pair, const bool include_meta)
+        // Optionally filters out internal and meta extensions
+        static bool filterExt_(const EnabledMap::value_type & ext_pair, const bool include_meta,
+                               const bool include_internal)
         {
             const auto & ext = ext_pair.second;
-            return !ext->isInternalOnly() && (include_meta || !ext->isMetaExtension());
+            return (include_internal || !ext->isInternalOnly())
+                   && (include_meta || !ext->isMetaExtension());
         }
 
 #ifdef STD_VIEWS_BUG
@@ -449,12 +453,13 @@ namespace mavis::extension_manager
             {
               private:
                 const bool include_meta_;
+                const bool include_internal_;
                 const EnabledMap::const_iterator end_it_;
                 EnabledMap::const_iterator it_;
 
                 void advance_()
                 {
-                    while (it_ != end_it_ && !filterExt_(*it_, include_meta_))
+                    while (it_ != end_it_ && !filterExt_(*it_, include_meta_, include_internal_))
                     {
                         ++it_;
                     }
@@ -462,8 +467,10 @@ namespace mavis::extension_manager
 
               public:
                 iterator(const EnabledMap::const_iterator & it,
-                         const EnabledMap::const_iterator & end_it, const bool include_meta) :
+                         const EnabledMap::const_iterator & end_it, const bool include_meta,
+                         const bool include_internal) :
                     include_meta_(include_meta),
+                    include_internal_(include_internal),
                     end_it_(end_it),
                     it_(it)
                 {
@@ -472,6 +479,7 @@ namespace mavis::extension_manager
 
                 explicit iterator(const EnabledMap::const_iterator & end_it) :
                     include_meta_(false),
+                    include_internal_(false),
                     end_it_(end_it),
                     it_(end_it)
                 {
@@ -504,41 +512,47 @@ namespace mavis::extension_manager
           private:
             const EnabledMap & enabled_extensions_;
             const bool include_meta_;
+            const bool include_internal_;
 
           public:
-            explicit FilteredView(const EnabledMap & enabled_extensions, const bool include_meta) :
+            explicit FilteredView(const EnabledMap & enabled_extensions, const bool include_meta,
+                                  const bool include_internal) :
                 enabled_extensions_(enabled_extensions),
-                include_meta_(include_meta)
+                include_meta_(include_meta),
+                include_internal_(include_internal)
             {
             }
 
             iterator begin() const
             {
                 return iterator(enabled_extensions_.begin(), enabled_extensions_.end(),
-                                include_meta_);
+                                include_meta_, include_internal_);
             }
 
             iterator end() const { return iterator(enabled_extensions_.end()); }
         };
 #endif
 
-        // Returns a lazy view into enabled_extensions_ that filters out internal-only extensions
-        // Optionally also filters meta-extensions
-        auto getFilteredView_(const bool include_meta) const
+        // Returns a lazy view into enabled_extensions_ that optionally filters out internal-only
+        // and meta extensions
+        auto getFilteredView_(const bool include_meta, const bool include_internal) const
         {
 #ifdef STD_VIEWS_BUG
-            return FilteredView(enabled_extensions_, include_meta);
+            return FilteredView(enabled_extensions_, include_meta, include_internal);
 #else
-            return std::views::filter(enabled_extensions_, [include_meta](const auto & ext_pair)
-                                      { return filterExt_(ext_pair, include_meta); });
+            return std::views::filter(
+                enabled_extensions_, [include_meta, include_internal](const auto & ext_pair)
+                { return filterExt_(ext_pair, include_meta, include_internal); });
 #endif
         }
 
         // Returns true if the extension is enabled and not filtered
-        bool isEnabledFiltered_(const std::string & ext, const bool include_meta) const
+        bool isEnabledFiltered_(const std::string & ext, const bool include_meta,
+                                const bool include_internal) const
         {
             const auto it = enabled_extensions_.find(ext);
-            return it != enabled_extensions_.end() && filterExt_(*it, include_meta);
+            return it != enabled_extensions_.end()
+                   && filterExt_(*it, include_meta, include_internal);
         }
 
       public:
@@ -581,29 +595,32 @@ namespace mavis::extension_manager
         auto end() const { return enabled_extensions_.end(); }
     };
 
-    // Provides a read-only view into an ExtensionMap that filters out internal-only extensions
-    // Invalidated whenever the underlying ExtensionMap is modified
+    // Provides a read-only view into an ExtensionMap that optionally filters out internal-only and
+    // meta extensions. Invalidated whenever the underlying ExtensionMap is modified
     class ExtensionMapView
     {
       private:
-        using ViewType =
-            std::invoke_result_t<decltype(&ExtensionMap::getFilteredView_), ExtensionMap, bool>;
+        using ViewType = std::invoke_result_t<decltype(&ExtensionMap::getFilteredView_),
+                                              ExtensionMap, bool, bool>;
 
         const ExtensionMap & ext_map_;
         const bool include_meta_;
-        mutable ViewType map_filter_{ext_map_.getFilteredView_(include_meta_)};
+        const bool include_internal_;
+        mutable ViewType map_filter_{ext_map_.getFilteredView_(include_meta_, include_internal_)};
 
       public:
-        ExtensionMapView(const ExtensionMap & ext_map, const bool include_meta) :
+        ExtensionMapView(const ExtensionMap & ext_map, const bool include_meta,
+                         const bool include_internal) :
             ext_map_(ext_map),
-            include_meta_(include_meta)
+            include_meta_(include_meta),
+            include_internal_(include_internal)
         {
         }
 
-        // Returns whether the specified extension is enabled and non-internal
+        // Returns whether the specified extension is enabled and not filtered out
         bool isEnabled(const std::string & ext) const
         {
-            return ext_map_.isEnabledFiltered_(ext, include_meta_);
+            return ext_map_.isEnabledFiltered_(ext, include_meta_, include_internal_);
         }
 
         auto begin() const { return map_filter_.begin(); }
@@ -664,6 +681,14 @@ namespace mavis::extension_manager
 
         const std::string & getDest() const { return dest_; }
     };
+
+    // An undirected graph where each vertex's name is an extension name
+    // Edges in the graph indicate extension conflicts
+    using ConflictGraph = boost::subgraph<
+        boost::adjacency_list<boost::setS, boost::vecS, boost::undirectedS,
+                              boost::property<boost::vertex_index_t, size_t,
+                                              boost::property<boost::vertex_name_t, std::string>>,
+                              boost::property<boost::edge_index_t, size_t>>>;
 
     template <typename ExtensionInfo> class ExtensionStateBase
     {
@@ -794,6 +819,13 @@ namespace mavis::extension_manager
                 }
 
                 return already_enabled != ext_ptr->isEnabled();
+            }
+
+            const std::string & getExtension() const { return enabled_extension_; }
+
+            const std::vector<std::string> & getEnablingExtensions() const
+            {
+                return enabling_extensions_;
             }
 
             std::string stringize() const
@@ -1328,6 +1360,45 @@ namespace mavis::extension_manager
         {
             return extensions_.count(ext) != 0 || meta_extensions_.count(ext) != 0;
         }
+
+        // Gets a Boost graph object with all non-internal/non-meta/non-config extensions
+        // represented as vertices, and with edges connecting extensions that conflict with each
+        // other
+        ConflictGraph getConflictGraph() const
+        {
+            using ReverseGraphMap = std::map<std::string, ConflictGraph::vertex_descriptor>;
+
+            ConflictGraph graph;
+            ReverseGraphMap reverse_map;
+
+            for (const auto & [extension, ext_info] : extensions_)
+            {
+                if (!ext_info->isInternalExtension())
+                {
+                    const auto new_vertex = boost::add_vertex(graph);
+                    put(boost::vertex_name, graph, new_vertex, extension);
+                    reverse_map[extension] = new_vertex;
+                }
+            }
+
+            if (const auto rule_it = rules_.find(RuleType::CONFLICT); rule_it != rules_.end())
+            {
+                for (const auto & rule : rule_it->second)
+                {
+                    const auto & src = rule.getSource();
+                    const auto & dest = rule.getDest();
+
+                    boost::add_edge(reverse_map.at(src), reverse_map.at(dest), graph);
+                }
+            }
+
+            return graph;
+        }
+
+        const std::vector<EnablingDependency> & getEnablingDependencies() const
+        {
+            return enabling_dependencies_;
+        }
     };
 
     template <typename ExtensionInfo, typename ExtensionState> class ExtensionManager
@@ -1804,6 +1875,45 @@ namespace mavis::extension_manager
             }
         }
 
+        const ExtensionState & getEnabledArchState_() const
+        {
+            assertISAInitialized_();
+            return enabled_arch_->second;
+        }
+
+        ExtensionState & getEnabledArchState_()
+        {
+            assertISAInitialized_();
+            return enabled_arch_->second;
+        }
+
+        const ExtensionState & getArchState_(const uint32_t arch_key) const
+        {
+            assertISASpecInitialized_();
+            return extensions_.at(arch_key);
+        }
+
+        ExtensionState & getArchState_(const uint32_t arch_key)
+        {
+            assertISASpecInitialized_();
+            return extensions_.at(arch_key);
+        }
+
+        std::vector<std::vector<std::string>>
+        getEnablingExtensions_(const ExtensionState & ext_state,
+                               const std::unique_ptr<ExtensionBase> & ext) const
+        {
+            std::vector<std::vector<std::string>> enabling_extensions;
+            for (const auto & dep : ext_state.getEnablingDependencies())
+            {
+                if (dep.getExtension() == ext->getName())
+                {
+                    enabling_extensions.emplace_back(dep.getEnablingExtensions());
+                }
+            }
+            return enabling_extensions;
+        }
+
         template <typename InstType, typename AnnotationType, typename InstTypeAllocator,
                   typename AnnotationTypeAllocator, typename... MavisArgs>
         Mavis<InstType, AnnotationType, InstTypeAllocator, AnnotationTypeAllocator>
@@ -1872,13 +1982,14 @@ namespace mavis::extension_manager
 
         bool isDisabled(const std::string & extension) const
         {
-            assertISAInitialized_();
-            return enabled_arch_->second.isDisabled(extension);
+            getEnabledArchState_().isDisabled(extension);
         }
 
-        ExtensionMapView getEnabledExtensions(const bool include_meta_extensions = true) const
+        ExtensionMapView getEnabledExtensions(const bool include_meta_extensions = true,
+                                              const bool include_internal_extensions = false) const
         {
-            return ExtensionMapView(enabled_extensions_, include_meta_extensions);
+            return ExtensionMapView(enabled_extensions_, include_meta_extensions,
+                                    include_internal_extensions);
         }
 
         void registerExtensionChangeCallback(
@@ -1909,8 +2020,7 @@ namespace mavis::extension_manager
         // Existing enabled extensions are not affected.
         void allowExtension(const uint32_t arch_key, const std::string & extension)
         {
-            assertISASpecInitialized_();
-            extensions_.at(arch_key).allowExtension(extension);
+            getArchState_(arch_key).allowExtension(extension);
         }
 
         // Adds the specified extension to all allowlists
@@ -1952,8 +2062,7 @@ namespace mavis::extension_manager
         // Existing enabled extensions are not affected.
         void clearAllowedExtensions(const uint32_t arch_key)
         {
-            assertISASpecInitialized_();
-            extensions_.at(arch_key).clearAllowedExtensions();
+            getArchState_(arch_key).clearAllowedExtensions();
         }
 
         // Clears all allowlists
@@ -1973,8 +2082,7 @@ namespace mavis::extension_manager
         // Existing enabled extensions are not affected.
         void blockExtension(const uint32_t arch_key, const std::string & extension)
         {
-            assertISASpecInitialized_();
-            extensions_.at(arch_key).blockExtension(extension);
+            getArchState_(arch_key).blockExtension(extension);
         }
 
         // Adds the specified extension to all blocklists
@@ -2016,8 +2124,7 @@ namespace mavis::extension_manager
         // Existing enabled extensions are not affected.
         void clearBlockedExtensions(const uint32_t arch_key)
         {
-            assertISASpecInitialized_();
-            extensions_.at(arch_key).clearBlockedExtensions();
+            getArchState_(arch_key).clearBlockedExtensions();
         }
 
         // Clears all blocklists
@@ -2112,18 +2219,39 @@ namespace mavis::extension_manager
         }
 
         // Returns whether this extension is defined in Mavis
-        bool isExtensionSupported(const std::string & ext)
+        bool isExtensionSupported(const std::string & ext) const
         {
-            assertISAInitialized_();
-            return enabled_arch_->second.isSupported(ext);
+            return getEnabledArchState_().isSupported(ext);
         }
 
         // Returns whether this extension is defined in Mavis
-        bool isExtensionSupported(const uint32_t arch_key, std::string & ext)
+        bool isExtensionSupported(const uint32_t arch_key, const std::string & ext) const
         {
-            assertISASpecInitialized_();
-            return extensions_.at(arch_key).isSupported(ext);
+            return getArchState_(arch_key).isSupported(ext);
         }
+
+        ConflictGraph getConflictGraph() const { return getEnabledArchState_().getConflictGraph(); }
+
+        ConflictGraph getConflictGraph(const uint32_t arch_key) const
+        {
+            return getArchState_(arch_key).getConflictGraph();
+        }
+
+        std::vector<std::vector<std::string>>
+        getEnablingExtensions(const uint32_t arch_key,
+                              const std::unique_ptr<ExtensionBase> & ext) const
+        {
+            return getEnablingExtensions_(getArchState_(arch_key), ext);
+        }
+
+        std::vector<std::vector<std::string>>
+        getEnablingExtensions(const std::unique_ptr<ExtensionBase> & ext) const
+        {
+            return getEnablingExtensions_(getEnabledArchState_(), ext);
+        }
+
+        // Gets the Mavis JSON directory
+        const std::string & getMavisJSONDir() const { return mavis_json_dir_; }
 
         // Constructs a Mavis object using the currently enabled extensions
         template <typename InstType, typename AnnotationType,
