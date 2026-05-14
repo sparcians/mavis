@@ -1982,7 +1982,7 @@ namespace mavis::extension_manager
 
         bool isDisabled(const std::string & extension) const
         {
-            getEnabledArchState_().isDisabled(extension);
+            return getEnabledArchState_().isDisabled(extension);
         }
 
         ExtensionMapView getEnabledExtensions(const bool include_meta_extensions = true,
