@@ -56,6 +56,14 @@ namespace mavis
 
         uint64_t getImmediate() const { return info_->immediate; }
 
+	Float16 getHalfFloatImmediate() const { return info_->half_float_immediate; }
+
+	Float32 getSingleFloatImmediate() const { return info_->single_float_immediate; }
+
+	Float64 getDoubleFloatImmediate() const { return info_->double_float_immediate; }
+
+	Float128 getQuadFloatImmediate() const { return info_->quad_float_immediate; }
+
         uint64_t getUnsignedOffset() const { return info_->immediate; }
 
         int64_t getSignedOffset() const { return info_->signed_offset; }
